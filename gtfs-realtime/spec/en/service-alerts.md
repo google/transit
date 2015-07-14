@@ -1,4 +1,4 @@
-Service alerts allow you to provide updates whenever there is disruption on the network. Delays and cancellations of individual trips should usually be communicated using [Trip updates](/transit/gtfs-realtime/trip-updates).
+Service alerts allow you to provide updates whenever there is disruption on the network. Delays and cancellations of individual trips should usually be communicated using [Trip updates](trip-updates.md).
 
 You have the option to provide the following:
 
@@ -47,7 +47,7 @@ What effect does this problem have on the specified entity? You may specify one 
 
 *   No service
 *   Reduced service
-*   Significant delays (insignificant delays should only be provided through [Trip updates](/transit/gtfs-realtime/trip-updates)).
+*   Significant delays (insignificant delays should only be provided through [Trip updates](trip-updates.md)).
 *   Detour
 *   Additional service
 *   Modified service

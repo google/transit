@@ -1,4 +1,4 @@
-A GTFS-realtime feed lets transit agencies provide consumers with realtime information about disruptions to their service (stations closed, lines not operating, important delays, etc.) location of their vehicles, and expected arrival times. 
+A GTFS-realtime feed lets transit agencies provide consumers with realtime information about disruptions to their service (stations closed, lines not operating, important delays, etc.) location of their vehicles, and expected arrival times.
 
 Version 1.0 of the feed specification is discussed and documented on this site.
 
@@ -9,8 +9,6 @@ Version 1.0 of the feed specification is discussed and documented on this site.
 *   **message**: Complex type
 *   **enum**: List of fixed values
 *   **experimental**: Experimental field, subject to change. It may be formally adopted in the future.
-
-<section>
 
 ## Element Index
 
@@ -39,13 +37,11 @@ Version 1.0 of the feed specification is discussed and documented on this site.
             *   [TranslatedString](#TranslatedString)
                 *   [Translation](#Translation)
 
-</section>
-
 # Elements
 
 ## _message_ FeedMessage
 
-The contents of a feed message. Each message in the stream is obtained as a response to an appropriate HTTP GET request. A real-time feed is always defined with relation to an existing GTFS feed. All the entity ids are resolved with respect to the GTFS feed. 
+The contents of a feed message. Each message in the stream is obtained as a response to an appropriate HTTP GET request. A real-time feed is always defined with relation to an existing GTFS feed. All the entity ids are resolved with respect to the GTFS feed.
 
 A feed depends on some external configuration:
 
@@ -66,9 +62,9 @@ Metadata about a feed, included in feed messages.
 #### Fields
 
 | _**Field Name**_ | _**Type**_ | _**Cardinality**_ | _**Description**_ |
-| **gtfs_realtime_version** | [string](/protocol-buffers/docs/proto#scalar) | required | Version of the feed specification. The current version is 1.0. |
+| **gtfs_realtime_version** | [string](https://developers.google.com/protocol-buffers/docs/proto#scalar) | required | Version of the feed specification. The current version is 1.0. |
 | **incrementality** | [Incrementality](#Incrementality) | optional |
-| **timestamp** | [uint64](/protocol-buffers/docs/proto#scalar) | optional | This timestamp identifies the moment when the content of this feed has been created (in server time). In POSIX time (i.e., number of seconds since January 1st 1970 00:00:00 UTC). To avoid time skew between systems producing and consuming realtime information it is strongly advised to derive timestamp from a time server. It is completely acceptable to use Stratum 3 or even lower strata servers since time differences up to a couple of seconds are tolerable. |
+| **timestamp** | [uint64](https://developers.google.com/protocol-buffers/docs/proto#scalar) | optional | This timestamp identifies the moment when the content of this feed has been created (in server time). In POSIX time (i.e., number of seconds since January 1st 1970 00:00:00 UTC). To avoid time skew between systems producing and consuming realtime information it is strongly advised to derive timestamp from a time server. It is completely acceptable to use Stratum 3 or even lower strata servers since time differences up to a couple of seconds are tolerable. |
 
 ## _enum_ Incrementality
 
@@ -90,15 +86,15 @@ A definition (or update) of an entity in the transit feed. If the entity is not 
 #### Fields
 
 | _**Field Name**_ | _**Type**_ | _**Cardinality**_ | _**Description**_ |
-| **id** | [string](/protocol-buffers/docs/proto#scalar) | required | Feed-unique identifier for this entity. The ids are used only to provide incrementality support. The actual entities referenced by the feed must be specified by explicit selectors (see EntitySelector below for more info). |
-| **is_deleted** | [bool](/protocol-buffers/docs/proto#scalar) | optional | Whether this entity is to be deleted. Relevant only for incremental fetches. |
+| **id** | [string](https://developers.google.com/protocol-buffers/docs/proto#scalar) | required | Feed-unique identifier for this entity. The ids are used only to provide incrementality support. The actual entities referenced by the feed must be specified by explicit selectors (see EntitySelector below for more info). |
+| **is_deleted** | [bool](https://developers.google.com/protocol-buffers/docs/proto#scalar) | optional | Whether this entity is to be deleted. Relevant only for incremental fetches. |
 | **trip_update** | [TripUpdate](#TripUpdate) | optional | Data about the realtime departure delays of a trip. |
 | **vehicle** | [VehiclePosition](#VehiclePosition) | optional | Data about the realtime position of a vehicle. |
 | **alert** | [Alert](#Alert) | optional | Data about the realtime alert. |
 
 ## _message_ TripUpdate
 
-Real-time update on the progress of a vehicle along a trip. Please also refer to the general discussion of the [trip updates feed type](./trip-updates).
+Real-time update on the progress of a vehicle along a trip. Please also refer to the general discussion of the [trip updates feed type](trip-updates.md).
 
 Depending on the value of ScheduleRelationship, a TripUpdate can specify:
 
@@ -106,7 +102,7 @@ Depending on the value of ScheduleRelationship, a TripUpdate can specify:
 *   A trip that proceeds along a route but has no fixed schedule.
 *   A trip that has been added or removed with regard to schedule.
 
-The updates can be for future, predicted arrival/departure events, or for past events that already occurred. In most cases information about past events is a measured value thus its uncertainty value is recommended to be 0\. Although there could be cases when this does not hold so it is allowed to have uncertainty value different from 0 for past events. If an update's uncertainty is not 0, either the update is an approximate prediction for a trip that has not completed or the measurement is not precise or the update was a prediction for the past that has not been verified after the event occurred. 
+The updates can be for future, predicted arrival/departure events, or for past events that already occurred. In most cases information about past events is a measured value thus its uncertainty value is recommended to be 0\. Although there could be cases when this does not hold so it is allowed to have uncertainty value different from 0 for past events. If an update's uncertainty is not 0, either the update is an approximate prediction for a trip that has not completed or the measurement is not precise or the update was a prediction for the past that has not been verified after the event occurred.
 
 Note that the update can describe a trip that has already completed.To this end, it is enough to provide an update for the last stop of the trip. If the time of arrival at the last stop is in the past, the client will conclude that the whole trip is in the past (it is possible, although inconsequential, to also provide updates for preceding stops). This option is most relevant for a trip that has completed ahead of schedule, but according to the schedule, the trip is still proceeding at the current time. Removing the updates for this trip could make the client assume that the trip is still proceeding. Note that the feed provider is allowed, but not required, to purge past updates - this is one case where this would be practically useful.
 
@@ -116,8 +112,8 @@ Note that the update can describe a trip that has already completed.To this end,
 | **trip** | [TripDescriptor](#TripDescriptor) | required | The Trip that this message applies to. There can be at most one TripUpdate entity for each actual trip instance. If there is none, that means there is no prediction information available. It does *not* mean that the trip is progressing according to schedule. |
 | **vehicle** | [VehicleDescriptor](#VehicleDescriptor) | optional | Additional information on the vehicle that is serving this trip. |
 | **stop_time_update** | [StopTimeUpdate](#StopTimeUpdate) | repeated | Updates to StopTimes for the trip (both future, i.e., predictions, and in some cases, past ones, i.e., those that already happened). The updates must be sorted by stop_sequence, and apply for all the following stops of the trip up to the next specified one. |
-| **timestamp** | [uint64](/protocol-buffers/docs/proto#scalar) | optional | Moment at which the vehicle's real-time progress was measured. In POSIX time (i.e., the number of seconds since January 1st 1970 00:00:00 UTC). |
-| **delay** | [int32](/protocol-buffers/docs/proto#scalar) | optional | 
+| **timestamp** | [uint64](https://developers.google.com/protocol-buffers/docs/proto#scalar) | optional | Moment at which the vehicle's real-time progress was measured. In POSIX time (i.e., the number of seconds since January 1st 1970 00:00:00 UTC). |
+| **delay** | [int32](https://developers.google.com/protocol-buffers/docs/proto#scalar) | optional |
 
 The current schedule deviation for the trip. Delay should only be specified when the prediction is given relative to some existing schedule in GTFS.
 
@@ -143,13 +139,13 @@ Uncertainty applies equally to both time and delay. The uncertainty roughly spec
 #### Fields
 
 | _**Field Name**_ | _**Type**_ | _**Cardinality**_ | _**Description**_ |
-| **delay** | [int32](/protocol-buffers/docs/proto#scalar) | optional | Delay (in seconds) can be positive (meaning that the vehicle is late) or negative (meaning that the vehicle is ahead of schedule). Delay of 0 means that the vehicle is exactly on time. |
-| **time** | [int64](/protocol-buffers/docs/proto#scalar) | optional | Event as absolute time. In POSIX time (i.e., number of seconds since January 1st 1970 00:00:00 UTC). |
-| **uncertainty** | [int32](/protocol-buffers/docs/proto#scalar) | optional | If uncertainty is omitted, it is interpreted as unknown. To specify a completely certain prediction, set its uncertainty to 0. |
+| **delay** | [int32](https://developers.google.com/protocol-buffers/docs/proto#scalar) | optional | Delay (in seconds) can be positive (meaning that the vehicle is late) or negative (meaning that the vehicle is ahead of schedule). Delay of 0 means that the vehicle is exactly on time. |
+| **time** | [int64](https://developers.google.com/protocol-buffers/docs/proto#scalar) | optional | Event as absolute time. In POSIX time (i.e., number of seconds since January 1st 1970 00:00:00 UTC). |
+| **uncertainty** | [int32](https://developers.google.com/protocol-buffers/docs/proto#scalar) | optional | If uncertainty is omitted, it is interpreted as unknown. To specify a completely certain prediction, set its uncertainty to 0. |
 
 ## _message_ StopTimeUpdate
 
-Realtime update for arrival and/or departure events for a given stop on a trip. Please also refer to the general discussion of stop time updates in the [TripDescriptor](#TripDescriptor) and [trip updates feed type](./trip-updates) documentation.
+Realtime update for arrival and/or departure events for a given stop on a trip. Please also refer to the general discussion of stop time updates in the [TripDescriptor](#TripDescriptor) and [trip updates feed type](trip-updates.md) documentation.
 
 Updates can be supplied for both past and future events. The producer is allowed, although not required, to drop past events.
 The update is linked to a specific stop either through stop_sequence or stop_id, so one of these fields must necessarily be set.
@@ -157,8 +153,8 @@ The update is linked to a specific stop either through stop_sequence or stop_id,
 #### Fields
 
 | _**Field Name**_ | _**Type**_ | _**Cardinality**_ | _**Description**_ |
-| **stop_sequence** | [uint32](/protocol-buffers/docs/proto#scalar) | optional | Must be the same as in stop_times.txt in the corresponding GTFS feed. |
-| **stop_id** | [string](/protocol-buffers/docs/proto#scalar) | optional | Must be the same as in stops.txt in the corresponding GTFS feed. |
+| **stop_sequence** | [uint32](https://developers.google.com/protocol-buffers/docs/proto#scalar) | optional | Must be the same as in stop_times.txt in the corresponding GTFS feed. |
+| **stop_id** | [string](https://developers.google.com/protocol-buffers/docs/proto#scalar) | optional | Must be the same as in stops.txt in the corresponding GTFS feed. |
 | **arrival** | [StopTimeEvent](#StopTimeEvent) | optional |
 | **departure** | [StopTimeEvent](#StopTimeEvent) | optional |
 | **schedule_relationship** | [ScheduleRelationship](#ScheduleRelationship_StopTimeUpdate) | optional | The default relationship is SCHEDULED. |
@@ -184,12 +180,12 @@ Realtime positioning information for a given vehicle.
 | **trip** | [TripDescriptor](#TripDescriptor) | optional | The Trip that this vehicle is serving. Can be empty or partial if the vehicle can not be identified with a given trip instance. |
 | **vehicle** | [VehicleDescriptor](#VehicleDescriptor) | optional | Additional information on the vehicle that is serving this trip. Each entry should have a **unique** vehicle id. |
 | **position** | [Position](#Position) | optional | Current position of this vehicle. |
-| **current_stop_sequence** | [uint32](/protocol-buffers/docs/proto#scalar) | optional | The stop sequence index of the current stop. The meaning of current_stop_sequence (i.e., the stop that it refers to) is determined by current_status. If current_status is missing IN_TRANSIT_TO is assumed. |
-| **stop_id** | [string](/protocol-buffers/docs/proto#scalar) | optional | Identifies the current stop. The value must be the same as in stops.txt in the corresponding GTFS feed. |
+| **current_stop_sequence** | [uint32](https://developers.google.com/protocol-buffers/docs/proto#scalar) | optional | The stop sequence index of the current stop. The meaning of current_stop_sequence (i.e., the stop that it refers to) is determined by current_status. If current_status is missing IN_TRANSIT_TO is assumed. |
+| **stop_id** | [string](https://developers.google.com/protocol-buffers/docs/proto#scalar) | optional | Identifies the current stop. The value must be the same as in stops.txt in the corresponding GTFS feed. |
 | **current_status** | [VehicleStopStatus](#VehicleStopStatus) | optional | The exact status of the vehicle with respect to the current stop. Ignored if current_stop_sequence is missing. |
-| **timestamp** | [uint64](/protocol-buffers/docs/proto#scalar) | optional | Moment at which the vehicle's position was measured. In POSIX time (i.e., number of seconds since January 1st 1970 00:00:00 UTC). |
+| **timestamp** | [uint64](https://developers.google.com/protocol-buffers/docs/proto#scalar) | optional | Moment at which the vehicle's position was measured. In POSIX time (i.e., number of seconds since January 1st 1970 00:00:00 UTC). |
 | **congestion_level** | [CongestionLevel](#CongestionLevel) | optional |
-| _**occupancy_status**_ | _[OccupancyStatus](#OccupancyStatus_VehiclePosition)_ | _optional_ | 
+| _**occupancy_status**_ | _[OccupancyStatus](#OccupancyStatus_VehiclePosition)_ | _optional_ |
 
 The degree of passenger occupancy of the vehicle.
 
@@ -295,8 +291,8 @@ A time interval. The interval is considered active at time `t` if `t` is greater
 #### Fields
 
 | _**Field Name**_ | _**Type**_ | _**Cardinality**_ | _**Description**_ |
-| **start** | [uint64](/protocol-buffers/docs/proto#scalar) | optional | Start time, in POSIX time (i.e., number of seconds since January 1st 1970 00:00:00 UTC). If missing, the interval starts at minus infinity. |
-| **end** | [uint64](/protocol-buffers/docs/proto#scalar) | optional | End time, in POSIX time (i.e., number of seconds since January 1st 1970 00:00:00 UTC). If missing, the interval ends at plus infinity. |
+| **start** | [uint64](https://developers.google.com/protocol-buffers/docs/proto#scalar) | optional | Start time, in POSIX time (i.e., number of seconds since January 1st 1970 00:00:00 UTC). If missing, the interval starts at minus infinity. |
+| **end** | [uint64](https://developers.google.com/protocol-buffers/docs/proto#scalar) | optional | End time, in POSIX time (i.e., number of seconds since January 1st 1970 00:00:00 UTC). If missing, the interval ends at plus infinity. |
 
 ## _message_ Position
 
@@ -305,11 +301,11 @@ A geographic position of a vehicle.
 #### Fields
 
 | _**Field Name**_ | _**Type**_ | _**Cardinality**_ | _**Description**_ |
-| **latitude** | [float](/protocol-buffers/docs/proto#scalar) | required | Degrees North, in the WGS-84 coordinate system. |
-| **longitude** | [float](/protocol-buffers/docs/proto#scalar) | required | Degrees East, in the WGS-84 coordinate system. |
-| **bearing** | [float](/protocol-buffers/docs/proto#scalar) | optional | Bearing, in degrees, clockwise from True North, i.e., 0 is North and 90 is East. This can be the compass bearing, or the direction towards the next stop or intermediate location. This should not be deduced from the sequence of previous positions, which clients can compute from previous data. |
-| **odometer** | [double](/protocol-buffers/docs/proto#scalar) | optional | Odometer value, in meters. |
-| **speed** | [float](/protocol-buffers/docs/proto#scalar) | optional | Momentary speed measured by the vehicle, in meters per second. |
+| **latitude** | [float](https://developers.google.com/protocol-buffers/docs/proto#scalar) | required | Degrees North, in the WGS-84 coordinate system. |
+| **longitude** | [float](https://developers.google.com/protocol-buffers/docs/proto#scalar) | required | Degrees East, in the WGS-84 coordinate system. |
+| **bearing** | [float](https://developers.google.com/protocol-buffers/docs/proto#scalar) | optional | Bearing, in degrees, clockwise from True North, i.e., 0 is North and 90 is East. This can be the compass bearing, or the direction towards the next stop or intermediate location. This should not be deduced from the sequence of previous positions, which clients can compute from previous data. |
+| **odometer** | [double](https://developers.google.com/protocol-buffers/docs/proto#scalar) | optional | Odometer value, in meters. |
+| **speed** | [float](https://developers.google.com/protocol-buffers/docs/proto#scalar) | optional | Momentary speed measured by the vehicle, in meters per second. |
 
 ## _message_ TripDescriptor
 
@@ -318,17 +314,17 @@ A descriptor that identifies an instance of a GTFS trip, or all instances of a t
 #### Fields
 
 | _**Field Name**_ | _**Type**_ | _**Cardinality**_ | _**Description**_ |
-| **trip_id** | [string](/protocol-buffers/docs/proto#scalar) | optional | The trip_id from the GTFS feed that this selector refers to. For non frequency-based trips, this field is enough to uniquely identify the trip. For frequency-based trip, start_time and start_date might also be necessary. |
-| **route_id** | [string](/protocol-buffers/docs/proto#scalar) | optional | The route_id from the GTFS that this selector refers to. |
-| **direction_id** | [uint32](/protocol-buffers/docs/proto#scalar) | optional | 
+| **trip_id** | [string](https://developers.google.com/protocol-buffers/docs/proto#scalar) | optional | The trip_id from the GTFS feed that this selector refers to. For non frequency-based trips, this field is enough to uniquely identify the trip. For frequency-based trip, start_time and start_date might also be necessary. |
+| **route_id** | [string](https://developers.google.com/protocol-buffers/docs/proto#scalar) | optional | The route_id from the GTFS that this selector refers to. |
+| **direction_id** | [uint32](https://developers.google.com/protocol-buffers/docs/proto#scalar) | optional |
 
 The direction_id from the GTFS feed trips.txt file, indicating the direction of travel for trips this selector refers to.
 
 **Caution:** this field is still **experimental**, and subject to change. It may be formally adopted in the future.
 
  |
-| **start_time** | [string](/protocol-buffers/docs/proto#scalar) | optional | The initially scheduled start time of this trip instance. When the trip_id corresponds to a non-frequency-based trip, this field should either be omitted or be equal to the value in the GTFS feed. When the trip_id correponds to a frequency-based trip, the start_time must be specified for trip updates and vehicle positions. If the trip corresponds to exact_times=1 GTFS record, then start_time must be some multiple (including zero) of headway_secs later than frequencies.txt start_time for the corresponding time period. If the trip corresponds to exact_times=0, then its start_time may be arbitrary, and is initially expected to be the first departure of the trip. Once established, the start_time of this frequency-based trip should be considered immutable, even if the first departure time changes -- that time change may instead be reflected in a StopTimeUpdate. Format and semantics of the field is same as that of GTFS/frequencies.txt/start_time, e.g., 11:15:35 or 25:15:35. |
-| **start_date** | [string](/protocol-buffers/docs/proto#scalar) | optional | The scheduled start date of this trip instance. This field must be provided to disambiguate trips that are so late as to collide with a scheduled trip on a next day. For example, for a train that departs 8:00 and 20:00 every day, and is 12 hours late, there would be two distinct trips on the same time. This field can be provided but is not mandatory for schedules in which such collisions are impossible - for example, a service running on hourly schedule where a vehicle that is one hour late is not considered to be related to schedule anymore. In YYYYMMDD format. |
+| **start_time** | [string](https://developers.google.com/protocol-buffers/docs/proto#scalar) | optional | The initially scheduled start time of this trip instance. When the trip_id corresponds to a non-frequency-based trip, this field should either be omitted or be equal to the value in the GTFS feed. When the trip_id correponds to a frequency-based trip, the start_time must be specified for trip updates and vehicle positions. If the trip corresponds to exact_times=1 GTFS record, then start_time must be some multiple (including zero) of headway_secs later than frequencies.txt start_time for the corresponding time period. If the trip corresponds to exact_times=0, then its start_time may be arbitrary, and is initially expected to be the first departure of the trip. Once established, the start_time of this frequency-based trip should be considered immutable, even if the first departure time changes -- that time change may instead be reflected in a StopTimeUpdate. Format and semantics of the field is same as that of GTFS/frequencies.txt/start_time, e.g., 11:15:35 or 25:15:35. |
+| **start_date** | [string](https://developers.google.com/protocol-buffers/docs/proto#scalar) | optional | The scheduled start date of this trip instance. This field must be provided to disambiguate trips that are so late as to collide with a scheduled trip on a next day. For example, for a train that departs 8:00 and 20:00 every day, and is 12 hours late, there would be two distinct trips on the same time. This field can be provided but is not mandatory for schedules in which such collisions are impossible - for example, a service running on hourly schedule where a vehicle that is one hour late is not considered to be related to schedule anymore. In YYYYMMDD format. |
 | **schedule_relationship** | [ScheduleRelationship](#ScheduleRelationship_TripDescriptor) | optional |
 
 ## _enum_ ScheduleRelationship
@@ -350,9 +346,9 @@ Identification information for the vehicle performing the trip.
 #### Fields
 
 | _**Field Name**_ | _**Type**_ | _**Cardinality**_ | _**Description**_ |
-| **id** | [string](/protocol-buffers/docs/proto#scalar) | optional | Internal system identification of the vehicle. Should be **unique** per vehicle, and is used for tracking the vehicle as it proceeds through the system. This id should not be made visible to the end-user; for that purpose use the **label** field |
-| **label** | [string](/protocol-buffers/docs/proto#scalar) | optional | User visible label, i.e., something that must be shown to the passenger to help identify the correct vehicle. |
-| **license_plate** | [string](/protocol-buffers/docs/proto#scalar) | optional | The license plate of the vehicle. |
+| **id** | [string](https://developers.google.com/protocol-buffers/docs/proto#scalar) | optional | Internal system identification of the vehicle. Should be **unique** per vehicle, and is used for tracking the vehicle as it proceeds through the system. This id should not be made visible to the end-user; for that purpose use the **label** field |
+| **label** | [string](https://developers.google.com/protocol-buffers/docs/proto#scalar) | optional | User visible label, i.e., something that must be shown to the passenger to help identify the correct vehicle. |
+| **license_plate** | [string](https://developers.google.com/protocol-buffers/docs/proto#scalar) | optional | The license plate of the vehicle. |
 
 ## _message_ EntitySelector
 
@@ -361,11 +357,11 @@ A selector for an entity in a GTFS feed. The values of the fields should corresp
 #### Fields
 
 | _**Field Name**_ | _**Type**_ | _**Cardinality**_ | _**Description**_ |
-| **agency_id** | [string](/protocol-buffers/docs/proto#scalar) | optional |
-| **route_id** | [string](/protocol-buffers/docs/proto#scalar) | optional |
-| **route_type** | [int32](/protocol-buffers/docs/proto#scalar) | optional |
+| **agency_id** | [string](https://developers.google.com/protocol-buffers/docs/proto#scalar) | optional |
+| **route_id** | [string](https://developers.google.com/protocol-buffers/docs/proto#scalar) | optional |
+| **route_type** | [int32](https://developers.google.com/protocol-buffers/docs/proto#scalar) | optional |
 | **trip** | [TripDescriptor](#TripDescriptor) | optional |
-| **stop_id** | [string](/protocol-buffers/docs/proto#scalar) | optional |
+| **stop_id** | [string](https://developers.google.com/protocol-buffers/docs/proto#scalar) | optional |
 
 ## _message_ TranslatedString
 
@@ -383,5 +379,5 @@ A localized string mapped to a language.
 #### Fields
 
 | _**Field Name**_ | _**Type**_ | _**Cardinality**_ | _**Description**_ |
-| **text** | [string](/protocol-buffers/docs/proto#scalar) | required | A UTF-8 string containing the message. |
-| **language** | [string](/protocol-buffers/docs/proto#scalar) | optional | BCP-47 language code. Can be omitted if the language is unknown or if no internationalization is done at all for the feed. At most one translation is allowed to have an unspecified language tag. |
+| **text** | [string](https://developers.google.com/protocol-buffers/docs/proto#scalar) | required | A UTF-8 string containing the message. |
+| **language** | [string](https://developers.google.com/protocol-buffers/docs/proto#scalar) | optional | BCP-47 language code. Can be omitted if the language is unknown or if no internationalization is done at all for the feed. At most one translation is allowed to have an unspecified language tag. |
