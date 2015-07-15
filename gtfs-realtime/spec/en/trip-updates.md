@@ -40,6 +40,8 @@ This will be interpreted as:
 
 The information provided by the trip descriptor depends on the schedule relationship of trip you are updating. There are a number of options for you to set:
 
+|_**Value**_|_**Comment**_|
+|-----------|-------------|
 | **Scheduled** | This trip is running according to a GTFS schedule, or is close enough to still be associated with it. |
 | **Added** | This trip was not scheduled and has been added. For example, to cope with demand, or replace a broken down vehicle. |
 | **Unscheduled** | This trip is running and is never associated with a schedule. For example, if there is no schedule and the buses run on a shuttle service. |
