@@ -11,8 +11,8 @@ Once announced, the pull request is considered a proposal.
 1. The discussion of the proposal follows. Pull request comments should be used as the sole discussion forum.
   - The discussion lasts for as long as the advocate considers required but at least 7 calendar days.
   - The advocate is responsible for timely update of the proposal based on the comments for which they agree to.
-1. The advocate can call for a vote on a version of the proposal at any point in time but no earlier than 7 calendar 
-days after the proposal was announced.
+  - At any point in time the advocate can claim proposal abandoned.
+1. The advocate can call for a vote on a version of the proposal at any point in time but no earlier than 7 calendar days, and no later than 30 calendar days after the proposal was announced.
 1. Vote lasts the minimum period enough to cover 7 full calendar days and at 5 full Swiss business days. Vote ends at 23:59 UTC.
   - The advocate should announce the specific end time at the start of the vote.
   - During voting period only editorial changes to the proposal are allowed (typos, wording may change as long as it does not change the meaning).
@@ -23,9 +23,13 @@ days after the proposal was announced.
   - Votes against shall be motivated, and ideally provide actionable feedback.
   - If the vote has failed, then the advocate may choose to continue work on the proposal, or to abandon the proposal.
     Either decision of the advocate must be announced in the mailing list.
-1. Once proposal is accepted:
+  - If the advocate continues the work on proposal then a new vote can be called for at any point in time but no later than 30 calendar days after the end of the previous vote.
+  - If a vote was not called within 30 calendar days from the original proposal or 30 calendar days since end of the previous vote, then the proposal is abandoned.
+  - If 3 votes have failed, then the proposal is abandoned.
+1. If the proposal is abandoned, the corresponding pull request is closed.
+1. If the proposal is accepted:
   - Advocate should create corresponding pull request to https://github.com/google/gtfs-realtime-bindings repo if the proposal changes .proto file. Commits to gtfs-realtime-bindigs that are a result of a proposal, should reference the pull request of that proposal.
-  - Google is committed to merging the voted upon version of the pull request, and performing the pull request within 5 business days.
+  - Google is committed to merging the voted upon version of the pull request (provided that the contributors have signed the [CLA](../CONTRIBUTING.md)), and performing the pull request within 5 business days.
   - Translations do not have to be included into the original pull request. 
     Google is responsible for eventually updating translations of the protocol buffer and specification into supported languages, but pure translation pull requests from the community are welcome and do not have to go through the discussion process.
 
