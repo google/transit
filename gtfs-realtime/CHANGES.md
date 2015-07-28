@@ -1,12 +1,11 @@
 The GTFS-realtime specification is not set in stone. Instead, it is an open specification developed and maintained by the community of transit agencies, developers, and other stakeholders who use GTFS-realtime. It is expected that this community of producers and consumers of GTFS-realtime data will have proposals for extending the spec to enable new capabilities. To help manage that process, the following procedures and guidelines have been established.
 
 ### Specification amendment process
-1. Create a git branch with full update of the English text of all relevant parts of protocol definition, 
-specification and documentation files.
-1. Create pull request on https://github.com/google/transit. Pull request must contain an extended description of
-the patch. The creator of the pull request becomes the _advocate_.
-1. Once pull request is registered, it must be announced by its advocate in the [GTFS Realtime mailing list](https://groups.google.com/forum/#!forum/gtfs-realtime).
-Once announced, the pull request is considered a proposal.
+The official specification, reference and documentation are written in English. If a translation to a different language differs from the English original, the latter takes precedence. All communication is performed in English.
+
+1. Create a git branch with update of all relevant parts of protocol definition, specification and documentation files (except for translations).
+1. Create pull request on https://github.com/google/transit. Pull request must contain an extended description of the patch. The creator of the pull request becomes the _advocate_.
+1. Once pull request is registered, it must be announced by its advocate in the [GTFS Realtime mailing list](https://groups.google.com/forum/#!forum/gtfs-realtime). Once announced, the pull request is considered a proposal.
   - Advocate is a contributor, thus they should sign [CLA](../CONTRIBUTING.md) before pull request can be accepted.
 1. The discussion of the proposal follows. Pull request comments should be used as the sole discussion forum.
   - The discussion lasts for as long as the advocate considers required but at least 7 calendar days.
@@ -30,8 +29,8 @@ Once announced, the pull request is considered a proposal.
 1. If the proposal is accepted:
   - Advocate should create corresponding pull request to https://github.com/google/gtfs-realtime-bindings repo if the proposal changes .proto file. Commits to gtfs-realtime-bindigs that are a result of a proposal, should reference the pull request of that proposal.
   - Google is committed to merging the voted upon version of the pull request (provided that the contributors have signed the [CLA](../CONTRIBUTING.md)), and performing the pull request within 5 business days.
-  - Translations do not have to be included into the original pull request. 
-    Google is responsible for eventually updating translations of the protocol buffer and specification into supported languages, but pure translation pull requests from the community are welcome and do not have to go through the discussion process.
+  - Translations must not be included into the original pull request.
+    Google is responsible for eventually updating relevant translations into supported languages, but pure translation pull requests from the community are welcome and will be accepted as soon as all editorial comments are addressed.
 
 ### Guiding Principles
 In order to preserve the original vision of GTFS-realtime, a number of guiding principles have been established to take into consideration when extending the spec:
