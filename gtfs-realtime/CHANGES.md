@@ -6,13 +6,13 @@ The official specification, reference and documentation are written in English. 
 1. Create a git branch with update of all relevant parts of protocol definition, specification and documentation files (except for translations).
 1. Create pull request on https://github.com/google/transit. Pull request must contain an extended description of the patch. The creator of the pull request becomes the _advocate_.
 1. Once pull request is registered, it must be announced by its advocate in the [GTFS Realtime mailing list](https://groups.google.com/forum/#!forum/gtfs-realtime). Once announced, the pull request is considered a proposal.
-  - Advocate is a contributor, thus they should sign [CLA](../CONTRIBUTING.md) before pull request can be accepted.
+  - Since the advocate is a contributor, they must sign the [Contributor License Agreement](../CONTRIBUTING.md) before pull request can be accepted.
 1. The discussion of the proposal follows. Pull request comments should be used as the sole discussion forum.
-  - The discussion lasts for as long as the advocate considers required but at least 7 calendar days.
-  - The advocate is responsible for timely update of the proposal based on the comments for which they agree to.
+  - The discussion lasts for as long as the advocate feels necessary, but must be at least 7 calendar days.
+  - The advocate is responsible for timely update of the proposal (i.e. pull request) based on the comments for which they agree to.
   - At any point in time the advocate can claim proposal abandoned.
-1. The advocate can call for a vote on a version of the proposal at any point in time but no earlier than 7 calendar days, and no later than 30 calendar days after the proposal was announced.
-1. Vote lasts the minimum period enough to cover 7 full calendar days and at 5 full Swiss business days. Vote ends at 23:59 UTC.
+1. The advocate can call for a vote on a version of the proposal at any point in time following the initial 7-day interval required for discussion.
+1. Vote lasts the minimum period sufficient to cover 7 full calendar days and 5 full Swiss business days. Vote ends at 23:59 UTC.
   - The advocate should announce the specific end time at the start of the vote.
   - During voting period only editorial changes to the proposal are allowed (typos, wording may change as long as it does not change the meaning).
   - Anyone is allowed to vote yes/no in a form of comment to the pull request, and votes can be changed until the end of the voting period.
@@ -24,11 +24,10 @@ The official specification, reference and documentation are written in English. 
     Either decision of the advocate must be announced in the mailing list.
   - If the advocate continues the work on proposal then a new vote can be called for at any point in time but no later than 30 calendar days after the end of the previous vote.
   - If a vote was not called within 30 calendar days from the original proposal or 30 calendar days since end of the previous vote, then the proposal is abandoned.
-  - If 3 votes have failed, then the proposal is abandoned.
 1. If the proposal is abandoned, the corresponding pull request is closed.
 1. If the proposal is accepted:
-  - Advocate should create corresponding pull request to https://github.com/google/gtfs-realtime-bindings repo if the proposal changes .proto file. Commits to gtfs-realtime-bindigs that are a result of a proposal, should reference the pull request of that proposal.
   - Google is committed to merging the voted upon version of the pull request (provided that the contributors have signed the [CLA](../CONTRIBUTING.md)), and performing the pull request within 5 business days.
+  - Google is committed to timely updating https://github.com/google/gtfs-realtime-bindings repository. Commits to gtfs-realtime-bindigs that are a result of a proposal, should reference the pull request of the proposal.
   - Translations must not be included into the original pull request.
     Google is responsible for eventually updating relevant translations into supported languages, but pure translation pull requests from the community are welcome and will be accepted as soon as all editorial comments are addressed.
 
