@@ -1,4 +1,4 @@
-GTFS-realtime supports three distinct types of realtime data. Even though the
+GTFS Realtime supports three distinct types of realtime data. Even though the
 [gtfs-realtime.proto](../../proto/gtfs-realtime.proto) syntax allows
 multiple entity types to be mixed for a feed, only one type of entity can be
 used in a particular feed. Summaries are given below, with full documentation
