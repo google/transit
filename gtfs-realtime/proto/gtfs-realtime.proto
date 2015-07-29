@@ -12,9 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// Protocol definition file for GTFS-realtime.
+// Protocol definition file for GTFS Realtime.
 //
-// GTFS-realtime lets transit agencies provide consumers with realtime
+// GTFS Realtime lets transit agencies provide consumers with realtime
 // information about disruptions to their service (stations closed, lines not
 // operating, important delays etc), location of their vehicles and expected
 // arrival times.
@@ -38,7 +38,6 @@ package transit_realtime;
 //   items of one specified application; all the other entities will be ignored.
 // - Polling frequency
 message FeedMessage {
-
   // Metadata about this feed and feed message.
   required FeedHeader header = 1;
 
@@ -46,7 +45,7 @@ message FeedMessage {
   repeated FeedEntity entity = 2;
 
   // The extensions namespace allows 3rd-party developers to extend the
-  // GTFS-realtime specification in order to add and evaluate new features and
+  // GTFS Realtime specification in order to add and evaluate new features and
   // modifications to the spec.
   extensions 1000 to 1999;
 }
@@ -59,7 +58,7 @@ message FeedHeader {
 
   // Determines whether the current fetch is incremental.  Currently,
   // DIFFERENTIAL mode is unsupported and behavior is unspecified for feeds
-  // that use this mode.  There are discussions on the GTFS-realtime mailing
+  // that use this mode.  There are discussions on the GTFS Realtime mailing
   // list around fully specifying the behavior of DIFFERENTIAL mode and the
   // documentation will be updated when those discussions are finalized.
   enum Incrementality {
@@ -74,7 +73,7 @@ message FeedHeader {
   optional uint64 timestamp = 3;
 
   // The extensions namespace allows 3rd-party developers to extend the
-  // GTFS-realtime specification in order to add and evaluate new features and
+  // GTFS Realtime specification in order to add and evaluate new features and
   // modifications to the spec.
   extensions 1000 to 1999;
 }
@@ -102,7 +101,7 @@ message FeedEntity {
   optional Alert alert = 5;
 
   // The extensions namespace allows 3rd-party developers to extend the
-  // GTFS-realtime specification in order to add and evaluate new features and
+  // GTFS Realtime Specification in order to add and evaluate new features and
   // modifications to the spec.
   extensions 1000 to 1999;
 }
@@ -180,7 +179,7 @@ message TripUpdate {
     optional int32 uncertainty = 3;
 
     // The extensions namespace allows 3rd-party developers to extend the
-    // GTFS-realtime specification in order to add and evaluate new features
+    // GTFS Realtime Specification in order to add and evaluate new features
     // and modifications to the spec.
     extensions 1000 to 1999;
   }
@@ -225,7 +224,7 @@ message TripUpdate {
         [default = SCHEDULED];
 
     // The extensions namespace allows 3rd-party developers to extend the
-    // GTFS-realtime specification in order to add and evaluate new features
+    // GTFS Realtime Specification in order to add and evaluate new features
     // and modifications to the spec.
     extensions 1000 to 1999;
   }
@@ -276,7 +275,7 @@ message TripUpdate {
   optional int32 delay = 5;
 
   // The extensions namespace allows 3rd-party developers to extend the
-  // GTFS-realtime specification in order to add and evaluate new features and
+  // GTFS Realtime Specification in order to add and evaluate new features and
   // modifications to the spec.
   extensions 1000 to 1999;
 }
@@ -370,7 +369,7 @@ message VehiclePosition {
   optional OccupancyStatus occupancy_status = 9;
 
   // The extensions namespace allows 3rd-party developers to extend the
-  // GTFS-realtime specification in order to add and evaluate new features and
+  // GTFS Realtime Specification in order to add and evaluate new features and
   // modifications to the spec.
   extensions 1000 to 1999;
 }
@@ -432,7 +431,7 @@ message Alert {
   optional TranslatedString description_text = 11;
 
   // The extensions namespace allows 3rd-party developers to extend the
-  // GTFS-realtime specification in order to add and evaluate new features
+  // GTFS Realtime Specification in order to add and evaluate new features
   // and modifications to the spec.
   extensions 1000 to 1999;
 }
@@ -455,7 +454,7 @@ message TimeRange {
   optional uint64 end = 2;
 
   // The extensions namespace allows 3rd-party developers to extend the
-  // GTFS-realtime specification in order to add and evaluate new features and
+  // GTFS Realtime Specification in order to add and evaluate new features and
   // modifications to the spec.
   extensions 1000 to 1999;
 }
@@ -481,7 +480,7 @@ message Position {
   optional float speed = 5;
 
   // The extensions namespace allows 3rd-party developers to extend the
-  // GTFS-realtime specification in order to add and evaluate new features and
+  // GTFS Realtime Specification in order to add and evaluate new features and
   // modifications to the spec.
   extensions 1000 to 1999;
 }
@@ -562,7 +561,7 @@ message TripDescriptor {
   optional ScheduleRelationship schedule_relationship = 4;
 
   // The extensions namespace allows 3rd-party developers to extend the
-  // GTFS-realtime specification in order to add and evaluate new features and
+  // GTFS Realtime Specification in order to add and evaluate new features and
   // modifications to the spec.
   extensions 1000 to 1999;
 }
@@ -582,7 +581,7 @@ message VehicleDescriptor {
   optional string license_plate = 3;
 
   // The extensions namespace allows 3rd-party developers to extend the
-  // GTFS-realtime specification in order to add and evaluate new features and
+  // GTFS Realtime Specification in order to add and evaluate new features and
   // modifications to the spec.
   extensions 1000 to 1999;
 }
@@ -601,7 +600,7 @@ message EntitySelector {
   optional string stop_id = 5;
 
   // The extensions namespace allows 3rd-party developers to extend the
-  // GTFS-realtime specification in order to add and evaluate new features and
+  // GTFS Realtime Specification in order to add and evaluate new features and
   // modifications to the spec.
   extensions 1000 to 1999;
 }
@@ -626,7 +625,7 @@ message TranslatedString {
     optional string language = 2;
 
     // The extensions namespace allows 3rd-party developers to extend the
-    // GTFS-realtime specification in order to add and evaluate new features and
+    // GTFS Realtime Specification in order to add and evaluate new features and
     // modifications to the spec.
     extensions 1000 to 1999;
   }
@@ -634,7 +633,7 @@ message TranslatedString {
   repeated Translation translation = 1;
 
   // The extensions namespace allows 3rd-party developers to extend the
-  // GTFS-realtime specification in order to add and evaluate new features and
+  // GTFS Realtime Specification in order to add and evaluate new features and
   // modifications to the spec.
   extensions 1000 to 1999;
 }
