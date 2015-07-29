@@ -20,7 +20,7 @@
 // arrival times.
 //
 // This protocol is published at:
-// https://developers.google.com/transit/gtfs-realtime/
+// https://github.com/google/transit/blob/master/gtfs-realtime/proto/gtfs-realtime.proto
 
 syntax = "proto2";
 option java_package = "com.google.transit.realtime";
