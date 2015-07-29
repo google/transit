@@ -31,10 +31,6 @@ package transit_realtime;
 // obtained as a response to an appropriate HTTP GET request.
 // A realtime feed is always defined with relation to an existing GTFS feed.
 // All the entity ids are resolved with respect to the GTFS feed.
-//
-// A feed depends on some external configuration:
-// - The corresponding GTFS feed.
-// - Polling frequency.
 message FeedMessage {
   // Metadata about this feed and feed message.
   required FeedHeader header = 1;

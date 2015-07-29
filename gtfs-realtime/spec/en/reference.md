@@ -41,12 +41,7 @@ Version 1.0 of the feed specification is discussed and documented on this site.
 
 ## _message_ FeedMessage
 
-The contents of a feed message. Each message in the stream is obtained as a response to an appropriate HTTP GET request. A real-time feed is always defined with relation to an existing GTFS feed. All the entity ids are resolved with respect to the GTFS feed.
-
-A feed depends on some external configuration:
-
-*   The corresponding GTFS feed.
-*   Polling frequency, controlled by min_update_delay, max_update_delay.
+The contents of a feed message. Each message in the stream is obtained as a response to an appropriate HTTP GET request. A realtime feed is always defined with relation to an existing GTFS feed. All the entity ids are resolved with respect to the GTFS feed.
 
 #### Fields
 
