@@ -45,3 +45,10 @@ Most important are the latitude and longitude the vehicle is at, but we can also
 use data on current speed and odometer readings from the vehicle.
 
 [More about Vehicle Position updates...](vehicle-positions.md)
+
+## Historical remark on feed types
+
+Early versions of GTFS Realtime Specification required each feed to only contain
+single type of entities. An example tool to convert from merged to the
+feed-per-type schema is located at
+https://github.com/bliksemlabs/gtfsrt-examples/blob/master/split_by_entitytype.py
