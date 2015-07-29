@@ -34,9 +34,7 @@ package transit_realtime;
 //
 // A feed depends on some external configuration:
 // - The corresponding GTFS feed.
-// - Feed application (updates, positions or alerts). A feed should contain only
-//   items of one specified application; all the other entities will be ignored.
-// - Polling frequency
+// - Polling frequency.
 message FeedMessage {
   // Metadata about this feed and feed message.
   required FeedHeader header = 1;
