@@ -18,7 +18,7 @@ The official specification, reference and documentation are written in English. 
   - Anyone is allowed to vote yes/no in a form of comment to the pull request, and votes can be changed until the end of the voting period.
     If a voter changes her vote, it is recommended to do it by updating the original vote comment by striking through the vote and writing the new vote.
   - Votes before the start of the voting period are not considered.
-1. The proposal is accepted if there is a consensus yes with at least 3 votes.
+1. The proposal is accepted if there is a unanimous consensus yes with at least 3 votes.
   - Votes against shall be motivated, and ideally provide actionable feedback.
   - If the vote has failed, then the advocate may choose to continue work on the proposal, or to abandon the proposal.
     Either decision of the advocate must be announced in the mailing list.
