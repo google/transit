@@ -12,30 +12,34 @@ Version 1.0 of the feed specification is discussed and documented on this site.
 
 ## Element Index
 
-*   [FeedMessage](#FeedMessage)
-    *   [FeedHeader](#FeedHeader)
-        *   [Incrementality](#Incrementality)
-    *   [FeedEntity](#FeedEntity)
-        *   [TripUpdate](#TripUpdate)
-            *   [TripDescriptor](#TripDescriptor)
-                *   [ScheduleRelationship](#ScheduleRelationship_TripDescriptor)
-            *   [VehicleDescriptor](#VehicleDescriptor)
-            *   [StopTimeUpdate](#StopTimeUpdate)
-                *   [StopTimeEvent](#StopTimeEvent)
-                *   [ScheduleRelationship](#ScheduleRelationship_StopTimeUpdate)
-        *   [VehiclePosition](#VehiclePosition)
-            *   [TripDescriptor](#TripDescriptor)
-                *   [ScheduleRelationship](#ScheduleRelationship_TripDescriptor)
-            *   [Position](#Position)
-        *   [Alert](#Alert)
-            *   [TimeRange](#TimeRange)
-            *   [EntitySelector](#EntitySelector)
-                *   [TripDescriptor](#TripDescriptor)
-                    *   [ScheduleRelationship](#ScheduleRelationship_TripDescriptor)
-            *   [Cause](#Cause)
-            *   [Effect](#Effect)
-            *   [TranslatedString](#TranslatedString)
-                *   [Translation](#Translation)
+*   [FeedMessage](#message-feedmessage)
+    *   [FeedHeader](#message-feedheader)
+        *   [Incrementality](#enum-incrementality)
+    *   [FeedEntity](#message-feedentity)
+        *   [TripUpdate](#message-tripupdate)
+            *   [TripDescriptor](#message-tripdescriptor)
+                *   [ScheduleRelationship](#enum-schedulerelationship-1)
+            *   [VehicleDescriptor](#message-vehicledescriptor)
+            *   [StopTimeUpdate](#message-stoptimeupdate)
+                *   [StopTimeEvent](#message-stoptimeevent)
+                *   [ScheduleRelationship](#enum-schedulerelationship)
+        *   [VehiclePosition](#message-vehicleposition)
+            *   [TripDescriptor](#message-tripdescriptor)
+                *   [ScheduleRelationship](#enum-schedulerelationship-1)
+            *   [VehicleDescriptor](#message-vehicledescriptor)
+            *   [Position](#message-position)
+            *   [VehicleStopStatus](#enum-vehiclestopstatus)
+            *   [CongestionLevel](#enum-congestionlevel)
+            *   [OccupancyStatus](#enum-occupancystatus)
+        *   [Alert](#message-alert)
+            *   [TimeRange](#message-timerange)
+            *   [EntitySelector](#message-entityselector)
+                *   [TripDescriptor](#message-tripdescriptor)
+                    *   [ScheduleRelationship](#enum-schedulerelationship-1)
+            *   [Cause](#enum-cause)
+            *   [Effect](#enum-effect)
+            *   [TranslatedString](#message-translatedstring)
+                *   [Translation](#message-translation)
 
 # Elements
 
@@ -47,8 +51,8 @@ The contents of a feed message. Each message in the stream is obtained as a resp
 
 |_**Field Name**_ | _**Type**_ | _**Cardinality**_ | _**Description**_ |
 |-----------------|------------|-------------------|-------------------|
-|**header** | [FeedHeader](#FeedHeader) | required | Metadata about this feed and feed message. |
-|**entity** | [FeedEntity](#FeedEntity) | repeated | Contents of the feed. |
+|**header** | [FeedHeader](#message-feedheader) | required | Metadata about this feed and feed message. |
+|**entity** | [FeedEntity](#message-feedentity) | repeated | Contents of the feed. |
 
 ## _message_ FeedHeader
 
@@ -59,7 +63,7 @@ Metadata about a feed, included in feed messages.
 | _**Field Name**_ | _**Type**_ | _**Cardinality**_ | _**Description**_ |
 |------------------|------------|-------------------|-------------------|
 | **gtfs_realtime_version** | [string](https://developers.google.com/protocol-buffers/docs/proto#scalar) | required | Version of the feed specification. The current version is 1.0. |
-| **incrementality** | [Incrementality](#Incrementality) | optional |
+| **incrementality** | [Incrementality](#enum-incrementality) | optional |
 | **timestamp** | [uint64](https://developers.google.com/protocol-buffers/docs/proto#scalar) | optional | This timestamp identifies the moment when the content of this feed has been created (in server time). In POSIX time (i.e., number of seconds since January 1st 1970 00:00:00 UTC). To avoid time skew between systems producing and consuming realtime information it is strongly advised to derive timestamp from a time server. It is completely acceptable to use Stratum 3 or even lower strata servers since time differences up to a couple of seconds are tolerable. |
 
 ## _enum_ Incrementality
@@ -86,9 +90,9 @@ A definition (or update) of an entity in the transit feed. If the entity is not 
 |------------------|------------|-------------------|-------------------|
 | **id** | [string](https://developers.google.com/protocol-buffers/docs/proto#scalar) | required | Feed-unique identifier for this entity. The ids are used only to provide incrementality support. The actual entities referenced by the feed must be specified by explicit selectors (see EntitySelector below for more info). |
 | **is_deleted** | [bool](https://developers.google.com/protocol-buffers/docs/proto#scalar) | optional | Whether this entity is to be deleted. Relevant only for incremental fetches. |
-| **trip_update** | [TripUpdate](#TripUpdate) | optional | Data about the realtime departure delays of a trip. |
-| **vehicle** | [VehiclePosition](#VehiclePosition) | optional | Data about the realtime position of a vehicle. |
-| **alert** | [Alert](#Alert) | optional | Data about the realtime alert. |
+| **trip_update** | [TripUpdate](#message-tripupdate) | optional | Data about the realtime departure delays of a trip. |
+| **vehicle** | [VehiclePosition](#message-vehicleposition) | optional | Data about the realtime position of a vehicle. |
+| **alert** | [Alert](#message-alert) | optional | Data about the realtime alert. |
 
 ## _message_ TripUpdate
 
@@ -108,9 +112,9 @@ Note that the update can describe a trip that has already completed.To this end,
 
 | _**Field Name**_ | _**Type**_ | _**Cardinality**_ | _**Description**_ |
 |------------------|------------|-------------------|-------------------|
-| **trip** | [TripDescriptor](#TripDescriptor) | required | The Trip that this message applies to. There can be at most one TripUpdate entity for each actual trip instance. If there is none, that means there is no prediction information available. It does *not* mean that the trip is progressing according to schedule. |
-| **vehicle** | [VehicleDescriptor](#VehicleDescriptor) | optional | Additional information on the vehicle that is serving this trip. |
-| **stop_time_update** | [StopTimeUpdate](#StopTimeUpdate) | repeated | Updates to StopTimes for the trip (both future, i.e., predictions, and in some cases, past ones, i.e., those that already happened). The updates must be sorted by stop_sequence, and apply for all the following stops of the trip up to the next specified one. |
+| **trip** | [TripDescriptor](#message-tripdescriptor) | required | The Trip that this message applies to. There can be at most one TripUpdate entity for each actual trip instance. If there is none, that means there is no prediction information available. It does *not* mean that the trip is progressing according to schedule. |
+| **vehicle** | [VehicleDescriptor](#message-vehicledescriptor) | optional | Additional information on the vehicle that is serving this trip. |
+| **stop_time_update** | [StopTimeUpdate](#message-stoptimeupdate) | repeated | Updates to StopTimes for the trip (both future, i.e., predictions, and in some cases, past ones, i.e., those that already happened). The updates must be sorted by stop_sequence, and apply for all the following stops of the trip up to the next specified one. |
 | **timestamp** | [uint64](https://developers.google.com/protocol-buffers/docs/proto#scalar) | optional | Moment at which the vehicle's real-time progress was measured. In POSIX time (i.e., the number of seconds since January 1st 1970 00:00:00 UTC). |
 | **delay** | [int32](https://developers.google.com/protocol-buffers/docs/proto#scalar) | optional |The current schedule deviation for the trip. Delay should only be specified when the prediction is given relative to some existing schedule in GTFS.<br>Delay (in seconds) can be positive (meaning that the vehicle is late) or negative (meaning that the vehicle is ahead of schedule). Delay of 0 means that the vehicle is exactly on time.<br>Delay information in StopTimeUpdates take precedent of trip-level delay information, such that trip-level delay is only propagated until the next stop along the trip with a StopTimeUpdate delay value specified.<br>Feed providers are strongly encouraged to provide a TripUpdate.timestamp value indicating when the delay value was last updated, in order to evaluate the freshness of the data.<br>**Caution:** this field is still **experimental**, and subject to change. It may be formally adopted in the future.|
 
@@ -133,7 +137,7 @@ Uncertainty applies equally to both time and delay. The uncertainty roughly spec
 
 ## _message_ StopTimeUpdate
 
-Realtime update for arrival and/or departure events for a given stop on a trip. Please also refer to the general discussion of stop time updates in the [TripDescriptor](#TripDescriptor) and [trip updates entities](trip-updates.md) documentation.
+Realtime update for arrival and/or departure events for a given stop on a trip. Please also refer to the general discussion of stop time updates in the [TripDescriptor](#message-tripdescriptor) and [trip updates entities](trip-updates.md) documentation.
 
 Updates can be supplied for both past and future events. The producer is allowed, although not required, to drop past events.
 The update is linked to a specific stop either through stop_sequence or stop_id, so one of these fields must necessarily be set.
@@ -144,9 +148,9 @@ The update is linked to a specific stop either through stop_sequence or stop_id,
 |------------------|------------|-------------------|-------------------|
 | **stop_sequence** | [uint32](https://developers.google.com/protocol-buffers/docs/proto#scalar) | optional | Must be the same as in stop_times.txt in the corresponding GTFS feed. |
 | **stop_id** | [string](https://developers.google.com/protocol-buffers/docs/proto#scalar) | optional | Must be the same as in stops.txt in the corresponding GTFS feed. |
-| **arrival** | [StopTimeEvent](#StopTimeEvent) | optional |
-| **departure** | [StopTimeEvent](#StopTimeEvent) | optional |
-| **schedule_relationship** | [ScheduleRelationship](#ScheduleRelationship_StopTimeUpdate) | optional | The default relationship is SCHEDULED. |
+| **arrival** | [StopTimeEvent](#message-stoptimeevent) | optional |
+| **departure** | [StopTimeEvent](#message-stoptimeevent) | optional |
+| **schedule_relationship** | [ScheduleRelationship](#enum-schedulerelationship) | optional | The default relationship is SCHEDULED. |
 
 ## _enum_ ScheduleRelationship
 
@@ -168,15 +172,15 @@ Realtime positioning information for a given vehicle.
 
 | _**Field Name**_ | _**Type**_ | _**Cardinality**_ | _**Description**_ |
 |------------------|------------|-------------------|-------------------|
-| **trip** | [TripDescriptor](#TripDescriptor) | optional | The Trip that this vehicle is serving. Can be empty or partial if the vehicle can not be identified with a given trip instance. |
-| **vehicle** | [VehicleDescriptor](#VehicleDescriptor) | optional | Additional information on the vehicle that is serving this trip. Each entry should have a **unique** vehicle id. |
-| **position** | [Position](#Position) | optional | Current position of this vehicle. |
+| **trip** | [TripDescriptor](#message-tripdescriptor) | optional | The Trip that this vehicle is serving. Can be empty or partial if the vehicle can not be identified with a given trip instance. |
+| **vehicle** | [VehicleDescriptor](#message-vehicledescriptor) | optional | Additional information on the vehicle that is serving this trip. Each entry should have a **unique** vehicle id. |
+| **position** | [Position](#message-position) | optional | Current position of this vehicle. |
 | **current_stop_sequence** | [uint32](https://developers.google.com/protocol-buffers/docs/proto#scalar) | optional | The stop sequence index of the current stop. The meaning of current_stop_sequence (i.e., the stop that it refers to) is determined by current_status. If current_status is missing IN_TRANSIT_TO is assumed. |
 | **stop_id** | [string](https://developers.google.com/protocol-buffers/docs/proto#scalar) | optional | Identifies the current stop. The value must be the same as in stops.txt in the corresponding GTFS feed. |
-| **current_status** | [VehicleStopStatus](#VehicleStopStatus) | optional | The exact status of the vehicle with respect to the current stop. Ignored if current_stop_sequence is missing. |
+| **current_status** | [VehicleStopStatus](#enum-vehiclestopstatus) | optional | The exact status of the vehicle with respect to the current stop. Ignored if current_stop_sequence is missing. |
 | **timestamp** | [uint64](https://developers.google.com/protocol-buffers/docs/proto#scalar) | optional | Moment at which the vehicle's position was measured. In POSIX time (i.e., number of seconds since January 1st 1970 00:00:00 UTC). |
-| **congestion_level** | [CongestionLevel](#CongestionLevel) | optional |
-| _**occupancy_status**_ | _[OccupancyStatus](#OccupancyStatus_VehiclePosition)_ | _optional_ |The degree of passenger occupancy of the vehicle.<br>**Caution:** this field is still **experimental**, and subject to change. It may be formally adopted in the future.|
+| **congestion_level** | [CongestionLevel](#enum-congestionlevel) | optional |
+| _**occupancy_status**_ | _[OccupancyStatus](#enum-occupancystatus)_ | _optional_ |The degree of passenger occupancy of the vehicle.<br>**Caution:** this field is still **experimental**, and subject to change. It may be formally adopted in the future.|
 
 ## _enum_ VehicleStopStatus
 
@@ -228,13 +232,13 @@ An alert, indicating some sort of incident in the public transit network.
 
 | _**Field Name**_ | _**Type**_ | _**Cardinality**_ | _**Description**_ |
 |------------------|------------|-------------------|-------------------|
-| **active_period** | [TimeRange](#TimeRange) | repeated | Time when the alert should be shown to the user. If missing, the alert will be shown as long as it appears in the feed. If multiple ranges are given, the alert will be shown during all of them. |
-| **informed_entity** | [EntitySelector](#EntitySelector) | repeated | Entities whose users we should notify of this alert. |
-| **cause** | [Cause](#Cause) | optional |
-| **effect** | [Effect](#Effect) | optional |
-| **url** | [TranslatedString](#TranslatedString) | optional | The URL which provides additional information about the alert. |
-| **header_text** | [TranslatedString](#TranslatedString) | optional | Header for the alert. This plain-text string will be highlighted, for example in boldface. |
-| **description_text** | [TranslatedString](#TranslatedString) | optional | Description for the alert. This plain-text string will be formatted as the body of the alert (or shown on an explicit "expand" request by the user). The information in the description should add to the information of the header. |
+| **active_period** | [TimeRange](#message-timerange) | repeated | Time when the alert should be shown to the user. If missing, the alert will be shown as long as it appears in the feed. If multiple ranges are given, the alert will be shown during all of them. |
+| **informed_entity** | [EntitySelector](#message-entityselector) | repeated | Entities whose users we should notify of this alert. |
+| **cause** | [Cause](#enum-cause) | optional |
+| **effect** | [Effect](#enum-effect) | optional |
+| **url** | [TranslatedString](#message-translatedstring) | optional | The URL which provides additional information about the alert. |
+| **header_text** | [TranslatedString](#message-translatedstring) | optional | Header for the alert. This plain-text string will be highlighted, for example in boldface. |
+| **description_text** | [TranslatedString](#message-translatedstring) | optional | Description for the alert. This plain-text string will be formatted as the body of the alert (or shown on an explicit "expand" request by the user). The information in the description should add to the information of the header. |
 
 ## _enum_ Cause
 
@@ -313,7 +317,7 @@ A descriptor that identifies an instance of a GTFS trip, or all instances of a t
 | **direction_id** | [uint32](https://developers.google.com/protocol-buffers/docs/proto#scalar) | optional | The direction_id from the GTFS feed trips.txt file, indicating the direction of travel for trips this selector refers to.<br>**Caution:** this field is still **experimental**, and subject to change. It may be formally adopted in the future.<br>|
 | **start_time** | [string](https://developers.google.com/protocol-buffers/docs/proto#scalar) | optional | The initially scheduled start time of this trip instance. When the trip_id corresponds to a non-frequency-based trip, this field should either be omitted or be equal to the value in the GTFS feed. When the trip_id correponds to a frequency-based trip, the start_time must be specified for trip updates and vehicle positions. If the trip corresponds to exact_times=1 GTFS record, then start_time must be some multiple (including zero) of headway_secs later than frequencies.txt start_time for the corresponding time period. If the trip corresponds to exact_times=0, then its start_time may be arbitrary, and is initially expected to be the first departure of the trip. Once established, the start_time of this frequency-based trip should be considered immutable, even if the first departure time changes -- that time change may instead be reflected in a StopTimeUpdate. Format and semantics of the field is same as that of GTFS/frequencies.txt/start_time, e.g., 11:15:35 or 25:15:35. |
 | **start_date** | [string](https://developers.google.com/protocol-buffers/docs/proto#scalar) | optional | The scheduled start date of this trip instance. This field must be provided to disambiguate trips that are so late as to collide with a scheduled trip on a next day. For example, for a train that departs 8:00 and 20:00 every day, and is 12 hours late, there would be two distinct trips on the same time. This field can be provided but is not mandatory for schedules in which such collisions are impossible - for example, a service running on hourly schedule where a vehicle that is one hour late is not considered to be related to schedule anymore. In YYYYMMDD format. |
-| **schedule_relationship** | [ScheduleRelationship](#ScheduleRelationship_TripDescriptor) | optional |
+| **schedule_relationship** | [ScheduleRelationship](#enum-schedulerelationship-1) | optional |
 
 ## _enum_ ScheduleRelationship
 
@@ -351,7 +355,7 @@ A selector for an entity in a GTFS feed. The values of the fields should corresp
 | **agency_id** | [string](https://developers.google.com/protocol-buffers/docs/proto#scalar) | optional |
 | **route_id** | [string](https://developers.google.com/protocol-buffers/docs/proto#scalar) | optional |
 | **route_type** | [int32](https://developers.google.com/protocol-buffers/docs/proto#scalar) | optional |
-| **trip** | [TripDescriptor](#TripDescriptor) | optional |
+| **trip** | [TripDescriptor](#message-tripdescriptor) | optional |
 | **stop_id** | [string](https://developers.google.com/protocol-buffers/docs/proto#scalar) | optional |
 
 ## _message_ TranslatedString
@@ -362,7 +366,7 @@ An internationalized message containing per-language versions of a snippet of te
 
 | _**Field Name**_ | _**Type**_ | _**Cardinality**_ | _**Description**_ |
 |------------------|------------|-------------------|-------------------|
-| **translation** | [Translation](#Translation) | repeated | At least one translation must be provided. |
+| **translation** | [Translation](#message-translation) | repeated | At least one translation must be provided. |
 
 ## _message_ Translation
 
