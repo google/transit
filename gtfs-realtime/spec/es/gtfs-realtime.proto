@@ -1,0 +1,569 @@
+// Copyright 2015 The GTFS Specifications Authors.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+// Archivo de definición de protocolo para GTFS en tiempo real.
+//
+// GTFS en tiempo real permite que las agencias de transporte público brinden a
+// los consumidores información en tiempo real acerca de las interrupciones de
+// sus servicios (estaciones cerradas, líneas que no funcionan, demoras
+// importantes, etc.), la ubicación de sus vehículos y los horarios de llegada
+// esperados.
+//
+// Este protocolo se publica en:
+//   https://github.com/google/transit/tree/master/gtfs-realtime
+
+syntax = "proto2";
+
+option java_package = "com.google.transit.realtime";
+package transit_realtime;
+
+// El contenido de un mensaje de feed
+// Un feed es un flujo continuo de mensajes de feed. Cada mensaje del flujo se
+// obtiene como una respuesta a una solicitud HTTP GET adecuada.
+// Un feed en tiempo real siempre se define con relación a un feed GTFS
+// existente. Todos los ID de entidad se resuelven con respecto al feed GTFS.
+//
+// Un feed depende de cierta configuración externa:
+// - El feed GTFS correspondiente.
+// - Aplicación del feed (actualizaciones, posiciones o alertas). Un feed solo
+//   debe contener elementos de una aplicación especificada; todas las demás
+//   entidades se ignorarán.
+// - Frecuencia de sondeo.
+message FeedMessage {
+  // Metadatos acerca de este feed y mensaje de feed
+  required FeedHeader header = 1;
+
+  // Contenido del feed
+  repeated FeedEntity entity = 2;
+}
+
+// Metadatos acerca de un feed, incluidos en mensajes de feed
+message FeedHeader {
+  // Versión de la especificación de feed
+  // La versión actual es 1.0.
+  required string gtfs_realtime_version = 1;
+
+  // Determina si la búsqueda actual es incremental. Actualmente, el modo
+  // DIFFERENTIAL no es admitido y no se especifica para feeds que usan este
+  // modo. Existen foros de debate en la lista de correo de GTFS en tiempo real
+  // sobre la especificación completa del comportamiento del modo DIFFERENTIAL y
+  // la documentación se actualizará cuando esos foros de debate finalicen.
+  enum Incrementality {
+    FULL_DATASET = 0;
+    DIFFERENTIAL = 1;
+  }
+  optional Incrementality incrementality = 2 [default = FULL_DATASET];
+
+  // Esta marca de tiempo identifica el momento en que se creó el contenido de
+  // este feed (en tiempo del servidor). En tiempo POSIX (es decir, la cantidad
+  // de segundos desde el 1.º de enero de 1970 00:00:00 UTC).
+  optional uint64 timestamp = 3;
+
+  // El espacio de nombres de extensiones permite a los programadores externos
+  // extender la especificación de GTFS en tiempo real para agregar y evaluar
+  // nuevas funciones y modificaciones a la especificación.
+  extensions 1000 to 1999;
+}
+
+// Una definición (o actualización) de una entidad en el feed de transporte
+// público.
+message FeedEntity {
+  // Los ID se usan solo para proporcionar asistencia sobre el aumento
+  // incremental. El ID debe ser único dentro de un FeedMessage. Los
+  // FeedMessages consiguientes pueden contener FeedEntities con el mismo ID. En
+  // el caso de una actualización DIFFERENTIAL, la nueva FeedEntity con algunos
+  // ID reemplazará a la antigua FeedEntity con el mismo ID (o la eliminará:
+  // consulta is_deleted a continuación).  Las entidades de GTFS reales (p. ej.,
+  // estaciones, rutas, viajes) a las que hace referencia el feed deben estar
+  // especificadas por selectores explícitos (consulta EntitySelector a
+  // continuación para obtener más información).
+  required string id = 1;
+
+  // Establece si esta entidad debe eliminarse. Relevante solo para búsquedas
+  // incrementales.
+  optional bool is_deleted = 2 [default = false];
+
+  // Datos acerca de la propia entidad. Exactamente uno de los siguientes campos
+  // debe estar presente (a menos que se esté eliminando la entidad).
+  optional TripUpdate trip_update = 3;
+  optional VehiclePosition vehicle = 4;
+  optional Alert alert = 5;
+}
+
+//
+// Entidades usadas en el feed.
+//
+
+// La actualización en tiempo real del progreso de un vehículo a lo largo de un
+// viaje. Dependiendo del valor de ScheduleRelationship, un TripUpdate puede
+// especificar:
+// - Un viaje que continúa según el programa.
+// - Un viaje que continúa por la ruta, pero no tiene un programa fijo.
+// - Un viaje que se agregó o eliminó con respecto al programa.
+//
+// Las actualizaciones pueden ser para eventos de llegada/salida futuros
+// previstos o para eventos pasados que ya ocurrieron.
+// Normalmente, las actualizaciones deben ser más precisas y más certeras
+// (consulta incertidumbre a continuación) a medida que los eventos se acercan
+// al momento actual.
+// Aun cuando eso no sea posible, la información para eventos pasados debe ser
+// precisa y certera. En particular, si una actualización apunta a un momento
+// pasado, pero la incertidumbre de su actualización no es 0, el cliente debe
+// concluir que la actualización es una predicción (errónea) y que el viaje aún
+// no se ha completado.
+//
+// Ten en cuenta que la actualización puede describir un viaje que ya se ha
+// completado.  A este fin, proporcionar una actualización para la última parada
+// del viaje es suficiente.  Si tal momento está en el pasado, el cliente
+// concluirá que todo el viaje está en el pasado (es posible, aunque ilógico,
+// proporcionar también actualizaciones para las paradas precedentes).  Esta
+// opción es más relevante para un viaje que se ha completado con anticipación a
+// lo programado, pero que, de acuerdo con el programa, el viaje todavía
+// continúa en este momento. Si se eliminan las actualizaciones para este viaje,
+// el cliente puede asumir que el viaje todavía continúa.  Ten en cuenta que al
+// proveedor del feed se le permite, pero no está obligado a, purgar
+// actualizaciones pasadas: en este caso, esto sería útil en la práctica.
+message TripUpdate {
+  // El viaje al que se aplica este mensaje. Puede haber como máximo una
+  // entidad TripUpdate para cada instancia de viaje real.
+  // Si no hay ninguna, eso significa que no hay información de predicción
+  // disponible.  *No* significa que el viaje se está realizando de acuerdo con
+  // la programación.
+  required TripDescriptor trip = 1;
+
+  // Información adicional sobre el vehículo que está realizando el viaje.
+  optional VehicleDescriptor vehicle = 3;
+
+  // Información sobre los tiempos para un solo evento previsto (ya sea llegada
+  // o salida).
+  // Los horarios consisten en la información sobre demoras o tiempos estimados
+  // y la incertidumbre. La demora (delay) debe usarse cuando la predicción se
+  // realiza con relación a una programación existente en GTFS.
+  // - El tiempo (time) debe darse aunque no haya una programación prevista. Si
+  //   se especifican tanto el tiempo como la demora, el tiempo será prioritario
+  //   (aunque, por lo general, el tiempo, si se otorga para un viaje
+  //   programado, debe ser igual al tiempo programado en GTFS + la demora).
+  //
+  // La incertidumbre se aplica de la misma forma tanto al tiempo como a la
+  // demora.  La incertidumbre especifica el error esperado en una demora real
+  // (pero ten en cuenta, que todavía no definimos su significado estadístico
+  // preciso). Es posible que la incertidumbre sea 0, por ejemplo, para los
+  // trenes que funcionan con un control de horarios por computadora.
+  message StopTimeEvent {
+    // La demora (en segundos) puede ser positiva (significa que el vehículo
+    // está retrasado) o negativa (significa que el vehículo está adelantado).
+    // Una demora de 0 significa que el vehículo está yendo a tiempo.
+    optional int32 delay = 1;
+
+    // El evento como tiempo absoluto
+    // En tiempo Unix (es decir, la cantidad de segundos desde el 1.º de enero
+    // de 1970 00:00:00 UTC).
+    optional int64 time = 2;
+
+    // Si se omite la incertidumbre, se interpreta como desconocida.
+    // Si la predicción es desconocida o demasiado incierta, el campo demora (o
+    // tiempo) debe estar vacío. En tal caso, el campo incertidumbre se ignora.
+    // Para especificar una predicción completamente cierta, configura su
+    // incertidumbre en 0.
+    optional int32 uncertainty = 3;
+
+    // El espacio de nombres de extensiones permite a los programadores externos
+    // extender la especificación de GTFS en tiempo real para agregar y evaluar
+    // nuevas funciones y modificaciones a la especificación.
+    extensions 1000 to 1999;
+  }
+
+  // Actualización en tiempo real para eventos de llegada o salida para una
+  // determinada parada en un viaje. Se pueden suministrar actualizaciones tanto
+  // para eventos pasados como para eventos futuros.  Al productor se le
+  // permite, aunque no está obligado a, proporcionar eventos pasados.
+  message StopTimeUpdate {
+    // La actualización está vinculada con una parada específica ya sea mediante
+    // stop_sequence o stop_id, de manera que necesariamente debe configurarse
+    // uno de los campos que aparecen a continuación.  Consulta la documentación
+    // en TripDescriptor para obtener más información.
+
+    // Debe ser la misma que la de stop_times.txt en el feed GTFS
+    // correspondiente.
+    optional uint32 stop_sequence = 1;
+    // Debe ser el mismo que el de stops.txt en el feed GTFS correspondiente.
+    optional string stop_id = 4;
+
+    optional StopTimeEvent arrival = 2;
+    optional StopTimeEvent departure = 3;
+
+    // La relación entre este StopTime y el programa estático.
+    enum ScheduleRelationship {
+      // El vehículo continúa conforme a su programa estático de paradas, aunque
+      // no necesariamente de acuerdo a los horarios del programa.
+      // Se debe proporcionar al menos uno de los horarios de llegada y salida.
+      // Si el programa para esta parada contiene los horarios tanto de llegada
+      // como de salida, entonces esta actualización también debe tenerlos. Una
+      // actualización con solo una llegada, por ejemplo, cuando el programa
+      // tiene ambos, indica que el viaje está terminando temprano en esta
+      // parada.
+      SCHEDULED = 0;
+
+      // La parada se omite, es decir, el vehículo no se detendrá en esta
+      // parada. La llegada y la salida son opcionales.
+      SKIPPED = 1;
+
+      // No hay datos para esta parada. La intención principal de este valor es
+      // brindar predicciones solo para parte de un viaje, es decir, si la
+      // última actualización para un viaje tiene un especificador NO_DATA,
+      // entonces se considerará que tampoco se especifican StopTimes para el
+      // resto de las paradas del viaje.  No se debe suministrar ni la llegada
+      // ni la salida.
+      NO_DATA = 2;
+    }
+    optional ScheduleRelationship schedule_relationship = 5
+        [default = SCHEDULED];
+
+    // El espacio de nombres de extensiones permite a los programadores externos
+    // extender la especificación de GTFS en tiempo real para agregar y evaluar
+    // nuevas funciones y modificaciones a la especificación.
+    extensions 1000 to 1999;
+  }
+
+  // Actualizaciones a StopTimes para el viaje (tanto futuras, es decir,
+  // predicciones, como, en algunos casos, pasadas, es decir, aquellas que ya
+  // ocurrieron).
+  // Las actualizaciones se deben clasificar por stop_sequence y aplicarse a
+  // todas las paradas siguientes del viaje hasta la próxima especificada.
+  //
+  // Ejemplo 1:
+  // Para un viaje con 20 paradas, una StopTimeUpdate con demora de llegada y
+  // demora de salida de 0 para una stop_sequence de la parada actual significa
+  // que el viaje está llegando exactamente a horario.
+  //
+  // Ejemplo 2:
+  // Para la misma instancia de viaje, se proporcionan 3 StopTimeUpdates:
+  // - demora de 5 minutos para la stop_sequence 3
+  // - demora de 1 minuto para la stop_sequence 8
+  // - demora de duración no especificada para la stop_sequence 10
+  // Esto se interpretará como:
+  // - las stop_sequences 3,4,5,6,7 tienen una demora de 5 minutos.
+  // - las stop_sequences 8,9 tienen una demora de 1 minuto.
+  // - las stop_sequences 10,... tienen una demora desconocido.
+  repeated StopTimeUpdate stop_time_update = 2;
+
+  // Momento en el cual se midió el progreso en tiempo real del vehículo.  En
+  // tiempo POSIX (es decir, la cantidad de segundos desde el 1º de enero de
+  // 1970 00:00:00 UTC).
+  optional uint64 timestamp = 4;
+
+  // El espacio de nombres de extensiones permite a los programadores externos
+  // extender la especificación de GTFS en tiempo real para agregar y evaluar
+  // nuevas funciones y modificaciones a la especificación.
+  extensions 1000 to 1999;
+}
+
+// Información de posicionamiento en tiempo real de un vehículo dado.
+message VehiclePosition {
+  // El viaje que este vehículo está realizando.
+  // Puede estar vacío o ser parcial si el vehículo no se puede identificar con
+  // una instancia de viaje dada.
+  optional TripDescriptor trip = 1;
+
+  // Información adicional sobre el vehículo que está realizando este viaje.
+  optional VehicleDescriptor vehicle = 8;
+
+  // Posición actual de este vehículo.
+  optional Position position = 2;
+
+  // El índice de la secuencia de parada de la parada actual. El significado de
+  // current_stop_sequence (es decir, la parada a la que hace referencia) lo
+  // determina current_status.
+  // Si falta current_status, se asume IN_TRANSIT_TO.
+  optional uint32 current_stop_sequence = 3;
+  // Identifica la parada actual. El valor debe ser el mismo que el de stops.txt
+  // en el feed GTFS correspondiente.
+  optional string stop_id = 7;
+
+  enum VehicleStopStatus {
+    // El vehículo está a punto de llegar a la parada (en una visualización de
+    // la parada, el símbolo del vehículo, por lo general, parpadea).
+    INCOMING_AT = 0;
+
+    // El vehículo está detenido en la parada.
+    STOPPED_AT = 1;
+
+    // El vehículo ha partido y está en tránsito hacia la siguiente parada.
+    IN_TRANSIT_TO = 2;
+  }
+  // El estado exacto del vehículo con respecto a la parada actual.
+  // Se ignora si falta el valor en current_stop_sequence.
+  optional VehicleStopStatus current_status = 4 [default = IN_TRANSIT_TO];
+
+  // Momento en el cual se midió la posición del vehículo. En tiempo POSIX (es
+  // decir, la cantidad de segundos desde el 1º de enero de 1970 00:00:00 UTC).
+  optional uint64 timestamp = 5;
+
+  // El nivel de congestión que está afectando a este vehículo.
+  enum CongestionLevel {
+    UNKNOWN_CONGESTION_LEVEL = 0;
+    RUNNING_SMOOTHLY = 1;
+    STOP_AND_GO = 2;
+    CONGESTION = 3;
+    SEVERE_CONGESTION = 4;  // Personas que dejan sus autos.
+  }
+  optional CongestionLevel congestion_level = 6;
+
+  // El espacio de nombres de extensiones permite a los programadores externos
+  // extender la especificación de GTFS en tiempo real para agregar y evaluar
+  // nuevas funciones y modificaciones a la especificación.
+  extensions 1000 to 1999;
+}
+
+// Una alerta, que indica que existe algún tipo de incidente en la red de
+// transporte público.
+message Alert {
+  // Tiempo durante el cual la alerta debe mostrarse al usuario. Si falta, la
+  // alerta se mostrará durante todo el tiempo en que aparezca en el feed.
+  // Si se proporcionan múltiples intervalos, la alerta se mostrará durante
+  // todos ellos.
+  repeated TimeRange active_period = 1;
+
+  // Entidades a cuyos usuarios debemos notificar esta alerta.
+  repeated EntitySelector informed_entity = 5;
+
+  // Causa de esta alerta.
+  enum Cause {
+    UNKNOWN_CAUSE = 1;
+    OTHER_CAUSE = 2;        // No representable mediante máquina.
+    TECHNICAL_PROBLEM = 3;
+    STRIKE = 4;             // Los empleados de las empresas de transporte público dejaron de trabajar.
+    DEMONSTRATION = 5;      // Las personas están bloqueando las calles.
+    ACCIDENT = 6;
+    HOLIDAY = 7;
+    WEATHER = 8;
+    MAINTENANCE = 9;
+    CONSTRUCTION = 10;
+    POLICE_ACTIVITY = 11;
+    MEDICAL_EMERGENCY = 12;
+  }
+  optional Cause cause = 6 [default = UNKNOWN_CAUSE];
+
+  // El efecto de este problema en la entidad afectada.
+  enum Effect {
+    NO_SERVICE = 1;
+    REDUCED_SERVICE = 2;
+
+    // No nos preocupan las demoras NO significativas: son difíciles de
+    // detectar, tienen un pequeño impacto sobre el usuario y desordenarían los
+    // resultados ya que son demasiado frecuentes.
+    SIGNIFICANT_DELAYS = 3;
+
+    DETOUR = 4;
+    ADDITIONAL_SERVICE = 5;
+    MODIFIED_SERVICE = 6;
+    OTHER_EFFECT = 7;
+    UNKNOWN_EFFECT = 8;
+    STOP_MOVED = 9;
+  }
+  optional Effect effect = 7 [default = UNKNOWN_EFFECT];
+
+  // La URL que proporciona información adicional acerca de la alerta.
+  optional TranslatedString url = 8;
+
+  // Encabezado de la alerta. Contiene un breve resumen del texto de la alerta
+  // como texto simple.
+  optional TranslatedString header_text = 10;
+
+  // Descripción completa de la alerta como texto simple. La información de la
+  // descripción debe agregar a la información del encabezado.
+  optional TranslatedString description_text = 11;
+
+  // El espacio de nombres de extensiones permite a los programadores externos
+  // extender la especificación de GTFS en tiempo real para agregar y evaluar
+  // nuevas funciones y modificaciones a la especificación.
+  extensions 1000 to 1999;
+}
+
+//
+// Estructuras de datos de bajo nivel que se utilizaron más arriba.
+//
+
+// Un intervalo de tiempo. El intervalo se considera activo a la hora 't' si 't'
+// es mayor o igual que la hora de inicio y menor que la hora de finalización.
+message TimeRange {
+  // Hora de inicio, en tiempo POSIX (es decir, la cantidad de segundos desde el
+  // 1º de enero de 1970 00:00:00 UTC).
+  // Si falta esta información, el intervalo comienza en el infinito negativo.
+  optional uint64 start = 1;
+
+  // Hora de finalización, en tiempo POSIX (es decir, la cantidad de segundos
+  // desde el 1º de enero de 1970 00:00:00 UTC).
+  // Si falta esta información, el intervalo finaliza en el infinito positivo.
+  optional uint64 end = 2;
+}
+
+// Una posición.
+message Position {
+  // Grados al Norte, en el sistema de coordenadas WGS-84.
+  required float latitude = 1;
+
+  // Grados al Este, en el sistema de coordenadas WGS-84
+  required float longitude = 2;
+
+  // Orientación, en grados, en el sentido de las agujas del reloj desde el
+  // Norte, es decir, 0 es Norte y 90 es Este.  Esto puede ser la orientación de
+  // la brújula o la dirección hacia la siguiente parada o la ubicación
+  // intermedia.
+  // Esto no debe deducirse de las instrucciones de la secuencia de posiciones
+  // anteriores, que puede calcularse a partir de los datos anteriores.
+  optional float bearing = 3;
+
+  // Valor del odómetro, en metros.
+  optional double odometer = 4;
+  // Velocidad momentánea medida por el vehículo, en metros por segundo.
+  optional float speed = 5;
+
+  // El espacio de nombres de extensiones permite a los programadores externos
+  // extender la especificación de GTFS en tiempo real para agregar y evaluar
+  // nuevas funciones y modificaciones a la especificación.
+  extensions 1000 to 1999;
+}
+
+// Un descriptor que identifica una instancia de un viaje de GTFS, o todas las
+// instancias de un viaje por una ruta.
+// - Para especificar una sola instancia de viaje, se establece el trip_id (y,
+//   en caso de ser necesario, el start_time). Si también se establece el
+//   route_id, entonces debe ser el mismo al que corresponde el viaje dado.
+// - Para especificar todos los viajes por una ruta dada, solo se debe
+//   establecer el route_id. Ten en cuenta que si el trip_id no se conoce,
+//   entonces los identificadores de secuencia de parada en TripUpdate no son
+//   suficientes y los stop_ids también se deben proporcionar. Además, se deben
+//   proporcionar las horas absolutas de llegada/salida.
+message TripDescriptor {
+  // El trip_id del feed GTFS al cual hace referencia este selector.
+  // Para viajes sin frecuencia expandida, este campo es suficiente para
+  // identificar de forma unívoca al viaje. Para viajes con frecuencia
+  // expandida, start_time y start_date también podrían ser necesarios.
+  optional string trip_id = 1;
+
+  // El route_id de GTFS al cual hace referencia este selector.
+  optional string route_id = 5;
+
+  // La hora de inicio programada de esta instancia de viaje.
+  // Este campo debe proporcionarse solo si el viaje es de frecuencia expandida
+  // en el feed GTFS. El valor debe corresponder precisamente a la start_time
+  // especificada para la ruta del feed GTFS más algún múltiplo de headway_secs.
+  // El formato del campo es el mismo que el de GTFS/frequencies.txt/start_time,
+  // p. ej., 11:15:35 o 25:15:35.
+  optional string start_time = 2;
+
+  // La fecha de inicio programada de esta instancia de viaje.
+  // Se debe proporcionar para desambiguar los viajes que están tan retrasados
+  // que pueden colisionar con un viaje programado para el día siguiente. Por
+  // ejemplo, para un tren que sale a las 8:00 y a las 20:00 todos los días, y
+  // que tiene una demora de 12 horas, habrá dos viajes diferentes a la misma
+  // hora.
+  // Este campo se puede proporcionar pero no es obligatorio para los programas
+  // en los cuales tales colisiones son imposibles: por ejemplo, un servicio que
+  // funciona según una programación por hora donde un vehículo que tiene una
+  // demora de una hora ya deja de considerarse relacionado con el programa.
+  // En formato AAAAMMDD.
+  optional string start_date = 3;
+
+  // La relación entre este viaje y el programa estático. Si un viaje se realiza
+  // de acuerdo con un programa temporal, no se refleja en GTFS, entonces
+  // no debe marcarse como SCHEDULED, sino como ADDED.
+  enum ScheduleRelationship {
+    // Viaje que se está ejecutando de acuerdo con su programa de GTFS,o que es
+    // lo suficientemente parecido al viaje programado como para asociarse a él.
+    SCHEDULED = 0;
+
+    // Un viaje adicional que se ha agregado a un programa en ejecución, por
+    // ejemplo, para reemplazar un vehículo averiado o para responder a una
+    // carga repentina de un pasajero.
+    ADDED = 1;
+
+    // Un viaje que se está ejecutando sin ningún programa asociado, por
+    // ejemplo, cuando no existe ningún programa.
+    UNSCHEDULED = 2;
+
+    // Un viaje que existió en el programa, pero se eliminó.
+    CANCELED = 3;
+  }
+  optional ScheduleRelationship schedule_relationship = 4;
+
+  // El espacio de nombres de extensiones permite a los programadores externos
+  // extender la especificación de GTFS en tiempo real para agregar y evaluar
+  // nuevas funciones y modificaciones a la especificación.
+  extensions 1000 to 1999;
+}
+
+// Información de identificación para el vehículo que realiza el viaje.
+message VehicleDescriptor {
+  // Identificación interna del sistema para el vehículo. Debe ser única para el
+  // vehículo y se puede usar para realizar un seguimiento del vehículo a medida
+  // que avanza en el sistema.
+  optional string id = 1;
+
+  // Etiqueta visible para el usuario, es decir, algo que se debe mostrar al
+  // pasajero para ayudarlo a identificar el vehículo correcto.
+  optional string label = 2;
+
+  // La patente del vehículo.
+  optional string license_plate = 3;
+
+  // El espacio de nombres de extensiones permite a los programadores externos
+  // extender la especificación de GTFS en tiempo real para agregar y evaluar
+  // nuevas funciones y modificaciones a la especificación.
+  extensions 1000 to 1999;
+}
+
+// Un selector para una entidad en un feed GTFS.
+message EntitySelector {
+  // Los valores de los campos deben corresponder a los campos apropiados en el
+  // feed GTFS.
+  // Se debe brindar, al menos, un especificador. Si se proporcionan varios,
+  // entonces el que coincide debe aplicarse a todos los especificadores dados.
+  optional string agency_id = 1;
+  optional string route_id = 2;
+  // corresponde a route_type en GTFS.
+  optional int32 route_type = 3;
+  optional TripDescriptor trip = 4;
+  optional string stop_id = 5;
+
+  // El espacio de nombres de extensiones permite a los programadores externos
+  // extender la especificación de GTFS en tiempo real para agregar y evaluar
+  // nuevas funciones y modificaciones a la especificación.
+  extensions 1000 to 1999;
+}
+
+// Un mensaje internacionalizado que contiene versiones por idioma de un
+// fragmento de texto o una URL.
+// Se seleccionará una de las cadenas de un mensaje. La resolución se realiza de
+// la siguiente manera:
+// 1. Si el idioma de la interfaz de usuario coincide con el código de idioma de
+//    una traducción, se elige la primera traducción coincidente.
+// 2. Si un idioma de interfaz de usuario predeterminado (p. ej., inglés)
+//    coincide con el código de idioma de una traducción, se elige la primera
+//    traducción coincidente.
+// 3. Si alguna traducción tiene un código de idioma no especificado, se elige
+//    esa traducción.
+message TranslatedString {
+  message Translation {
+    // Una cadena UTF-8 que contiene el mensaje.
+    required string text = 1;
+    // Código de idioma BCP-47. Se puede omitir si el idioma es desconocido o si
+    // no se realiza ningún i18n para el feed. Como máximo, se permite que
+    // una traducción tenga una etiqueta de idioma no especificado.
+    optional string language = 2;
+  }
+  // Se debe proporcionar al menos una traducción.
+  repeated Translation translation = 1;
+}
