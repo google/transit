@@ -5,12 +5,12 @@ The specification was designed through a partnership of the initial [Live Transi
 ## How do I start?
 
 1.  Continue reading the overview below.
-2.  Decide which [feed types](feed-types.md) you will be providing.
+2.  Decide which [feed entities](feed-entities.md) you will be providing.
 3.  Take a look at [example feeds](examples/).
 4.  Create your own feeds using the [reference](reference.md).
 5.  Publish your feed.
 
-## Overview of GTFS Realtime feed types
+## Overview of GTFS Realtime feeds
 
 The specification currently supports the following types of information:
 
@@ -18,11 +18,11 @@ The specification currently supports the following types of information:
 *   **Service alerts** - stop moved, unforeseen events affecting a station, route or the entire network
 *   **Vehicle positions** - information about the vehicles including location and congestion level
 
-Updates of each type are provided in a separate feed. Feeds are served via HTTP and updated frequently. The file itself is a regular binary file, so any type of webserver can host and serve the file (other transfer protocols might be used as well). Alternatively, web application servers could also be used which as a response to a valid HTTP GET request will return the feed. There are no constraints on how frequently nor on the exact method of how the feed should be updated or retrieved.
+A feed may, although not required to, combine entities of different types. Feeds are served via HTTP and updated frequently. The file itself is a regular binary file, so any type of webserver can host and serve the file (other transfer protocols might be used as well). Alternatively, web application servers could also be used which as a response to a valid HTTP GET request will return the feed. There are no constraints on how frequently nor on the exact method of how the feed should be updated or retrieved.
 
 Because GTFS Realtime allows you to present the _actual_ status of your fleet, the feed needs to be updated regularly - preferably whenever new data comes in from your Automatic Vehicle Location system.
 
-[More about Feed types...](feed-types.md)
+[More about feed entities...](feed-entities.md)
 
 ## Data format
 

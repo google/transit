@@ -45,13 +45,7 @@ Version 1.0 of the feed specification is discussed and documented on this site.
 
 ## _message_ FeedMessage
 
-The contents of a feed message. Each message in the stream is obtained as a response to an appropriate HTTP GET request. A real-time feed is always defined with relation to an existing GTFS feed. All the entity ids are resolved with respect to the GTFS feed.
-
-A feed depends on some external configuration:
-
-*   The corresponding GTFS feed.
-*   Feed application (updates, positions or alerts). A feed should contain only items of the appropriate applications; all the other entities will be ignored.
-*   Polling frequency, controlled by min_update_delay, max_update_delay.
+The contents of a feed message. Each message in the stream is obtained as a response to an appropriate HTTP GET request. A realtime feed is always defined with relation to an existing GTFS feed. All the entity ids are resolved with respect to the GTFS feed.
 
 #### Fields
 
@@ -77,7 +71,7 @@ Metadata about a feed, included in feed messages.
 Determines whether the current fetch is incremental.
 
 *   **FULL_DATASET**: this feed update will overwrite all preceding realtime information for the feed. Thus this update is expected to provide a full snapshot of all known realtime information.
-*   **DIFFERENTIAL**: currently, this mode is **unsupported** and behavior is **unspecified** for feeds that use this mode. There are discussions on the [GTFS Realtime mailing-list](http://groups.google.com/group/gtfs-realtime) around fully specifying the behavior of DIFFERENTIAL mode and the documentation will be updated when those discussions are finalized.
+*   **DIFFERENTIAL**: currently, this mode is **unsupported** and behavior is **unspecified** for feeds that use this mode. There are discussions on the [GTFS Realtime mailing list](http://groups.google.com/group/gtfs-realtime) around fully specifying the behavior of DIFFERENTIAL mode and the documentation will be updated when those discussions are finalized.
 
 #### Values
 
@@ -102,7 +96,7 @@ A definition (or update) of an entity in the transit feed. If the entity is not 
 
 ## _message_ TripUpdate
 
-Real-time update on the progress of a vehicle along a trip. Please also refer to the general discussion of the [trip updates feed type](trip-updates.md).
+Realtime update on the progress of a vehicle along a trip. Please also refer to the general discussion of the [trip updates entities](trip-updates.md).
 
 Depending on the value of ScheduleRelationship, a TripUpdate can specify:
 
@@ -143,7 +137,7 @@ Uncertainty applies equally to both time and delay. The uncertainty roughly spec
 
 ## _message_ StopTimeUpdate
 
-Realtime update for arrival and/or departure events for a given stop on a trip. Please also refer to the general discussion of stop time updates in the [TripDescriptor](#message-tripdescriptor) and [trip updates feed type](trip-updates.md) documentation.
+Realtime update for arrival and/or departure events for a given stop on a trip. Please also refer to the general discussion of stop time updates in the [TripDescriptor](#message-tripdescriptor) and [trip updates entities](trip-updates.md) documentation.
 
 Updates can be supplied for both past and future events. The producer is allowed, although not required, to drop past events.
 The update is linked to a specific stop either through stop_sequence or stop_id, so one of these fields must necessarily be set.
@@ -216,7 +210,7 @@ Congestion level that is affecting this vehicle.
 
 The degree of passenger occupancy for the vehicle.
 
-**Caution:** this field is still**experimental**, and subject to change. It may be formally adopted in the future.
+**Caution:** this field is still **experimental**, and subject to change. It may be formally adopted in the future.
 
 #### _Values_
 

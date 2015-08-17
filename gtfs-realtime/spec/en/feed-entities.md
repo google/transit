@@ -1,8 +1,6 @@
-GTFS Realtime supports three distinct types of realtime data. Even though the
-[gtfs-realtime.proto](../../proto/gtfs-realtime.proto) syntax allows
-multiple entity types to be mixed for a feed, only one type of entity can be
-used in a particular feed. Summaries are given below, with full documentation
-given in the relevant section.
+GTFS Realtime supports three distinct types of realtime data, that can be
+combined witin a single realtime feed. Summaries are given below, with full
+documentation given in the relevant section.
 
 ## Trip Updates
 
@@ -47,3 +45,10 @@ Most important are the latitude and longitude the vehicle is at, but we can also
 use data on current speed and odometer readings from the vehicle.
 
 [More about Vehicle Position updates...](vehicle-positions.md)
+
+## Historical remark on feed types
+
+Early versions of GTFS Realtime Specification required each feed to only contain
+single type of entities. An example tool to convert from merged to the
+feed-per-type schema is located at
+https://github.com/bliksemlabs/gtfsrt-examples/blob/master/split_by_entitytype.py
