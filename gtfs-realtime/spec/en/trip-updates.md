@@ -47,7 +47,63 @@ The information provided by the trip descriptor depends on the schedule relation
 | **Unscheduled** | This trip is running and is never associated with a schedule. For example, if there is no schedule and the buses run on a shuttle service. |
 | **Canceled** | This trip was scheduled, but is now removed. |
 
-In most cases, you should provide the trip_id of the scheduled trip in GTFS that this update relates to. In case you are not able to link this update to a trip in GTFS, you can instead provide a GTFS route_id and a start time and date for the trip. This is normally the case for added, unscheduled or some types of replacement trips.
+In most cases, you should provide the trip_id of the scheduled trip in GTFS that this update relates to. 
+
+For trips modeled using frequencies.txt, that is frequency-based trips, the
+trip_id is not in itself a unique identifier of a single journey, as it lacks a
+specific time component. In order to uniquely identify such trips within a
+TripDescriptor, a triple of identifiers must be provided:
+
+*    __trip_id__
+*    __start_time__
+*    __start_date__
+
+start_time should be first published, and any subsequent feed updates should use
+that same start_time when referring to the same journey. StopTimeUpdates
+should be used to indicate adjustments; start_time does not have to be precisely
+the departure time from the first station, although it should be pretty close to
+that time.
+
+For example, let’s say we decide at 10:00, May, 25th 2015, that a trip with
+trip_id=T will start at start_time=10:10:00, and provide this information via
+realtime feed at 10:01. By 10:05 we suddenly know that the trip will start not
+at 10:10 but at 10:13. In our new realtime feed we can still identify this trip
+as (T, 2015-05-25, 10:10:00) but provide a StopTimeUpdate with departure from
+first stop at 10:13:00.
+If a start_time is not specified, the trip update or vehicle position
+is ignored.
+
+The trip update or vehicle position is ignored if the trip is not in
+service at the specified start_date.
+
+If trip_ids are not stable or unavailable and the GTFS includes direction_ids,
+trips which are not frequency based can be uniquely identified by a
+TripDescriptor including the combination of:
+
+*    __route_id__
+*    __direction_id__
+*    __start_time__
+*    __start_date__
+
+
+start_time should be the scheduled start time.
+Once appeared, start_time must stay the same in all TripDescriptor representing
+the same trip instance across all feed versions. StopTimeUpdates should be used
+to indicate adjustments to start_time.
+For example, let’s say we decide at 10:00, May, 25th 2015, that a trip with
+route_id=R and direction_id=0 will start at start_time=10:10:00, and provide
+this information via realtime feed at 10:01. By 10:05 we suddenly know that the
+trip will start not at 10:10 but at 10:13. In our new realtime feed we can still
+identify this trip as (R, 0, 2015-05-25, 10:10:00) but provide a StopTimeUpdate
+with departure from first stop at 10:13:00.
+
+Unless route_id, direction_id and start_time are all provided and valid, the
+trip_update or vehicle position is discarded. Also, if the ids resolve to a trip
+not in service at the specified date or does not resolve to a unique trip, the
+vehicle positions or trip update is discarded.
+
+For this matching method to be working the GTFS static feed should include
+direction_ids.
 
 ## Uncertainty
 
