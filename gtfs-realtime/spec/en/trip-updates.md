@@ -70,14 +70,8 @@ realtime feed at 10:01. By 10:05 we suddenly know that the trip will start not
 at 10:10 but at 10:13. In our new realtime feed we can still identify this trip
 as (T, 2015-05-25, 10:10:00) but provide a StopTimeUpdate with departure from
 first stop at 10:13:00.
-If a start_time is not specified, the trip update or vehicle position
-is ignored.
 
-The trip update or vehicle position is ignored if the trip is not in
-service at the specified start_date.
-
-If trip_ids are not stable or unavailable and the GTFS includes direction_ids,
-trips which are not frequency based can be uniquely identified by a
+Trips which are not frequency based can also be uniquely identified by a
 TripDescriptor including the combination of:
 
 *    __route_id__
@@ -96,14 +90,6 @@ this information via realtime feed at 10:01. By 10:05 we suddenly know that the
 trip will start not at 10:10 but at 10:13. In our new realtime feed we can still
 identify this trip as (R, 0, 2015-05-25, 10:10:00) but provide a StopTimeUpdate
 with departure from first stop at 10:13:00.
-
-Unless route_id, direction_id and start_time are all provided and valid, the
-trip_update or vehicle position is discarded. Also, if the ids resolve to a trip
-not in service at the specified date or does not resolve to a unique trip, the
-vehicle positions or trip update is discarded.
-
-For this matching method to be working the GTFS static feed should include
-direction_ids.
 
 ## Uncertainty
 
