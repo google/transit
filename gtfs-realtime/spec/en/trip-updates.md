@@ -49,6 +49,7 @@ The information provided by the trip descriptor depends on the schedule relation
 
 In most cases, you should provide the trip_id of the scheduled trip in GTFS that this update relates to. 
 
+#### Frequency based systems
 For trips modeled using frequencies.txt, that is frequency-based trips, the
 trip_id is not in itself a unique identifier of a single journey, as it lacks a
 specific time component. In order to uniquely identify such trips within a
@@ -71,6 +72,7 @@ at 10:10 but at 10:13. In our new realtime feed we can still identify this trip
 as (T, 2015-05-25, 10:10:00) but provide a StopTimeUpdate with departure from
 first stop at 10:13:00.
 
+#### Alternative trip matching
 Trips which are not frequency based can also be uniquely identified by a
 TripDescriptor including the combination of:
 
