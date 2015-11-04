@@ -49,9 +49,8 @@ The information provided by the trip descriptor depends on the schedule relation
 
 In most cases, you should provide the trip_id of the scheduled trip in GTFS that this update relates to. 
 
-#### Frequency based systems
-For trips modeled using frequencies.txt, that is frequency-based trips, the
-trip_id is not in itself a unique identifier of a single journey, as it lacks a
+#### Systems with repeated trip_ids
+For systems using repeated trip_ids, for example trips modeled using frequencies.txt, that is frequency-based trips, the trip_id is not in itself a unique identifier of a single journey, as it lacks a
 specific time component. In order to uniquely identify such trips within a
 TripDescriptor, a triple of identifiers must be provided:
 
