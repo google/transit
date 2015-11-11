@@ -50,6 +50,7 @@ The information provided by the trip descriptor depends on the schedule relation
 In most cases, you should provide the trip_id of the scheduled trip in GTFS that this update relates to. 
 
 #### Systems with repeated trip_ids
+
 For systems using repeated trip_ids, for example trips modeled using frequencies.txt, that is frequency-based trips, the trip_id is not in itself a unique identifier of a single journey, as it lacks a
 specific time component. In order to uniquely identify such trips within a
 TripDescriptor, a triple of identifiers must be provided:
@@ -72,7 +73,8 @@ as (T, 2015-05-25, 10:10:00) but provide a StopTimeUpdate with departure from
 first stop at 10:13:00.
 
 #### Alternative trip matching
-Trips which are not frequency based can also be uniquely identified by a
+
+Trips which are not frequency based may also be uniquely identified by a
 TripDescriptor including the combination of:
 
 *    __route_id__
@@ -80,17 +82,8 @@ TripDescriptor including the combination of:
 *    __start_time__
 *    __start_date__
 
+where start_time is the scheduled start time as defined in the static schedule, as long as the combination of ids provided resolves to a unique trip.
 
-start_time should be the scheduled start time.
-Once appeared, start_time must stay the same in all TripDescriptor representing
-the same trip instance across all feed versions. StopTimeUpdates should be used
-to indicate adjustments to start_time.
-For example, let’s say we decide at 10:00, May, 25th 2015, that a trip with
-route_id=R and direction_id=0 will start at start_time=10:10:00, and provide
-this information via realtime feed at 10:01. By 10:05 we suddenly know that the
-trip will start not at 10:10 but at 10:13. In our new realtime feed we can still
-identify this trip as (R, 0, 2015-05-25, 10:10:00) but provide a StopTimeUpdate
-with departure from first stop at 10:13:00.
 
 ## Uncertainty
 
