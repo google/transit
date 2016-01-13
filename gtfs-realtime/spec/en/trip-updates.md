@@ -6,7 +6,14 @@ There should be **at most** one trip update for each scheduled trip. In case the
 
 ## Stop Time Updates
 
-A trip update consists of one or more updates to vehicle stop times, which are referred to as [StopTimeUpdates](reference.md#StopTimeUpdate). These can be supplied for past and future stop times. You are allowed, but not required, to drop past stop times. When doing this, be aware that you shouldn't drop a past update if it refers to a trip that isn't yet scheduled to have finished (i.e. it finished ahead of schedule) as otherwise it will be concluded that there is no update on this trip.
+A trip update consists of one or more updates to vehicle stop times, which are referred to as [StopTimeUpdates](reference.md#StopTimeUpdate). These can be supplied for past and future stop times. You are allowed, but not required, to drop past stop times.  Producers should not drop a past `StopTimeUpdate` if it refers to a stop with a scheduled arrival time in the future for the given trip (i.e. the vehicle has passed the stop ahead of schedule), as otherwise it will be concluded that there is no update for this stop.  
+
+For example, if the following data appears in the GTFS-rt feed:
+
+* Stop 4 – Predicted at 10:18am (scheduled at 10:20am – 2 min early)
+* Stop 5 – Predicted at 10:30am (scheduled at 10:30am – on time)
+
+...the prediction for Stop 4 cannot be dropped from the feed until 10:21am, even if the bus actually passes the stop at 10:18am. If the `StopTimeUpdate` for Stop 4 was dropped from the feed at 10:18am or 10:19am, and the scheduled arrival time is 10:20am, then the consumer should assume that no real-time information exists for Stop 4 at that time, and schedule data from GTFS should be used.
 
 Each [StopTimeUpdate](reference.md#StopTimeUpdate) is linked to a stop. Ordinarily this can be done using either a GTFS stop_sequence or a GTFS stop_id. However, in the case you are providing an update for a trip without a GTFS trip_id, you must specify stop_id as stop_sequence has no value. The stop_id must still reference a stop_id in GTFS.
 
