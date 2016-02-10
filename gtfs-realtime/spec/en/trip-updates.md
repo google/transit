@@ -39,6 +39,7 @@ For the same trip instance, three [StopTimeUpdates](reference.md#StopTimeUpdate)
 
 This will be interpreted as:
 
+*   stop_sequences 1,2 have unknown delay.
 *   stop_sequences 3,4,5,6,7 have delay of 300 seconds.
 *   stop_sequences 8,9 have delay of 60 seconds.
 *   stop_sequences 10,..,20 have unknown delay.
