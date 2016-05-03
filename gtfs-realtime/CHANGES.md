@@ -77,3 +77,5 @@ extend transit_realtime.TripDescriptor {
 |1002|Google|[transit-realtime-partner-support@google.com](mailto:transit-realtime-partner-support@google.com)|Google Maps Live Transit Updates|
 |1003|OVapi|gtfs-rt at ovapi.nl|http://gtfs.ovapi.nl|
 |1004|Metra|[William Ashbaugh <w.l.ashbaugh@gmail.com>](mailto:w.l.ashbaugh@gmail.com)|
+|1005|Metro-North Railroad|[John Larsen](mailto:mnrappdev@mnr.org)|
+|1006|realCity|[David Varga](mailto:transit@realcity.io)|http://realcity.io|
