@@ -1,6 +1,6 @@
 ## General Transit Feed Specification Reference
 
-**Revised March 16, 2016. See [Revision History](../../CHANGES.md) for more details.**
+**Revised August 4, 2016. See [Revision History](../../CHANGES.md) for more details.**
 
 This document explains the types of files that comprise a GTFS transit feed and defines the fields used in all of those files.
 
@@ -285,6 +285,7 @@ File: **Optional**
 |   |  | * **1** - Passenger may transfer once. |
 |   |  | * **2** - Passenger may transfer twice. |
 |   |  | * **(empty)** - If this field is empty, unlimited transfers are permitted. |
+|  agency_id | Optional | Required for feeds with multiple agencies defined in the agency.txt file. Each fare attribute must specify an agency_id value to indicate which agency the fare applies to. |
 |  transfer_duration | Optional | The **transfer_duration** field specifies the length of time in seconds before a transfer expires.  When used with a **transfers** value of 0, the **transfer_duration** field indicates how long a ticket is valid for a fare where no transfers are allowed. Unless you intend to use this field to indicate ticket validity, **transfer_duration** should be omitted or empty when **transfers** is set to 0. |
 
 ### fare_rules.txt
