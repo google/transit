@@ -121,7 +121,7 @@ File: **Required**
 |   |  | For station entrances, the **wheelchair_boarding** field has the following additional semantics: |  |  |
 |   |  | * **0** (or empty) - the station entrance will inherit its **wheelchair_boarding** value from the parent station, if specified in the parent |  |  |
 |   |  | * **1** - the station entrance is wheelchair accessible (e.g. an elevator is available to platforms if they are not at-grade)  |  |  |
-|   |  | * **2** - there exists no accessible path the entrance to station platforms |  |  |
+|   |  | * **2** - there exists no accessible path from the entrance to station platforms |  |  |
 
 ### routes.txt
 
