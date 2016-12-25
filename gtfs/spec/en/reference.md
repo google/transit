@@ -122,6 +122,10 @@ File: **Required**
 |   |  | * **0** (or empty) - the station entrance will inherit its **wheelchair_boarding** value from the parent station, if specified in the parent |  |  |
 |   |  | * **1** - the station entrance is wheelchair accessible (e.g. an elevator is available to platforms if they are not at-grade)  |  |  |
 |   |  | * **2** - there exists no accessible path from the entrance to station platforms |  |  |
+|  hidden | Optional | This field indicates if a stop, station, or other facility is relevant for display in passenger-facing applications. |  |  |
+|   |  | * **0** or blank - passenger-relevant facility should be shown in maps and other applications. |  |  |
+|   |  | * **1** - an internal-only location or facility such as timing point that does not allow passengers to board or alight. |  |  |
+
 
 ### routes.txt
 
