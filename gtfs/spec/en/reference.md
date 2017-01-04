@@ -100,10 +100,12 @@ File: **Required**
 |  stop_lon | **Required** | The **stop_lon** field contains the longitude of a stop, station, or station entrance. The field value must be a valid WGS 84 longitude value from -180 to 180. |  |  |
 |  zone_id | Optional | The **zone_id** field defines the fare zone for a stop ID. Zone IDs are required if you want to provide fare information using [fare_rules.txt](#fare_rulestxt). If this stop ID represents a station, the zone ID is ignored. |  |  |
 |  stop_url | Optional | The **stop_url** field contains the URL of a web page about a particular stop. This should be different from the agency_url and the route_url fields.  The value must be a fully qualified URL that includes **http**:// or **https**://, and any special characters in the URL must be correctly escaped. See http://www.w3.org/Addressing/URL/4_URI_Recommentations.html for a description of how to create fully qualified URL values. |  |  |
-|  location_type | Optional | The **location_type** field identifies whether this stop ID represents a stop, station, or station entrance. If no location type is specified, or the location_type is blank, stop IDs are treated as stops. Stations may have different properties from stops when they are represented on a map or used in trip planning.  The location type field can have the following values: |  |  |
+|  location_type | Optional | The **location_type** field identifies whether this stop ID represents a stop, station, station entrance, or internal timing point. If no location type is specified, or the location_type is blank, stop IDs are treated as stops. Stations may have different properties from stops when they are represented on a map or used in trip planning.  The location type field can have the following values: |  |  |
 |   |  | * **0** or blank - Stop. A location where passengers board or disembark from a transit vehicle. |  |  |
 |   |  | * **1** - Station. A physical structure or area that contains one or more stop. |  |  |
 |   |  | * **2** - Station Entrance/Exit. A location where passengers can enter or exit a station from the street. The stop entry must also specify a parent_station value referencing the stop ID of the parent station for the entrance. |  |  |
+|   |  | * **4** - Non-passenger-relevant location. An internal-only location or facility such as timing point that does not allow passengers to board or alight. |  |  |
+
 |  parent_station | Optional | For stops that are physically located inside stations, the **parent_station** field identifies the station associated with the stop. To use this field, stops.txt must also contain a row where this stop ID is assigned location type=1. |  |  |
 |   |  | **This stop ID represents...** | **This entry's location type...** | **This entry's parent_station field contains...** |
 |   |  | A stop located inside a station. | 0 or blank | The stop ID of the station where this stop is located. The stop referenced by parent_station must have location_type=1. |
@@ -122,10 +124,6 @@ File: **Required**
 |   |  | * **0** (or empty) - the station entrance will inherit its **wheelchair_boarding** value from the parent station, if specified in the parent |  |  |
 |   |  | * **1** - the station entrance is wheelchair accessible (e.g. an elevator is available to platforms if they are not at-grade)  |  |  |
 |   |  | * **2** - there exists no accessible path from the entrance to station platforms |  |  |
-|  hidden | Optional | This field indicates if a stop, station, or other facility is relevant for display in passenger-facing applications. |  |  |
-|   |  | * **0** or blank - passenger-relevant facility should be shown in maps and other applications. |  |  |
-|   |  | * **1** - an internal-only location or facility such as timing point that does not allow passengers to board or alight. |  |  |
-
 
 ### routes.txt
 
