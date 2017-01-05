@@ -104,7 +104,7 @@ File: **Required**
 |   |  | * **0** or blank - Stop. A location where passengers board or disembark from a transit vehicle. |  |  |
 |   |  | * **1** - Station. A physical structure or area that contains one or more stop. |  |  |
 |   |  | * **2** - Station Entrance/Exit. A location where passengers can enter or exit a station from the street. The stop entry must also specify a parent_station value referencing the stop ID of the parent station for the entrance. |  |  |
-|   |  | * **4** - Non-passenger-relevant location. An internal-only location or facility such as timing point that does not allow passengers to board or alight. |  |  |
+|   |  | * **4** - Internal timing point. A timing point location where passengers cannot board or alight. When referenced in stop_times.txt, pickup_type and drop_off_type values must be 1 for an internal timing point. |  |  |
 
 |  parent_station | Optional | For stops that are physically located inside stations, the **parent_station** field identifies the station associated with the stop. To use this field, stops.txt must also contain a row where this stop ID is assigned location type=1. |  |  |
 |   |  | **This stop ID represents...** | **This entry's location type...** | **This entry's parent_station field contains...** |
