@@ -332,6 +332,8 @@ For examples that demonstrate how to specify a fare structure with fare_rules.tx
 
 File: **Optional**
 
+Shapes describe the physical path that a vehicle takes, and are defined in the file shapes.txt. Shapes belong to Trips, and consist of a sequence of points. Tracing the points in order provides the path of the vehicle. The points do not need to match stop locations.
+
 |  Field Name | Required | Details |
 |  ------ | ------ | ------ |
 |  shape_id | **Required** | The **shape_id** field contains an ID that uniquely identifies a shape. |
