@@ -85,6 +85,7 @@ File: **Required**
 |  agency_lang | Optional | The **agency_lang field** contains a two-letter ISO 639-1 code for the primary language used by this transit agency. The language code is case-insensitive (both en and EN are accepted). This setting defines capitalization rules and other language-specific settings for all text contained in this transit agency's feed. Please refer to http://www.loc.gov/standards/iso639-2/php/code_list.php for a list of valid values. |
 |  agency_phone | Optional | The **agency_phone field** contains a single voice telephone number for the specified agency. This field is a string value that presents the telephone number as typical for the agency's service area. It can and should contain punctuation marks to group the digits of the number. Dialable text (for example, TriMet's "503-238-RIDE") is permitted, but the field must not contain any other descriptive text. |
 |  agency_fare_url | Optional | The **agency_fare_url** specifies the URL of a web page that allows a rider to purchase tickets or other fare instruments for that agency online. The value must be a fully qualified URL that includes **http**:// or **https**://, and any special characters in the URL must be correctly escaped. See http://www.w3.org/Addressing/URL/4_URI_Recommentations.html for a description of how to create fully qualified URL values. |
+|  agency_email | Optional | Contains a single valid email address actively monitored by the agency’s customer service department. This email address will be considered a direct contact point where transit riders can reach a customer service representative at the agency. |
 
 ### stops.txt
 
@@ -92,24 +93,25 @@ File: **Required**
 
 |  Field Name | Required | Details |  |  |
 |  ------ | ------ | ------ | ------ | ------ |
-|  stop_id | **Required** | The **stop_id** field contains an ID that uniquely identifies a stop or station. Multiple routes may use the same stop. The **stop_id** is dataset unique. |  |  |
+|  stop_id | **Required** | The **stop_id** field contains an ID that uniquely identifies a stop, station, or station entrance. Multiple routes may use the same stop. The **stop_id** is dataset unique. |  |  |
 |  stop_code | Optional | The **stop_code** field contains short text or a number that uniquely identifies the stop for passengers. Stop codes are often used in phone-based transit information systems or printed on stop signage to make it easier for riders to get a stop schedule or real-time arrival information for a particular stop.  The stop_code field contains short text or a number that uniquely identifies the stop for passengers.  For internal codes, use **stop_id**. This field should be left blank for stops without a code. |  |  |
-|  stop_name | **Required** | The **stop_name** field contains the name of a stop or station. Please use a name that people will understand in the local and tourist vernacular. |  |  |
+|  stop_name | **Required** | The **stop_name** field contains the name of a stop, station, or station entrance. Please use a name that people will understand in the local and tourist vernacular. |  |  |
 |  stop_desc | Optional | The **stop_desc** field contains a description of a stop. Please provide useful, quality information. Do not simply duplicate the name of the stop. |  |  |
-|  stop_lat | **Required** | The **stop_lat** field contains the latitude of a stop or station. The field value must be a valid WGS 84 latitude. |  |  |
-|  stop_lon | **Required** | The **stop_lon** field contains the longitude of a stop or station. The field value must be a valid WGS 84 longitude value from -180 to 180. |  |  |
+|  stop_lat | **Required** | The **stop_lat** field contains the latitude of a stop, station, or station entrance. The field value must be a valid WGS 84 latitude. |  |  |
+|  stop_lon | **Required** | The **stop_lon** field contains the longitude of a stop, station, or station entrance. The field value must be a valid WGS 84 longitude value from -180 to 180. |  |  |
 |  zone_id | Optional | The **zone_id** field defines the fare zone for a stop ID. Zone IDs are required if you want to provide fare information using [fare_rules.txt](#fare_rulestxt). If this stop ID represents a station, the zone ID is ignored. |  |  |
 |  stop_url | Optional | The **stop_url** field contains the URL of a web page about a particular stop. This should be different from the agency_url and the route_url fields.  The value must be a fully qualified URL that includes **http**:// or **https**://, and any special characters in the URL must be correctly escaped. See http://www.w3.org/Addressing/URL/4_URI_Recommentations.html for a description of how to create fully qualified URL values. |  |  |
-|  location_type | Optional | The **location_type** field identifies whether this stop ID represents a stop or station. If no location type is specified, or the location_type is blank, stop IDs are treated as stops. Stations may have different properties from stops when they are represented on a map or used in trip planning.  The location type field can have the following values: |  |  |
+|  location_type | Optional | The **location_type** field identifies whether this stop ID represents a stop, station, or station entrance. If no location type is specified, or the location_type is blank, stop IDs are treated as stops. Stations may have different properties from stops when they are represented on a map or used in trip planning.  The location type field can have the following values: |  |  |
 |   |  | * **0** or blank - Stop. A location where passengers board or disembark from a transit vehicle. |  |  |
 |   |  | * **1** - Station. A physical structure or area that contains one or more stop. |  |  |
+|   |  | * **2** - Station Entrance/Exit. A location where passengers can enter or exit a station from the street. The stop entry must also specify a parent_station value referencing the stop ID of the parent station for the entrance. |  |  |
 |  parent_station | Optional | For stops that are physically located inside stations, the **parent_station** field identifies the station associated with the stop. To use this field, stops.txt must also contain a row where this stop ID is assigned location type=1. |  |  |
 |   |  | **This stop ID represents...** | **This entry's location type...** | **This entry's parent_station field contains...** |
 |   |  | A stop located inside a station. | 0 or blank | The stop ID of the station where this stop is located. The stop referenced by parent_station must have location_type=1. |
 |   |  | A stop located outside a station. | 0 or blank | A blank value. The parent_station field doesn't apply to this stop. |
 |   |  | A station. | 1 | A blank value. Stations can't contain other stations. |
-|  stop_timezone | Optional | The **stop_timezone** field contains the timezone in which this stop or station is located. Please refer to [Wikipedia List of Timezones](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones) for a list of valid values. If omitted, the stop should be assumed to be located in the timezone specified by **agency_timezone** in [agency.txt](#agencytxt).   When a stop has a parent station, the stop is considered to be in the timezone specified by the parent station's **stop_timezone** value. If the parent has no stop_timezone value, the stops that belong to that station are assumed to be in the timezone specified by **agency_timezone**, even if the stops have their own **stop_timezone** values. In other words, if a given stop has a **parent_station** value, any **stop_timezone** value specified for that stop must be ignored.  Even if **stop_timezone** values are provided in stops.txt, the times in [stop_times.txt](#stop_timestxt) should continue to be specified as time since midnight in the timezone specified by **agency_timezone** in agency.txt. This ensures that the time values in a trip always increase over the course of a trip, regardless of which timezones the trip crosses. |  |  |
-|  wheelchair_boarding | Optional | The **wheelchair_boarding field** identifies whether wheelchair boardings are possible from the specified stop or station. The field can have the following values: |  |  |
+|  stop_timezone | Optional | The **stop_timezone** field contains the timezone in which this stop, station, or station entrance is located. Please refer to [Wikipedia List of Timezones](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones) for a list of valid values. If omitted, the stop should be assumed to be located in the timezone specified by **agency_timezone** in [agency.txt](#agencytxt).   When a stop has a parent station, the stop is considered to be in the timezone specified by the parent station's **stop_timezone** value. If the parent has no stop_timezone value, the stops that belong to that station are assumed to be in the timezone specified by **agency_timezone**, even if the stops have their own **stop_timezone** values. In other words, if a given stop has a **parent_station** value, any **stop_timezone** value specified for that stop must be ignored.  Even if **stop_timezone** values are provided in stops.txt, the times in [stop_times.txt](#stop_timestxt) should continue to be specified as time since midnight in the timezone specified by **agency_timezone** in agency.txt. This ensures that the time values in a trip always increase over the course of a trip, regardless of which timezones the trip crosses. |  |  |
+|  wheelchair_boarding | Optional | The **wheelchair_boarding field** identifies whether wheelchair boardings are possible from the specified stop, station, or station entrance. The field can have the following values: |  |  |
 |   |  | * **0** (or empty) - indicates that there is no accessibility information for the stop |  |  |
 |   |  | * **1** - indicates that at least some vehicles at this stop can be boarded by a rider in a wheelchair |  |  |
 |   |  | * **2** - wheelchair boarding is not possible at this stop |  |  |
@@ -117,6 +119,10 @@ File: **Required**
 |   |  | * **0** (or empty) - the stop will inherit its **wheelchair_boarding** value from the parent station, if specified in the parent |  |  |
 |   |  | * **1** - there exists some accessible path from outside the station to the specific stop / platform |  |  |
 |   |  | * **2** - there exists no accessible path from outside the station to the specific stop / platform |  |  |
+|   |  | For station entrances, the **wheelchair_boarding** field has the following additional semantics: |  |  |
+|   |  | * **0** (or empty) - the station entrance will inherit its **wheelchair_boarding** value from the parent station, if specified in the parent |  |  |
+|   |  | * **1** - the station entrance is wheelchair accessible (e.g. an elevator is available to platforms if they are not at-grade)  |  |  |
+|   |  | * **2** - there exists no accessible path from the entrance to station platforms |  |  |
 
 ### routes.txt
 
@@ -179,16 +185,16 @@ File: **Required**
 |  arrival_time | **Required** | The **arrival_time** specifies the arrival time at a specific stop for a specific trip on a route. The time is measured from "noon minus 12h" (effectively midnight, except for days on which daylight savings time changes occur) at the beginning of the service date. For times occurring after midnight on the service date, enter the time as a value greater than 24:00:00 in HH:MM:SS local time for the day on which the trip schedule begins. If you don't have separate times for arrival and departure at a stop, enter the same value for **arrival_time** and **departure_time**.  If this stop isn't a time point, use an empty string value for the **arrival_time** and **departure_time** fields. Stops without arrival times will be scheduled based on the nearest preceding timed stop. To ensure accurate routing, please provide arrival and departure times for all stops that are time points. Do not interpolate stops.  You must specify arrival and departure times for the first and last stops in a trip.  Times must be eight digits in HH:MM:SS format (H:MM:SS is also accepted, if the hour begins with 0). Do not pad times with spaces. The following columns list stop times for a trip and the proper way to express those times in the **arrival_time** field: |  |
 |   |  | **Time** | **arrival_time value** |
 |   |  | 08:10:00 A.M. | 08:10:00 or 8:10:00 |
-|  <br/> |  | 01:05:00 P.M. | Sat Dec 30 1899 11:05:00 GMT-0700 (MST) |
-|   |  | 07:40:00 P.M. | Sat Dec 30 1899 17:40:00 GMT-0700 (MST) |
-|   |  | 01:55:00 A.M. | Sat Dec 30 1899 23:55:00 GMT-0700 (MST) |
+|   |  | 01:05:00 P.M. | 13:05:00 |
+|   |  | 07:40:00 P.M. | 19:40:00 |
+|   |  | 01:55:00 A.M. | 25:55:00 |
 |   |  | **Note:** Trips that span multiple dates will have stop times greater than 24:00:00. For example, if a trip begins at 10:30:00 p.m. and ends at 2:15:00 a.m. on the following day, the stop times would be 22:30:00 and 26:15:00. Entering those stop times as 22:30:00 and 02:15:00 would not produce the desired results. |  |
 |  departure_time | **Required** | The **departure_time** specifies the departure time from a specific stop for a specific trip on a route. The time is measured from "noon minus 12h" (effectively midnight, except for days on which daylight savings time changes occur) at the beginning of the service date. For times occurring after midnight on the service date, enter the time as a value greater than 24:00:00 in HH:MM:SS local time for the day on which the trip schedule begins. If you don't have separate times for arrival and departure at a stop, enter the same value for **arrival_time** and **departure_time**.  If this stop isn't a time point, use an empty string value for the **arrival_time** and **departure_time** fields. Stops without arrival times will be scheduled based on the nearest preceding timed stop. To ensure accurate routing, please provide arrival and departure times for all stops that are time points. Do not interpolate stops.  You must specify arrival and departure times for the first and last stops in a trip.  Times must be eight digits in HH:MM:SS format (H:MM:SS is also accepted, if the hour begins with 0). Do not pad times with spaces. The following columns list stop times for a trip and the proper way to express those times in the **departure_time** field: |  |
 |   |  | Time | departure_time value |
 |   |  | 08:10:00 A.M. | 08:10:00 or 8:10:00 |
-|  <br/> |  | 01:05:00 P.M. | Sat Dec 30 1899 11:05:00 GMT-0700 (MST) |
-|   |  | 07:40:00 P.M. | Sat Dec 30 1899 17:40:00 GMT-0700 (MST) |
-|  <br/> |  | 01:55:00 A.M. | Sat Dec 30 1899 23:55:00 GMT-0700 (MST) |
+|   |  | 01:05:00 P.M. | 13:05:00 |
+|   |  | 07:40:00 P.M. | 19:40:00 |
+|   |  | 01:55:00 A.M. | 25:55:00 |
 |   |  | **Note:** Trips that span multiple dates will have stop times greater than 24:00:00. For example, if a trip begins at 10:30:00 p.m. and ends at 2:15:00 a.m. on the following day, the stop times would be 22:30:00 and 26:15:00. Entering those stop times as 22:30:00 and 02:15:00 would not produce the desired results. |  |
 |  stop_id | **Required** | The **stop_id** field contains an ID that uniquely identifies a stop. Multiple routes may use the same stop. The **stop_id** is referenced from the [stops.txt](#stopstxt) file. If **location_type** is used in [stops.txt](#stopstxt), all stops referenced in [stop_times.txt](#stop_timestxt) must have **location_type** of 0.  Where possible, **stop_id** values should remain consistent between feed updates. In other words, stop A with **stop_id 1** should have **stop_id 1** in all subsequent data updates. If a stop is not a time point, enter blank values for **arrival_time** and **departure_time**. |  |
 |  stop_sequence | **Required** | The **stop_sequence** field identifies the order of the stops for a particular trip. The values for **stop_sequence** must be non-negative integers, and they must increase along the trip.  For example, the first stop on the trip could have a **stop_sequence** of 1, the second stop on the trip could have a **stop_sequence** of 23, the third stop could have a **stop_sequence** of 40, and so on. |  |
@@ -325,6 +331,8 @@ For examples that demonstrate how to specify a fare structure with fare_rules.tx
 ### shapes.txt
 
 File: **Optional**
+
+Shapes describe the physical path that a vehicle takes, and are defined in the file shapes.txt. Shapes belong to Trips, and consist of a sequence of points. Tracing the points in order provides the path of the vehicle. The points do not need to match stop locations.
 
 |  Field Name | Required | Details |
 |  ------ | ------ | ------ |
