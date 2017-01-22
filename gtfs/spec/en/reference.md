@@ -175,11 +175,11 @@ File: **Required**
 |   |  | * **1** - indicates that the vehicle being used on this particular trip can accommodate at least one bicycle |
 |   |  | * **2** - indicates that no bicycles are allowed on this trip |
 
-The example below is valid, with distinct blocks every day of the week.
-
 #### Example showing blocks and service day
 
-| route_id | trip_id | service_id                     | block_id | first stop time [not part of trips.txt] | last stop time [not part of trips.txt] |
+The example below is valid, with distinct blocks every day of the week.
+
+| route_id | trip_id | service_id                     | block_id | <span style="font-weight:normal">*(first stop time)*</span> | <span style="font-weight:normal">*(last stop time)*</span> |
 |----------|---------|--------------------------------|----------|-----------------------------------------|-------------------------|
 | red      | trip_1  | mon-tues-wed-thurs-fri-sat-sun | red_loop | 22:00:00                                | 22:55:00                |
 | red      | trip_2  | fri-sat-sun                    | red_loop | 23:00:00                                | 23:55:00                |
