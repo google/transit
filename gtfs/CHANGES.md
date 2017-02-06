@@ -12,6 +12,7 @@ The official specification, reference and documentation are written in English. 
   - The advocate is responsible for timely update of the proposal (i.e. pull request) based on the comments for which they agree to.
   - At any point in time the advocate can claim proposal abandoned.
 1. The advocate can call for a vote on a version of the proposal at any point in time following the initial 7-day interval required for discussion.
+  - Before calling for a vote, at least one GTFS producer and one GTFS consumer should implement and test the proposed change.
 1. Vote lasts the minimum period sufficient to cover 7 full calendar days and 5 full Swiss business days. Vote ends at 23:59:59 UTC.
   - The advocate should announce the specific end time at the start of the vote.
   - During voting period only editorial changes to the proposal are allowed (typos, wording may change as long as it does not change the meaning).
