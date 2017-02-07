@@ -93,8 +93,8 @@ File: **Required**
 
 |  Field Name | Required | Details |  |  |
 |  ------ | ------ | ------ | ------ | ------ |
-|  stop_id | **Required** | The **stop_id** field contains an ID that uniquely identifies a stop, station, or station entrance. Multiple routes may use the same stop. The **stop_id** is dataset unique. |  |  |
-|  stop_code | Optional | The **stop_code** field contains short text or a number that uniquely identifies the stop for passengers. Stop codes are often used in phone-based transit information systems or printed on stop signage to make it easier for riders to get a stop schedule or real-time arrival information for a particular stop.  The stop_code field contains short text or a number that uniquely identifies the stop for passengers.  For internal codes, use **stop_id**. This field should be left blank for stops without a code. |  |  |
+|  stop_id | **Required** | The **stop_id** field contains an ID that uniquely identifies a stop, station, or station entrance. Multiple routes may use the same stop. The **stop_id** is used by systems as an internal identifier of this record (e.g., primary key in database), and therefore the **stop_id** must be dataset unique.  |  |  |
+|  stop_code | Optional | The **stop_code** field contains short text or a number that uniquely identifies the stop for passengers. Stop codes are often used in phone-based transit information systems or printed on stop signage to make it easier for riders to get a stop schedule or real-time arrival information for a particular stop.  The **stop_code** field contains short text or a number that uniquely identifies the stop for passengers. The **stop_code** can be the same as **stop_id** if it is passenger-facing. This field should be left blank for stops without a code presented to passengers. |  |  |
 |  stop_name | **Required** | The **stop_name** field contains the name of a stop, station, or station entrance. Please use a name that people will understand in the local and tourist vernacular. |  |  |
 |  stop_desc | Optional | The **stop_desc** field contains a description of a stop. Please provide useful, quality information. Do not simply duplicate the name of the stop. |  |  |
 |  stop_lat | **Required** | The **stop_lat** field contains the latitude of a stop, station, or station entrance. The field value must be a valid WGS 84 latitude. |  |  |
@@ -166,7 +166,7 @@ File: **Required**
 |   |  | * `trip_id,...,trip_headsign,direction_id` |
 |   |  | * `1234,...,to Airport,0` |
 |   |  | * `1505,...,to Downtown,1` |
-|  block_id | Optional | The **block_id** field identifies the block to which the trip belongs. A block consists of two or more sequential trips made using the same vehicle, where a passenger can transfer from one trip to the next just by staying in the vehicle. The **block_id** must be referenced by two or more trips in trips.txt. |
+|  block_id | Optional | The **block_id** field identifies the block to which the trip belongs. A block consists of a single trip or many sequential trips made using the same vehicle, defined by shared service day and block_id. A block_id can have trips with different service days, making distinct blocks. (See [example below](#example-showing-blocks-and-service-day)) |
 |  shape_id | Optional | The **shape_id** field contains an ID that defines a shape for the trip. This value is referenced from the [shapes.txt](#shapestxt) file. The shapes.txt file allows you to define how a line should be drawn on the map to represent a trip. |
 |  wheelchair_accessible | Optional | * **0** (or empty) - indicates that there is no accessibility information for the trip |
 |   |  | * **1** - indicates that the vehicle being used on this particular trip can accommodate at least one rider in a wheelchair |
@@ -174,6 +174,22 @@ File: **Required**
 |  bikes_allowed | Optional | 0 (or empty) - indicates that there is no bike information for the trip |
 |   |  | * **1** - indicates that the vehicle being used on this particular trip can accommodate at least one bicycle |
 |   |  | * **2** - indicates that no bicycles are allowed on this trip |
+
+#### Example showing blocks and service day
+
+The example below is valid, with distinct blocks every day of the week.
+
+| route_id | trip_id | service_id                     | block_id | <span style="font-weight:normal">*(first stop time)*</span> | <span style="font-weight:normal">*(last stop time)*</span> |
+|----------|---------|--------------------------------|----------|-----------------------------------------|-------------------------|
+| red      | trip_1  | mon-tues-wed-thurs-fri-sat-sun | red_loop | 22:00:00                                | 22:55:00                |
+| red      | trip_2  | fri-sat-sun                    | red_loop | 23:00:00                                | 23:55:00                |
+| red      | trip_3  | fri-sat                        | red_loop | 24:00:00                                | 24:55:00                |
+| red      | trip_4  | mon-tues-wed-thurs             | red_loop | 20:00:00                                | 20:50:00                |
+| red      | trip_5  | mon-tues-wed-thurs             | red_loop | 21:00:00                                | 21:50:00                |
+
+Notes on above table:
+* On Friday into Saturday morning, for example, a single vehicle operates trip_1, trip_2, and trip_3 (10:00 PM through 12:55 AM). Note that the last trip occurs on Saturday, 12:00 AM to 12:55 AM, but is part of the Friday “service day” because the times are 24:00:00 to 24:55:00.
+* On Monday, Tuesday, Wednesday, and Thursday, a single vehicle operates trip_1, trip_4, and trip_5 in a block from 8:00 PM to 10:55 PM.
 
 ### stop_times.txt
 
@@ -368,7 +384,7 @@ This table is intended to represent schedules that don't have a fixed list of st
 |  Field Name | Required | Details |
 |  ------ | ------ | ------ |
 |  trip_id | **Required** | The **trip_id** contains an ID that identifies a trip on which the specified frequency of service applies. Trip IDs are referenced from the [trips.txt](#tripstxt) file. |
-|  start_time | **Required** | The **start_time** field specifies the time at which service begins with the specified frequency. The time is measured from "noon minus 12h" (effectively midnight, except for days on which daylight savings time changes occur) at the beginning of the service day. For times occurring after midnight, enter the time as a value greater than 24:00:00 in HH:MM:SS local time for the day on which the trip schedule begins. E.g. 25:35:00. |
+|  start_time | **Required** | The **start_time** field specifies the time at which the first vehicle departs from the first stop of the trip with the specified frequency. The time is measured from "noon minus 12h" (effectively midnight, except for days on which daylight savings time changes occur) at the beginning of the service day. For times occurring after midnight, enter the time as a value greater than 24:00:00 in HH:MM:SS local time for the day on which the trip schedule begins. E.g. 25:35:00. |
 |  end_time | **Required** | The **end_time** field indicates the time at which service changes to a different frequency (or ceases) at the first stop in the trip. The time is measured from "noon minus 12h" (effectively midnight, except for days on which daylight savings time changes occur) at the beginning of the service day. For times occurring after midnight, enter the time as a value greater than 24:00:00 in HH:MM:SS local time for the day on which the trip schedule begins. E.g. 25:35:00. |
 |  headway_secs | **Required** | The **headway_secs** field indicates the time between departures from the same stop (headway) for this trip type, during the time interval specified by **start_time** and **end_time**. The headway value must be entered in seconds. |
 |   |  | Periods in which headways are defined (the rows in frequencies.txt) shouldn't overlap for the same trip, since it's hard to determine what should be inferred from two overlapping headways. However, a headway period may begin at the exact same time that another one ends, for instance: |
