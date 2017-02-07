@@ -12,7 +12,7 @@ The official specification, reference and documentation are written in English. 
   - The advocate is responsible for timely update of the proposal (i.e. pull request) based on the comments for which they agree to.
   - At any point in time the advocate can claim proposal abandoned.
 1. The advocate can call for a vote on a version of the proposal at any point in time following the initial 7-day interval required for discussion.
-  - Before calling for a vote, at least one GTFS producer and one GTFS consumer should implement and test the proposed change.
+  - Before calling for a vote, at least one GTFS-realtime producer and one GTFS-realtime consumer should implement the proposed change.  It is expected that the GTFS-realtime producer(s) include the change in a public-facing GTFS-realtime feed and provide a link to that data within the pull request comments, and that the GTFS-realtime consumer(s) provides a link in the pull request comments to an application that is utilizing the change in a non-trivial manner (i.e, it is supporting new or improved functionality).  Producers and consumers should use the [gtfs-realtime.proto](proto/gtfs-realtime.proto) file modified in the pull request that proposes the change to ensure that the final merged change exactly matches the example producers/consumers.  
 1. Vote lasts the minimum period sufficient to cover 7 full calendar days and 5 full Swiss business days. Vote ends at 23:59:59 UTC.
   - The advocate should announce the specific end time at the start of the vote.
   - During voting period only editorial changes to the proposal are allowed (typos, wording may change as long as it does not change the meaning).
