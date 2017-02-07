@@ -55,13 +55,13 @@ entity {
 
 # second entity containing update information for another trip
 entity {
-  id: "3"
+  id: "2"
   trip_update {
     trip {
-      # frequency based trips are defined by their
+      # headway-defined schedule trips (exact_times=1) are defined by their
       # trip_id in GTFS and
-      trip_id: "frequency-expanded-trip"
-      # start_time
+      trip_id: "headway-defined-schedule-trip"
+      # start_time, which must be some multiple (including zero) of headway_secs later than frequencies.txt start_time
       start_time: "11:15:35"
     }
     stop_time_update {
@@ -71,8 +71,25 @@ entity {
         delay: -2
       }
     }
+  }
+
+# third entity containing update information for another trip
+entity {
+  id: "3"
+  trip_update {
+    trip {
+      # frequency-based trips (exact_times=0) are defined by their
+      # trip_id in GTFS and
+      trip_id: "frequency-based-trip"
+      # start_time, which is immutable and defined when vehicle information for this trip instance is first published
+      start_time: "11:15:35"
+    }
     stop_time_update {
-      stop_sequence: 9
+      stop_sequence: 1
+      arrival {
+        # Becaused this is a frequency-based trip (exact_times=0), time (not delay) must be used
+        time: 1486496765
+      }
     }
   }
 }

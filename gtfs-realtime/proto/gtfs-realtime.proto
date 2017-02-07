@@ -490,8 +490,8 @@ message Position {
 //   addition, absolute arrival/departure times must be provided.
 message TripDescriptor {
   // The trip_id from the GTFS feed that this selector refers to.
-  // For non frequency-based trips, this field is enough to uniquely identify
-  // the trip. For frequency-based trip, start_time and start_date might also be
+  // For trips defined in frequencies.txt, this field is enough to uniquely identify
+  // the trip. For trips defined in frequencies.txt, start_time and start_date might also be
   // necessary.
   optional string trip_id = 1;
 
@@ -505,16 +505,16 @@ message TripDescriptor {
   optional uint32 direction_id = 6;
 
   // The initially scheduled start time of this trip instance.
-  // When the trip_id corresponds to a non-frequency-based trip, this field
+  // When the trip_id corresponds to a trip not defined in frequencies.txt, this field
   // should either be omitted or be equal to the value in the GTFS feed. When
-  // the trip_id correponds to a frequency-based trip, the start_time must be
+  // the trip_id corresponds to a trip defined in frequencies.txt, the start_time must be
   // specified for trip updates and vehicle positions. If the trip corresponds
-  // to exact_times=1 GTFS record, then start_time must be some multiple
+  // to exact_times=1 frequencies.txt trip, then start_time must be some multiple
   // (including zero) of headway_secs later than frequencies.txt start_time for
   // the corresponding time period. If the trip corresponds to exact_times=0,
   // then its start_time may be arbitrary, and is initially expected to be the
   // first departure of the trip. Once established, the start_time of this
-  // frequency-based trip should be considered immutable, even if the first
+  // exact_times=0 trip should be considered immutable, even if the first
   // departure time changes -- that time change may instead be reflected in a
   // StopTimeUpdate.
   // Format and semantics of the field is same as that of

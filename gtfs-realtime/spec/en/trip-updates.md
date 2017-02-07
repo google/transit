@@ -17,7 +17,7 @@ For example, if the following data appears in the GTFS-rt feed:
 
 Each [StopTimeUpdate](reference.md#StopTimeUpdate) is linked to a stop. Ordinarily this can be done using either a GTFS stop_sequence or a GTFS stop_id. However, in the case you are providing an update for a trip without a GTFS trip_id, you must specify stop_id as stop_sequence has no value. The stop_id must still reference a stop_id in GTFS. If the same stop_id is visited more than once in a trip, then stop_sequence should be provided in all StopTimeUpdates for that stop_id on that trip.
 
-The update can provide a exact timing for **arrival** and/or **departure** at a stop in [StopTimeUpdates](reference.md#StopTimeUpdate) using [StopTimeEvent](reference.md#StopTimeEvent). This should contain either an absolute **time** or a **delay** (i.e. an offset from the scheduled time in seconds). Delay can only be used in case the trip update refers to a scheduled GTFS trip, as opposed to a frequency-based trip. In this case, time should be equal to scheduled time + delay. You may also specify **uncertainty** of the prediction along with [StopTimeEvent](reference.md#StopTimeEvent), which is discussed in more detail in section [Uncertainty](#uncertainty) further down the page.
+The update can provide a exact timing for **arrival** and/or **departure** at a stop in [StopTimeUpdates](reference.md#StopTimeUpdate) using [StopTimeEvent](reference.md#StopTimeEvent). This should contain either an absolute **time** or a **delay** (i.e. an offset from the scheduled time in seconds). Delay can only be used in case the trip update refers to a scheduled GTFS trip, as opposed to a frequency-based trip (a trip defined in frequencies.txt with exact_times=0). For schedule-based trips, time should be equal to scheduled time + delay. You may also specify **uncertainty** of the prediction along with [StopTimeEvent](reference.md#StopTimeEvent), which is discussed in more detail in section [Uncertainty](#uncertainty) further down the page.
 
 For each [StopTimeUpdate](reference.md#StopTimeUpdate), the default schedule relationship is **scheduled**. (Note that this is different from the schedule relationship for the trip). You may change this to **skipped** if the stop will not be stopped at, or **no data** if you only have realtime data for some of the trip.
 
@@ -59,7 +59,7 @@ In most cases, you should provide the trip_id of the scheduled trip in GTFS that
 
 #### Systems with repeated trip_ids
 
-For systems using repeated trip_ids, for example trips modeled using frequencies.txt, that is frequency-based trips, the trip_id is not in itself a unique identifier of a single journey, as it lacks a
+For systems using repeated trip_ids, for example trips modeled using frequencies.txt, the trip_id is not in itself a unique identifier of a single journey, as it lacks a
 specific time component. In order to uniquely identify such trips within a
 TripDescriptor, a triple of identifiers must be provided:
 
@@ -82,8 +82,7 @@ first stop at 10:13:00.
 
 #### Alternative trip matching
 
-Trips which are not frequency based may also be uniquely identified by a
-TripDescriptor including the combination of:
+Trips not defined in frequencies.txt may also be uniquely identified by a TripDescriptor including the combination of:
 
 *    __route_id__
 *    __direction_id__
