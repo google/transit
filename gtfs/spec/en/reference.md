@@ -96,6 +96,12 @@ File: **Required**
 |  stop_id | **Required** | The **stop_id** field contains an ID that uniquely identifies a stop, station, or station entrance. Multiple routes may use the same stop. The **stop_id** is used by systems as an internal identifier of this record (e.g., primary key in database), and therefore the **stop_id** must be dataset unique.  |  |  |
 |  stop_code | Optional | The **stop_code** field contains short text or a number that uniquely identifies the stop for passengers. Stop codes are often used in phone-based transit information systems or printed on stop signage to make it easier for riders to get a stop schedule or real-time arrival information for a particular stop.  The **stop_code** field contains short text or a number that uniquely identifies the stop for passengers. The **stop_code** can be the same as **stop_id** if it is passenger-facing. This field should be left blank for stops without a code presented to passengers. |  |  |
 |  stop_name | **Required** | The **stop_name** field contains the name of a stop, station, or station entrance. Please use a name that people will understand in the local and tourist vernacular. |  |  |
+|  relative_position | Optional | The **relative_position** field contains the relative position of the stop to the stop name. Allowed values are: |  |  |
+| | | - blank: no position defined (default value); |  |  |
+| | | - **NS**: near side of the intersection; |  |  |
+| | | - **FS**: far side of the intersection; |  |  |
+| | | - **AT**: stop is at position; |  |  |
+| | | - **OP**: stop is across the street. |  |  |
 |  stop_desc | Optional | The **stop_desc** field contains a description of a stop. Please provide useful, quality information. Do not simply duplicate the name of the stop. |  |  |
 |  stop_lat | **Required** | The **stop_lat** field contains the latitude of a stop, station, or station entrance. The field value must be a valid WGS 84 latitude. |  |  |
 |  stop_lon | **Required** | The **stop_lon** field contains the longitude of a stop, station, or station entrance. The field value must be a valid WGS 84 longitude value from -180 to 180. |  |  |
