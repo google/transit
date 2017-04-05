@@ -49,7 +49,7 @@ The contents of a feed message. Each message in the stream is obtained as a resp
 
 #### Fields
 
-|_**Field Name**_ | _**Type**_ | _**Cardinality**_ | _**Description**_ |
+|_**Field Name**_ | _**Type**_ | _**Protocol Buffer Cardinality**_ | _**Description**_ |
 |-----------------|------------|-------------------|-------------------|
 |**header** | [FeedHeader](#message-feedheader) | required | Metadata about this feed and feed message. |
 |**entity** | [FeedEntity](#message-feedentity) | repeated | Contents of the feed. |
@@ -60,7 +60,7 @@ Metadata about a feed, included in feed messages.
 
 #### Fields
 
-| _**Field Name**_ | _**Type**_ | _**Cardinality**_ | _**Description**_ |
+| _**Field Name**_ | _**Type**_ | _**Protocol Buffer Cardinality**_ | _**Description**_ |
 |------------------|------------|-------------------|-------------------|
 | **gtfs_realtime_version** | [string](https://developers.google.com/protocol-buffers/docs/proto#scalar) | required | Version of the feed specification. The current version is 1.0. |
 | **incrementality** | [Incrementality](#enum-incrementality) | optional |
@@ -86,7 +86,7 @@ A definition (or update) of an entity in the transit feed. If the entity is not 
 
 #### Fields
 
-| _**Field Name**_ | _**Type**_ | _**Cardinality**_ | _**Description**_ |
+| _**Field Name**_ | _**Type**_ | _**Protocol Buffer Cardinality**_ | _**Description**_ |
 |------------------|------------|-------------------|-------------------|
 | **id** | [string](https://developers.google.com/protocol-buffers/docs/proto#scalar) | required | Feed-unique identifier for this entity. The ids are used only to provide incrementality support. The actual entities referenced by the feed must be specified by explicit selectors (see EntitySelector below for more info). |
 | **is_deleted** | [bool](https://developers.google.com/protocol-buffers/docs/proto#scalar) | optional | Whether this entity is to be deleted. Relevant only for incremental fetches. |
@@ -110,7 +110,7 @@ Note that the update can describe a trip that has already completed.To this end,
 
 #### Fields
 
-| _**Field Name**_ | _**Type**_ | _**Cardinality**_ | _**Description**_ |
+| _**Field Name**_ | _**Type**_ | _**Protocol Buffer Cardinality**_ | _**Description**_ |
 |------------------|------------|-------------------|-------------------|
 | **trip** | [TripDescriptor](#message-tripdescriptor) | required | The Trip that this message applies to. There can be at most one TripUpdate entity for each actual trip instance. If there is none, that means there is no prediction information available. It does *not* mean that the trip is progressing according to schedule. |
 | **vehicle** | [VehicleDescriptor](#message-vehicledescriptor) | optional | Additional information on the vehicle that is serving this trip. |
@@ -129,7 +129,7 @@ Uncertainty applies equally to both time and delay. The uncertainty roughly spec
 
 #### Fields
 
-| _**Field Name**_ | _**Type**_ | _**Cardinality**_ | _**Description**_ |
+| _**Field Name**_ | _**Type**_ | _**Protocol Buffer Cardinality**_ | _**Description**_ |
 |------------------|------------|-------------------|-------------------|
 | **delay** | [int32](https://developers.google.com/protocol-buffers/docs/proto#scalar) | optional | Delay (in seconds) can be positive (meaning that the vehicle is late) or negative (meaning that the vehicle is ahead of schedule). Delay of 0 means that the vehicle is exactly on time. |
 | **time** | [int64](https://developers.google.com/protocol-buffers/docs/proto#scalar) | optional | Event as absolute time. In POSIX time (i.e., number of seconds since January 1st 1970 00:00:00 UTC). |
@@ -144,7 +144,7 @@ The update is linked to a specific stop either through stop_sequence or stop_id,
 
 #### Fields
 
-| _**Field Name**_ | _**Type**_ | _**Cardinality**_ | _**Description**_ |
+| _**Field Name**_ | _**Type**_ | _**Protocol Buffer Cardinality**_ | _**Description**_ |
 |------------------|------------|-------------------|-------------------|
 | **stop_sequence** | [uint32](https://developers.google.com/protocol-buffers/docs/proto#scalar) | optional | Must be the same as in stop_times.txt in the corresponding GTFS feed. |
 | **stop_id** | [string](https://developers.google.com/protocol-buffers/docs/proto#scalar) | optional | Must be the same as in stops.txt in the corresponding GTFS feed. |
@@ -170,7 +170,7 @@ Realtime positioning information for a given vehicle.
 
 #### Fields
 
-| _**Field Name**_ | _**Type**_ | _**Cardinality**_ | _**Description**_ |
+| _**Field Name**_ | _**Type**_ | _**Protocol Buffer Cardinality**_ | _**Description**_ |
 |------------------|------------|-------------------|-------------------|
 | **trip** | [TripDescriptor](#message-tripdescriptor) | optional | The Trip that this vehicle is serving. Can be empty or partial if the vehicle can not be identified with a given trip instance. |
 | **vehicle** | [VehicleDescriptor](#message-vehicledescriptor) | optional | Additional information on the vehicle that is serving this trip. Each entry should have a **unique** vehicle id. |
@@ -230,7 +230,7 @@ An alert, indicating some sort of incident in the public transit network.
 
 #### Fields
 
-| _**Field Name**_ | _**Type**_ | _**Cardinality**_ | _**Description**_ |
+| _**Field Name**_ | _**Type**_ | _**Protocol Buffer Cardinality**_ | _**Description**_ |
 |------------------|------------|-------------------|-------------------|
 | **active_period** | [TimeRange](#message-timerange) | repeated | Time when the alert should be shown to the user. If missing, the alert will be shown as long as it appears in the feed. If multiple ranges are given, the alert will be shown during all of them. |
 | **informed_entity** | [EntitySelector](#message-entityselector) | repeated | Entities whose users we should notify of this alert. |
@@ -285,7 +285,7 @@ A time interval. The interval is considered active at time `t` if `t` is greater
 
 #### Fields
 
-| _**Field Name**_ | _**Type**_ | _**Cardinality**_ | _**Description**_ |
+| _**Field Name**_ | _**Type**_ | _**Protocol Buffer Cardinality**_ | _**Description**_ |
 |------------------|------------|-------------------|-------------------|
 | **start** | [uint64](https://developers.google.com/protocol-buffers/docs/proto#scalar) | optional | Start time, in POSIX time (i.e., number of seconds since January 1st 1970 00:00:00 UTC). If missing, the interval starts at minus infinity. |
 | **end** | [uint64](https://developers.google.com/protocol-buffers/docs/proto#scalar) | optional | End time, in POSIX time (i.e., number of seconds since January 1st 1970 00:00:00 UTC). If missing, the interval ends at plus infinity. |
@@ -296,7 +296,7 @@ A geographic position of a vehicle.
 
 #### Fields
 
-| _**Field Name**_ | _**Type**_ | _**Cardinality**_ | _**Description**_ |
+| _**Field Name**_ | _**Type**_ | _**Protocol Buffer Cardinality**_ | _**Description**_ |
 |------------------|------------|-------------------|-------------------|
 | **latitude** | [float](https://developers.google.com/protocol-buffers/docs/proto#scalar) | required | Degrees North, in the WGS-84 coordinate system. |
 | **longitude** | [float](https://developers.google.com/protocol-buffers/docs/proto#scalar) | required | Degrees East, in the WGS-84 coordinate system. |
@@ -310,7 +310,7 @@ A descriptor that identifies an instance of a GTFS trip, or all instances of a t
 
 #### Fields
 
-| _**Field Name**_ | _**Type**_ | _**Cardinality**_ | _**Description**_ |
+| _**Field Name**_ | _**Type**_ | _**Protocol Buffer Cardinality**_ | _**Description**_ |
 |------------------|------------|-------------------|-------------------|
 | **trip_id** | [string](https://developers.google.com/protocol-buffers/docs/proto#scalar) | optional | The trip_id from the GTFS feed that this selector refers to. For non frequency-based trips, this field is enough to uniquely identify the trip. For frequency-based trip, start_time and start_date might also be necessary. |
 | **route_id** | [string](https://developers.google.com/protocol-buffers/docs/proto#scalar) | optional | The route_id from the GTFS that this selector refers to. |
@@ -338,7 +338,7 @@ Identification information for the vehicle performing the trip.
 
 #### Fields
 
-| _**Field Name**_ | _**Type**_ | _**Cardinality**_ | _**Description**_ |
+| _**Field Name**_ | _**Type**_ | _**Protocol Buffer Cardinality**_ | _**Description**_ |
 |------------------|------------|-------------------|-------------------|
 | **id** | [string](https://developers.google.com/protocol-buffers/docs/proto#scalar) | optional | Internal system identification of the vehicle. Should be **unique** per vehicle, and is used for tracking the vehicle as it proceeds through the system. This id should not be made visible to the end-user; for that purpose use the **label** field |
 | **label** | [string](https://developers.google.com/protocol-buffers/docs/proto#scalar) | optional | User visible label, i.e., something that must be shown to the passenger to help identify the correct vehicle. |
@@ -350,7 +350,7 @@ A selector for an entity in a GTFS feed. The values of the fields should corresp
 
 #### Fields
 
-| _**Field Name**_ | _**Type**_ | _**Cardinality**_ | _**Description**_ |
+| _**Field Name**_ | _**Type**_ | _**Protocol Buffer Cardinality**_ | _**Description**_ |
 |------------------|------------|-------------------|-------------------|
 | **agency_id** | [string](https://developers.google.com/protocol-buffers/docs/proto#scalar) | optional |
 | **route_id** | [string](https://developers.google.com/protocol-buffers/docs/proto#scalar) | optional |
@@ -364,7 +364,7 @@ An internationalized message containing per-language versions of a snippet of te
 
 #### Fields
 
-| _**Field Name**_ | _**Type**_ | _**Cardinality**_ | _**Description**_ |
+| _**Field Name**_ | _**Type**_ | _**Protocol Buffer Cardinality**_ | _**Description**_ |
 |------------------|------------|-------------------|-------------------|
 | **translation** | [Translation](#message-translation) | repeated | At least one translation must be provided. |
 
@@ -374,7 +374,7 @@ A localized string mapped to a language.
 
 #### Fields
 
-| _**Field Name**_ | _**Type**_ | _**Cardinality**_ | _**Description**_ |
+| _**Field Name**_ | _**Type**_ | _**Protocol Buffer Cardinality**_ | _**Description**_ |
 |------------------|------------|-------------------|-------------------|
 | **text** | [string](https://developers.google.com/protocol-buffers/docs/proto#scalar) | required | A UTF-8 string containing the message. |
 | **language** | [string](https://developers.google.com/protocol-buffers/docs/proto#scalar) | optional | BCP-47 language code. Can be omitted if the language is unknown or if no internationalization is done at all for the feed. At most one translation is allowed to have an unspecified language tag. |
