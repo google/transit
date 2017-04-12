@@ -1,6 +1,6 @@
-Un feed GTFS en tiempo real permite que las empresas de transporte público brinden a los consumidores información en tiempo real acerca de las interrupciones de sus servicios (estaciones cerradas, líneas que no funcionan, demoras importantes, etc.), la ubicación de sus vehículos y tiempos de llegada esperados. 
+Un feed GTFS en tiempo real permite que las empresas de transporte público brinden a los consumidores información en tiempo real acerca de las interrupciones de sus servicios (estaciones cerradas, líneas que no funcionan, demoras importantes, etc.), la ubicación de sus vehículos y tiempos de llegada esperados.
 
-Las especificaciones de la versión 1.0 del feed se abordan y documentan en este sitio.
+Las especificaciones de la versión 1.0 del feed se abordan y documentan aquí.
 
 ### Definiciones de términos
 
@@ -8,6 +8,7 @@ Las especificaciones de la versión 1.0 del feed se abordan y documentan en este
 *   **repetido**: cero o más
 *   **mensaje**: tipo complejo
 *   **enum.**: lista de valores fijos
+*   **experimental**: campo experimental, sujeto a cambios. Podrá ser formalmente adoptado más adelante.
 
 ## Índice de elementos
 
@@ -40,7 +41,7 @@ Las especificaciones de la versión 1.0 del feed se abordan y documentan en este
 
 ## _mensaje_ FeedMessage
 
-El contenido de un mensaje de feed. Cada mensaje en el flujo de datos se obtiene como una respuesta a una solicitud HTTP GET adecuada. Un feed en tiempo real siempre se define en relación con un feed GTFS existente. Todos los ID de entidades se resuelven en relación con el feed GTFS. 
+El contenido de un mensaje de feed. Cada mensaje en el flujo de datos se obtiene como una respuesta a una solicitud HTTP GET adecuada. Un feed en tiempo real siempre se define en relación con un feed GTFS existente. Todos los ID de entidades se resuelven en relación con el feed GTFS.
 
 Un feed depende de algunas configuraciones externas:
 
@@ -57,7 +58,7 @@ Un feed depende de algunas configuraciones externas:
 
 ## _mensaje_ FeedHeader
 
-Metadatos sobre un feed, incluido en los mensajes del feed
+Metadatos sobre un feed, incluido en los mensajes del feed:
 
 ### Campos
 
@@ -65,14 +66,14 @@ Metadatos sobre un feed, incluido en los mensajes del feed
 |------------------------|------------|--------------------|-------------------|
 | **gtfs_realtime_version** | [string](https://developers.google.com/protocol-buffers/docs/proto#scalar) | obligatorio | Especificación de la versión del feed. La versión actual es 1.0. |
 | **incrementality** | [Incrementality](#Incrementality) | opcional |
-| **timestamp** | [uint64](https://developers.google.com/protocol-buffers/docs/proto#scalar) | opcional | Esta marca de tiempo identifica el momento en que se ha creado el contenido de este feed (en la hora del servidor). En la hora de POSIX (es decir, cantidad de segundos desde el 1.° de enero de 1970 00:00:00 UTC). Para evitar el desvío de tiempos entre los sistemas que producen y que consumen información en tiempo real, se recomienda derivar la marca de tiempo desde un servidor de tiempo. Es absolutamente aceptable usar servidores de estrato 3 o, incluso, inferiores, porque las diferencias de tiempo de hasta un par de segundos son tolerables. |
+| **timestamp** | [uint64](https://developers.google.com/protocol-buffers/docs/proto#scalar) | opcional | Esta marca de tiempo identifica el momento en que se ha creado el contenido de este feed (en la hora del servidor). En POSIX time (es decir, cantidad de segundos desde el 1 de enero de 1970 00:00:00 UTC). Para evitar el desvío de tiempos entre los sistemas que producen y que consumen información en tiempo real, se recomienda derivar la marca de tiempo desde un servidor de tiempo. Es completamente aceptable usar Stratum 3 o incluso servidores strata inferiores, porque diferencias de tiempo de hasta un par de segundos son tolerables. |
 
 ## _enum._ Incrementality
 
 Determina si la búsqueda actual es incremental.
 
 *   **FULL_DATASET**: la actualización de este feed sobrescribirá toda la información en tiempo real anterior para el feed. Por lo tanto, se espera que esta actualización proporcione un resumen completo de toda la información en tiempo real conocida.
-*   **DIFFERENTIAL**: en este momento, este modo **no está admitido** y su comportamiento **no se especifica** para los feeds que usan este modo. Existen debates sobre la [lista de correo](http://groups.google.com/group/gtfs-realtime) de GTFS en tiempo real, relacionados con la especificación completa del comportamiento del modo DIFFERENTIAL, y la documentación se actualizará cuando esos debates finalicen.
+*   **DIFFERENTIAL**: en este momento, este modo **no tiene soporte** y su comportamiento es **indefinido** para los feeds que lo usan. Existen debates en la [lista de correo](http://groups.google.com/group/gtfs-realtime) de GTFS en tiempo real relacionados con la especificación completa del comportamiento del modo DIFFERENTIAL, y la documentación se actualizará cuando esos debates finalicen.
 
 ### Valores
 
@@ -97,7 +98,7 @@ La definición (o actualización) de una entidad en el feed de transporte públi
 
 ## _mensaje_ TripUpdate
 
-Actualización en tiempo real del progreso de un vehículo en un viaje. También consulta el debate general del [tipo de feed de actualizaciones del viaje](./trip-updates).
+Actualización en tiempo real del progreso de un vehículo en un viaje. Consulta también el debate general del [tipo de feed de actualizaciones del viaje](./trip-updates).
 
 Según el valor de ScheduleRelationship, TripUpdate puede especificar lo siguiente:
 
@@ -105,7 +106,7 @@ Según el valor de ScheduleRelationship, TripUpdate puede especificar lo siguien
 *   Un viaje que avanza por una ruta, pero que no tiene una programación fija.
 *   Un viaje que se ha agregado o se ha quitado en relación con una programación.
 
-Las actualizaciones pueden ser para eventos de llegada/salida futuros y previstos, o para eventos pasados que ya ocurrieron. En la mayoría de los casos, la información sobre los eventos pasados es un valor medido, por lo tanto, se recomienda que su valor de incertidumbre sea 0\. Aunque puede haber algunos casos en que esto no sea así, por lo que se admiten valores de incertidumbre distintos de 0 para los eventos pasados. Si el valor de incertidumbre de una actualización no es 0, entonces la actualización es una predicción aproximada para un viaje que no se ha completado o la medición no es precisa o la actualización fue una predicción para el pasado que no se ha verificado después de que ocurrió el evento. 
+Las actualizaciones pueden ser para eventos de llegada/salida futuros y previstos, o para eventos pasados que ya ocurrieron. En la mayoría de los casos, la información sobre los eventos pasados es un valor medido, por lo tanto, se recomienda que su valor de incertidumbre sea 0\. Aunque puede haber algunos casos en que esto no sea así, por lo que se admiten valores de incertidumbre distintos de 0 para los eventos pasados. Si el valor de incertidumbre de una actualización no es 0, entonces la actualización es una predicción aproximada para un viaje que no se ha completado o la medición no es precisa o la actualización fue una predicción para el pasado que no se ha verificado después de que ocurrió el evento.
 
 Ten en cuenta que la actualización puede describir un viaje que ya se ha completado. En este caso, es suficiente con proporcionar una actualización para la última parada del viaje. Si el tiempo de llegada para la última parada es en el pasado, el cliente concluirá que todo el viaje es pasado (es posible, aunque inconsecuente, proporcionar también actualizaciones para las paradas anteriores). Esta opción es más relevante para un viaje que se ha completado antes de lo que establecía la programación, pero que según esta, el viaje todavía se está realizando en este momento. Quitar las actualizaciones de este viaje podría hacer que el cliente considere que el viaje todavía se está realizando. Ten en cuenta que el proveedor del feed tiene permitido, aunque no está obligado, a purgar las actualizaciones pasadas (en este caso esto sería útil).
 
@@ -116,7 +117,7 @@ Ten en cuenta que la actualización puede describir un viaje que ya se ha comple
 | **trip** | [TripDescriptor](#TripDescriptor) | obligatorio | El viaje al cual se aplica este mensaje. Puede haber una entidad de TripUpdate, como máximo, para cada instancia de viaje real. Si no hay ninguna, entonces no habrá información de predicciones disponible. *No* significa que el viaje se está realizando de acuerdo con la programación. |
 | **vehicle** | [VehicleDescriptor](#VehicleDescriptor) | opcional | Información adicional sobre el vehículo con el cual se está realizando este viaje. |
 | **stop_time_update** | [StopTimeUpdate](#StopTimeUpdate) | repetido | Las actualizaciones de StopTimes para el viaje (futuras, como las predicciones, y, en algunos casos, pasadas, es decir, aquellas que ya ocurrieron). Las actualizaciones deben ordenarse por secuencia de parada y deben aplicarse a todas las siguientes paradas del viaje hasta la próxima especificada. |
-| **timestamp** | [uint64](https://developers.google.com/protocol-buffers/docs/proto#scalar) | opcional | Momento en el que se midió el progreso en tiempo real del vehículo. En tiempo de POSIX (es decir, la cantidad de segundos desde el 1.° de enero de 1970 00:00:00 UTC). |
+| **timestamp** | [uint64](https://developers.google.com/protocol-buffers/docs/proto#scalar) | opcional | Momento en el que se midió el progreso en tiempo real del vehículo. En POSIX time (es decir, la cantidad de segundos desde el 1 de enero de 1970 00:00:00 UTC). |
 
 ## _mensaje_ StopTimeEvent
 
@@ -125,21 +126,21 @@ Información de horarios para un único evento previsto (sea la llegada o la sal
 *   La demora (delay) debe usarse cuando la predicción se realiza con relación a una programación existente en GTFS.
 *   El tiempo (time) debe darse aunque no haya una programación prevista. Si se especifican tanto el tiempo como la demora, el tiempo será prioritario (aunque, por lo general, el tiempo, si se otorga para un viaje programado, debe ser igual al tiempo programado en GTFS + la demora).
 
-La incertidumbre se aplica de la misma forma tanto al tiempo como a la demora. La incertidumbre especifica el error esperado en una demora real (pero ten en cuenta, que todavía no definimos su significado estadístico preciso). Es posible que la incertidumbre sea 0, por ejemplo, para los trenes que funcionan con un control de horarios por computadora.
+La incertidumbre se aplica de la misma forma tanto al tiempo como a la demora. La incertidumbre especifica el error esperado en una demora real (pero ten en cuenta, que todavía no definimos su significado estadístico concreto). Es posible que la incertidumbre sea 0, por ejemplo, para los trenes que funcionan con un control de horarios por computadora.
 
 ### Campos
 
 | _**Nombre del campo**_ | _**Tipo**_ | _**Cardinalidad**_ | _**Descripción**_ |
 |------------------------|------------|--------------------|-------------------|
 | **delay** | [int32](https://developers.google.com/protocol-buffers/docs/proto#scalar) | opcional | La demora (en segundos) puede ser positiva (significa que el vehículo está retrasado) o negativa (significa que el vehículo está adelantado). Una demora de 0 significa que el vehículo está yendo a tiempo. |
-| **time** | [int64](https://developers.google.com/protocol-buffers/docs/proto#scalar) | opcional | Evento como tiempo absoluto. En tiempo de POSIX (es decir, la cantidad de segundos desde el 1.° de enero de 1970 00:00:00 UTC). |
+| **time** | [int64](https://developers.google.com/protocol-buffers/docs/proto#scalar) | opcional | Evento como tiempo absoluto. En POSIX time (es decir, la cantidad de segundos desde el 1 de enero de 1970 00:00:00 UTC). |
 | **uncertainty** | [int32](https://developers.google.com/protocol-buffers/docs/proto#scalar) | opcional | Si se omite la incertidumbre, se interpreta como desconocida. Para especificar una predicción completamente certera, establece la incertidumbre en 0. |
 
 ## _mensaje_ StopTimeUpdate
 
 La actualización en tiempo real para los eventos de llegada o de salida para una determinada parada de un viaje. Consulta el debate general de las actualizaciones de tiempos de parada en la documentación de [TripDescriptor](#TripDescriptor) y [del tipo de feed de actualizaciones de viaje](./trip-updates).
 
-Las actualizaciones se pueden proporcionar tanto para eventos pasados como futuros. El productor tiene permitido, aunque no está obligado, a desestimar los eventos pasados.
+Las actualizaciones se pueden proporcionar tanto para eventos pasados como futuros. El productor tiene permitido, aunque no está obligado a, desestimar los eventos pasados.
  La actualización está vinculada a una parada específica sea a través de stop_sequence o de stop_id, de manera que uno de estos campos debe definirse, necesariamente.
 
 ### Campos
@@ -178,7 +179,7 @@ Información de posicionamiento en tiempo real para un vehículo dado
 | **current_stop_sequence** | [uint32](https://developers.google.com/protocol-buffers/docs/proto#scalar) | opcional | El índice de la secuencia de parada de la parada actual. El significado de current_stop_sequence (es decir, la parada a la que hace referencia) está determinado por current_status. Si falta el valor en current_status, se asume IN_TRANSIT_TO. |
 | **stop_id** | [string](https://developers.google.com/protocol-buffers/docs/proto#scalar) | opcional | Identifica la parada actual. El valor debe ser el mismo que el de stops.txt en el feed GTFS correspondiente. |
 | **current_status** | [VehicleStopStatus](#VehicleStopStatus) | opcional | El estado exacto del vehículo con respecto a la parada actual. Se ignora si falta el valor en current_stop_sequence. |
-| **timestamp** | [uint64](https://developers.google.com/protocol-buffers/docs/proto#scalar) | opcional | Momento en el cual se midió la posición del vehículo. En tiempo de POSIX (es decir, la cantidad de segundos desde el 1.° de enero de 1970 00:00:00 UTC). |
+| **timestamp** | [uint64](https://developers.google.com/protocol-buffers/docs/proto#scalar) | opcional | Momento en el cual se midió la posición del vehículo. En POSIX time (es decir, la cantidad de segundos desde el 1 de enero de 1970 00:00:00 UTC). |
 | **congestion_level** | [CongestionLevel](#CongestionLevel) | opcional |
 
 ## _enum._ VehicleStopStatus
@@ -193,7 +194,7 @@ Información de posicionamiento en tiempo real para un vehículo dado
 
 ## _enum._ CongestionLevel
 
-El nivel de congestión que está afectando al vehículo.
+El nivel de tráfico que está afectando al vehículo.
 
 ### Valores
 
@@ -268,8 +269,8 @@ Un intervalo de tiempo. El intervalo se considera activo `t` si `t` es mayor o i
 
 | _**Nombre del campo**_ | _**Tipo**_ | _**Cardinalidad**_ | _**Descripción**_ |
 |------------------------|------------|--------------------|-------------------|
-| **start** | [uint64](https://developers.google.com/protocol-buffers/docs/proto#scalar) | opcional | Hora de inicio, en tiempo de POSIX (es decir, la cantidad de segundos desde el 1.° de enero de 1970 00:00:00 UTC). Si falta esta información, el intervalo comienza con el valor infinito negativo. |
-| **end** | [uint64](https://developers.google.com/protocol-buffers/docs/proto#scalar) | opcional | Hora de finalización, en tiempo de POSIX (es decir, la cantidad de segundos desde el 1.° de enero de 1970 00:00:00 UTC). Si falta esta información, el intervalo finaliza con el valor infinito positivo. |
+| **start** | [uint64](https://developers.google.com/protocol-buffers/docs/proto#scalar) | opcional | Hora de inicio, en POSIX time (es decir, la cantidad de segundos desde el 1 de enero de 1970 00:00:00 UTC). Si falta esta información, el intervalo comienza con el valor infinito negativo. |
+| **end** | [uint64](https://developers.google.com/protocol-buffers/docs/proto#scalar) | opcional | Hora de finalización, en POSIX time (es decir, la cantidad de segundos desde el 1 de enero de 1970 00:00:00 UTC). Si falta esta información, el intervalo finaliza con el valor infinito positivo. |
 
 ## _mensaje_ Position
 
@@ -341,7 +342,7 @@ Un selector para una entidad en un feed GTFS. Los valores de los campos deben co
 
 ## _mensaje_ TranslatedString
 
-Un mensaje internacionalizado que contiene versiones por idioma de un fragmento de texto o una URL. Se seleccionará una de las cadenas de un mensaje. La resolución se realiza de la siguiente manera: si el idioma de la IU coincide con el código de idioma de una traducción, se elije la primera traducción coincidente. Si un idioma de IU predetermiando (por ejemplo, inglés) coincide con el código de idioma de una traducción, se elije la primera traducción coincidente. Si alguna traducción tiene un código de idioma no especificado, se elija esa traducción.
+Un mensaje internacionalizado que contiene versiones por idioma de un fragmento de texto o una URL. Se seleccionará una de las cadenas de un mensaje. La resolución se realiza de la siguiente manera: si el idioma de la UI coincide con el código de idioma de una traducción, se elije la primera traducción coincidente. Si un idioma de UI predetermiando (por ejemplo, inglés) coincide con el código de idioma de una traducción, se elije la primera traducción coincidente. Si alguna traducción tiene un código de idioma no especificado, se elija esa traducción.
 
 ### Campos
 
