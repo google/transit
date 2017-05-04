@@ -233,7 +233,8 @@ File: **Required**
 |   |  | * **0** - Times are considered approximate. |  |
 |   |  | * **1** - Times are considered exact. |  |
 |   |  | For stop-time entries without specified arrival and departure times, feed consumers must interpolate arrival and departure times. Feed producers may optionally indicate that such an entry is not a timepoint (value=0) but it is an error to mark a entry as a timepoint (value=1) without specifying arrival and departure times. |  |
-|  vehicle_id | Optional | The **vehicle_id** field contains an ID of the vehicle used for the trip |
+|  vehicle_id | Optional | The **vehicle_id** field contains an ID that identifies a vehicle or set of vehicles on a trip.|
+
 ### calendar.txt
 
 File: **Required**
