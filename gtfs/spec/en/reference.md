@@ -174,6 +174,7 @@ File: **Required**
 |  bikes_allowed | Optional | 0 (or empty) - indicates that there is no bike information for the trip |
 |   |  | * **1** - indicates that the vehicle being used on this particular trip can accommodate at least one bicycle |
 |   |  | * **2** - indicates that no bicycles are allowed on this trip |
+|  vehicle_id | Optional | The **vehicle_id** field contains an ID that identifies a vehicle or set of vehicles on a trip.|
 
 #### Example showing blocks and service day
 
