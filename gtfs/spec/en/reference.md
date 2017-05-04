@@ -174,7 +174,6 @@ File: **Required**
 |  bikes_allowed | Optional | 0 (or empty) - indicates that there is no bike information for the trip |
 |   |  | * **1** - indicates that the vehicle being used on this particular trip can accommodate at least one bicycle |
 |   |  | * **2** - indicates that no bicycles are allowed on this trip |
-|  vehicle_id | Optional | The **vehicle_id** field contains an ID of the vehicle used for the trip |
 
 #### Example showing blocks and service day
 
@@ -234,7 +233,7 @@ File: **Required**
 |   |  | * **0** - Times are considered approximate. |  |
 |   |  | * **1** - Times are considered exact. |  |
 |   |  | For stop-time entries without specified arrival and departure times, feed consumers must interpolate arrival and departure times. Feed producers may optionally indicate that such an entry is not a timepoint (value=0) but it is an error to mark a entry as a timepoint (value=1) without specifying arrival and departure times. |  |
-
+|  vehicle_id | Optional | The **vehicle_id** field contains an ID of the vehicle used for the trip |
 ### calendar.txt
 
 File: **Required**
