@@ -86,6 +86,9 @@ File: **Required**
 |  agency_phone | Optional | The **agency_phone field** contains a single voice telephone number for the specified agency. This field is a string value that presents the telephone number as typical for the agency's service area. It can and should contain punctuation marks to group the digits of the number. Dialable text (for example, TriMet's "503-238-RIDE") is permitted, but the field must not contain any other descriptive text. |
 |  agency_fare_url | Optional | The **agency_fare_url** specifies the URL of a web page that allows a rider to purchase tickets or other fare instruments for that agency online. The value must be a fully qualified URL that includes **http**:// or **https**://, and any special characters in the URL must be correctly escaped. See http://www.w3.org/Addressing/URL/4_URI_Recommentations.html for a description of how to create fully qualified URL values. |
 |  agency_email | Optional | Contains a single valid email address actively monitored by the agency’s customer service department. This email address will be considered a direct contact point where transit riders can reach a customer service representative at the agency. |
+| block_transfer_default | Optional | Specifies whether in-seat transfers are allowed by default for the agency (see **block_id** field in [trips.txt](#tripstxt)). Overriding parameters are specified in [transfers.txt](#transferstxt).|
+ |   |  |* **0** or **(empty)** - In-seat transfers are allowed unless overriden. This is also the default if the field is not provided. |
+ |   |  |* **1** - In-seat transfers are disallowed unless overriden. |
 
 ### stops.txt
 
@@ -166,7 +169,7 @@ File: **Required**
 |   |  | * `trip_id,...,trip_headsign,direction_id` |
 |   |  | * `1234,...,to Airport,0` |
 |   |  | * `1505,...,to Downtown,1` |
-|  block_id | Optional | The **block_id** field identifies the block to which the trip belongs. A block consists of a single trip or many sequential trips made using the same vehicle, defined by shared service day and block_id. A block_id can have trips with different service days, making distinct blocks. (See [example below](#example-showing-blocks-and-service-day)) |
+|  block_id | Optional | The **block_id** field identifies the block to which the trip belongs. A block consists of two or more sequential trips made using the same vehicle. The **block_id** must be referenced by two or more trips in trips.txt. The **block_transfer_default** field of [agency.txt](#agencytxt) specifies if passenger may transfer from one trip to the next just by staying in the vehicle (an "in-seat transfer") for an agency. [transfers.txt](#transferstxt) specifies whether in-seat transfers are allowed on at specific stops and on specific routes and trips. |
 |  shape_id | Optional | The **shape_id** field contains an ID that defines a shape for the trip. This value is referenced from the [shapes.txt](#shapestxt) file. The shapes.txt file allows you to define how a line should be drawn on the map to represent a trip. |
 |  wheelchair_accessible | Optional | * **0** (or empty) - indicates that there is no accessibility information for the trip |
 |   |  | * **1** - indicates that the vehicle being used on this particular trip can accommodate at least one rider in a wheelchair |
@@ -405,13 +408,34 @@ Trip planners normally calculate transfer points based on the relative proximity
 |  ------ | ------ | ------ |
 |  from_stop_id | **Required** | The **from_stop_id** field contains a stop ID that identifies a stop or station where a connection between routes begins. Stop IDs are referenced from the [stops.txt](#stopstxt) file. If the stop ID refers to a station that contains multiple stops, this transfer rule applies to all stops in that station. |
 |  to_stop_id | **Required** | The **to_stop_id** field contains a stop ID that identifies a stop or station where a connection between routes ends. Stop IDs are referenced from the [stops.txt](#stopstxt) file. If the stop ID refers to a station that contains multiple stops, this transfer rule applies to all stops in that station. |
+|  from_route_id | **Optional** | The from_route_id field can contain a route_id (as specified by [routes.txt](#routestxt)), reducing the scope to which the given transfer applies. If from_route_id is specified, the transfer will only apply to the arriving trip with the given route id, at the given from_stop_id.  |
+|  to_route_id | **Optional** | The to_route_id field can contain a route_id (as specified by [routes.txt](#routestxt)), reducing the scope to which the given transfer applies. If to_route_id is specified, the transfer will only apply to the departing trip with given route id, at the given to_stop_id. |
+|  from_trip_id | **Optional** | The from_trip_id and to_trip_id fields can contain a trip_id, as specified by [trips.txt](#tripstxt). If from_trip_id is given, from_route_id is ignored. If from_trip_id is specified, the transfer will only apply to the arriving trip with the given trip id, at the given from_stop_id. |
+|  to_trip_id | **Optional** | The to_trip_id field can contain a trip_id, as specified by [trips.txt](#tripstxt). If to_trip_id is given, to_route_id is ignored. If to_trip_id is specified, the transfer will only apply to the departing trip with the given trip id, at the given to_stop_id.  |
 |  transfer_type | **Required** | The **transfer_type** field specifies the type of connection for the specified (from_stop_id, to_stop_id) pair. Valid values for this field are: |
 |   |  | * **0** or **(empty)** - This is a recommended transfer point between two routes. |
-|   |  | * **1** - This is a timed transfer point between two routes. The departing vehicle is expected to wait for the arriving one, with sufficient time for a passenger to transfer between routes. |
+|   |  | * **1** - This is a timed transfer point between two vehicles. The departing vehicle is expected to wait for the arriving one, with sufficient time for a passenger to transfer between routes. |
 |   |  | * **2** - This transfer requires a minimum amount of time between arrival and departure to ensure a connection. The time required to transfer is specified by **min_transfer_time**. |
-|   |  | * **3** - Transfers are not possible between routes at this location. |
+|   |  | * **3** - Transfers are not possible. |
+|   |  | * **4** - Passengers can transfer from one route to another by staying onboard the same vehicle (an "in-seat transfer") in cases where sequential trips are made by the same vehicle (same **block_id**).  In-seat transfer between these two stops / routes / trips is allowed. |
+|   |  | * **5** - In-seat transfers are not allowed between sequential trips with the same **block_id**. The passenger must alight from the vehicle and re-board. |
 |  min_transfer_time | Optional | When a connection between routes requires an amount of time between arrival and departure (transfer_type=2), the **min_transfer_time** field defines the amount of time that must be available in an itinerary to permit a transfer between routes at these stops. The min_transfer_time must be sufficient to permit a typical rider to move between the two stops, including buffer time to allow for schedule variance on each route. |
-|   |  | The min_transfer_time value must be entered in seconds, and must be a non-negative integer. |
+|   |  | The **min_transfer_time** value must be entered in seconds, and must be a non-negative integer. |
+
+**Specificity of a transfer**
+
+Some transfers are more specific than others. The "specificity" of a transfer is defined thus in order to provide a ranking mechanism that determines when a transfer applies.
+
+The specificity of the source of the transfer is 0 if only from_stop_id is given, 1 if **from_route_id** is specified, and 2 if **from_trip_id** is specified. The same applies for target: 0 if only **to_stop_id** is given, 1 if **to_route_id** is specified, and 2 if **to_trip_id** is specified. The sum of these 2 values gives the specificity of the transfer, between 0 and 4 inclusive. For a given ordered pair of arriving trip and departing trip, the transfer with the greatest specificity that applies between these 2 trips is chosen. So for any pair of trips, there should NOT be two transfers with equally maximal specificity that could apply.
+
+Example of an ambiguous rule:
+
+| from_stop_id | to_stop_id | from_route_id | to_route_id | transfer_type |
+| --- | --- | --- | --- | --- |
+| stopFrom | stopTo | routeFrom |  | 0 |
+| stopFrom | stopTo |  | routeTo | 1 |
+
+These two transfers both have a specificity of 1. But for transfers between a trip with **route_id** routeFrom arriving at stop stopFrom, to a trip with **route_id** routeTo arriving at stop stopTo, either of these two rules can apply.
 
 ### feed_info.txt
 
