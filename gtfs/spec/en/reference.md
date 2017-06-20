@@ -164,8 +164,8 @@ File: **Required**
 |   |  | * 1 - travel in the opposite direction (e.g. inbound travel) |
 |   |  | For example, you could use the *trip_headsign* and *direction_id* fields together to assign a name to travel in each direction for a set of trips. A [trips.txt](#tripstxt) file could contain these rows for use in time tables: |
 |   |  | * `trip_id,...,trip_headsign,direction_id` |
-|   |  | * `1234,...,to Airport,0` |
-|   |  | * `1505,...,to Downtown,1` |
+|   |  | * `1234,...,Airport,0` |
+|   |  | * `1505,...,Downtown,1` |
 |  block_id | Optional | The **block_id** field identifies the block to which the trip belongs. A block consists of a single trip or many sequential trips made using the same vehicle, defined by shared service day and block_id. A block_id can have trips with different service days, making distinct blocks. (See [example below](#example-showing-blocks-and-service-day)) |
 |  shape_id | Optional | The **shape_id** field contains an ID that defines a shape for the trip. This value is referenced from the [shapes.txt](#shapestxt) file. The shapes.txt file allows you to define how a line should be drawn on the map to represent a trip. |
 |  wheelchair_accessible | Optional | * **0** (or empty) - indicates that there is no accessibility information for the trip |
