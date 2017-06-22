@@ -406,7 +406,7 @@ Trip planners normally calculate transfer points based on the relative proximity
 |  from_stop_id | **Required** | The **from_stop_id** field contains a stop ID that identifies a stop or station where a connection between routes begins. Stop IDs are referenced from the [stops.txt](#stopstxt) file. If the stop ID refers to a station that contains multiple stops, this transfer rule applies to all stops in that station. |
 |  to_stop_id | **Required** | The **to_stop_id** field contains a stop ID that identifies a stop or station where a connection between routes ends. Stop IDs are referenced from the [stops.txt](#stopstxt) file. If the stop ID refers to a station that contains multiple stops, this transfer rule applies to all stops in that station. |
 |  transfer_type | **Required** | The **transfer_type** field specifies the type of connection for the specified (from_stop_id, to_stop_id) pair. Valid values for this field are: |
-|   |  | * **0** or **(empty)** - This is a recommended transfer point between two routes. |
+|   |  | * **0** or **(empty)** - This is a recommended transfer point between routes. |
 |   |  | * **1** - This is a timed transfer point between two routes. The departing vehicle is expected to wait for the arriving one, with sufficient time for a passenger to transfer between routes. |
 |   |  | * **2** - This transfer requires a minimum amount of time between arrival and departure to ensure a connection. The time required to transfer is specified by **min_transfer_time**. |
 |   |  | * **3** - Transfers are not possible between routes at this location. |
