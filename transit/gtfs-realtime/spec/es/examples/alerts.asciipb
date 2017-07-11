@@ -1,0 +1,72 @@
+# Información del encabezado
+header {
+  # Versión de la especificación de velocidad. Actualmente "1.0".
+  gtfs_realtime_version: "1.0"
+
+  # Determina si el conjunto de datos se completó o tiene un incremento gradual.
+  incrementality: FULL_DATASET
+
+  # La hora en la que se generó el conjunto de datos en el servidor
+  # para determinar la secuencia de feeds de alerta.
+  timestamp: 1284457468
+}
+# Se pueden incluir varias entidades en el feed.
+entity {
+  # Identificador único para la entidad
+  id: "0"
+
+  # "Tipo" de la entidad
+  alert {
+    # Se pueden definir varios períodos cuando la alerta está activa.
+    active_period {
+      # Hora de inicio en formato epoch POSIX
+      start: 1284457468
+      # Hora de fin en formato epoch POSIX
+      end: 1284468072
+    }
+    # Selecciona qué entidades GTFS serán afectadas.
+    informed_entity {
+      # Parámetros válidos: agency_id, route_id, route_type,
+      # stop_id, viaje (consultar TripDescriptor)
+      route_id: "219"
+    }
+    # Se pueden entregar selectores múltiples (informed_entity).
+    informed_entity {
+      stop_id: "16230"
+    }
+
+    # Causa de la alerta: consultar gtfs-realtime.proto para valores válidos
+    cause: CONSTRUCTION
+    # Efecto de la alerta: consultar gtfs-realtime.proto para valores reales
+    effect: DETOUR
+
+    # La URL dada proporciona información adicional.
+    url {
+      # Varios idiomas/traducciones compatibles
+      translation {
+        # La página está alojada fuera de Google (en el proveedor o la empresa, etc.).
+        text: "http://www.sometransitagency/alerts"
+        language: "es"
+      }
+    }
+
+    # El encabezado para la alerta será destacado.
+    header_text {
+      # Varios idiomas o traducciones son compatibles.
+      translation {
+        text: "La parada en Elm street está cerrada, detenerse temporalmente en Oak street"
+        language: "es"
+      }
+    }
+
+    # Descripción de la alerta. Información adicional al texto del encabezado.
+    description_text {
+      # Varios idiomas o traducciones son compatibles.
+      translation {
+        text: "Debido a una construcción en Elm street, la parada está cerrada. La parada temporal se puede encontrar a 300 metros al norte de Oak street."
+        language: "es"
+      }
+    }
+  }
+}
+

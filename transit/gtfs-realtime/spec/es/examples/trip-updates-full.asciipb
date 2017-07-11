@@ -1,0 +1,79 @@
+# Información del encabezado
+header {
+  # Especificación de la versión de la velocidad. La versión "1.0" actual
+  gtfs_realtime_version: "1.0"
+  # determina si el conjunto de datos se completó o continúa creciendo
+  incrementality: FULL_DATASET
+  # en el momento en el que se generó en el servidor.
+  timestamp: 1284457468
+}
+
+# Se pueden incluir varias entidades en el
+entity {
+  # identificador único del feed correspondiente a la entidad
+  id: "simple-trip"
+
+  # "tipo" de la entidad.
+  trip_update {
+    trip {
+      # Selecciona qué entidad GTFS (viaje) se verá afectada.
+      trip_id: "trip-1"
+    }
+    # Actualización de la información del programa
+    stop_time_update {
+      # Se selecciona qué parada se ve afectada
+      stop_sequence: 3
+      # para que el vehículo llegue
+      arrival {
+        # cinco segundos tarde.
+        delay: 5
+      }
+    }
+    # La demora de este vehículo se extiende a las siguientes paradas.
+
+    # Próxima actualización de la información acerca del programa del vehículo
+    stop_time_update {
+      # según el campo stop_sequence. Se actualizará
+      stop_sequence: 8
+      # el horario de llegada original del vehículo (programado) con una
+      arrival {
+        # demora de un segundo.
+        delay: 1
+      }
+    }
+    # ...Asimismo, la demora se extiende a las siguientes paradas.
+
+    # Próxima actualización de la información acerca del programa del vehículo
+    stop_time_update {
+      # según el campo stop_sequence. Se actualizará el horario de llegada del vehículo
+      stop_sequence: 10
+      # con la demora predeterminada de cero segundos (a tiempo) y se extenderá esta actualización
+      # al resto de las paradas del vehículo.
+    }
+  }
+}
+
+# Segunda entidad con información acerca de la actualización de otro viaje
+entity {
+  id: "3"
+  trip_update {
+    trip {
+      # En función de su frecuencia, los viajes se definen según el
+      # trip_id de la especificación GTFS y el campo
+      trip_id: "frequency-expanded-trip"
+      # start_time
+      start_time: "11:15:35"
+    }
+    stop_time_update {
+      stop_sequence: 1
+      arrival {
+        # Una demora negativa se produce cuando el vehículo se adelanta dos segundos según lo establecido en el programa.
+        delay: -2
+      }
+    }
+    stop_time_update {
+      stop_sequence: 9
+    }
+  }
+}
+

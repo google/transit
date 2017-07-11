@@ -1,0 +1,72 @@
+# header information
+header {
+  # version of speed specification. Currently "1.0"
+  gtfs_realtime_version: "1.0"
+
+  # determines whether dataset is incremental or full
+  incrementality: FULL_DATASET
+
+  # the time where this dataset was generated on server
+  # for determining the sequence of alert feeds
+  timestamp: 1284457468
+}
+# multiple entities can be included in the feed
+entity {
+  # unique identifier for the entity
+  id: "0"
+
+  # "type" of the entity
+  alert {
+    # multiple periods can be defined when alert is active
+    active_period {
+      # start time in POSIX epoch format
+      start: 1284457468
+      # end time in POSIX epoch format
+      end: 1284468072
+    }
+    # selects which GTFS entities will be affected
+    informed_entity {
+      # valid parameters: 
+      # agency_id, route_id, route_type, stop_id, trip (see TripDescriptor)
+      route_id: "219"
+    }
+    # multiple selectors (informed_entity) can be given
+    informed_entity {
+      stop_id: "16230"
+    }
+
+    # cause of the alert - see gtfs-realtime.proto for valid values
+    cause: CONSTRUCTION
+    # effect of the alert - see gtfs-realtime.proto for valid values
+    effect: DETOUR
+
+    # the given url provides additional information
+    url {
+      # multiple languages/translations supported
+      translation {
+        # page hosted outside of Google (at provider/agency, etc.)
+        text: "http://www.sometransitagency/alerts"
+        language: "en"
+      }
+    }
+
+    # header for the alert will be highlighted
+    header_text {
+      # multiple languages/translations supported
+      translation {
+        text: "Stop at Elm street is closed, temporary stop at Oak street"
+        language: "en"
+      }
+    }
+
+    # Alert description. Additional info to the header text
+    description_text {
+      # multiple languages/translations supported
+      translation {
+        text: "Due to construction at Elm street the stop is closed. The temporary stop can be found 300 meters north at Oak street"
+        language: "en"
+      }
+    }
+  }
+}
+
