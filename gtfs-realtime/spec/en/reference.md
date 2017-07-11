@@ -343,6 +343,86 @@ Identification information for the vehicle performing the trip.
 | **id** | [string](https://developers.google.com/protocol-buffers/docs/proto#scalar) | optional | Internal system identification of the vehicle. Should be **unique** per vehicle, and is used for tracking the vehicle as it proceeds through the system. This id should not be made visible to the end-user; for that purpose use the **label** field |
 | **label** | [string](https://developers.google.com/protocol-buffers/docs/proto#scalar) | optional | User visible label, i.e., something that must be shown to the passenger to help identify the correct vehicle. |
 | **license_plate** | [string](https://developers.google.com/protocol-buffers/docs/proto#scalar) | optional | The license plate of the vehicle. |
+| **carriage_descriptor** | [CarriageDescriptor](#message-carriagedescriptor) | repeated | An ordered list of carriage information. |
+
+## _message_ CarriageDescriptor
+
+Information for a carriage that is part of a vehicle.
+
+#### Fields
+
+| _**Field Name**_ | _**Type**_ | _**Cardinality**_ | _**Description**_ |
+|------------------|------------|-------------------|-------------------|
+| **id** | [string](https://developers.google.com/protocol-buffers/docs/proto#scalar) | optional | Internal system identification of the carriage. Should be **unique** per vehicle, and is used for tracking the carriage as it proceeds through the system. This id should not be made visible to the end-user; for that purpose use the **label** field |
+| **label** | [string](https://developers.google.com/protocol-buffers/docs/proto#scalar) | optional | User visible label, i.e., something that can be shown to the passenger to help identify the correct carriage. |
+| _**occupancy_status**_ | _[OccupancyStatus](#enum-occupancystatus)_ | _optional_ |The degree of passenger occupancy of the carriage.<br>**Caution:** this field is still **experimental**, and subject to change. It may be formally adopted in the future.|
+| **wheelchair_accessible** | [WheelchairAccessible](#enum-wheelchairaccessible) | optional | Whether the carriage is wheelchair accessible. |
+| **toilet_facilities** | [ToiletFacilities](#enum-toiletfacilities) | optional | Whether the carriage has toilet facilities onboard. |
+| **wifi_availability** | [WifiAvailability](#enum-wifiavailability) | optional | Whether the carriage has WiFi onboard. |
+| **air_conditioning** | [AirConditioning](#enum-airconditioning) | optional | Whether the carriage is air conditioned. |
+| **bicycles_allowed** | [BicyclesAllowed](#enum-bicyclesallowed) | optional | Whether bicycles are allowed in the carriage. |
+
+## _enum_ WheelchairAccessible
+
+Whether the carriage is wheelchair accessible. The default is UNKNOWN.
+
+#### Values
+
+| _**Value**_ | _**Comment**_ |
+|-------------|---------------|
+| **UNKNOWN** | It is unknown if the carriage is wheelchair accessible. This is the default case. |
+| **WHEELCHAIR_ACCESSIBLE** | The carriage is wheelchair accessible. |
+| **NOT_WHEELCHAIR_ACCESSIBLE** | The carriage is not wheelchair accessible. |
+
+## _enum_ ToiletFacilities
+
+Whether the carriage has toilet facilities onboard. The default is UNKNOWN.
+
+#### Values
+
+| _**Value**_ | _**Comment**_ |
+|-------------|---------------|
+| **UNKNOWN** | It is unknown if the carriage has toilet facilities. This is the default case. |
+| **TOILET_ONBOARD** | The carriage has toilet facilities onboard. |
+| **NO_TOILET_ONBOARD** | The carriage does not have toilet facilities onboard. |
+
+## _enum_ WifiAvailability
+
+Whether the carriage has WiFi onboard. The default is UNKNOWN.
+
+#### Values
+
+| _**Value**_ | _**Comment**_ |
+|-------------|---------------|
+| **UNKNOWN** | It is unknown if the carriage has WiFi. This is the default case. |
+| **FREE_WIFI** | The carriage has free WiFi available for passengers to use. |
+| **PAID_WIFI** | The carriage has WiFi available for passengers to purchase. |
+| **NO_WIFI** | The carriage has no WiFi available for passengers to use. |
+
+## _enum_ AirConditioning
+
+Whether the carriage is air conditioned. The default is UNKNOWN.
+
+#### Values
+
+| _**Value**_ | _**Comment**_ |
+|-------------|---------------|
+| **UNKNOWN** | It is unknown if the carriage is air conditioned. This is the default case. |
+| **AIR_CONDITIONED** | The carriage has air conditioning. |
+| **NOT_AIR_CONDITIONED** | The carriage does not have air conditioning. |
+
+## _enum_ BicyclesAllowed
+
+Whether bicycles are allowed in the carriage. The default is UNKNOWN.
+
+#### Values
+
+| _**Value**_ | _**Comment**_ |
+|-------------|---------------|
+| **UNKNOWN** | It is unknown if the carriage allows bicycles. This is the default case. |
+| **ALLOWED_OUTSIDE_CARRIAGE** | Bicycles are allowed to be transported, but must be stored outside of the carriage. |
+| **ALLOWED_INSIDE_CARRIAGE** | Bicycles are allowed to be transported, and can be stored inside the carriage. |
+| **NOT_ALLOWED** | Bicycles are not allowed to be transported in this carriage. |
 
 ## _message_ EntitySelector
 

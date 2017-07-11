@@ -215,7 +215,7 @@ message TripUpdate {
       NO_DATA = 2;
     }
     optional ScheduleRelationship schedule_relationship = 5
-        [default = SCHEDULED];
+    [default = SCHEDULED];
 
     // The extensions namespace allows 3rd-party developers to extend the
     // GTFS Realtime Specification in order to add and evaluate new features
@@ -573,6 +573,110 @@ message VehicleDescriptor {
 
   // The license plate of the vehicle.
   optional string license_plate = 3;
+
+  // Contains amenities and other information about an individual carriage that
+  // is part of a vehicle.
+  message CarriageDescriptor {
+    // Internal system identification of the carriage. Should be unique per
+    // vehicle, and can be used for tracking the carriage as it proceeds through
+    // the system.
+    optional string id = 1;
+
+    // User visible label that may be shown to the passenger to help identify
+    // the carriage.
+    optional string label = 2;
+
+    // The degree of passenger occupancy of the carriage.
+    optional VehiclePosition.OccupancyStatus occupancy_status = 3;
+
+    // Whether the carriage is wheelchair accessible.
+    enum WheelchairAccessible {
+      // It is unknown if the carriage is wheelchair accessible. This is the
+      // default case.
+      UNKNOWN = 0;
+
+      // The carriage is wheelchair accessible.
+      WHEELCHAIR_ACCESSIBLE = 1;
+
+      // The carriage is not wheelchair accessible.
+      NOT_WHEELCHAIR_ACCESSIBLE = 2;
+    }
+
+    optional WheelchairAccessible wheelchair_accessible = 4 [default = UNKNOWN];
+
+    // Whether the carriage has toilet facilities onboard.
+    enum ToiletFacilities {
+      // It is unknown if the carriage has toilet facilities. This is the
+      // default case.
+      UNKNOWN = 0;
+
+      // The carriage has toilet facilities onboard.
+      TOILET_ONBOARD = 1;
+
+      // The carriage does not have toilet facilities onboard.
+      NO_TOILET_ONBOARD = 2;
+    }
+
+    optional ToiletFacilities toilet_facilities = 5 [default = UNKNOWN];
+
+    // Whether the carriage has WiFi onboard.
+    enum WifiAvailability {
+      // It is unknown if the carriage has WiFi. This is the default case.
+      UNKNOWN = 0;
+
+      // The carriage has free WiFi available for passengers to use.
+      FREE_WIFI = 1;
+
+      // The carriage has WiFi available for passengers to purchase.
+      PAID_WIFI = 2;
+
+      // The carriage has no WiFi available for passengers to use.
+      NO_WIFI = 3;
+    }
+
+    optional WifiAvailability wifi_availability = 6 [default = UNKNOWN];
+
+    // Whether the carriage is air conditioned.
+    enum AirConditioning {
+      // It is unknown if the carriage is air conditioned. This is the default
+      // case.
+      UNKNOWN = 0;
+
+      // The carriage has air conditioning.
+      AIR_CONDITIONED = 1;
+
+      // The carriage does not have air conditioning.
+      NOT_AIR_CONDITIONED = 2;
+    }
+
+    optional AirConditioning air_conditioning = 7 [default = UNKNOWN];
+
+    // Whether bicycles are allowed in the carriage.
+    enum BicyclesAllowed {
+      // It is unknown if the carriage allows bicycles. This is the default
+      // case.
+      UNKNOWN = 0;
+
+      // Bicycles are allowed to be transported, but must be stored outside of
+      // the carriage.
+      ALLOWED_OUTSIDE_CARRIAGE = 1;
+
+      // Bicycles are allowed to be transported, and can be stored inside the
+      // carriage.
+      ALLOWED_INSIDE_CARRIAGE = 2;
+
+      // Bicycles are not allowed to be transported in this carriage.
+      NOT_ALLOWED = 3;
+    }
+
+    optional BicyclesAllowed bicycles_allowed = 8 [default = UNKNOWN];
+  }
+
+  // An ordered set of CarriageDescriptor. The first element maps to the first
+  // carriage a user will encounter if the vehicle is travelling in the
+  // direction of travel. Vehicles with only one compartment/carriage
+  // (e.g. a bus) will only have one CarriageDescriptor.
+  repeated CarriageDescriptor carriage_descriptor = 4;
 
   // The extensions namespace allows 3rd-party developers to extend the
   // GTFS Realtime Specification in order to add and evaluate new features and
