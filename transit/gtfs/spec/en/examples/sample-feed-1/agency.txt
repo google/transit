@@ -1,2 +1,0 @@
-agency_id,agency_name,agency_url,agency_timezone
-DTA,Demo Transit Authority,http://google.com,America/Los_Angeles
