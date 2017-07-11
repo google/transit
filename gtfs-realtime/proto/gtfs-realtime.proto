@@ -670,6 +670,11 @@ message VehicleDescriptor {
     }
 
     optional BicyclesAllowed bicycles_allowed = 8 [default = UNKNOWN];
+
+    // The extensions namespace allows 3rd-party developers to extend the
+    // GTFS Realtime Specification in order to add and evaluate new features and
+    // modifications to the spec.
+    extensions 1000 to 1999;
   }
 
   // An ordered set of CarriageDescriptor. The first element maps to the first
