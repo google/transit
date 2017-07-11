@@ -20,6 +20,13 @@ Version 1.0 of the feed specification is discussed and documented on this site.
             *   [TripDescriptor](#message-tripdescriptor)
                 *   [ScheduleRelationship](#enum-schedulerelationship-1)
             *   [VehicleDescriptor](#message-vehicledescriptor)
+                *   [CarriageDescriptor](#message-carriagedescriptor)
+                    *   [OccupancyStatus](#enum-occupancystatus)
+                    *   [WheelchairAccessible](#enum-wheelchairaccessible)
+                    *   [ToiletFacilities](#enum-toiletfacilities)
+                    *   [WifiAvailability](#enum-wifiavailability)
+                    *   [AirConditioning](#enum-airconditioning)
+                    *   [BicyclesAllowed](#enum-bicyclesallowed)
             *   [StopTimeUpdate](#message-stoptimeupdate)
                 *   [StopTimeEvent](#message-stoptimeevent)
                 *   [ScheduleRelationship](#enum-schedulerelationship)
@@ -208,7 +215,7 @@ Congestion level that is affecting this vehicle.
 
 ## _enum OccupancyStatus_
 
-The degree of passenger occupancy for the vehicle.
+The degree of passenger occupancy for the vehicle or carriage.
 
 **Caution:** this field is still **experimental**, and subject to change. It may be formally adopted in the future.
 
@@ -216,13 +223,13 @@ The degree of passenger occupancy for the vehicle.
 
 | _**Value**_ | _**Comment**_ |
 |-------------|---------------|
-| _**EMPTY**_ | _The vehicle is considered empty by most measures, and has few or no passengers onboard, but is still accepting passengers._ |
-| _**MANY_SEATS_AVAILABLE**_ | _The vehicle has a large percentage of seats available. What percentage of free seats out of the total seats available is to be considered large enough to fall into this category is determined at the discretion of the producer._ |
-| _**FEW_SEATS_AVAILABLE**_ | _The vehicle has a small percentage of seats available. What percentage of free seats out of the total seats available is to be considered small enough to fall into this category is determined at the discretion of the producer._ |
-| _**STANDING_ROOM_ONLY**_ | _The vehicle can currently accomodate only standing passengers._ |
-| _**CRUSHED_STANDING_ROOM_ONLY**_ | _The vehicle can currently accomodate only standing passengers and has limited space for them._ |
-| _**FULL**_ | _The vehicle is considered full by most measures, but may still be allowing passengers to board._ |
-| _**NOT_ACCEPTING_PASSENGERS**_ | _The vehicle can not accept passengers._ |
+| _**EMPTY**_ | _The vehicle/carriage is considered empty by most measures, and has few or no passengers onboard, but is still accepting passengers._ |
+| _**MANY_SEATS_AVAILABLE**_ | _The vehicle/carriage has a large percentage of seats available. What percentage of free seats out of the total seats available is to be considered large enough to fall into this category is determined at the discretion of the producer._ |
+| _**FEW_SEATS_AVAILABLE**_ | _The vehicle/carriage has a small percentage of seats available. What percentage of free seats out of the total seats available is to be considered small enough to fall into this category is determined at the discretion of the producer._ |
+| _**STANDING_ROOM_ONLY**_ | _The vehicle/carriage can currently accommodate only standing passengers._ |
+| _**CRUSHED_STANDING_ROOM_ONLY**_ | _The vehicle/carriage can currently accommodate only standing passengers and has limited space for them._ |
+| _**FULL**_ | _The vehicle/carriage is considered full by most measures, but may still be allowing passengers to board._ |
+| _**NOT_ACCEPTING_PASSENGERS**_ | _The vehicle/carriage can not accept passengers._ |
 
 ## _message_ Alert
 
@@ -340,7 +347,7 @@ Identification information for the vehicle performing the trip.
 
 | _**Field Name**_ | _**Type**_ | _**Cardinality**_ | _**Description**_ |
 |------------------|------------|-------------------|-------------------|
-| **id** | [string](https://developers.google.com/protocol-buffers/docs/proto#scalar) | optional | Internal system identification of the vehicle. Should be **unique** per vehicle, and is used for tracking the vehicle as it proceeds through the system. This id should not be made visible to the end-user; for that purpose use the **label** field |
+| **id** | [string](https://developers.google.com/protocol-buffers/docs/proto#scalar) | optional | Internal system identification of the vehicle. Should be **unique** per vehicle, and is used for tracking the vehicle as it proceeds through the system. This id should not be made visible to the end-user; for that purpose use the **label** field. |
 | **label** | [string](https://developers.google.com/protocol-buffers/docs/proto#scalar) | optional | User visible label, i.e., something that must be shown to the passenger to help identify the correct vehicle. |
 | **license_plate** | [string](https://developers.google.com/protocol-buffers/docs/proto#scalar) | optional | The license plate of the vehicle. |
 | **carriage_descriptor** | [CarriageDescriptor](#message-carriagedescriptor) | repeated | An ordered list of carriage information. |
@@ -353,7 +360,7 @@ Information for a carriage that is part of a vehicle.
 
 | _**Field Name**_ | _**Type**_ | _**Cardinality**_ | _**Description**_ |
 |------------------|------------|-------------------|-------------------|
-| **id** | [string](https://developers.google.com/protocol-buffers/docs/proto#scalar) | optional | Internal system identification of the carriage. Should be **unique** per vehicle, and is used for tracking the carriage as it proceeds through the system. This id should not be made visible to the end-user; for that purpose use the **label** field |
+| **id** | [string](https://developers.google.com/protocol-buffers/docs/proto#scalar) | optional | Internal system identification of the carriage. Should be **unique** per vehicle, and is used for tracking the carriage as it proceeds through the system. This id should not be made visible to the end-user; for that purpose use the **label** field. |
 | **label** | [string](https://developers.google.com/protocol-buffers/docs/proto#scalar) | optional | User visible label, i.e., something that can be shown to the passenger to help identify the correct carriage. |
 | _**occupancy_status**_ | _[OccupancyStatus](#enum-occupancystatus)_ | _optional_ |The degree of passenger occupancy of the carriage.<br>**Caution:** this field is still **experimental**, and subject to change. It may be formally adopted in the future.|
 | **wheelchair_accessible** | [WheelchairAccessible](#enum-wheelchairaccessible) | optional | Whether the carriage is wheelchair accessible. |
