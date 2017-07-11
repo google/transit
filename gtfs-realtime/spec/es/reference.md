@@ -19,6 +19,13 @@ Las especificaciones de la versión 1.0 del feed se abordan y documentan en este
             *   [TripDescriptor](#TripDescriptor)
                 *   [ScheduleRelationship](#ScheduleRelationship_TripDescriptor)
             *   [VehicleDescriptor](#VehicleDescriptor)
+                *   [CarriageDescriptor](#message-carriagedescriptor)
+                    *   [OccupancyStatus](#enum-occupancystatus)
+                    *   [WheelchairAccessible](#enum-wheelchairaccessible)
+                    *   [ToiletFacilities](#enum-toiletfacilities)
+                    *   [WifiAvailability](#enum-wifiavailability)
+                    *   [AirConditioning](#enum-airconditioning)
+                    *   [BicyclesAllowed](#enum-bicyclesallowed)
             *   [StopTimeUpdate](#StopTimeUpdate)
                 *   [StopTimeEvent](#StopTimeEvent)
                 *   [ScheduleRelationship](#ScheduleRelationship_StopTimeUpdate)
@@ -324,6 +331,74 @@ Información de identificación para el vehículo que realiza el viaje.
 | **id** | [string](https://developers.google.com/protocol-buffers/docs/proto#scalar) | opcional | Identificación interna del sistema para el vehículo. Debe ser **única** para cada vehículo y se usa para hacer un seguimiento del vehículo en la medida en que avanza en el sistema. Este identificador debe ser visible para el usuario final; para ello debes usar el campo **label** |
 | **label** | [string](https://developers.google.com/protocol-buffers/docs/proto#scalar) | opcional | Etiqueta visible para el usuario, es decir, que se debe mostrar al pasajero para ayudarlo a identificar el vehículo correcto. |
 | **license_plate** | [string](https://developers.google.com/protocol-buffers/docs/proto#scalar) | opcional | La patente del vehículo. |
+| **carriage_descriptor** | [CarriageDescriptor](#CarriageDescriptor) | repetido | |
+
+## _mensaje_ CarriageDescriptor
+
+### Campos
+
+| _**Nombre del campo**_ | _**Tipo**_ | _**Cardinalidad**_ | _**Descripción**_ |
+|------------------------|------------|--------------------|-------------------|
+| **id** | [string](https://developers.google.com/protocol-buffers/docs/proto#scalar) | opcional | |
+| **label** | [string](https://developers.google.com/protocol-buffers/docs/proto#scalar) | opcional | |
+| **occupancy_status** | [OccupancyStatus](#OccupancyStatus) | opcional | |
+| **wheelchair_accessible** | [WheelchairAccessible](#WheelchairAccessible) | opcional | |
+| **toilet_facilities** | [ToiletFacilities](#ToiletFacilities) | opcional | |
+| **wifi_availability** | [WifiAvailability](#WifiAvailability) | opcional | |
+| **air_conditioning** | [AirConditioning](#AirConditioning) | opcional | |
+| **bicycles_allowed** | [BicyclesAllowed](#BicyclesAllowed) | opcional | |
+
+## _enum._ WheelchairAccessible
+
+### Valores
+
+| _**Valor**_ | _**Comentario**_ |
+|-------------|------------------|
+| **UNKNOWN** | |
+| **WHEELCHAIR_ACCESSIBLE** | |
+| **NOT_WHEELCHAIR_ACCESSIBLE** | |
+
+## _enum._ ToiletFacilities
+
+### Valores
+
+| _**Valor**_ | _**Comentario**_ |
+|-------------|------------------|
+| **UNKNOWN** | |
+| **TOILET_ONBOARD** | |
+| **NO_TOILET_ONBOARD** | |
+
+## _enum._ WifiAvailability
+
+### Valores
+
+| _**Valor**_ | _**Comentario**_ |
+|-------------|------------------|
+| **UNKNOWN** | |
+| **FREE_WIFI** | |
+| **PAID_WIFI** | |
+| **NO_WIFI** | |
+
+## _enum._ AirConditioning
+
+### Valores
+
+| _**Valor**_ | _**Comentario**_ |
+|-------------|------------------|
+| **UNKNOWN** | |
+| **AIR_CONDITIONED** | |
+| **NOT_AIR_CONDITIONED** | |
+
+## _enum._ BicyclesAllowed
+
+### Valores
+
+| _**Valor**_ | _**Comentario**_ |
+|-------------|------------------|
+| **UNKNOWN** | |
+| **ALLOWED_OUTSIDE_CARRIAGE** | |
+| **ALLOWED_INSIDE_CARRIAGE** | |
+| **NOT_ALLOWED** | |
 
 ## _mensaje_ EntitySelector
 
