@@ -11,14 +11,14 @@ Las especificaciones de la versión 1.0 del feed se abordan y documentan en este
 
 ## Índice de elementos
 
-*   [FeedMessage](#mensaje-feedmessage)
-    *   [FeedHeader](#mensaje-feedheader)
-        *   [Incrementality](#enum-incrementality)
-    *   [FeedEntity](#mensaje-feedentity)
-        *   [TripUpdate](#mensaje-tripupdate)
-            *   [TripDescriptor](#mensaje-tripdescriptor)
-                *   [ScheduleRelationship](#enum-schedulerelationship-1)
-            *   [VehicleDescriptor](#mensaje-vehicledescriptor)
+*   [FeedMessage](#FeedMessage)
+    *   [FeedHeader](#FeedHeader)
+        *   [Incrementality](#Incrementality)
+    *   [FeedEntity](#FeedEntity)
+        *   [TripUpdate](#TripUpdate)
+            *   [TripDescriptor](#TripDescriptor)
+                *   [ScheduleRelationship](#ScheduleRelationship_TripDescriptor)
+            *   [VehicleDescriptor](#VehicleDescriptor)
                 *   [CarriageDescriptor](#mensaje-carriagedescriptor)
                     *   [OccupancyStatus](#enum-occupancystatus)
                     *   [WheelchairAccessible](#enum-wheelchairaccessible)
@@ -26,22 +26,22 @@ Las especificaciones de la versión 1.0 del feed se abordan y documentan en este
                     *   [WifiAvailability](#enum-wifiavailability)
                     *   [AirConditioning](#enum-airconditioning)
                     *   [BicyclesAllowed](#enum-bicyclesallowed)
-            *   [StopTimeUpdate](#mensaje-stoptimeupdate)
-                *   [StopTimeEvent](#mensaje-stoptimeevent)
-                *   [ScheduleRelationship](#enum-schedulerelationship)
-        *   [VehiclePosition](#mensaje-vehicleposition)
-            *   [TripDescriptor](#mensaje-tripdescriptor)
-                *   [ScheduleRelationship](#enum-schedulerelationship-1)
-            *   [Position](#mensaje-position)
-        *   [Alert](#mensaje-alert)
-            *   [TimeRange](#mensaje-timerange)
-            *   [EntitySelector](#mensaje-entitySelector)
-                *   [TripDescriptor](#mensaje-tripdescriptor)
-                    *   [ScheduleRelationship](#enum-schedulerelationship-1)
-            *   [Cause](#enum-cause)
-            *   [Effect](#enum-effect)
-            *   [TranslatedString](#mensaje-translatedstring)
-                *   [Translation](#mensaje-translation)
+            *   [StopTimeUpdate](#StopTimeUpdate)
+                *   [StopTimeEvent](#StopTimeEvent)
+                *   [ScheduleRelationship](#ScheduleRelationship_StopTimeUpdate)
+        *   [VehiclePosition](#VehiclePosition)
+            *   [TripDescriptor](#TripDescriptor)
+                *   [ScheduleRelationship](#ScheduleRelationship_TripDescriptor)
+            *   [Position](#Position)
+        *   [Alert](#Alert)
+            *   [TimeRange](#TimeRange)
+            *   [EntitySelector](#EntitySelector)
+                *   [TripDescriptor](#TripDescriptor)
+                    *   [ScheduleRelationship](#ScheduleRelationship_TripDescriptor)
+            *   [Cause](#Cause)
+            *   [Effect](#Effect)
+            *   [TranslatedString](#TranslatedString)
+                *   [Translation](#Translation)
 
 # Elementos
 
@@ -59,8 +59,8 @@ Un feed depende de algunas configuraciones externas:
 
 | _**Nombre del campo**_ | _**Tipo**_ | _**Cardinalidad**_ | _**Descripción**_ |
 |------------------------|------------|--------------------|-------------------|
-| **header** | [FeedHeader](#mensaje-feedheader) | obligatorio | Metadatos sobre este feed y mensaje del feed |
-| **entity** | [FeedEntity](#mensaje-feedentity) | repetido | Contenido del feed |
+| **header** | [FeedHeader](#FeedHeader) | obligatorio | Metadatos sobre este feed y mensaje del feed |
+| **entity** | [FeedEntity](#FeedEntity) | repetido | Contenido del feed |
 
 ## _mensaje_ FeedHeader
 
@@ -71,7 +71,7 @@ Metadatos sobre un feed, incluido en los mensajes del feed
 | _**Nombre del campo**_ | _**Tipo**_ | _**Cardinalidad**_ | _**Descripción**_ |
 |------------------------|------------|--------------------|-------------------|
 | **gtfs_realtime_version** | [string](https://developers.google.com/protocol-buffers/docs/proto#scalar) | obligatorio | Especificación de la versión del feed. La versión actual es 1.0. |
-| **incrementality** | [Incrementality](#enum-incrementality) | opcional |
+| **incrementality** | [Incrementality](#Incrementality) | opcional |
 | **timestamp** | [uint64](https://developers.google.com/protocol-buffers/docs/proto#scalar) | opcional | Esta marca de tiempo identifica el momento en que se ha creado el contenido de este feed (en la hora del servidor). En la hora de POSIX (es decir, cantidad de segundos desde el 1.° de enero de 1970 00:00:00 UTC). Para evitar el desvío de tiempos entre los sistemas que producen y que consumen información en tiempo real, se recomienda derivar la marca de tiempo desde un servidor de tiempo. Es absolutamente aceptable usar servidores de estrato 3 o, incluso, inferiores, porque las diferencias de tiempo de hasta un par de segundos son tolerables. |
 
 ## _enum._ Incrementality
@@ -98,9 +98,9 @@ La definición (o actualización) de una entidad en el feed de transporte públi
 |------------------------|------------|--------------------|-------------------|
 | **id** | [string](https://developers.google.com/protocol-buffers/docs/proto#scalar) | obligatorio | Identificador único del feed para esta entidad. Los identificadores se usan solamente para proporcionar soporte de incrementalidad. Las entidades reales a las que hace referencia el feed deben especificarse mediante selectores explícitos (ver EntitySelector más adelante para obtener más información). |
 | **is_deleted** | [bool](https://developers.google.com/protocol-buffers/docs/proto#scalar) | opcional | Establece si esta entidad debe eliminarse. Es relevante solo para las búsquedas incrementales. |
-| **trip_update** | [TripUpdate](#mensaje-tripupdate) | opcional | Datos sobre las demoras de salida en tiempo real de un viaje. |
-| **vehicle** | [VehiclePosition](#mensaje-vehicleposition) | opcional | Datos sobre la posición en tiempo real de un vehículo. |
-| **alert** | [Alert](#mensaje-alert) | opcional | Datos sobre las alertas en tiempo real. |
+| **trip_update** | [TripUpdate](#TripUpdate) | opcional | Datos sobre las demoras de salida en tiempo real de un viaje. |
+| **vehicle** | [VehiclePosition](#VehiclePosition) | opcional | Datos sobre la posición en tiempo real de un vehículo. |
+| **alert** | [Alert](#Alert) | opcional | Datos sobre las alertas en tiempo real. |
 
 ## _mensaje_ TripUpdate
 
@@ -120,9 +120,9 @@ Ten en cuenta que la actualización puede describir un viaje que ya se ha comple
 
 | _**Nombre del campo**_ | _**Tipo**_ | _**Cardinalidad**_ | _**Descripción**_ |
 |------------------------|------------|--------------------|-------------------|
-| **trip** | [TripDescriptor](#mensaje-tripdescriptor) | obligatorio | El viaje al cual se aplica este mensaje. Puede haber una entidad de TripUpdate, como máximo, para cada instancia de viaje real. Si no hay ninguna, entonces no habrá información de predicciones disponible. *No* significa que el viaje se está realizando de acuerdo con la programación. |
+| **trip** | [TripDescriptor](#TripDescriptor) | obligatorio | El viaje al cual se aplica este mensaje. Puede haber una entidad de TripUpdate, como máximo, para cada instancia de viaje real. Si no hay ninguna, entonces no habrá información de predicciones disponible. *No* significa que el viaje se está realizando de acuerdo con la programación. |
 | **vehicle** | [VehicleDescriptor](#VehicleDescriptor) | opcional | Información adicional sobre el vehículo con el cual se está realizando este viaje. |
-| **stop_time_update** | [StopTimeUpdate](#mensaje-stoptimeupdate) | repetido | Las actualizaciones de StopTimes para el viaje (futuras, como las predicciones, y, en algunos casos, pasadas, es decir, aquellas que ya ocurrieron). Las actualizaciones deben ordenarse por secuencia de parada y deben aplicarse a todas las siguientes paradas del viaje hasta la próxima especificada. |
+| **stop_time_update** | [StopTimeUpdate](#StopTimeUpdate) | repetido | Las actualizaciones de StopTimes para el viaje (futuras, como las predicciones, y, en algunos casos, pasadas, es decir, aquellas que ya ocurrieron). Las actualizaciones deben ordenarse por secuencia de parada y deben aplicarse a todas las siguientes paradas del viaje hasta la próxima especificada. |
 | **timestamp** | [uint64](https://developers.google.com/protocol-buffers/docs/proto#scalar) | opcional | Momento en el que se midió el progreso en tiempo real del vehículo. En tiempo de POSIX (es decir, la cantidad de segundos desde el 1.° de enero de 1970 00:00:00 UTC). |
 
 ## _mensaje_ StopTimeEvent
@@ -144,7 +144,7 @@ La incertidumbre se aplica de la misma forma tanto al tiempo como a la demora. L
 
 ## _mensaje_ StopTimeUpdate
 
-La actualización en tiempo real para los eventos de llegada o de salida para una determinada parada de un viaje. Consulta el debate general de las actualizaciones de tiempos de parada en la documentación de [TripDescriptor](#mensaje-tripdescriptor) y [del tipo de feed de actualizaciones de viaje](./trip-updates).
+La actualización en tiempo real para los eventos de llegada o de salida para una determinada parada de un viaje. Consulta el debate general de las actualizaciones de tiempos de parada en la documentación de [TripDescriptor](#TripDescriptor) y [del tipo de feed de actualizaciones de viaje](./trip-updates).
 
 Las actualizaciones se pueden proporcionar tanto para eventos pasados como futuros. El productor tiene permitido, aunque no está obligado, a desestimar los eventos pasados.
  La actualización está vinculada a una parada específica sea a través de stop_sequence o de stop_id, de manera que uno de estos campos debe definirse, necesariamente.
@@ -155,9 +155,9 @@ Las actualizaciones se pueden proporcionar tanto para eventos pasados como futur
 |------------------------|------------|--------------------|-------------------|
 | **stop_sequence** | [uint32](https://developers.google.com/protocol-buffers/docs/proto#scalar) | opcional | Debe ser la misma que la de stop_times.txt en el feed GTFS correspondiente. |
 | **stop_id** | [string](https://developers.google.com/protocol-buffers/docs/proto#scalar) | opcional | Debe ser el mismo que el de stops.txt en el feed GTFS correspondiente. |
-| **arrival** | [StopTimeEvent](#mensaje-stoptimeevent) | opcional |
-| **departure** | [StopTimeEvent](#mensaje-stoptimeevent) | opcional |
-| **schedule_relationship** | [ScheduleRelationship](#enum-schedulerelationship) | opcional | La relación predeterminada es SCHEDULED. |
+| **arrival** | [StopTimeEvent](#StopTimeEvent) | opcional |
+| **departure** | [StopTimeEvent](#StopTimeEvent) | opcional |
+| **schedule_relationship** | [ScheduleRelationship](#ScheduleRelationship_StopTimeUpdate) | opcional | La relación predeterminada es SCHEDULED. |
 
 ## _enum._ ScheduleRelationship
 
@@ -179,9 +179,9 @@ Información de posicionamiento en tiempo real para un vehículo dado
 
 | _**Nombre del campo**_ | _**Tipo**_ | _**Cardinalidad**_ | _**Descripción**_ |
 |------------------------|------------|--------------------|-------------------|
-| **trip** | [TripDescriptor](#mensaje-tripdescriptor) | opcional | El viaje que está haciendo este vehículo. Puede estar vacío o parcialmente vacío si el vehículo no puede identificarse con una instancia de viaje dada. |
+| **trip** | [TripDescriptor](#TripDescriptor) | opcional | El viaje que está haciendo este vehículo. Puede estar vacío o parcialmente vacío si el vehículo no puede identificarse con una instancia de viaje dada. |
 | **vehicle** | [VehicleDescriptor](#VehicleDescriptor) | opcional | Información adicional sobre el vehículo que está realizando el viaje. Cada entrada debe tener un ID de vehículo **único**. |
-| **position** | [Position](#mensaje-position) | opcional | Posición actual de este vehículo. |
+| **position** | [Position](#Position) | opcional | Posición actual de este vehículo. |
 | **current_stop_sequence** | [uint32](https://developers.google.com/protocol-buffers/docs/proto#scalar) | opcional | El índice de la secuencia de parada de la parada actual. El significado de current_stop_sequence (es decir, la parada a la que hace referencia) está determinado por current_status. Si falta el valor en current_status, se asume IN_TRANSIT_TO. |
 | **stop_id** | [string](https://developers.google.com/protocol-buffers/docs/proto#scalar) | opcional | Identifica la parada actual. El valor debe ser el mismo que el de stops.txt en el feed GTFS correspondiente. |
 | **current_status** | [VehicleStopStatus](#VehicleStopStatus) | opcional | El estado exacto del vehículo con respecto a la parada actual. Se ignora si falta el valor en current_stop_sequence. |
@@ -220,13 +220,13 @@ Una alerta que indica que existe algún tipo de incidente en la red de transport
 
 | _**Nombre del campo**_ | _**Tipo**_ | _**Cardinalidad**_ | _**Descripción**_ |
 |------------------------|------------|--------------------|-------------------|
-| **active_period** | [TimeRange](#mensaje-timerange) | repetido | Tiempo durante el cual debe mostrarse la alerta al usuario. Si falta, la alerta se mostrará durante todo el tiempo que aparezca en el feed. Si se otorgan varios intervalos, la alerta se mostrará durante todos ellos. |
-| **informed_entity** | [EntitySelector](#mensaje-entitySelector) | repetido | Entidades a cuyos usuarios debemos notificar esta alerta. |
-| **cause** | [Cause](#enum-cause) | opcional |
-| **effect** | [Effect](#enum-effect) | opcional |
-| **url** | [TranslatedString](#mensaje-translatedstring) | opcional | La URL que proporciona información adicional sobre la alerta. |
-| **header_text** | [TranslatedString](#mensaje-translatedstring) | opcional | Encabezado de la alerta. Esta cadena de texto sin formato se resaltará, por ejemplo, en negrita. |
-| **description_text** | [TranslatedString](#mensaje-translatedstring) | opcional | Descripción de la alerta. A esta cadena de texto sin formato se le aplicará el formato del cuerpo de la alerta (o se mostrará en una solicitud explícita de "expansión" realizada por el usuario ). La información de la descripción debe completar la información del encabezado. |
+| **active_period** | [TimeRange](#TimeRange) | repetido | Tiempo durante el cual debe mostrarse la alerta al usuario. Si falta, la alerta se mostrará durante todo el tiempo que aparezca en el feed. Si se otorgan varios intervalos, la alerta se mostrará durante todos ellos. |
+| **informed_entity** | [EntitySelector](#EntitySelector) | repetido | Entidades a cuyos usuarios debemos notificar esta alerta. |
+| **cause** | [Cause](#Cause) | opcional |
+| **effect** | [Effect](#Effect) | opcional |
+| **url** | [TranslatedString](#TranslatedString) | opcional | La URL que proporciona información adicional sobre la alerta. |
+| **header_text** | [TranslatedString](#TranslatedString) | opcional | Encabezado de la alerta. Esta cadena de texto sin formato se resaltará, por ejemplo, en negrita. |
+| **description_text** | [TranslatedString](#TranslatedString) | opcional | Descripción de la alerta. A esta cadena de texto sin formato se le aplicará el formato del cuerpo de la alerta (o se mostrará en una solicitud explícita de "expansión" realizada por el usuario ). La información de la descripción debe completar la información del encabezado. |
 
 ## _enum._ Cause
 
@@ -304,7 +304,7 @@ Un descriptor que identifica una instancia de un viaje de GTFS o todas las insta
 | **route_id** | [string](https://developers.google.com/protocol-buffers/docs/proto#scalar) | opcional | El identificador de la ruta de GTFS al que hace referencia este selector. |
 | **start_time** | [string](https://developers.google.com/protocol-buffers/docs/proto#scalar) | opcional | La hora de inicio programada de esta instancia de viaje. Este campo debe proporcionarse solo si el viaje tiene frecuencia extendida en el feed GTFS. El valor debe corresponder precisamente a la hora de inicio especificada para la ruta del feed GTFS más algunos múltiplos de headway_secs. El formato del campo es el mismo que el de GTFS/frequencies.txt/start_time, es decir, 11:15:35 o 25:15:35. |
 | **start_date** | [string](https://developers.google.com/protocol-buffers/docs/proto#scalar) | opcional | La fecha de inicio programada de esta instancia de viaje. Este campo debe proporcionarse para desambiguar los viajes que están tan retrasados que pueden superponerse con un viaje programado para el día siguiente. Por ejemplo, para un tren que sale a las 8:00 y a las 20:00 todos los días, y está 12 horas retrasado, habrá dos viajes distintos a la misma hora. Este campo puede proporcionarse, pero no es obligatorio para las programaciones en las cuales las superposiciones son imposibles, por ejemplo, un servicio que funciona según una programación horaria donde un vehículo que está una hora retrasado deja de considerarse relacionado a la programación. En formato AAAAMMDD. |
-| **schedule_relationship** | [ScheduleRelationship](#enum-schedulerelationship-1) | opcional |
+| **schedule_relationship** | [ScheduleRelationship](#ScheduleRelationship_TripDescriptor) | opcional |
 
 ## _enum._ ScheduleRelationship
 
@@ -411,7 +411,7 @@ Un selector para una entidad en un feed GTFS. Los valores de los campos deben co
 | **agency_id** | [string](https://developers.google.com/protocol-buffers/docs/proto#scalar) | opcional |
 | **route_id** | [string](https://developers.google.com/protocol-buffers/docs/proto#scalar) | opcional |
 | **route_type** | [int32](https://developers.google.com/protocol-buffers/docs/proto#scalar) | opcional |
-| **trip** | [TripDescriptor](#mensaje-tripdescriptor) | opcional |
+| **trip** | [TripDescriptor](#TripDescriptor) | opcional |
 | **stop_id** | [string](https://developers.google.com/protocol-buffers/docs/proto#scalar) | opcional |
 
 ## _mensaje_ TranslatedString
@@ -422,7 +422,7 @@ Un mensaje internacionalizado que contiene versiones por idioma de un fragmento 
 
 | _**Nombre del campo**_ | _**Tipo**_ | _**Cardinalidad**_ | _**Descripción**_ |
 |------------------------|------------|--------------------|-------------------|
-| **translation** | [Translation](#mensaje-translation) | repetido | Se debe proporcionar al menos una traducción. |
+| **translation** | [Translation](#Translation) | repetido | Se debe proporcionar al menos una traducción. |
 
 ## _mensaje_ Translation
 
