@@ -689,10 +689,8 @@ message VehicleDescriptor {
     extensions 1000 to 1999;
   }
 
-  // An ordered set of CarriageDescriptor. The first element maps to the first
-  // carriage a user will encounter if the vehicle is travelling in the
-  // direction of travel. Vehicles with only one compartment/carriage
-  // (e.g. a bus) will only have one CarriageDescriptor.
+  // A set of CarriageDescriptor. Vehicles with only one carriage/compartment
+  // (e.g. a standard bus) will only have one CarriageDescriptor.
   repeated CarriageDescriptor carriage_descriptor = 4;
 
   // The extensions namespace allows 3rd-party developers to extend the
