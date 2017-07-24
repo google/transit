@@ -20,6 +20,13 @@ Version 1.0 of the feed specification is discussed and documented on this site.
             *   [TripDescriptor](#message-tripdescriptor)
                 *   [ScheduleRelationship](#enum-schedulerelationship-1)
             *   [VehicleDescriptor](#message-vehicledescriptor)
+                *   [CarriageDescriptor](#message-carriagedescriptor)
+                    *   [OccupancyStatus](#enum-occupancystatus)
+                    *   [WheelchairAccessible](#enum-wheelchairaccessible)
+                    *   [ToiletFacilities](#enum-toiletfacilities)
+                    *   [WifiAvailability](#enum-wifiavailability)
+                    *   [AirConditioning](#enum-airconditioning)
+                    *   [BicyclesAllowed](#enum-bicyclesallowed)
             *   [StopTimeUpdate](#message-stoptimeupdate)
                 *   [StopTimeEvent](#message-stoptimeevent)
                 *   [ScheduleRelationship](#enum-schedulerelationship)
@@ -27,6 +34,13 @@ Version 1.0 of the feed specification is discussed and documented on this site.
             *   [TripDescriptor](#message-tripdescriptor)
                 *   [ScheduleRelationship](#enum-schedulerelationship-1)
             *   [VehicleDescriptor](#message-vehicledescriptor)
+                *   [CarriageDescriptor](#message-carriagedescriptor)
+                    *   [OccupancyStatus](#enum-occupancystatus)
+                    *   [WheelchairAccessible](#enum-wheelchairaccessible)
+                    *   [ToiletFacilities](#enum-toiletfacilities)
+                    *   [WifiAvailability](#enum-wifiavailability)
+                    *   [AirConditioning](#enum-airconditioning)
+                    *   [BicyclesAllowed](#enum-bicyclesallowed)
             *   [Position](#message-position)
             *   [VehicleStopStatus](#enum-vehiclestopstatus)
             *   [CongestionLevel](#enum-congestionlevel)
@@ -208,7 +222,7 @@ Congestion level that is affecting this vehicle.
 
 ## _enum OccupancyStatus_
 
-The degree of passenger occupancy for the vehicle.
+The degree of passenger occupancy for the vehicle or carriage.
 
 **Caution:** this field is still **experimental**, and subject to change. It may be formally adopted in the future.
 
@@ -216,13 +230,13 @@ The degree of passenger occupancy for the vehicle.
 
 | _**Value**_ | _**Comment**_ |
 |-------------|---------------|
-| _**EMPTY**_ | _The vehicle is considered empty by most measures, and has few or no passengers onboard, but is still accepting passengers._ |
-| _**MANY_SEATS_AVAILABLE**_ | _The vehicle has a large percentage of seats available. What percentage of free seats out of the total seats available is to be considered large enough to fall into this category is determined at the discretion of the producer._ |
-| _**FEW_SEATS_AVAILABLE**_ | _The vehicle has a small percentage of seats available. What percentage of free seats out of the total seats available is to be considered small enough to fall into this category is determined at the discretion of the producer._ |
-| _**STANDING_ROOM_ONLY**_ | _The vehicle can currently accomodate only standing passengers._ |
-| _**CRUSHED_STANDING_ROOM_ONLY**_ | _The vehicle can currently accomodate only standing passengers and has limited space for them._ |
-| _**FULL**_ | _The vehicle is considered full by most measures, but may still be allowing passengers to board._ |
-| _**NOT_ACCEPTING_PASSENGERS**_ | _The vehicle can not accept passengers._ |
+| _**EMPTY**_ | _The vehicle/carriage is considered empty by most measures, and has few or no passengers onboard, but is still accepting passengers._ |
+| _**MANY_SEATS_AVAILABLE**_ | _The vehicle/carriage has a large percentage of seats available. What percentage of free seats out of the total seats available is to be considered large enough to fall into this category is determined at the discretion of the producer._ |
+| _**FEW_SEATS_AVAILABLE**_ | _The vehicle/carriage has a small percentage of seats available. What percentage of free seats out of the total seats available is to be considered small enough to fall into this category is determined at the discretion of the producer._ |
+| _**STANDING_ROOM_ONLY**_ | _The vehicle/carriage can currently accommodate only standing passengers._ |
+| _**CRUSHED_STANDING_ROOM_ONLY**_ | _The vehicle/carriage can currently accommodate only standing passengers and has limited space for them._ |
+| _**FULL**_ | _The vehicle/carriage is considered full by most measures, but may still be allowing passengers to board._ |
+| _**NOT_ACCEPTING_PASSENGERS**_ | _The vehicle/carriage can not accept passengers._ |
 
 ## _message_ Alert
 
@@ -340,9 +354,90 @@ Identification information for the vehicle performing the trip.
 
 | _**Field Name**_ | _**Type**_ | _**Cardinality**_ | _**Description**_ |
 |------------------|------------|-------------------|-------------------|
-| **id** | [string](https://developers.google.com/protocol-buffers/docs/proto#scalar) | optional | Internal system identification of the vehicle. Should be **unique** per vehicle, and is used for tracking the vehicle as it proceeds through the system. This id should not be made visible to the end-user; for that purpose use the **label** field |
+| **id** | [string](https://developers.google.com/protocol-buffers/docs/proto#scalar) | optional | Internal system identification of the vehicle. Should be **unique** per vehicle, and is used for tracking the vehicle as it proceeds through the system. This id should not be made visible to the end-user; for that purpose use the **label** field. |
 | **label** | [string](https://developers.google.com/protocol-buffers/docs/proto#scalar) | optional | User visible label, i.e., something that must be shown to the passenger to help identify the correct vehicle. |
 | **license_plate** | [string](https://developers.google.com/protocol-buffers/docs/proto#scalar) | optional | The license plate of the vehicle. |
+| **carriage_descriptor** | [CarriageDescriptor](#message-carriagedescriptor) | repeated | A set of carriage information. Vehicles with only one carriage/compartment (e.g. a standard bus) will only have one CarriageDescriptor. When there are more than one CarriageInformation, **carriage_sequence** defines the ordering of the carriages. |
+
+## _message_ CarriageDescriptor
+
+Information for a carriage that is part of a vehicle.
+
+#### Fields
+
+| _**Field Name**_ | _**Type**_ | _**Cardinality**_ | _**Description**_ |
+|------------------|------------|-------------------|-------------------|
+| **id** | [string](https://developers.google.com/protocol-buffers/docs/proto#scalar) | optional | Internal system identification of the carriage. Should be **unique** per vehicle, and is used for tracking the carriage as it proceeds through the system. This id should not be made visible to the end-user; for that purpose use the **label** field. |
+| **label** | [string](https://developers.google.com/protocol-buffers/docs/proto#scalar) | optional | User visible label, i.e., something that can be shown to the passenger to help identify the correct carriage. |
+| **carriage_sequence** | [int32](https://developers.google.com/protocol-buffers/docs/proto#scalar) | optional | Identifies the order of this carriage with respect to the other carriages in the set of the vehicle's CarriageDescriptors. The values must be non-negative, and there cannot be duplicate values in the set of CarriageDescriptors. The values must be set such that the lowest value corresponds to the first carriage in the direction of travel, the second-lowest value corresponds to the second carriage in the direction of travel and so forth.|
+| _**occupancy_status**_ | _[OccupancyStatus](#enum-occupancystatus)_ | _optional_ |The degree of passenger occupancy of the carriage.<br>**Caution:** this field is still **experimental**, and subject to change. It may be formally adopted in the future.|
+| **wheelchair_accessible** | [WheelchairAccessible](#enum-wheelchairaccessible) | optional | Whether the carriage is wheelchair accessible. |
+| **toilet_facilities** | [ToiletFacilities](#enum-toiletfacilities) | optional | Whether the carriage has toilet facilities onboard. |
+| **wifi_availability** | [WifiAvailability](#enum-wifiavailability) | optional | Whether the carriage has WiFi onboard. |
+| **air_conditioning** | [AirConditioning](#enum-airconditioning) | optional | Whether the carriage is air conditioned. |
+| **bicycles_allowed** | [BicyclesAllowed](#enum-bicyclesallowed) | optional | Whether bicycles are allowed in the carriage. |
+
+## _enum_ WheelchairAccessible
+
+Whether the carriage is wheelchair accessible. The default is UNKNOWN.
+
+#### Values
+
+| _**Value**_ | _**Comment**_ |
+|-------------|---------------|
+| **UNKNOWN** | It is unknown if the carriage is wheelchair accessible. This is the default case. |
+| **WHEELCHAIR_ACCESSIBLE** | The carriage is wheelchair accessible. |
+| **NOT_WHEELCHAIR_ACCESSIBLE** | The carriage is not wheelchair accessible. |
+
+## _enum_ ToiletFacilities
+
+Whether the carriage has toilet facilities onboard. The default is UNKNOWN.
+
+#### Values
+
+| _**Value**_ | _**Comment**_ |
+|-------------|---------------|
+| **UNKNOWN** | It is unknown if the carriage has toilet facilities. This is the default case. |
+| **TOILET_ONBOARD** | The carriage has toilet facilities onboard. |
+| **NO_TOILET_ONBOARD** | The carriage does not have toilet facilities onboard. |
+
+## _enum_ WifiAvailability
+
+Whether the carriage has WiFi onboard. The default is UNKNOWN.
+
+#### Values
+
+| _**Value**_ | _**Comment**_ |
+|-------------|---------------|
+| **UNKNOWN** | It is unknown if the carriage has WiFi. This is the default case. |
+| **FREE_WIFI** | The carriage has free WiFi available for passengers to use. |
+| **PAID_WIFI** | The carriage has WiFi available for passengers to purchase. |
+| **NO_WIFI** | The carriage has no WiFi available for passengers to use. |
+
+## _enum_ AirConditioning
+
+Whether the carriage is air conditioned. The default is UNKNOWN.
+
+#### Values
+
+| _**Value**_ | _**Comment**_ |
+|-------------|---------------|
+| **UNKNOWN** | It is unknown if the carriage is air conditioned. This is the default case. |
+| **AIR_CONDITIONED** | The carriage has air conditioning. |
+| **NOT_AIR_CONDITIONED** | The carriage does not have air conditioning. |
+
+## _enum_ BicyclesAllowed
+
+Whether bicycles are allowed in the carriage. The default is UNKNOWN.
+
+#### Values
+
+| _**Value**_ | _**Comment**_ |
+|-------------|---------------|
+| **UNKNOWN** | It is unknown if the carriage allows bicycles. This is the default case. |
+| **ALLOWED_OUTSIDE_CARRIAGE** | Bicycles are allowed to be transported, but must be stored outside of the carriage. |
+| **ALLOWED_INSIDE_CARRIAGE** | Bicycles are allowed to be transported, and can be stored inside the carriage. |
+| **NOT_ALLOWED** | Bicycles are not allowed to be transported in this carriage. |
 
 ## _message_ EntitySelector
 

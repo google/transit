@@ -57,3 +57,4 @@ Vehicle descriptor describes a precise physical vehicle and can contain any of t
 *   **ID** - internal system of identification for the vehicle. Should be unique to the vehicle
 *   **Label** - a user visible label - for example the name of a train
 *   **License plate** - the actual license plate of the vehicle
+*   **Carriage descriptor** - an ordered list where each item specifies information about a carriage
