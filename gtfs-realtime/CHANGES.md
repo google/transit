@@ -80,3 +80,4 @@ extend transit_realtime.TripDescriptor {
 |1004|Metra|[William Ashbaugh <w.l.ashbaugh@gmail.com>](mailto:w.l.ashbaugh@gmail.com)|
 |1005|Metro-North Railroad|[John Larsen](mailto:mnrappdev@mnr.org)|
 |1006|realCity|[David Varga](mailto:transit@realcity.io)|http://realcity.io|
+|1007|NSW TrainLink|[Gregory Nicholls](mailto:gregory.nicholls@transport.nsw.gov.au)|[Group discussion](https://groups.google.com/d/msg/gtfs-realtime/G75O1zyQS_Q/VtNmTJvSAwAJ)|
