@@ -78,7 +78,7 @@ The contents of a feed message. Each message in the stream is obtained as a resp
 | _**Field Name**_ | _**Type**_ | _**Required**_ | _**Cardinality**_ | _**Description**_ |
 |------------------|------------|----------------|-------------------|-------------------|
 |**header** | [FeedHeader](#message-feedheader) | Required | One | Metadata about this feed and feed message. |
-|**entity** | [FeedEntity](#message-feedentity) | Required | Many | Contents of the feed. |
+|**entity** | [FeedEntity](#message-feedentity) | Conditionally required | Many | Contents of the feed.  If there is real-time information available for the transit system, this field must be provided.  If this field is empty, consumers should assume there is no real-time information available for the system. |
 
 ## _message_ FeedHeader
 
