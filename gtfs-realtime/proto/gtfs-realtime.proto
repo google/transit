@@ -31,6 +31,10 @@ package transit_realtime;
 // obtained as a response to an appropriate HTTP GET request.
 // A realtime feed is always defined with relation to an existing GTFS feed.
 // All the entity ids are resolved with respect to the GTFS feed.
+// Note that "required" and "optional" as stated in this file refer to Protocol
+// Buffer cardinality, not semantic cardinality.  See reference.md at
+// https://github.com/google/transit/tree/master/gtfs-realtime for field
+// semantic cardinality.
 message FeedMessage {
   // Metadata about this feed and feed message.
   required FeedHeader header = 1;
@@ -47,8 +51,8 @@ message FeedMessage {
 // Metadata about a feed, included in feed messages.
 message FeedHeader {
   // Version of the feed specification.
-  // The current version is 1.0.
-  required string gtfs_realtime_version = 1;
+  // The current version is 2.0.
+  required string gtfs_realtime_version = 2;
 
   // Determines whether the current fetch is incremental.  Currently,
   // DIFFERENTIAL mode is unsupported and behavior is unspecified for feeds
