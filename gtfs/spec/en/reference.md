@@ -445,7 +445,7 @@ However, direct pathways between locations within a station are preferred over i
 |  | | * **-2** - Traversal time is unknown (default) |
 | wheelchair_traversal_time | Optional | The traversal time of the pathway (non-negative) in a wheelchair. |
 |  | | Use -1 for disallowed or -2 for unknown (default) |
-| signposted_as | Optional | The inscription on signposts along the pathway, or empty if inapplicable. This is meant to be shown in the style of "Follow signs **signposted_as**", with "Follows signs" translated to the UI language and **signposted_as** as provided by the feed. |
+| signposted_as | Optional | The inscription on signposts along the pathway, or empty if inapplicable. This is meant to be shown in the style of "Follow signs <**signposted_as**>", with "Follows signs" translated to the UI language and <**signposted_as**> as provided by the feed. |
 | instructions | Optional | Walking instructions for the pathway, such as “Walk downstairs to the station concourse” |
 
 ### feed_info.txt
