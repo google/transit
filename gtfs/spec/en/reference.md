@@ -22,6 +22,7 @@ This document explains the types of files that comprise a GTFS transit feed and 
     -   [shapes.txt](#shapestxt)
     -   [frequencies.txt](#frequenciestxt)
     -   [transfers.txt](#transferstxt)
+    -   [pathways.txt](#pathwaystxt)
     -   [feed\_info.txt](#feed_infotxt)
 
 ## Term Definitions
@@ -50,6 +51,7 @@ This specification defines the following files along with their associated conte
 |  [shapes.txt](#shapestxt)  | Optional | Rules for drawing lines on a map to represent a transit organization's routes. |
 |  [frequencies.txt](#frequenciestxt)  | Optional | Headway (time between trips) for routes with variable frequency of service. |
 |  [transfers.txt](#transferstxt)  | Optional | Rules for making connections at transfer points between routes. |
+|  [pathways.txt](#pathwaystxt)  | Optional | Pedestrian pathways between station locations (stops, entrances) or between stations. |
 |  [feed_info.txt](#feed_infotxt)  | Optional | Additional information about the feed itself, including publisher, version, and expiration information. |
 
 ## File Requirements
@@ -412,6 +414,39 @@ Trip planners normally calculate transfer points based on the relative proximity
 |   |  | * **3** - Transfers are not possible between routes at this location. |
 |  min_transfer_time | Optional | When a connection between routes requires an amount of time between arrival and departure (transfer_type=2), the **min_transfer_time** field defines the amount of time that must be available in an itinerary to permit a transfer between routes at these stops. The min_transfer_time must be sufficient to permit a typical rider to move between the two stops, including buffer time to allow for schedule variance on each route. |
 |   |  | The min_transfer_time value must be entered in seconds, and must be a non-negative integer. |
+
+### pathways.txt
+
+File: **Optional**
+
+Pathways.txt describes pedestrian pathways that directly connect pairs of locations within the same station (intra-station pathways) or pairs of stations (station-to-station pathways).
+Pathways are unidirectional; each pathway describes a connection from one location to another, but not in the opposite direction. The other direction, when available, should be described through a separate pathway.
+
+The list of intra-station pathways specified in pathways.txt must be exhaustive for a specific station.
+Intra-station pathway modelling explicitly requires specifying station entrances (location_type=2)
+When pathways.txt describes any direct pedestrian connection between a pair of locations within the same station, all pathways that connect any other locations within that station directly must be specified.
+Pairs of locations within a station that are not directly connected by an intra-station pathway may be connected indirectly, through a sequence of pathways that connect them to other connected locations within the same station.
+Pairs of locations within a station that are not connected through an intra-station pathway or a sequence of intra-station pathways are presumed to be unconnected within that station. A transit user will be instructed to exit the station and re-enter it in order to transfer from one unconnected location to the other (provided pathways to and from the respective entrances are defined).
+For pairs of locations within a stations that are connected indirectly through multiple possible sequences of pathways, the sequence of pathways with minimal traversal times will be preferred (when traversal times are specified).
+However, direct pathways between locations within a station are preferred over indirect ones, regardless of transfer time(s) a pathway or a sequence of pathways take to traverse.
+
+|  Field Name | Required | Details |
+|  ------ | ------ | ------ |
+| pathway_type | Optional | Type of connection a pathway specifies: |
+|  | | * **1** - Connects a stop/station and its entrance |
+|  | | * **2** - Connects stops/stations for transfers off the streets (tunnel, etc) |
+|  | | * **3** - Connects stops/stations/entrances for transfers on the streets. |
+| from_stop_id | **Required** | stop_id for the start location of the pathway, as defined in stops.txt. |
+|  | | Station-to-station pathways may specify ids of connected stations or locations with stations (for more precise modelling or connections between and within stations). When a station-to-station pathway references a location within a station, all pathways within that station must be modelled. When from_stop_id (or to_stop_id) references a station, the pathway is expanded to apply to all stops within that station. A pathway must link a location within a station to its parent station. |
+| to_stop_id | **Required** | stop_id for the end location for the pathway, as defined in stops.txt |
+|  | | See “from_stop_id” for more information about Station-to-station pathways. |
+| traversal_time | Optional | The typical amount of time it takes a transit user to traverse the path from “from_stop_id” to “to_stop_id”, in seconds. Values with special meaning are: |
+|  | | * **-1** - Disallowed |
+|  | | * **-2** - Traversal time is unknown (default) |
+| wheelchair_traversal_time | Optional | The traversal time of the pathway (non-negative) in a wheelchair. |
+|  | | Use -1 for disallowed or -2 for unknown (default) |
+| signposted_as | Optional | The inscription on signposts along the pathway, or empty if inapplicable. This is meant to be shown in the style of "Follow signs **signposted_as**", with "Follows signs" translated to the UI language and **signposted_as** as provided by the feed. |
+| instructions | Optional | Walking instructions for the pathway, such as “Walk downstairs to the station concourse” |
 
 ### feed_info.txt
 
