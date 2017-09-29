@@ -86,6 +86,7 @@ File: **Required**
 |  agency_phone | Optional | The **agency_phone field** contains a single voice telephone number for the specified agency. This field is a string value that presents the telephone number as typical for the agency's service area. It can and should contain punctuation marks to group the digits of the number. Dialable text (for example, TriMet's "503-238-RIDE") is permitted, but the field must not contain any other descriptive text. |
 |  agency_fare_url | Optional | The **agency_fare_url** specifies the URL of a web page that allows a rider to purchase tickets or other fare instruments for that agency online. The value must be a fully qualified URL that includes **http**:// or **https**://, and any special characters in the URL must be correctly escaped. See http://www.w3.org/Addressing/URL/4_URI_Recommentations.html for a description of how to create fully qualified URL values. |
 |  agency_email | Optional | Contains a single valid email address actively monitored by the agency’s customer service department. This email address will be considered a direct contact point where transit riders can reach a customer service representative at the agency. |
+|  agency_icon_url | Optional | The **agency_icon_url** specifies the URL of the icon that allows a rider to identify an agency visually. The value must be a fully qualified URL that includes **http**:// or **https**://, and any special characters in the URL must be correctly escaped. See http://www.w3.org/Addressing/URL/4_URI_Recommentations.html for a description of how to create fully qualified URL values. |
 
 ### stops.txt
 
@@ -123,6 +124,7 @@ File: **Required**
 |   |  | * **0** (or empty) - the station entrance will inherit its **wheelchair_boarding** value from the parent station, if specified in the parent |  |  |
 |   |  | * **1** - the station entrance is wheelchair accessible (e.g. an elevator is available to platforms if they are not at-grade)  |  |  |
 |   |  | * **2** - there exists no accessible path from the entrance to station platforms |  |  |
+|  stop_icon_url | Optional | The **stop_icon_url** specifies the URL of the icon that allows a rider to identify a location visually, matching the outdoor signage. The value must be a fully qualified URL that includes **http**:// or **https**://, and any special characters in the URL must be correctly escaped. See http://www.w3.org/Addressing/URL/4_URI_Recommentations.html for a description of how to create fully qualified URL values. |
 
 ### routes.txt
 
@@ -147,6 +149,7 @@ File: **Required**
 |  route_url | Optional | The **route_url** field contains the URL of a web page about that particular route. This should be different from the agency_url.  The value must be a fully qualified URL that includes **http**:// or **https**://, and any special characters in the URL must be correctly escaped. See http://www.w3.org/Addressing/URL/4_URI_Recommentations.html for a description of how to create fully qualified URL values. |
 |  route_color | Optional | In systems that have colors assigned to routes, the **route_color** field defines a color that corresponds to a route. The color must be provided as a six-character hexadecimal number, for example, 00FFFF. If no color is specified, the default route color is white (FFFFFF).  The color difference between **route_color** and **route_text_color** should provide sufficient contrast when viewed on a black and white screen. The [W3C Techniques for Accessibility Evaluation And Repair Tools document](https://www.w3.org/TR/AERT#color-contrast) offers a useful algorithm for evaluating color contrast. There are also helpful online tools for choosing contrasting colors, including the [snook.ca Color Contrast Check application](http://snook.ca/technical/colour_contrast/colour.html#fg=33FF33,bg=333333). |
 |  route_text_color | Optional | The route_text_color field can be used to specify a legible color to use for text drawn against a background of route_color. The color must be provided as a six-character hexadecimal number, for example, FFD700. If no color is specified, the default text color is black (000000).  The color difference between **route_color** and **route_text_color** should provide sufficient contrast when viewed on a black and white screen. |
+|  route_icon_url | Optional | The **route_icon_url** specifies the URL of the icon that allows a rider to identify a route visually, sometimes observed as alternative to the *route_short_name*. The value must be a fully qualified URL that includes **http**:// or **https**://, and any special characters in the URL must be correctly escaped. See http://www.w3.org/Addressing/URL/4_URI_Recommentations.html for a description of how to create fully qualified URL values. |
 
 ### trips.txt
 
@@ -174,6 +177,7 @@ File: **Required**
 |  bikes_allowed | Optional | 0 (or empty) - indicates that there is no bike information for the trip |
 |   |  | * **1** - indicates that the vehicle being used on this particular trip can accommodate at least one bicycle |
 |   |  | * **2** - indicates that no bicycles are allowed on this trip |
+|  trip_icon_url | Optional | The **trip_icon_url** specifies the URL of the icon that allows a rider to identify a trip visually, sometimes observed as alternative to the *trip_short_name*. The value must be a fully qualified URL that includes **http**:// or **https**://, and any special characters in the URL must be correctly escaped. See http://www.w3.org/Addressing/URL/4_URI_Recommentations.html for a description of how to create fully qualified URL values. |
 
 #### Example showing blocks and service day
 
@@ -309,6 +313,8 @@ File: **Optional**
 |   |  | * **(empty)** - If this field is empty, unlimited transfers are permitted. |
 |  agency_id | Optional | Required for feeds with multiple agencies defined in the agency.txt file. Each fare attribute must specify an agency_id value to indicate which agency the fare applies to. |
 |  transfer_duration | Optional | The **transfer_duration** field specifies the length of time in seconds before a transfer expires.  When used with a **transfers** value of 0, the **transfer_duration** field indicates how long a ticket is valid for a fare where no transfers are allowed. Unless you intend to use this field to indicate ticket validity, **transfer_duration** should be omitted or empty when **transfers** is set to 0. |
+|  fare_icon_url | Optional | The **fare_icon_url** specifies the URL of the icon that allows a rider to identify a fare visually. The value must be a fully qualified URL that includes **http**:// or **https**://, and any special characters in the URL must be correctly escaped. See http://www.w3.org/Addressing/URL/4_URI_Recommentations.html for a description of how to create fully qualified URL values. |
+
 
 ### fare_rules.txt
 
