@@ -166,7 +166,7 @@ Uncertainty applies equally to both time and delay. The uncertainty roughly spec
 Realtime update for arrival and/or departure events for a given stop on a trip. Please also refer to the general discussion of stop time updates in the [TripDescriptor](#message-tripdescriptor) and [trip updates entities](trip-updates.md) documentation.
 
 Updates can be supplied for both past and future events. The producer is allowed, although not required, to drop past events.
-The update is linked to a specific stop either through stop_sequence or stop_id, so one of these fields must necessarily be set.  If the same stop_id is visited more than once in a trip, then stop_sequence should be provided in all StopTimeUpdates for that stop_id on that trip.
+The update is linked to a specific stop in the corresponding GTFS feed either through stop_sequence or stop_id, so one of these fields must necessarily be set.  If the same stop_id is visited more than once in a trip, then stop_sequence should be provided in all StopTimeUpdates for that stop_id on that trip.
 
 #### Fields
 
