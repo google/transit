@@ -52,7 +52,7 @@ message FeedMessage {
 message FeedHeader {
   // Version of the feed specification.
   // The current version is 2.0.
-  required string gtfs_realtime_version = 2;
+  required string gtfs_realtime_version = 1;
 
   // Determines whether the current fetch is incremental.  Currently,
   // DIFFERENTIAL mode is unsupported and behavior is unspecified for feeds
