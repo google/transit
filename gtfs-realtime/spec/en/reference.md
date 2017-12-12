@@ -73,13 +73,6 @@ Fields labeled as **experimental** are subject to change and not yet formally ad
 
 The contents of a feed message. Each message in the stream is obtained as a response to an appropriate HTTP GET request. A realtime feed is always defined with relation to an existing GTFS feed. All the entity ids are resolved with respect to the GTFS feed.
 
-A feed depends on these external configurations:
-
-*   The corresponding GTFS feed.
-*   Feed application (updates, positions, or alerts).
-    NOTE: A feed should contain only items for the specified applications: processing ignores other entities.
-*   Polling frequency (controlled by min_update_delay and max_update_delay).
-
 #### Fields
 
 | _**Field Name**_ | _**Type**_ | _**Required**_ | _**Cardinality**_ | _**Description**_ |
