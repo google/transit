@@ -115,14 +115,17 @@ File: **Required**
 |   |  | * **0** (or empty) - indicates that there is no accessibility information for the stop |  |  |
 |   |  | * **1** - indicates that at least some vehicles at this stop can be boarded by a rider in a wheelchair |  |  |
 |   |  | * **2** - wheelchair boarding is not possible at this stop |  |  |
+|   |  | * **3** - wheelchair boarding is possible at this stop, but only with additional assistance. For example, a manual ramp needs to be provided. |  |  |
 |   |  | When a stop is part of a larger station complex, as indicated by a stop with a **parent_station** value, the stop's **wheelchair_boarding** field has the following additional semantics: |  |  |
 |   |  | * **0** (or empty) - the stop will inherit its **wheelchair_boarding** value from the parent station, if specified in the parent |  |  |
 |   |  | * **1** - there exists some accessible path from outside the station to the specific stop / platform |  |  |
 |   |  | * **2** - there exists no accessible path from outside the station to the specific stop / platform |  |  |
+|   |  | * **3** - there exists some accessible path from outside the station to the specific stop / platform, but only with assistance. |  |  |
 |   |  | For station entrances, the **wheelchair_boarding** field has the following additional semantics: |  |  |
 |   |  | * **0** (or empty) - the station entrance will inherit its **wheelchair_boarding** value from the parent station, if specified in the parent |  |  |
 |   |  | * **1** - the station entrance is wheelchair accessible (e.g. an elevator is available to platforms if they are not at-grade)  |  |  |
 |   |  | * **2** - there exists no accessible path from the entrance to station platforms |  |  |
+|   |  | * **3** -  the station entrance is wheelchair accessible but only with assistance (e.g. a stair climber is necessary) |  |  |
 
 ### routes.txt
 
