@@ -494,7 +494,7 @@ This file allows a better modelling of the pedestrian walkways within a station 
 |  Field Name | Required | Details |
 |  ------ | ------ | ------ |
 |  level_id | **Required** | The **level_id** field contains an ID that identifies a level. The **level_id** is dataset unique. |
-|  level_index | **Required** | The **from_stop_id** field contains a numeric index of the level that indicates relative position of this level in relation to other levels (levels with higher indices are assumed to be located above levels with lower indices). Ground level should have index 0, with levels above ground indicated by positive indices and levels below ground by negative indices. |
+|  level_index | **Required** | The **level_index** field contains a numeric index of the level that indicates relative position of this level in relation to other levels (levels with higher indices are assumed to be located above levels with lower indices). Ground level should have index 0, with levels above ground indicated by positive indices and levels below ground by negative indices. |
 |  level_name | Optional | The **level_name** field contains the name of the level (that matches level lettering/numbering used inside the building or the station). Example: "1", "Subway Level", "Mezzanine", "RDC"... |
 |  level_elevation | Optional | The **level_elevation** field contains the elevation above ground, in meters (with negative values indicating underground locations). |
 
