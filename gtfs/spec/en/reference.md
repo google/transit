@@ -22,6 +22,8 @@ This document explains the types of files that comprise a GTFS transit feed and 
     -   [shapes.txt](#shapestxt)
     -   [frequencies.txt](#frequenciestxt)
     -   [transfers.txt](#transferstxt)
+    -   [pathways.txt](#pathwaystxt)
+    -   [levels.txt](#levelstxt)
     -   [feed\_info.txt](#feed_infotxt)
 
 ## Term Definitions
@@ -50,6 +52,8 @@ This specification defines the following files along with their associated conte
 |  [shapes.txt](#shapestxt)  | Optional | Rules for drawing lines on a map to represent a transit organization's routes. |
 |  [frequencies.txt](#frequenciestxt)  | Optional | Headway (time between trips) for routes with variable frequency of service. |
 |  [transfers.txt](#transferstxt)  | Optional | Rules for making connections at transfer points between routes. |
+|  [pathways.txt](#pathwaystxt) | Optional | Ways inside the station, and their description. |
+|  [levels.txt](#levelstxt) | Optional | Levels used in the different stations of the dataset, and their description. |
 |  [feed_info.txt](#feed_infotxt)  | Optional | Additional information about the feed itself, including publisher, version, and expiration information. |
 
 ## File Requirements
@@ -105,6 +109,7 @@ File: **Required**
 |   |  | * **0** or blank - Stop. A location where passengers board or disembark from a transit vehicle. |  |  |
 |   |  | * **1** - Station. A physical structure or area that contains one or more stop. |  |  |
 |   |  | * **2** - Station Entrance/Exit. A location where passengers can enter or exit a station from the street. The stop entry must also specify a parent_station value referencing the stop ID of the parent station for the entrance. |  |  |
+|   |  | * **3** - Generic node. A location representing a generic node within the station, not matching any other location_type, which can be used to link together pathways define in [pathways.txt](#pathwaystxt). Requires specifying a parent_station. |  |  |
 |  parent_station | Optional | For stops that are physically located inside stations, the **parent_station** field identifies the station associated with the stop. To use this field, stops.txt must also contain a row where this stop ID is assigned location type=1. |  |  |
 |   |  | **This stop ID represents...** | **This entry's location type...** | **This entry's parent_station field contains...** |
 |   |  | A stop located inside a station. | 0 or blank | The stop ID of the station where this stop is located. The stop referenced by parent_station must have location_type=1. |
@@ -123,6 +128,7 @@ File: **Required**
 |   |  | * **0** (or empty) - the station entrance will inherit its **wheelchair_boarding** value from the parent station, if specified in the parent |  |  |
 |   |  | * **1** - the station entrance is wheelchair accessible (e.g. an elevator is available to platforms if they are not at-grade)  |  |  |
 |   |  | * **2** - there exists no accessible path from the entrance to station platforms |  |  |
+|  level_id | Optional | The **level_id** field contains an ID that uniquely identifies a level. This value is referenced from the [levels.txt](#levelstxt) file. |
 
 ### routes.txt
 
@@ -412,6 +418,87 @@ Trip planners normally calculate transfer points based on the relative proximity
 |   |  | * **3** - Transfers are not possible between routes at this location. |
 |  min_transfer_time | Optional | When a connection between routes requires an amount of time between arrival and departure (transfer_type=2), the **min_transfer_time** field defines the amount of time that must be available in an itinerary to permit a transfer between routes at these stops. The min_transfer_time must be sufficient to permit a typical rider to move between the two stops, including buffer time to allow for schedule variance on each route. |
 |   |  | The min_transfer_time value must be entered in seconds, and must be a non-negative integer. |
+
+### pathways.txt
+
+File: **Optional**
+
+Pathways.txt describes pedestrian pathways that directly connect pairs of locations within the same station
+(intra-station pathways) or pairs of stations (station-to-station pathways).
+
+Pathways are unidirectional, i.e. each pathway describes a connection from one location to another, but not in the
+opposite direction. The other direction, when available, should be described through a separate pathway.
+
+The list of intra-station pathways specified in pathways.txt must be exhaustive for a specific station.
+
+Intra-station pathway modelling explicitly requires specification of station entrances (location_type=2). When
+pathways.txt describes any direct pedestrian connection between a pair of locations within the same station, all 
+pathways that connect any other locations within that station directly must be specified.
+
+Pairs of locations within a station that are not directly connected by an intra-station pathway may be connected 
+indirectly, through a sequence of pathways that connect them to other connected locations within the same station.
+
+Pairs of locations within a station that are not connected through an intra-station pathway or a sequence of 
+intra-station pathways are presumed to be unconnected within that station. A transit user will be instructed to exit 
+the station and re-enter it in order to transfer from one unconnected location to the other (provided pathways to and 
+from respective entrances exist).
+
+For pairs of locations within a station that are connected indirectly through multiple possible sequences of pathways, 
+the sequence of pathways with minimal traversal times will be preferred (when traversal times are specified).
+
+|  Field Name | Required | Details |
+|  ------ | ------ | ------ |
+|  pathway_id | **Required** | The **pathway_id** field contains an ID that uniquely identifies the pathway. The **pathway_id** is used by systems as an internal identifier of this record (e.g., primary key in database), and therefore the **pathway_id** must be dataset unique. |
+|  from_stop_id | **Required** | The **from_stop_id** field contains a stop ID that identifies a stop, entrance or node where the pathway begins. Stop IDs are referenced from the [stops.txt](#stopstxt) file. |
+|  to_stop_id | **Required** | The **to_stop_id** field contains a stop ID that identifies a stop, entrance or node where the pathway ends. Stop IDs are referenced from the [stops.txt](#stopstxt) file. |
+|  pathway_mode | Optional | The **pathway_mode** field specifies the type of pathway between the specified (from_stop_id, to_stop_id) pair. Valid values for this field are: |
+|   |  | * **0** or **(empty)** - Generic link [undefined infrastructure] (default). Not recommended. |
+|   |  | * **1** - Walkway. |
+|   |  | * **2** - Stairs. |
+|   |  | * **3** - Moving sidewalk / travelator. |
+|   |  | * **4** - Escalator. |
+|   |  | * **5** - Elevator. |
+|   |  | * **6** - Fare gate / payment gate. A pathway that crosses into an area of the station where a proof of payment is required (usually via a physical payment gate). Fare gates may either separate paid areas of the station from unpaid ones, or separate different payment areas within the same station from each other. This information can be used to avoid routing passengers through stations using shortcuts that would require passengers to make unnecessary payments, like directing a passenger to walk through a subway platform to reach a busway. |
+|   |  | * **7** - Exit gate. Indicates a pathway exiting an area where proof-of-payment is required into an area where proof-of-payment is no longer required. |
+|  pathway_type | Optional | The **pathway_type** field specifies the type of connection. Valid values for this field are: |
+|   |  | * **1** - Connects station locations to an entrance. |
+|   |  | * **2** - Connects stops/stations for transfers off the streets or within stations. |
+|   |  | * **3** - Connects stops/stations/entrances for transfers on the streets. |
+|  traversal_time | Optional | The **traversal_time** field specifies the time needed to go through the pathway on foot. Valid values for this field are: |
+|   |  | * **(empty)** - Unknown travel time. |
+|   |  | * **Non-negative integer** - Number of seconds needed to travers this pathway on foot. |
+|  wheelchair_traversal_time | Optional | The **wheelchair_traversal_time** field specifies the time needed to go through the pathway in a wheelchair. Valid values for this field are: |
+|   |  | * **(empty)** - Unknown travel time. |
+|   |  | * **-1** - Pathway not wheelchair accessible. |
+|   |  | * **Non-negative integer** - Number of seconds needed to travers this pathway in a wheelchair. |
+|  ramp_slope | Optional | The **ramp_slope** field specifies the slope ratio of the pathway. Valid values for this field are: |
+|   |  | * **(empty)** - Unknown slope. |
+|   |  | * **Float** - Slope ratio of the pathway. |
+|   |  | Note: This field is allowed only for pathway_mode 1 (walkway) and 3 (travelator). |
+|  stair_count | Optional | The **stair_count** field specifies the number of stairs of the pathway. Valid values for this field are: |
+|   |  | * **(empty)** - Unknown number of stairs. |
+|   |  | * **Non-negative integer** - Total number of stairs of the pathway. |
+|   |  | Note: This field is allowed only for pathway_mode 2 (stairs) and 4 (escalator). |
+|   |  | Note: The approximation of 1 floor = 15 stairs (or 12 for an escalator) can be used to generate approximative values. |
+|  pathway_name | Optional | The **pathway_name** field contains the name of the pathway, if any. Please use a name that people will understand in the local and tourist vernacular. |
+|  pathway_code | Optional | The **pathway_code** field contains a short text or a number that uniquely identifies the pathway for passengers. The **pathway_code** can be the same as pathway_id if it is passenger-facing. This field should be left blank for pathway without a code presented to passengers. |
+|   |  | Example: Elevator “A”. |
+|  signposted_as | Optional | The **signposted_as** field helps to generate schematic directions like 'follow signs to <signposted as>' where <signposted as> part represents specific text on the signs that should remain unaffected by translation into other languages. |
+|  instructions | Optional | The **signposted_as** field indicates walking instructions for the pathway, such as “Walk downstairs to the station concourse”. |
+
+### levels.txt
+
+File: **Optional**
+
+Modelling pedestrian walkways within a station may be helped by placing locations within a station on different levels.
+
+|  Field Name | Required | Details |
+|  ------ | ------ | ------ |
+|  level_id | **Required** | The **level_id** field contains an ID that identifies a level. The **level_id** is dataset unique. |
+|  level_index | **Required** | The **from_stop_id** field contains a numeric index of the level that indicates relative position of this level in relation to other levels (levels with higher indices are assumed to be located above levels with lower indices). Ground level should have index 0, with levels above ground indicated by positive indices and levels below ground by negative indices. |
+|  level_name | Optional | The **level_name** field contains the name of the level (that matches level lettering/numbering used inside the building or the station). |
+|   |  | Example: "1", "Subway Level", "Mezzanine", "RDC"... |
+|  level_elevation | Optional | The **level_elevation** field contains the elevation above ground, in meters (with negative values indicating underground locations). |
 
 ### feed_info.txt
 
