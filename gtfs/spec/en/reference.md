@@ -423,7 +423,7 @@ Trip planners normally calculate transfer points based on the relative proximity
 
 File: **Optional**
 
-Pathways.txt describes pedestrian pathways that directly connect pairs of locations within the same station
+This file describes the pedestrian pathways that directly connect pairs of locations within the same station
 (intra-station pathways) or pairs of stations (station-to-station pathways).
 
 Pathways are unidirectional, i.e. each pathway describes a connection from one location to another, but not in the
@@ -452,7 +452,7 @@ the sequence of pathways with minimal traversal times will be preferred (when tr
 |  from_stop_id | **Required** | The **from_stop_id** field contains a stop ID that identifies a stop, entrance or node where the pathway begins. Stop IDs are referenced from the [stops.txt](#stopstxt) file. |
 |  to_stop_id | **Required** | The **to_stop_id** field contains a stop ID that identifies a stop, entrance or node where the pathway ends. Stop IDs are referenced from the [stops.txt](#stopstxt) file. |
 |  pathway_mode | Optional | The **pathway_mode** field specifies the type of pathway between the specified (from_stop_id, to_stop_id) pair. Valid values for this field are: |
-|   |  | * **0** or **(empty)** - Generic link [undefined infrastructure] (default). Not recommended. |
+|   |  | * **0** or **(empty)** - Generic link to describe an undefined infrastructure (default). Not recommended. |
 |   |  | * **1** - Walkway. |
 |   |  | * **2** - Stairs. |
 |   |  | * **3** - Moving sidewalk / travelator. |
@@ -466,23 +466,22 @@ the sequence of pathways with minimal traversal times will be preferred (when tr
 |   |  | * **3** - Connects stops/stations/entrances for transfers on the streets. |
 |  traversal_time | Optional | The **traversal_time** field specifies the time needed to go through the pathway on foot. Valid values for this field are: |
 |   |  | * **(empty)** - Unknown travel time. |
-|   |  | * **Non-negative integer** - Number of seconds needed to travers this pathway on foot. |
+|   |  | * **(non-negative integer)** - Number of seconds needed to travers this pathway on foot. |
 |  wheelchair_traversal_time | Optional | The **wheelchair_traversal_time** field specifies the time needed to go through the pathway in a wheelchair. Valid values for this field are: |
 |   |  | * **(empty)** - Unknown travel time. |
 |   |  | * **-1** - Pathway not wheelchair accessible. |
-|   |  | * **Non-negative integer** - Number of seconds needed to travers this pathway in a wheelchair. |
+|   |  | * **(non-negative integer)** - Number of seconds needed to travers this pathway in a wheelchair. |
 |  ramp_slope | Optional | The **ramp_slope** field specifies the slope ratio of the pathway. Valid values for this field are: |
 |   |  | * **(empty)** - Unknown slope. |
-|   |  | * **Float** - Slope ratio of the pathway. |
+|   |  | * **(float)** - Slope ratio of the pathway. |
 |   |  | Note: This field is allowed only for pathway_mode 1 (walkway) and 3 (travelator). |
 |  stair_count | Optional | The **stair_count** field specifies the number of stairs of the pathway. Valid values for this field are: |
 |   |  | * **(empty)** - Unknown number of stairs. |
-|   |  | * **Non-negative integer** - Total number of stairs of the pathway. |
+|   |  | * **(non-negative integer)** - Total number of stairs of the pathway. |
 |   |  | Note: This field is allowed only for pathway_mode 2 (stairs) and 4 (escalator). |
 |   |  | Note: The approximation of 1 floor = 15 stairs (or 12 for an escalator) can be used to generate approximative values. |
 |  pathway_name | Optional | The **pathway_name** field contains the name of the pathway, if any. Please use a name that people will understand in the local and tourist vernacular. |
-|  pathway_code | Optional | The **pathway_code** field contains a short text or a number that uniquely identifies the pathway for passengers. The **pathway_code** can be the same as pathway_id if it is passenger-facing. This field should be left blank for pathway without a code presented to passengers. |
-|   |  | Example: Elevator “A”. |
+|  pathway_code | Optional | The **pathway_code** field contains a short text or a number that uniquely identifies the pathway for passengers. The **pathway_code** can be the same as pathway_id if it is passenger-facing. This field should be left blank for pathway without a code presented to passengers. Example: Elevator “A”. |
 |  signposted_as | Optional | The **signposted_as** field helps to generate schematic directions like 'follow signs to <signposted as>' where <signposted as> part represents specific text on the signs that should remain unaffected by translation into other languages. |
 |  instructions | Optional | The **signposted_as** field indicates walking instructions for the pathway, such as “Walk downstairs to the station concourse”. |
 
@@ -490,14 +489,13 @@ the sequence of pathways with minimal traversal times will be preferred (when tr
 
 File: **Optional**
 
-Modelling pedestrian walkways within a station may be helped by placing locations within a station on different levels.
+This file allows a better modelling of the pedestrian walkways within a station by placing its locations on different levels.
 
 |  Field Name | Required | Details |
 |  ------ | ------ | ------ |
 |  level_id | **Required** | The **level_id** field contains an ID that identifies a level. The **level_id** is dataset unique. |
 |  level_index | **Required** | The **from_stop_id** field contains a numeric index of the level that indicates relative position of this level in relation to other levels (levels with higher indices are assumed to be located above levels with lower indices). Ground level should have index 0, with levels above ground indicated by positive indices and levels below ground by negative indices. |
-|  level_name | Optional | The **level_name** field contains the name of the level (that matches level lettering/numbering used inside the building or the station). |
-|   |  | Example: "1", "Subway Level", "Mezzanine", "RDC"... |
+|  level_name | Optional | The **level_name** field contains the name of the level (that matches level lettering/numbering used inside the building or the station). Example: "1", "Subway Level", "Mezzanine", "RDC"... |
 |  level_elevation | Optional | The **level_elevation** field contains the elevation above ground, in meters (with negative values indicating underground locations). |
 
 ### feed_info.txt
