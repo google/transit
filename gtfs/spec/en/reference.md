@@ -483,7 +483,7 @@ the sequence of pathways with minimal traversal times will be preferred (when tr
 |  pathway_name | Optional | The **pathway_name** field contains the name of the pathway, if any. Please use a name that people will understand in the local and tourist vernacular. |
 |  pathway_code | Optional | The **pathway_code** field contains a short text or a number that uniquely identifies the pathway for passengers. The **pathway_code** can be the same as pathway_id if it is passenger-facing. This field should be left blank for pathway without a code presented to passengers. Example: Elevator “A”. |
 |  signposted_as | Optional | The **signposted_as** field is an exact string of text from physical signage visible to transit riders. The string can be used to provide textual directions to users, such as 'follow signs to '. The language as printed on the signs should not be translated in this field. |
-|  instructions | Optional | The **signposted_as** field indicates walking instructions for the pathway, such as “Walk downstairs to the station concourse”. |
+|  instructions | Optional | The **instructions** field indicates walking instructions for the pathway, such as “Walk downstairs to the station concourse”. |
 
 ### levels.txt
 
