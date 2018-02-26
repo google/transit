@@ -49,6 +49,7 @@ Fields labeled as **experimental** are subject to change and not yet formally ad
             *   [StopTimeUpdate](#message-stoptimeupdate)
                 *   [StopTimeEvent](#message-stoptimeevent)
                 *   [ScheduleRelationship](#enum-schedulerelationship)
+            *   [WheelchairAccessible](#enum-wheelchairaccessible)
         *   [VehiclePosition](#message-vehicleposition)
             *   [TripDescriptor](#message-tripdescriptor)
                 *   [ScheduleRelationship](#enum-schedulerelationship-1)
@@ -143,6 +144,7 @@ Note that the update can describe a trip that has already completed.To this end,
 | **stop_time_update** | [StopTimeUpdate](#message-stoptimeupdate) | Conditionally required | Many | Updates to StopTimes for the trip (both future, i.e., predictions, and in some cases, past ones, i.e., those that already happened). The updates must be sorted by stop_sequence, and apply for all the following stops of the trip up to the next specified stop_time_update.  At least one stop_time_update must be provided for the trip unless the trip.schedule_relationship is CANCELED - if the trip is canceled, no stop_time_updates need to be provided. |
 | **timestamp** | [uint64](https://developers.google.com/protocol-buffers/docs/proto#scalar) | Optional | One | Moment at which the vehicle's real-time progress was measured. In POSIX time (i.e., the number of seconds since January 1st 1970 00:00:00 UTC). |
 | **delay** | [int32](https://developers.google.com/protocol-buffers/docs/proto#scalar) | Optional | One | The current schedule deviation for the trip. Delay should only be specified when the prediction is given relative to some existing schedule in GTFS.<br>Delay (in seconds) can be positive (meaning that the vehicle is late) or negative (meaning that the vehicle is ahead of schedule). Delay of 0 means that the vehicle is exactly on time.<br>Delay information in StopTimeUpdates take precedent of trip-level delay information, such that trip-level delay is only propagated until the next stop along the trip with a StopTimeUpdate delay value specified.<br>Feed providers are strongly encouraged to provide a TripUpdate.timestamp value indicating when the delay value was last updated, in order to evaluate the freshness of the data.<br>**Caution:** this field is still **experimental**, and subject to change. It may be formally adopted in the future.|
+| **wheelchair_accessible** | [WheelchairAccessible](#enum-wheelchairaccessible) | Optional | One | If provided, can overwrite the *wheelchair_accessible* value from the static GTFS. |
 
 ## _message_ StopTimeEvent
 
@@ -189,6 +191,19 @@ The relation between this StopTime and the static schedule.
 | **SCHEDULED** | The vehicle is proceeding in accordance with its static schedule of stops, although not necessarily according to the times of the schedule. This is the **default** behavior. At least one of arrival and departure must be provided. If the schedule for this stop contains both arrival and departure times then so must this update. |
 | **SKIPPED** | The stop is skipped, i.e., the vehicle will not stop at this stop. Arrival and departure are optional. |
 | **NO_DATA** | No data is given for this stop. It indicates that there is no realtime information available. When set NO_DATA is propagated through subsequent stops so this is the recommended way of specifying from which stop you do not have realtime information. When NO_DATA is set neither arrival nor departure should be supplied. |
+
+## _enum_ WheelchairAccessible
+
+If a particuliar trip is accessible to wheelchair. When available, this value should overwrite the _wheelchair_accessible_ value from the static GTFS. 
+
+#### Values
+
+| _**Value**_ | _**Comment**_ |
+|-------------|---------------|
+| **NO_VALUE** | The trip doesn't have information about wheelchair accessibility. This is the **default** behavior. If the static GTFS contains a _wheelchair_accessible_ value, it won't be overwritten. |
+| **UNKNOWN** | The trip has no accessibility value present. This value will overwrite the value from the GTFS.  |
+| **WHEELCHAIR_ACCESSIBLE** | The trip is wheelchair accessible. This value will overwrite the value from the GTFS. |
+| **WHEELCHAIR_INACCESSIBLE** | The trip is **not** wheelchair accessible. This value will overwrite the value from the GTFS. |
 
 ## _message_ VehiclePosition
 
