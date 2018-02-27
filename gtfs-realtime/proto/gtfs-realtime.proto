@@ -276,19 +276,19 @@ message TripUpdate {
       // The trip doesn't have information about wheelchair accessibility.
       // This is the **default** behavior. If the static GTFS contains a
       // _wheelchair_accessible_ value, it won't be overwritten.
-      NO_VALUE = 0;
+      NO_VALUE = -1;
 
       // The trip has no accessibility value present. 
       // This value will overwrite the value from the GTFS. 
-      UNKNOWN = 1;
+      UNKNOWN = 0;
 
       // The trip is wheelchair accessible. 
       // This value will overwrite the value from the GTFS.
-      WHEELCHAIR_ACCESSIBLE = 2;
+      WHEELCHAIR_ACCESSIBLE = 1;
       
       // The trip is **not** wheelchair accessible. 
       // This value will overwrite the value from the GTFS. 
-      WHEELCHAIR_INACCESSIBLE = 3;
+      WHEELCHAIR_INACCESSIBLE = 2;
       
       // The extensions namespace allows 3rd-party developers to extend the
       // GTFS Realtime Specification in order to add and evaluate new features and
