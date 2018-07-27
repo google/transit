@@ -82,3 +82,4 @@ extend transit_realtime.TripDescriptor {
 |1006|realCity|[David Varga](mailto:transit@realcity.io)|http://realcity.io|
 |1007|NSW TrainLink|[Gregory Nicholls](mailto:gregory.nicholls@transport.nsw.gov.au)|[Group discussion](https://groups.google.com/d/msg/gtfs-realtime/G75O1zyQS_Q/VtNmTJvSAwAJ)|
 |1008|SEPTA - Southeastern Pennsylvania Transportation Authority|[Gregory Apessos](mailto:GApessos@septa.org)|https://github.com/septadev|
+|1009|Swiftly|[mike@goswift.ly](mailto:mike@goswift.ly)|[Group Discussion](https://groups.google.com/forum/#!msg/gtfs-realtime/mmnZV6L-2ls/wVWdknhLBwAJ)|
