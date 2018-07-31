@@ -260,11 +260,11 @@ An alert, indicating some sort of incident in the public transit network.
 |------------------|------------|----------------|-------------------|-------------------|
 | **active_period** | [TimeRange](#message-timerange) | Optional | Many | Time when the alert should be shown to the user. If missing, the alert will be shown as long as it appears in the feed. If multiple ranges are given, the alert will be shown during all of them. |
 | **informed_entity** | [EntitySelector](#message-entityselector) | Required | Many | Entities whose users we should notify of this alert.  At least one informed_entity must be provided. |
-| **cause** | [Cause](#enum-cause) | Conditionally required | One | Either the cause, effect, header_text or description_text should be provided.
-| **effect** | [Effect](#enum-effect) | Conditionally required | One | Either the cause, effect, header_text or description_text should be provided.
+| **cause** | [Cause](#enum-cause) | Optional | One | 
+| **effect** | [Effect](#enum-effect) | Conditionally required | One | Either the effect, header_text or description_text should be provided.
 | **url** | [TranslatedString](#message-translatedstring) | Optional | One | The URL which provides additional information about the alert. |
-| **header_text** | [TranslatedString](#message-translatedstring) | Conditionally required | One | Header for the alert. This plain-text string will be highlighted, for example in boldface. Either the cause, effect, header_text or description_text should be provided. |
-| **description_text** | [TranslatedString](#message-translatedstring) | Conditionally required | One | Description for the alert. This plain-text string will be formatted as the body of the alert (or shown on an explicit "expand" request by the user). The information in the description should add to the information of the header. Either the cause, effect, header_text or description_text should be provided. |
+| **header_text** | [TranslatedString](#message-translatedstring) | Conditionally required | One | Header for the alert. This plain-text string will be highlighted, for example in boldface. Either the effect, header_text or description_text should be provided. |
+| **description_text** | [TranslatedString](#message-translatedstring) | Conditionally required | One | Description for the alert. This plain-text string will be formatted as the body of the alert (or shown on an explicit "expand" request by the user). The information in the description should add to the information of the header. Either the effect, header_text or description_text should be provided. |
 
 ## _enum_ Cause
 
