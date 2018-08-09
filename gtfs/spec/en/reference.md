@@ -51,7 +51,7 @@ This specification defines the following files along with their associated conte
 |  [shapes.txt](#shapestxt)  | Optional | Rules for drawing lines on a map to represent a transit organization's routes. |
 |  [frequencies.txt](#frequenciestxt)  | Optional | Headway (time between trips) for routes with variable frequency of service. |
 |  [transfers.txt](#transferstxt)  | Optional | Rules for making connections at transfer points between routes. |
-|  [linked_datasets.txt](#linkeddatasetstxt)  | Optional | URLs to linked datasets: Trip Update, Vehicle Position and Service Alerts. |
+|  [linked_datasets.txt](#linkeddatasetstxt)  | Optional | URLs to linked datasets: Trip Updates, Vehicle Positions and Service Alerts. |
 |  [feed_info.txt](#feed_infotxt)  | Optional | Additional information about the feed itself, including publisher, version, and expiration information. |
 
 ## File Requirements
@@ -422,7 +422,7 @@ File: **Optional**
 
 |  Field Name | Required | Details |
 |  ------ | ------ | ------ |
-|  url | **Required** | The **url** fields contains the URL to the linked dataset. The value must be a fully qualified URL that includes **http**:// or **https**://, and any special characters in the URL must be correctly escaped. See http://www.w3.org/Addressing/URL/4_URI_Recommentations.html for a description of how to trip_updates fully qualified URL values. |
+|  url | **Required** | The **url** fields contains the URL to the linked dataset. The value must be a fully qualified URL that includes **http**:// or **https**://, and any special characters in the URL must be correctly escaped. See http://www.w3.org/Addressing/URL/4_URI_Recommentations.html for a description of how to fully qualified URL values. |
 |  trip_updates | **Required** | The **trip_updates** field indicates whether the dataset at this URL may contain [a `TripUpdate` entity](https://github.com/google/transit/blob/master/gtfs-realtime/spec/en/reference.md#message-tripupdate). Valid values for this field are: |
 |   |  | * **0** - The dataset at this URL doesn't contain TripUpdate entities. |
 |   |  | * **1** - The dataset at this URL may contain TripUpdate entities. |
