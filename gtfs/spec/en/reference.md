@@ -50,6 +50,7 @@ This specification defines the following files along with their associated conte
 |  [shapes.txt](#shapestxt)  | Optional | Rules for drawing lines on a map to represent a transit organization's routes. |
 |  [frequencies.txt](#frequenciestxt)  | Optional | Headway (time between trips) for routes with variable frequency of service. |
 |  [transfers.txt](#transferstxt)  | Optional | Rules for making connections at transfer points between routes. |
+|  [linked_datasets.txt](#linkeddatasetstxt)  | Optional | URLs to linked datasets: Trip Update, Vehicle Position and Service Alerts. |
 |  [feed_info.txt](#feed_infotxt)  | Optional | Additional information about the feed itself, including publisher, version, and expiration information. |
 
 ## File Requirements
@@ -413,6 +414,23 @@ Trip planners normally calculate transfer points based on the relative proximity
 |   |  | * **3** - Transfers are not possible between routes at this location. |
 |  min_transfer_time | Optional | When a connection between routes requires an amount of time between arrival and departure (transfer_type=2), the **min_transfer_time** field defines the amount of time that must be available in an itinerary to permit a transfer between routes at these stops. The min_transfer_time must be sufficient to permit a typical rider to move between the two stops, including buffer time to allow for schedule variance on each route. |
 |   |  | The min_transfer_time value must be entered in seconds, and must be a non-negative integer. |
+
+### linked_datasets.txt
+
+File: **Optional**
+
+|  Field Name | Required | Details |
+|  ------ | ------ | ------ |
+|  url | **Required** | The **url** fields contains the URL to the linked dataset. The value must be a fully qualified URL that includes **http**:// or **https**://, and any special characters in the URL must be correctly escaped. See http://www.w3.org/Addressing/URL/4_URI_Recommentations.html for a description of how to trip_updates fully qualified URL values. |
+|  trip_updates | **Required** | The **trip_updates** field indicates whether the dataset at this URL may contain [a `TripUpdate` entity](https://github.com/google/transit/blob/master/gtfs-realtime/spec/en/reference.md#message-tripupdate). Valid values for this field are: |
+|   |  | * **0** - The dataset at this URL doesn't contain TripUpdate entities. |
+|   |  | * **1** - The dataset at this URL may contain TripUpdate entities. |
+|  vehicle_positions | **Required** | The **vehicle_positions** field indicates whether the dataset at this URL may contain [a `VehiclePosition` entity](https://github.com/google/transit/blob/master/gtfs-realtime/spec/en/reference.md#message-vehicleposition). Valid values for this field are: |
+|   |  | * **0** - The dataset at this URL doesn't contain TripUpdate entities. |
+|   |  | * **1** - The dataset at this URL may contain TripUpdate entities. |
+|  service_alerts | **Required** | The **service_alerts** field indicates whether the dataset at this URL may contain [an `Alert` entity](https://github.com/google/transit/blob/master/gtfs-realtime/spec/en/reference.md#message-alert). Valid values for this field are: |
+|   |  | * **0** - The dataset at this URL doesn't contain TripUpdate entities. |
+|   |  | * **1** - The dataset at this URL may contain TripUpdate entities. |
 
 ### feed_info.txt
 
