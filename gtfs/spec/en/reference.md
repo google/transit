@@ -22,6 +22,7 @@ This document explains the types of files that comprise a GTFS transit feed and 
     -   [shapes.txt](#shapestxt)
     -   [frequencies.txt](#frequenciestxt)
     -   [transfers.txt](#transferstxt)
+    -   [linked_datasets.txt](#linkeddatasetstxt)
     -   [feed\_info.txt](#feed_infotxt)
 
 ## Term Definitions
