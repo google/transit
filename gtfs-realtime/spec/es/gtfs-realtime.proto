@@ -158,7 +158,7 @@ message TripUpdate {
   // La incertidumbre se aplica de la misma forma tanto al tiempo como a la
   // demora.  La incertidumbre especifica el error esperado en una demora real
   // (pero ten en cuenta, que todavía no definimos su significado estadístico
-  // preciso). Es posible que la incertidumbre sea 0, por ejemplo, para los
+  // concreto). Es posible que la incertidumbre sea 0, por ejemplo, para los
   // trenes que funcionan con un control de horarios por computadora.
   message StopTimeEvent {
     // La demora (en segundos) puede ser positiva (significa que el vehículo
