@@ -1,6 +1,6 @@
 ## General Transit Feed Specification Reference
 
-**Revised August 4, 2016. See [Revision History](../../CHANGES.md) for more details.**
+**Revised August 22, 2018. See [Revision History](../../CHANGES.md) for more details.**
 
 This document explains the types of files that comprise a GTFS transit feed and defines the fields used in all of those files.
 
