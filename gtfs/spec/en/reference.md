@@ -422,7 +422,7 @@ File: **Optional**
 
 |  Field Name | Required | Details |
 |  ------ | ------ | ------ |
-|  url | **Required** | The **url** fields contains the URL to the linked dataset. The value must be a fully qualified URL that includes **http**:// or **https**://, and any special characters in the URL must be correctly escaped. See http://www.w3.org/Addressing/URL/4_URI_Recommentations.html for a description of how to fully qualified URL values. |
+|  url | **Required** | The **url** field contains the URL to the linked dataset. The value must be a fully qualified URL that includes **http**:// or **https**://, and any special characters in the URL must be correctly escaped. See http://www.w3.org/Addressing/URL/4_URI_Recommentations.html for a description of how to fully qualified URL values. |
 |  trip_updates | **Required** | The **trip_updates** field indicates whether the dataset at this URL may contain [a `TripUpdate` entity](https://github.com/google/transit/blob/master/gtfs-realtime/spec/en/reference.md#message-tripupdate). Valid values for this field are: |
 |   |  | * **0** - The dataset at this URL doesn't contain TripUpdate entities. |
 |   |  | * **1** - The dataset at this URL may contain TripUpdate entities. |
@@ -432,6 +432,13 @@ File: **Optional**
 |  service_alerts | **Required** | The **service_alerts** field indicates whether the dataset at this URL may contain [an `Alert` entity](https://github.com/google/transit/blob/master/gtfs-realtime/spec/en/reference.md#message-alert). Valid values for this field are: |
 |   |  | * **0** - The dataset at this URL doesn't contain TripUpdate entities. |
 |   |  | * **1** - The dataset at this URL may contain TripUpdate entities. |
+|  authentication_type | **Required** | The **authentication_type** field defines the type of authentication required to access the URL. Valid values for this field are: |
+|   |  | * **0** or **(empty)** - No authentication required. |
+|   |  | * **1** - Ad-hoc authentication required, visit URL in `authentication_info_url` for more informations. |
+|   |  | * **2** - The authentication requires an API key, which should be passed as value of the parameter `api_key_parameter_name` in the URL. Please visit URL in `authentication_info_url` for more informations. |
+|  authentication_info_url | **Optional** | If an authentication is required, the **authentication_info_url** field contains an URL to a human readable page describing how the authentication should be done and how potential credentials can be created. The value must be a fully qualified URL that includes **http**:// or **https**://, and any special characters in the URL must be correctly escaped. See http://www.w3.org/Addressing/URL/4_URI_Recommentations.html for a description of how to fully qualified URL values. This field is required for `authentication_type` `1` or above. |
+|  api_key_parameter_name | **Optional** | The **authentication_type** field defines the name of the parameter to pass in the URL to provide the API key. This field is required for `authentication_type` `1`. |
+
 
 ### feed_info.txt
 
