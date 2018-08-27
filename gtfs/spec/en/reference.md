@@ -435,9 +435,9 @@ File: **Optional**
 |  authentication_type | **Required** | The **authentication_type** field defines the type of authentication required to access the URL. Valid values for this field are: |
 |   |  | * **0** or **(empty)** - No authentication required. |
 |   |  | * **1** - Ad-hoc authentication required, visit URL in `authentication_info_url` for more informations. |
-|   |  | * **2** - The authentication requires an API key, which should be passed as value of the parameter `api_key_parameter_name` in the URL. Please visit URL in `authentication_info_url` for more informations. |
-|  authentication_info_url | **Optional** | If an authentication is required, the **authentication_info_url** field contains an URL to a human readable page describing how the authentication should be done and how potential credentials can be created. The value must be a fully qualified URL that includes **http**:// or **https**://, and any special characters in the URL must be correctly escaped. See http://www.w3.org/Addressing/URL/4_URI_Recommentations.html for a description of how to fully qualified URL values. This field is required for `authentication_type` `1` or above. |
-|  api_key_parameter_name | **Optional** | The **authentication_type** field defines the name of the parameter to pass in the URL to provide the API key. This field is required for `authentication_type` `2`. |
+|   |  | * **2** - The authentication requires an API key, which should be passed as value of the parameter `api_key_parameter_name` in the URL. Please visit URL in `authentication_info_url` for more information. |
+|  authentication_info_url | **Optional** | If authentication is required, the **authentication_info_url** field contains a URL to a human-readable page describing how the authentication should be performed and how credentials can be created. The value must be a fully qualified URL that includes **http**:// or **https**://, and any special characters in the URL must be correctly escaped. See http://www.w3.org/Addressing/URL/4_URI_Recommentations.html for a description of how to fully qualified URL values. This field is required for `authentication_type` `1` or greater. |
+|  api_key_parameter_name | **Optional** | The **api_key_parameter_name** field defines the name of the parameter to pass in the URL to provide the API key. This field is required for `authentication_type` `2`. |
 
 
 ### feed_info.txt
