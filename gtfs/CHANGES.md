@@ -54,6 +54,10 @@ Every new feature adds complexity to the creation and reading of feeds. Therefor
 
 * Transition of GTFS documentation to Github at https://github.com/google/transit
 
+#### February 3, 2016
+
+* Added agency.txt 'agency_email' proposal to spec: [discussion](https://groups.google.com/forum/?fromgroups#!topic/gtfs-changes/aezjQsriLYA)
+
 #### February 2, 2015
 
 * Added stop_times.txt 'timepoint' proposal to spec: [discussion](https://groups.google.com/forum/?fromgroups#!topic/gtfs-changes/Ah-J9JP2rJY)
