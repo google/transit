@@ -422,7 +422,7 @@ File: **Optional**
 
 |  Field Name | Required | Details |
 |  ------ | ------ | ------ |
-|  url | **Required** | The **url** field contains the URL to the linked dataset. The value must be a fully qualified URL that includes **http**:// or **https**://, and any special characters in the URL must be correctly escaped. See http://www.w3.org/Addressing/URL/4_URI_Recommentations.html for a description of how to fully qualified URL values. |
+|  url | **Required** | The **url** field contains the URL to the linked dataset. The value must be a fully qualified URL that includes a scheme such as **http**:// or **https**://, and any special characters in the URL must be correctly escaped. See http://www.w3.org/Addressing/URL/4_URI_Recommentations.html for a description of how to fully qualified URL values. |
 |  trip_updates | **Required** | The **trip_updates** field indicates whether the dataset at this URL may contain [a `TripUpdate` entity](https://github.com/google/transit/blob/master/gtfs-realtime/spec/en/reference.md#message-tripupdate). Valid values for this field are: |
 |   |  | * **0** - The dataset at this URL doesn't contain TripUpdate entities. |
 |   |  | * **1** - The dataset at this URL may contain TripUpdate entities. |
