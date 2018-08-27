@@ -30,7 +30,7 @@ This section defines terms that are used throughout this document.
 
 * **Field required** - The field column must be included in your feed, and a value must be provided for each record. Some required fields permit an empty string as a value. To enter an empty string, just omit any text between the commas for that field. Note that 0 is interpreted as "a string of value 0", and is not an empty string. Please see the field definition for details.
 * **Field optional** - The field column may be omitted from your feed. If you choose to include an optional column, each record in your feed must have a value for that column. You may include an empty string as a value for records that do not have values for the column. Some optional fields permit an empty string as a value. To enter an empty string, just omit any text between the commas for that field. Note that 0 is interpreted as "a string of value 0", and is not an empty string.
-* **Field conditionally required** - This field or file is **required** except if some criteria are fullfiled. Please see the field or file definition for details. 
+* **Field conditionally required** - This field or file is **required** under certain conditions, which are outlined in the field or file *Details*. Outside of these conditions, this field or file is optional. 
 * **Dataset unique** - The field contains a value that maps to a single distinct entity within the column. For example, if a route is assigned the ID **1A**, then no other route may use that route ID. However, you may assign the ID **1A** to a location because locations are a different type of entity than routes.
 
 ## Feed Files
@@ -44,8 +44,8 @@ This specification defines the following files along with their associated conte
 |  [routes.txt](#routestxt) | **Required** | Transit routes. A route is a group of trips that are displayed to riders as a single service. |
 |  [trips.txt](#tripstxt)  | **Required** | Trips for each route. A trip is a sequence of two or more stops that occurs at specific time. |
 |  [stop_times.txt](#stop_timestxt)  | **Required** | Times that a vehicle arrives at and departs from individual stops for each trip. |
-|  [calendar.txt](#calendartxt)  | **Conditionally required** | Dates for service IDs using a weekly schedule. Specify when service starts and ends, as well as days of the week where service is available. |
-|  [calendar_dates.txt](#calendar_datestxt)  | **Conditionally required** | Exceptions for the service IDs defined in the [calendar.txt](#calendartxt) file. If [calendar.txt](#calendartxt) includes ALL dates of service, this file may be specified instead of [calendar.txt](#calendartxt). |
+|  [calendar.txt](#calendartxt)  | **Conditionally required** | Dates for service IDs using a weekly schedule. Specify when service starts and ends, as well as days of the week where service is available. This file is required unless all dates of service are defined in [calendar_dates.txt](#calendar_datestxt). |
+|  [calendar_dates.txt](#calendar_datestxt)  | **Conditionally required** | Exceptions for the service IDs defined in the [calendar.txt](#calendartxt) file. If [calendar_dates.txt](#calendar_datestxt) includes ALL dates of service, this file may be specified instead of [calendar.txt](#calendartxt). |
 |  [fare_attributes.txt](#fare_attributestxt)  | Optional | Fare information for a transit organization's routes. |
 |  [fare_rules.txt](#fare_rulestxt)  | Optional | Rules for applying fare information for a transit organization's routes. |
 |  [shapes.txt](#shapestxt)  | Optional | Rules for drawing lines on a map to represent a transit organization's routes. |
