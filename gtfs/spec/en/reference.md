@@ -45,7 +45,7 @@ This specification defines the following files along with their associated conte
 |  [trips.txt](#tripstxt)  | **Required** | Trips for each route. A trip is a sequence of two or more stops that occurs at specific time. |
 |  [stop_times.txt](#stop_timestxt)  | **Required** | Times that a vehicle arrives at and departs from individual stops for each trip. |
 |  [calendar.txt](#calendartxt)  | **Conditionally required** | Dates for service IDs using a weekly schedule. Specify when service starts and ends, as well as days of the week where service is available. This file is required unless all dates of service are defined in [calendar_dates.txt](#calendar_datestxt). |
-|  [calendar_dates.txt](#calendar_datestxt)  | **Conditionally required** | Exceptions for the service IDs defined in the [calendar.txt](#calendartxt) file. If [calendar_dates.txt](#calendar_datestxt) includes ALL dates of service, this file may be specified instead of [calendar.txt](#calendartxt). |
+|  [calendar_dates.txt](#calendar_datestxt)  | **Conditionally required** | Exceptions for the service IDs defined in the [calendar.txt](#calendartxt) file. If [calendar.txt](#calendartxt) is omitted, then [calendar_dates.txt](#calendar_datestxt) is required and must contain all dates of service. |
 |  [fare_attributes.txt](#fare_attributestxt)  | Optional | Fare information for a transit organization's routes. |
 |  [fare_rules.txt](#fare_rulestxt)  | Optional | Rules for applying fare information for a transit organization's routes. |
 |  [shapes.txt](#shapestxt)  | Optional | Rules for drawing lines on a map to represent a transit organization's routes. |
