@@ -427,11 +427,11 @@ File: **Optional**
 |   |  | * **0** - The dataset at this URL doesn't contain TripUpdate entities. |
 |   |  | * **1** - The dataset at this URL may contain TripUpdate entities. |
 |  vehicle_positions | **Required** | The **vehicle_positions** field indicates whether the dataset at this URL may contain [a `VehiclePosition` entity](https://github.com/google/transit/blob/master/gtfs-realtime/spec/en/reference.md#message-vehicleposition). Valid values for this field are: |
-|   |  | * **0** - The dataset at this URL doesn't contain TripUpdate entities. |
-|   |  | * **1** - The dataset at this URL may contain TripUpdate entities. |
+|   |  | * **0** - The dataset at this URL doesn't contain VehiclePosition entities. |
+|   |  | * **1** - The dataset at this URL may contain VehiclePosition entities. |
 |  service_alerts | **Required** | The **service_alerts** field indicates whether the dataset at this URL may contain [an `Alert` entity](https://github.com/google/transit/blob/master/gtfs-realtime/spec/en/reference.md#message-alert). Valid values for this field are: |
-|   |  | * **0** - The dataset at this URL doesn't contain TripUpdate entities. |
-|   |  | * **1** - The dataset at this URL may contain TripUpdate entities. |
+|   |  | * **0** - The dataset at this URL doesn't contain Alert entities. |
+|   |  | * **1** - The dataset at this URL may contain Alert entities. |
 |  authentication_type | **Required** | The **authentication_type** field defines the type of authentication required to access the URL. Valid values for this field are: |
 |   |  | * **0** or **(empty)** - No authentication required. |
 |   |  | * **1** - Ad-hoc authentication required, visit URL in `authentication_info_url` for more informations. |
