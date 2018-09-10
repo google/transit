@@ -47,7 +47,7 @@ This section defines terms that are used throughout this document.
 	-	**Timezone** - Refer to http://en.wikipedia.org/wiki/List_of_tz_zones for a list of valid values. Timezone names never contain the space character but may contain an underscore. 
 	-	**URL** - A URL provided in a GTFS dataset must be fully qualified URL that includes http:// or https://, and any special characters in the URL must be correctly escaped. See http://www.w3.org/Addressing/URL/4_URI_Recommentations.html for a description of how to create fully qualified URL values.
 	-	**Hexadecimal string** - A six character string used to represent color. No leading "#" is used. Refer to https://htmlcolorcodes.com/ to generate a valid value.
-	-	**Language** - 	
+	-	**Language** - 	Refer to https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes for a list of valid values. Must be two consecutive lowercase letters with no space characters or special characters.
 	-	**Currency value** - A **Float (Decimal)** value with no more than four digits after the decimal.
 	-	**Currency code** - Refer to https://en.wikipedia.org/wiki/ISO_4217 for a list of valid values. Must be three letters long with no space characters or special characters.
 
