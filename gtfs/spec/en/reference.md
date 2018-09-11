@@ -40,14 +40,14 @@ This section defines terms that are used throughout this document.
 	-	**Boolean** - A value that must be either 0 (False) or 1 (True)
 	-	**Integer** - A whole number, including 0.
 	-	**Float (Decimal)** - A number that may also include decimal values.
-	-	**Text string** - A string of alphanumeric text. 
-	-	**Enum** - Special data type that enables for a variable to be a set of predefined constants. The variable must be equal to one of the values that have been predefined for it.
-	-	**Date** - A value formatted as YYYY-MM-DD. Based on ISO-8601.
-	-	**Time** - - A value formatted as HH:MM:SS. Based on ISO-8601.
+	-	**Text string** - A string of UTF-8 Unicode characters. 
+	-	**Enum** - A set of predefined constants (i.e., enumerations) for a specific field.
+	-	**Date** - A value formatted as YYYYMMDD.
+	-	**Time** -  A value formatted as HH:MM:SS (H:MM:SS is also accepted, if the hour begins with 0.) Time is measured from "noon minus 12h" (effectively midnight, except for days on which daylight savings time changes occur) at the beginning of the service day. For times occurring after midnight on the service day, enter the time as a value greater than 24:00:00 in HH:MM:SS local time for the day on which the trip schedule begins.
 	-	**Timezone** - Refer to http://en.wikipedia.org/wiki/List_of_tz_zones for a list of valid values. Timezone names never contain the space character but may contain an underscore. 
 	-	**URL** - A URL provided in a GTFS dataset must be fully qualified URL that includes http:// or https://, and any special characters in the URL must be correctly escaped. See http://www.w3.org/Addressing/URL/4_URI_Recommentations.html for a description of how to create fully qualified URL values.
-	-	**Hexadecimal string** - A six character string used to represent color. No leading "#" is used. Refer to https://htmlcolorcodes.com/ to generate a valid value.
-	-	**Language** - 	Refer to https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes for a list of valid values. Must be two consecutive lowercase letters with no space characters or special characters.
+	-	**Hexadecimal number** - A six character string used to represent color. No leading "#" is used. Refer to https://htmlcolorcodes.com/ to generate a valid value.
+	-	**Language** - 	Refer to https://github.com/libyal/libfwnt/wiki/Language-Code-identifiers for a list of valid values. As specified by IETF BCP 47.
 	-	**Currency value** - A **Float (Decimal)** value with no more than four digits after the decimal.
 	-	**Currency code** - Refer to https://en.wikipedia.org/wiki/ISO_4217 for a list of valid values. Must be three letters long with no space characters or special characters.
 
