@@ -421,17 +421,17 @@ File: **Optional**
 
 Trip planners normally calculate transfer points based on the relative proximity of stops in each route. For potentially ambiguous stop pairs, or transfers where you want to specify a particular choice, use transfers.txt to define additional rules for making connections between routes.
 
-|  Field Name | Required & Type | Details |
-|  ------ | ------ | ------ |
-|  from_stop_id | **Required ID** | The **from_stop_id** field contains a stop ID that identifies a stop or station where a connection between routes begins. Stop IDs are referenced from the [stops.txt](#stopstxt) file. If the stop ID refers to a station that contains multiple stops, this transfer rule applies to all stops in that station. |
-|  to_stop_id | **Required ID** | The **to_stop_id** field contains a stop ID that identifies a stop or station where a connection between routes ends. Stop IDs are referenced from the [stops.txt](#stopstxt) file. If the stop ID refers to a station that contains multiple stops, this transfer rule applies to all stops in that station. |
-|  transfer_type | **Required enum** | The **transfer_type** field specifies the type of connection for the specified (from_stop_id, to_stop_id) pair. Valid values for this field are: |
-|   |  | * **0** or **(empty)** - This is a recommended transfer point between routes. |
-|   |  | * **1** - This is a timed transfer point between two routes. The departing vehicle is expected to wait for the arriving one, with sufficient time for a passenger to transfer between routes. |
-|   |  | * **2** - This transfer requires a minimum amount of time between arrival and departure to ensure a connection. The time required to transfer is specified by **min_transfer_time**. |
-|   |  | * **3** - Transfers are not possible between routes at this location. |
-|  min_transfer_time | Optional | When a connection between routes requires an amount of time between arrival and departure (transfer_type=2), the **min_transfer_time** field defines the amount of time that must be available in an itinerary to permit a transfer between routes at these stops. The min_transfer_time must be sufficient to permit a typical rider to move between the two stops, including buffer time to allow for schedule variance on each route. |
-|   |  | The min_transfer_time value must be entered in seconds, and must be a non-negative integer. |
+|  Field Name | Type | Required | Details |
+|  ------ | ------ | ------ | ------ |
+|  from_stop_id | ID | **Required** | The **from_stop_id** field contains a stop ID that identifies a stop or station where a connection between routes begins. Stop IDs are referenced from the [stops.txt](#stopstxt) file. If the stop ID refers to a station that contains multiple stops, this transfer rule applies to all stops in that station. |
+|  to_stop_id | ID | **Required** | The **to_stop_id** field contains a stop ID that identifies a stop or station where a connection between routes ends. Stop IDs are referenced from the [stops.txt](#stopstxt) file. If the stop ID refers to a station that contains multiple stops, this transfer rule applies to all stops in that station. |
+|  transfer_type | Enum | **Required** | The **transfer_type** field specifies the type of connection for the specified (from_stop_id, to_stop_id) pair. Valid values for this field are: |
+|   |  | | * **0** or **(empty)** - This is a recommended transfer point between routes. |
+|   |  | | * **1** - This is a timed transfer point between two routes. The departing vehicle is expected to wait for the arriving one, with sufficient time for a passenger to transfer between routes. |
+|   |  | | * **2** - This transfer requires a minimum amount of time between arrival and departure to ensure a connection. The time required to transfer is specified by **min_transfer_time**. |
+|   |  | | * **3** - Transfers are not possible between routes at this location. |
+|  min_transfer_time | Non-negative integer | Optional | When a connection between routes requires an amount of time between arrival and departure (transfer_type=2), the **min_transfer_time** field defines the amount of time that must be available in an itinerary to permit a transfer between routes at these stops. The min_transfer_time must be sufficient to permit a typical rider to move between the two stops, including buffer time to allow for schedule variance on each route. |
+|   |  | | The min_transfer_time value must be entered in seconds, and must be a non-negative integer. |
 
 ### feed_info.txt
 
@@ -439,11 +439,11 @@ File: **Optional**
 
 The file contains information about the feed itself, rather than the services that the feed describes. GTFS currently has an [agency.txt](#agencytxt) file to provide information about the agencies that operate the services described by the feed. However, the publisher of the feed is sometimes a different entity than any of the agencies (in the case of regional aggregators). In addition, there are some fields that are really feed-wide settings, rather than agency-wide.
 
-|  Field Name | Required & Type | Details |
-|  ------ | ------ | ------ |
-|  feed_publisher_name | **Required text** | The **feed_publisher_name** field contains the full name of the organization that publishes the feed. (This may be the same as one of the **agency_name** values in [agency.txt](#agencytxt).) GTFS-consuming applications can display this name when giving attribution for a particular feed's data. |
-|  feed_publisher_url | **Required URL** | The **feed_publisher_url** field contains the URL of the feed publishing organization's website. (This may be the same as one of the **agency_url** values in [agency.txt](#agencytxt)). |
-|  feed_lang | Required language | The **feed_lang** field contains a language code specifying the default language used for the text in this feed. This setting helps GTFS consumers choose capitalization rules and other language-specific settings for the feed. |
-|  feed_start_date | Optional service date | The feed provides complete and reliable schedule information for service in the period from the beginning of the **feed_start_date** day to the end of the **feed_end_date** day. Both days can be left empty if unavailable. The **feed_end_date** date must not precede the **feed_start_date** date if both are given. Feed providers are encouraged to give schedule data outside this period to advise of likely future service, but feed consumers should treat it mindful of its non-authoritative status. If **feed_start_date** or **feed_end_date** extend beyond the active calendar dates defined in [calendar.txt](#calendartxt) and [calendar_dates.txt](#calendar_datestxt), the feed is making an explicit assertion that there is no service for dates within the **feed_start_date** or **feed_end_date** range but not included in the active calendar dates. |
-|  feed_end_date | Optional service date | (see above) |
-|  feed_version | Optional text | The feed publisher can specify a string here that indicates the current version of their GTFS feed. GTFS-consuming applications can display this value to help feed publishers determine whether the latest version of their feed has been incorporated. |
+|  Field Name | Type | Required | Details |
+|  ------ | ------ | ------ | ------ |
+|  feed_publisher_name | Text | **Required** | The **feed_publisher_name** field contains the full name of the organization that publishes the feed. (This may be the same as one of the **agency_name** values in [agency.txt](#agencytxt).) GTFS-consuming applications can display this name when giving attribution for a particular feed's data. |
+|  feed_publisher_url | URL | **Required** | The **feed_publisher_url** field contains the URL of the feed publishing organization's website. (This may be the same as one of the **agency_url** values in [agency.txt](#agencytxt)). |
+|  feed_lang | Language code | Required | The **feed_lang** field contains a language code specifying the default language used for the text in this feed. This setting helps GTFS consumers choose capitalization rules and other language-specific settings for the feed. |
+|  feed_start_date | Date | Optional | The feed provides complete and reliable schedule information for service in the period from the beginning of the **feed_start_date** day to the end of the **feed_end_date** day. Both days can be left empty if unavailable. The **feed_end_date** date must not precede the **feed_start_date** date if both are given. Feed providers are encouraged to give schedule data outside this period to advise of likely future service, but feed consumers should treat it mindful of its non-authoritative status. If **feed_start_date** or **feed_end_date** extend beyond the active calendar dates defined in [calendar.txt](#calendartxt) and [calendar_dates.txt](#calendar_datestxt), the feed is making an explicit assertion that there is no service for dates within the **feed_start_date** or **feed_end_date** range but not included in the active calendar dates. |
+|  feed_end_date | Date | Optional | (see above) |
+|  feed_version | Text | Optional | The feed publisher can specify a string here that indicates the current version of their GTFS feed. GTFS-consuming applications can display this value to help feed publishers determine whether the latest version of their feed has been incorporated. |
