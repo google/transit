@@ -316,7 +316,7 @@ File: **Optional**
 
 |  Field Name | Type | Required | Details |
 |  ------ | ------ | ------ | ------ |
-|  fare_id | ID **Required** | The **fare_id** field contains an ID that uniquely identifies a fare class. The **fare_id** is dataset unique. |
+|  fare_id | ID | **Required** | The **fare_id** field contains an ID that uniquely identifies a fare class. The **fare_id** is dataset unique. |
 |  price | Non-negative float | **Required** | The **price** field contains the fare price, in the unit specified by **currency_type**. |
 |  currency_type | Currency code | **Required** | The **currency_type** field defines the currency used to pay the fare. |
 |  payment_method | Enum | **Required** | The **payment_method** field indicates when the fare must be paid. Valid values for this field are: |
@@ -353,11 +353,11 @@ For examples that demonstrate how to specify a fare structure with fare_rules.tx
 |   |  | | For example, if fare class "b" is valid for all travel originating from either zone "2" or zone "8", the fare_rules.txt file would contain these rows for the fare class: |
 |   |  | | `b, , 2` |
 |   |  | | `b, , 8` |
-|  destination_id | Optional ID | The **destination_id** field associates the fare ID with a destination zone ID. Zone IDs are referenced from the [stops.txt](#stopstxt) file. If you have several destination IDs with the same fare attributes, create a row in fare_rules.txt for each destination ID. |
+|  destination_id | ID | Optional | The **destination_id** field associates the fare ID with a destination zone ID. Zone IDs are referenced from the [stops.txt](#stopstxt) file. If you have several destination IDs with the same fare attributes, create a row in fare_rules.txt for each destination ID. |
 |   |  | | For example, you could use the origin_ID and destination_ID fields together to specify that fare class "b" is valid for travel between zones 3 and 4, and for travel between zones 3 and 5, the fare_rules.txt file would contain these rows for the fare class: |
 |   |  | | `b, , 3,4` |
 |   |  | | `b, , 3,5` |
-|  contains_id | Optional ID | The **contains_id** field associates the fare ID with a zone ID, referenced from the [stops.txt](#stopstxt) file. The fare ID is then associated with itineraries that pass through every contains_id zone. |
+|  contains_id | ID | Optional | The **contains_id** field associates the fare ID with a zone ID, referenced from the [stops.txt](#stopstxt) file. The fare ID is then associated with itineraries that pass through every contains_id zone. |
 |   |  | | For example, if fare class "c" is associated with all travel on the GRT route that passes through zones 5, 6, and 7 the fare_rules.txt would contain these rows: |
 |   |  | | `c,GRT,,,5` |
 |   |  | | `c,GRT,,,6` |
@@ -370,30 +370,30 @@ File: **Optional**
 
 Shapes describe the physical path that a vehicle takes, and are defined in the file shapes.txt. Shapes belong to Trips, and consist of a sequence of points. Tracing the points in order provides the path of the vehicle. The points do not need to match stop locations.
 
-|  Field Name | Required & Type | Details |
-|  ------ | ------ | ------ |
-|  shape_id | **Required ID** | The **shape_id** field contains an ID that uniquely identifies a shape. |
-|  shape_pt_lat | **Required latitude** | The **shape_pt_lat** field associates a shape point's latitude with a shape ID. Each row in shapes.txt represents a shape point in your shape definition. |
-|   |  | For example, if the shape "A_shp" has three points in its definition, the shapes.txt file might contain these rows to define the shape: |
-|   |  | `A_shp,37.61956,-122.48161,0` |
-|   |  | `A_shp,37.64430,-122.41070,6` |
-|   |  | `A_shp,37.65863,-122.30839,11` |
-|  shape_pt_lon | **Required longitude** | The **shape_pt_lon** field associates a shape point's longitude with a shape ID. Each row in shapes.txt represents a shape point in your shape definition. |
-|   |  | For example, if the shape "A_shp" has three points in its definition, the shapes.txt file might contain these rows to define the shape: |
-|   |  | `A_shp,37.61956,-122.48161,0` |
-|   |  | `A_shp,37.64430,-122.41070,6` |
-|   |  | `A_shp,37.65863,-122.30839,11` |
-|  shape_pt_sequence | **Required non-negative integer** | The **shape_pt_sequence** field associates the latitude and longitude of a shape point with its sequence order along the shape. The values for **shape_pt_sequence** must increase along the trip. |
-|   |  | For example, if the shape "A_shp" has three points in its definition, the shapes.txt file might contain these rows to define the shape: |
-|   |  | `A_shp,37.61956,-122.48161,0` |
-|   |  | `A_shp,37.64430,-122.41070,6` |
-|   |  | `A_shp,37.65863,-122.30839,11` |
-|  shape_dist_traveled | Optional non-negative float | When used in the shapes.txt file, the **shape_dist_traveled** field positions a shape point as a distance traveled along a shape from the first shape point. The **shape_dist_traveled** field represents a real distance traveled along the route in units such as feet or kilometers. This information allows the trip planner to determine how much of the shape to draw when showing part of a trip on the map. The values used for **shape_dist_traveled** must increase along with shape_pt_sequence: they cannot be used to show reverse travel along a route.  |
-|   |  | The units used for **shape_dist_traveled** in the shapes.txt file must match the units that are used for this field in the [stop_times.txt](#stop_timestxt) file. |
-|   |  | For example, if a bus travels along the three points defined above for A_shp, the additional **shape_dist_traveled** values (shown here in kilometers) would look like this: |
-|   |  | `A_shp,37.61956,-122.48161,0,0` |
-|   |  | `A_shp,37.64430,-122.41070,6,6.8310` |
-|   |  | `A_shp,37.65863,-122.30839,11,15.8765` |
+|  Field Name | Type | Required | Details |
+|  ------ | ------ | ------ | ------ |
+|  shape_id | ID | **Required** | The **shape_id** field contains an ID that uniquely identifies a shape. |
+|  shape_pt_lat | Latitude | **Required** | The **shape_pt_lat** field associates a shape point's latitude with a shape ID. Each row in shapes.txt represents a shape point in your shape definition. |
+|   |  | | For example, if the shape "A_shp" has three points in its definition, the shapes.txt file might contain these rows to define the shape: |
+|   |  | | `A_shp,37.61956,-122.48161,0` |
+|   |  | | `A_shp,37.64430,-122.41070,6` |
+|   |  | | `A_shp,37.65863,-122.30839,11` |
+|  shape_pt_lon | Longitude | **Required** | The **shape_pt_lon** field associates a shape point's longitude with a shape ID. Each row in shapes.txt represents a shape point in your shape definition. |
+|   |  | | For example, if the shape "A_shp" has three points in its definition, the shapes.txt file might contain these rows to define the shape: |
+|   |  | | `A_shp,37.61956,-122.48161,0` |
+|   |  | | `A_shp,37.64430,-122.41070,6` |
+|   |  | | `A_shp,37.65863,-122.30839,11` |
+|  shape_pt_sequence | Non-negative integer | **Required** | The **shape_pt_sequence** field associates the latitude and longitude of a shape point with its sequence order along the shape. The values for **shape_pt_sequence** must increase along the trip. |
+|   |  | | For example, if the shape "A_shp" has three points in its definition, the shapes.txt file might contain these rows to define the shape: |
+|   |  | | `A_shp,37.61956,-122.48161,0` |
+|   |  | | `A_shp,37.64430,-122.41070,6` |
+|   |  | | `A_shp,37.65863,-122.30839,11` |
+|  shape_dist_traveled | Non-negative float | Optional | When used in the shapes.txt file, the **shape_dist_traveled** field positions a shape point as a distance traveled along a shape from the first shape point. The **shape_dist_traveled** field represents a real distance traveled along the route in units such as feet or kilometers. This information allows the trip planner to determine how much of the shape to draw when showing part of a trip on the map. The values used for **shape_dist_traveled** must increase along with shape_pt_sequence: they cannot be used to show reverse travel along a route.  |
+|   |  | | The units used for **shape_dist_traveled** in the shapes.txt file must match the units that are used for this field in the [stop_times.txt](#stop_timestxt) file. |
+|   |  | | For example, if a bus travels along the three points defined above for A_shp, the additional **shape_dist_traveled** values (shown here in kilometers) would look like this: |
+|   |  | | `A_shp,37.61956,-122.48161,0,0` |
+|   |  | | `A_shp,37.64430,-122.41070,6,6.8310` |
+|   |  | | `A_shp,37.65863,-122.30839,11,15.8765` |
 
 ### frequencies.txt
 
@@ -401,19 +401,19 @@ File: **Optional**
 
 This table is intended to represent schedules that don't have a fixed list of stop times. When trips are defined in frequencies.txt, the trip planner ignores the absolute values of the **arrival_time** and **departure_time** fields for those trips in [stop_times.txt](#stop_timestxt). Instead, the **stop_times** table defines the sequence of stops and the time difference between each stop.
 
-|  Field Name | Required & Type | Details |
-|  ------ | ------ | ------ |
-|  trip_id | **Required ID** | The **trip_id** contains an ID that identifies a trip on which the specified frequency of service applies. Trip IDs are referenced from the [trips.txt](#tripstxt) file. |
-|  start_time | **Required service time** | The **start_time** field specifies the time at which the first vehicle departs from the first stop of the trip with the specified frequency. The time is measured from "noon minus 12h" (effectively midnight, except for days on which daylight savings time changes occur) at the beginning of the service day. For times occurring after midnight, enter the time as a value greater than 24:00:00 in HH:MM:SS local time for the day on which the trip schedule begins. E.g. 25:35:00. |
-|  end_time | **Required service time** | The **end_time** field indicates the time at which service changes to a different frequency (or ceases) at the first stop in the trip. The time is measured from "noon minus 12h" (effectively midnight, except for days on which daylight savings time changes occur) at the beginning of the service day. For times occurring after midnight, enter the time as a value greater than 24:00:00 in HH:MM:SS local time for the day on which the trip schedule begins. E.g. 25:35:00. |
-|  headway_secs | **Required non-negative integer** | The **headway_secs** field indicates the time between departures from the same stop (headway) for this trip type, during the time interval specified by **start_time** and **end_time**. The headway value must be entered in seconds. |
-|   |  | Periods in which headways are defined (the rows in frequencies.txt) shouldn't overlap for the same trip, since it's hard to determine what should be inferred from two overlapping headways. However, a headway period may begin at the exact same time that another one ends, for instance: |
-|   |  | `A, 05:00:00, 07:00:00, 600` |
+|  Field Name | Type | Required | Details |
+|  ------ | ------ | ------ | ------ |
+|  trip_id | ID | **Required** | The **trip_id** contains an ID that identifies a trip on which the specified frequency of service applies. Trip IDs are referenced from the [trips.txt](#tripstxt) file. |
+|  start_time | Time | **Required** | The **start_time** field specifies the time at which the first vehicle departs from the first stop of the trip with the specified frequency. The time is measured from "noon minus 12h" (effectively midnight, except for days on which daylight savings time changes occur) at the beginning of the service day. For times occurring after midnight, enter the time as a value greater than 24:00:00 in HH:MM:SS local time for the day on which the trip schedule begins. E.g. 25:35:00. |
+|  end_time | Time | **Required** | The **end_time** field indicates the time at which service changes to a different frequency (or ceases) at the first stop in the trip. The time is measured from "noon minus 12h" (effectively midnight, except for days on which daylight savings time changes occur) at the beginning of the service day. For times occurring after midnight, enter the time as a value greater than 24:00:00 in HH:MM:SS local time for the day on which the trip schedule begins. E.g. 25:35:00. |
+|  headway_secs | Non-negative integer | **Required** | The **headway_secs** field indicates the time between departures from the same stop (headway) for this trip type, during the time interval specified by **start_time** and **end_time**. The headway value must be entered in seconds. |
+|   |  | | Periods in which headways are defined (the rows in frequencies.txt) shouldn't overlap for the same trip, since it's hard to determine what should be inferred from two overlapping headways. However, a headway period may begin at the exact same time that another one ends, for instance: |
+|   |  | | | `A, 05:00:00, 07:00:00, 600` |
 |   |  | `B, 07:00:00, 12:00:00, 1200` |
 |  exact_times | Optional enum | The **exact_times** field determines if frequency-based trips should be exactly scheduled based on the specified headway information. Valid values for this field are: |
-|   |  |* **0** or **(empty)** - Frequency-based trips are not exactly scheduled. This is the default behavior. |
-|   |  |* **1** - Frequency-based trips are exactly scheduled. For a frequencies.txt row, trips are scheduled starting with trip_start_time = start_time + x * headway_secs for all x in (0, 1, 2, ...) where trip_start_time < end_time. |
-|   |  | The value of **exact_times** must be the same for all frequencies.txt rows with the same **trip_id**. If **exact_times** is 1 and a frequencies.txt row has a **start_time** equal to **end_time**, no trip must be scheduled. When **exact_times** is 1, care must be taken to choose an **end_time** value that is greater than the last desired trip start time but less than the last desired trip start time + **headway_secs**. |
+|   |  | | * **0** or **(empty)** - Frequency-based trips are not exactly scheduled. This is the default behavior. |
+|   |  | | * **1** - Frequency-based trips are exactly scheduled. For a frequencies.txt row, trips are scheduled starting with trip_start_time = start_time + x * headway_secs for all x in (0, 1, 2, ...) where trip_start_time < end_time. |
+|   |  | | The value of **exact_times** must be the same for all frequencies.txt rows with the same **trip_id**. If **exact_times** is 1 and a frequencies.txt row has a **start_time** equal to **end_time**, no trip must be scheduled. When **exact_times** is 1, care must be taken to choose an **end_time** value that is greater than the last desired trip start time but less than the last desired trip start time + **headway_secs**. |
 
 ### transfers.txt
 
