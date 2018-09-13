@@ -258,39 +258,39 @@ File: **Required**
 
 File: **Required**
 
-|  Field Name | Required & Type | Details |
-|  ------ | ------ | ------ |
-|  service_id | **Required ID** | The **service_id** contains an ID that uniquely identifies a set of dates when service is available for one or more routes. Each service_id value can appear at most once in a calendar.txt file. This value is dataset unique. It is referenced by the [trips.txt](#tripstxt) file. |
-|  monday | **Required enum** | The monday field contains a binary value that indicates whether the service is valid for all Mondays. |
-|   |  | * A value of **1** indicates that service is available for all Mondays in the date range. (The date range is specified using the **start_date** and **end_date** fields.) |
-|   |  | * A value of **0** indicates that service is not available on Mondays in the date range. |
-|   |  | **Note:** You may list exceptions for particular dates, such as holidays, in the [calendar_dates.txt](#calendar_datestxt) file. |
-|  tuesday | **Required enum** | The tuesday field contains a binary value that indicates whether the service is valid for all Tuesdays. |
-|   |  | A value of **1** indicates that service is available for all Tuesdays in the date range. (The date range is specified using the **start_date** and **end_date** fields.) |
-|   |  | A value of **0** indicates that service is not available on Tuesdays in the date range. |
-|   |  | **Note:** You may list exceptions for particular dates, such as holidays, in the [calendar_dates.txt](#calendar_datestxt) file. |
-|  wednesday | **Required enum** | The wednesday field contains a binary value that indicates whether the service is valid for all Wednesdays. |
-|   |  | A value of **1** indicates that service is available for all Wednesdays in the date range. (The date range is specified using the **start_date** and **end_date** fields.) |
-|   |  | A value of **0** indicates that service is not available on Wednesdays in the date range. |
-|   |  | **Note:** You may list exceptions for particular dates, such as holidays, in the [calendar_dates.txt](#calendar_datestxt) file. |
-|  thursday | **Required enum** | The thursday field contains a binary value that indicates whether the service is valid for all Thursdays. |
-|   |  | A value of **1** indicates that service is available for all Thursdays in the date range. (The date range is specified using the **start_date** and **end_date** fields.) |
-|   |  | A value of **0** indicates that service is not available on Thursdays in the date range. |
-|   |  | **Note:** You may list exceptions for particular dates, such as holidays, in the [calendar_dates.txt](#calendar_datestxt) file. |
-|  friday | **Required enum** | The friday field contains a binary value that indicates whether the service is valid for all Fridays. |
-|   |  | A value of **1** indicates that service is available for all Fridays in the date range. (The date range is specified using the **start_date** and **end_date** fields.) |
-|   |  | A value of **0** indicates that service is not available on Fridays in the date range. |
-|   |  | **Note:** You may list exceptions for particular dates, such as holidays, in the [calendar_dates.txt](#calendar_datestxt) file |
-|  saturday | **Required enum** | The saturday field contains a binary value that indicates whether the service is valid for all Saturdays. |
-|   |  | A value of **1** indicates that service is available for all Saturdays in the date range. (The date range is specified using the **start_date** and **end_date** fields.) |
-|   |  | A value of **0** indicates that service is not available on Saturdays in the date range. |
-|   |  | **Note:** You may list exceptions for particular dates, such as holidays, in the [calendar_dates.txt](#calendar_datestxt) file. |
-|  sunday | **Required enum** | The sunday field contains a binary value that indicates whether the service is valid for all Sundays. |
-|   |  | A value of **1** indicates that service is available for all Sundays in the date range. (The date range is specified using the **start_date** and **end_date** fields.) |
-|   |  | A value of **0** indicates that service is not available on Sundays in the date range. |
-|   |  | **Note:** You may list exceptions for particular dates, such as holidays, in the [calendar_dates.txt](#calendar_datestxt) file. |
-|  start_date | **Required service date** | The **start_date** field contains the start date for the service.  The start_date field's value should be in YYYYMMDD format. |
-|  end_date | **Required service date** | The **end_date** field contains the end date for the service. This date is included in the service interval.  The **end_date** field's value should be in YYYYMMDD format. |
+|  Field Name | Type | Required | Details |
+|  ------ | ------ | ------ |------ |
+|  service_id | ID | **Required** | The **service_id** contains an ID that uniquely identifies a set of dates when service is available for one or more routes. Each service_id value can appear at most once in a calendar.txt file. This value is dataset unique. It is referenced by the [trips.txt](#tripstxt) file. |
+|  monday | Enum | **Required** | The monday field contains a binary value that indicates whether the service is valid for all Mondays. |
+|   |  | | * A value of **1** indicates that service is available for all Mondays in the date range. (The date range is specified using the **start_date** and **end_date** fields.) |
+|   |  | | * A value of **0** indicates that service is not available on Mondays in the date range. |
+|   |  | | **Note:** You may list exceptions for particular dates, such as holidays, in the [calendar_dates.txt](#calendar_datestxt) file. |
+|  tuesday | Enum | **Required** | The tuesday field contains a binary value that indicates whether the service is valid for all Tuesdays. |
+|   |  | | A value of **1** indicates that service is available for all Tuesdays in the date range. (The date range is specified using the **start_date** and **end_date** fields.) |
+|   |  | | A value of **0** indicates that service is not available on Tuesdays in the date range. |
+|   |  | | **Note:** You may list exceptions for particular dates, such as holidays, in the [calendar_dates.txt](#calendar_datestxt) file. |
+|  wednesday | Enum | **Required** | The wednesday field contains a binary value that indicates whether the service is valid for all Wednesdays. |
+|   |  | | A value of **1** indicates that service is available for all Wednesdays in the date range. (The date range is specified using the **start_date** and **end_date** fields.) |
+|   |  | | A value of **0** indicates that service is not available on Wednesdays in the date range. |
+|   |  | | **Note:** You may list exceptions for particular dates, such as holidays, in the [calendar_dates.txt](#calendar_datestxt) file. |
+|  thursday | Enum | **Required** | The thursday field contains a binary value that indicates whether the service is valid for all Thursdays. |
+|   |  | | A value of **1** indicates that service is available for all Thursdays in the date range. (The date range is specified using the **start_date** and **end_date** fields.) |
+|   |  | | A value of **0** indicates that service is not available on Thursdays in the date range. |
+|   |  | | **Note:** You may list exceptions for particular dates, such as holidays, in the [calendar_dates.txt](#calendar_datestxt) file. |
+|  friday | Enum | **Required** | The friday field contains a binary value that indicates whether the service is valid for all Fridays. |
+|   |  | | A value of **1** indicates that service is available for all Fridays in the date range. (The date range is specified using the **start_date** and **end_date** fields.) |
+|   |  | | A value of **0** indicates that service is not available on Fridays in the date range. |
+|   |  | | **Note:** You may list exceptions for particular dates, such as holidays, in the [calendar_dates.txt](#calendar_datestxt) file |
+|  saturday | Enum | **Required** | The saturday field contains a binary value that indicates whether the service is valid for all Saturdays. |
+|   |  | | A value of **1** indicates that service is available for all Saturdays in the date range. (The date range is specified using the **start_date** and **end_date** fields.) |
+|   |  | | A value of **0** indicates that service is not available on Saturdays in the date range. |
+|   |  | | **Note:** You may list exceptions for particular dates, such as holidays, in the [calendar_dates.txt](#calendar_datestxt) file. |
+|  sunday | Enum | **Required** | The sunday field contains a binary value that indicates whether the service is valid for all Sundays. |
+|   |  | | A value of **1** indicates that service is available for all Sundays in the date range. (The date range is specified using the **start_date** and **end_date** fields.) |
+|   |  | | A value of **0** indicates that service is not available on Sundays in the date range. |
+|   |  | | **Note:** You may list exceptions for particular dates, such as holidays, in the [calendar_dates.txt](#calendar_datestxt) file. |
+|  start_date | Date | **Required** | The **start_date** field contains the start date for the service.  The start_date field's value should be in YYYYMMDD format. |
+|  end_date | Date | **Required** | The **end_date** field contains the end date for the service. This date is included in the service interval.  The **end_date** field's value should be in YYYYMMDD format. |
 
 ### calendar_dates.txt
 
@@ -301,14 +301,14 @@ The calendar_dates table allows you to explicitly activate or disable service ID
 * Recommended: Use calendar_dates.txt in conjunction with [calendar.txt](#calendartxt), where calendar_dates.txt defines any exceptions to the default service categories defined in the [calendar.txt](#calendartxt) file. If your service is generally regular, with a few changes on explicit dates (for example, to accommodate special event services, or a school schedule), this is a good approach.
 * Alternate: Omit [calendar.txt](#calendartxt), and include ALL dates of service in calendar_dates.txt. If your schedule varies most days of the month, or you want to programmatically output service dates without specifying a normal weekly schedule, this approach may be preferable.
 
-|  Field Name | Required & Type | Details |
-|  ------ | ------ | ------ |
-|  service_id | **Required ID** | The **service_id** contains an ID that uniquely identifies a set of dates when a service exception is available for one or more routes. Each (service_id, date) pair can only appear once in calendar_dates.txt. If the a service_id value appears in both the calendar.txt and calendar_dates.txt files, the information in calendar_dates.txt modifies the service information specified in [calendar.txt](#calendartxt). This field is referenced by the [trips.txt](#tripstxt) file. |
-|  date | **Required service date** | The **date** field specifies a particular date when service availability is different than the norm. You can use the **exception_type** field to indicate whether service is available on the specified date. The **date** field's value should be in YYYYMMDD format. |
-|  exception_type | **Required enum** | The **exception_type** indicates whether service is available on the date specified in the date field. |
-|   |  |*  A value of **1** indicates that service has been added for the specified date. |
-|   |  |* A value of **2** indicates that service has been removed for the specified date. |
-|   |  | For example, suppose a route has one set of trips available on holidays and another set of trips available on all other days. You could have one **service_id** that corresponds to the regular service schedule and another **service_id** that corresponds to the holiday schedule. For a particular holiday, you would use the calendar_dates.txt file to add the holiday to the holiday **service_id** and to remove the holiday from the regular **service_id** schedule. |
+|  Field Name | Type | Required | Details |
+|  ------ | ------ | ------ | ------ |
+|  service_id | ID | **Required** | The **service_id** contains an ID that uniquely identifies a set of dates when a service exception is available for one or more routes. Each (service_id, date) pair can only appear once in calendar_dates.txt. If the a service_id value appears in both the calendar.txt and calendar_dates.txt files, the information in calendar_dates.txt modifies the service information specified in [calendar.txt](#calendartxt). This field is referenced by the [trips.txt](#tripstxt) file. |
+|  date | Date | **Required** | The **date** field specifies a particular date when service availability is different than the norm. You can use the **exception_type** field to indicate whether service is available on the specified date. The **date** field's value should be in YYYYMMDD format. |
+|  exception_type | Enum | **Required** | The **exception_type** indicates whether service is available on the date specified in the date field. |
+|   |  | | *  A value of **1** indicates that service has been added for the specified date. |
+|   |  | | * A value of **2** indicates that service has been removed for the specified date. |
+|   |  | | For example, suppose a route has one set of trips available on holidays and another set of trips available on all other days. You could have one **service_id** that corresponds to the regular service schedule and another **service_id** that corresponds to the holiday schedule. For a particular holiday, you would use the calendar_dates.txt file to add the holiday to the holiday **service_id** and to remove the holiday from the regular **service_id** schedule. |
 
 ### fare_attributes.txt
 
