@@ -314,21 +314,21 @@ The calendar_dates table allows you to explicitly activate or disable service ID
 
 File: **Optional**
 
-|  Field Name | Required & Type | Details |
-|  ------ | ------ | ------ |
-|  fare_id | **Required ID** | The **fare_id** field contains an ID that uniquely identifies a fare class. The **fare_id** is dataset unique. |
-|  price | **Required non-negative float** | The **price** field contains the fare price, in the unit specified by **currency_type**. |
-|  currency_type | **Required currency code** | The **currency_type** field defines the currency used to pay the fare. |
-|  payment_method | **Required enum** | The **payment_method** field indicates when the fare must be paid. Valid values for this field are: |
-|   |  | * **0** - Fare is paid on board. |
-|   |  | * **1** - Fare must be paid before boarding. |
-|  transfers | **Required enum** | The transfers field specifies the number of transfers permitted on this fare. Valid values for this field are: |
-|   |  | * **0** - No transfers permitted on this fare. |
-|   |  | * **1** - Passenger may transfer once. |
-|   |  | * **2** - Passenger may transfer twice. |
-|   |  | * **(empty)** - If this field is empty, unlimited transfers are permitted. |
-|  agency_id | Optional ID | Required for feeds with multiple agencies defined in the agency.txt file. Each fare attribute must specify an agency_id value to indicate which agency the fare applies to. |
-|  transfer_duration | Optional non-negative integer | The **transfer_duration** field specifies the length of time in seconds before a transfer expires.  When used with a **transfers** value of 0, the **transfer_duration** field indicates how long a ticket is valid for a fare where no transfers are allowed. Unless you intend to use this field to indicate ticket validity, **transfer_duration** should be omitted or empty when **transfers** is set to 0. |
+|  Field Name | Type | Required | Details |
+|  ------ | ------ | ------ | ------ |
+|  fare_id | ID **Required** | The **fare_id** field contains an ID that uniquely identifies a fare class. The **fare_id** is dataset unique. |
+|  price | Non-negative float | **Required** | The **price** field contains the fare price, in the unit specified by **currency_type**. |
+|  currency_type | Currency code | **Required** | The **currency_type** field defines the currency used to pay the fare. |
+|  payment_method | Enum | **Required** | The **payment_method** field indicates when the fare must be paid. Valid values for this field are: |
+|   |  | | * **0** - Fare is paid on board. |
+|   |  | | * **1** - Fare must be paid before boarding. |
+|  transfers | Enum | **Required** | The transfers field specifies the number of transfers permitted on this fare. Valid values for this field are: |
+|   |  | | * **0** - No transfers permitted on this fare. |
+|   |  | | * **1** - Passenger may transfer once. |
+|   |  | | * **2** - Passenger may transfer twice. |
+|   |  | | * **(empty)** - If this field is empty, unlimited transfers are permitted. |
+|  agency_id | ID | Optional | Required for feeds with multiple agencies defined in the agency.txt file. Each fare attribute must specify an agency_id value to indicate which agency the fare applies to. |
+|  transfer_duration | Non-negative integer | Optional | The **transfer_duration** field specifies the length of time in seconds before a transfer expires.  When used with a **transfers** value of 0, the **transfer_duration** field indicates how long a ticket is valid for a fare where no transfers are allowed. Unless you intend to use this field to indicate ticket validity, **transfer_duration** should be omitted or empty when **transfers** is set to 0. |
 
 ### fare_rules.txt
 
@@ -342,27 +342,27 @@ The fare_rules table allows you to specify how fares in fare_attributes.txt appl
 
 For examples that demonstrate how to specify a fare structure with fare_rules.txt and fare_attributes.txt, see [FareExamples](https://code.google.com/p/googletransitdatafeed/wiki/FareExamples) in the GoogleTransitDataFeed open source project wiki.
 
-|  Field Name | Required & Type | Details |
-|  ------ | ------ | ------ |
-|  fare_id | **Required ID** | The **fare_id** field contains an ID that uniquely identifies a fare class. This value is referenced from the [fare_attributes.txt](#fare_attributestxt) file. |
-|  route_id | Optional ID | The **route_id** field associates the fare ID with a route. Route IDs are referenced from the [routes.txt](#routestxt) file. If you have several routes with the same fare attributes, create a row in fare_rules.txt for each route. |
-|   |  | For example, if fare class "b" is valid on route "TSW" and "TSE", the fare_rules.txt file would contain these rows for the fare class: |
-|   |  | `b,TSW` |
-|   |  | `b,TSE` |
-|  origin_id | Optional ID | The **origin_id** field associates the fare ID with an origin zone ID. Zone IDs are referenced from the [stops.txt](#stopstxt) file. If you have several origin IDs with the same fare attributes, create a row in fare_rules.txt for each origin ID. |
-|   |  | For example, if fare class "b" is valid for all travel originating from either zone "2" or zone "8", the fare_rules.txt file would contain these rows for the fare class: |
-|   |  | `b, , 2` |
-|   |  | `b, , 8` |
+|  Field Name | Type | Required | Details |
+|  ------ | ------ | ------ | ------ |
+|  fare_id | ID | **Required** | The **fare_id** field contains an ID that uniquely identifies a fare class. This value is referenced from the [fare_attributes.txt](#fare_attributestxt) file. |
+|  route_id | ID | Optional | The **route_id** field associates the fare ID with a route. Route IDs are referenced from the [routes.txt](#routestxt) file. If you have several routes with the same fare attributes, create a row in fare_rules.txt for each route. |
+|   |  | | For example, if fare class "b" is valid on route "TSW" and "TSE", the fare_rules.txt file would contain these rows for the fare class: |
+|   |  | | `b,TSW` |
+|   |  | | `b,TSE` |
+|  origin_id | ID | Optional | The **origin_id** field associates the fare ID with an origin zone ID. Zone IDs are referenced from the [stops.txt](#stopstxt) file. If you have several origin IDs with the same fare attributes, create a row in fare_rules.txt for each origin ID. |
+|   |  | | For example, if fare class "b" is valid for all travel originating from either zone "2" or zone "8", the fare_rules.txt file would contain these rows for the fare class: |
+|   |  | | `b, , 2` |
+|   |  | | `b, , 8` |
 |  destination_id | Optional ID | The **destination_id** field associates the fare ID with a destination zone ID. Zone IDs are referenced from the [stops.txt](#stopstxt) file. If you have several destination IDs with the same fare attributes, create a row in fare_rules.txt for each destination ID. |
-|   |  | For example, you could use the origin_ID and destination_ID fields together to specify that fare class "b" is valid for travel between zones 3 and 4, and for travel between zones 3 and 5, the fare_rules.txt file would contain these rows for the fare class: |
-|   |  | `b, , 3,4` |
-|   |  | `b, , 3,5` |
+|   |  | | For example, you could use the origin_ID and destination_ID fields together to specify that fare class "b" is valid for travel between zones 3 and 4, and for travel between zones 3 and 5, the fare_rules.txt file would contain these rows for the fare class: |
+|   |  | | `b, , 3,4` |
+|   |  | | `b, , 3,5` |
 |  contains_id | Optional ID | The **contains_id** field associates the fare ID with a zone ID, referenced from the [stops.txt](#stopstxt) file. The fare ID is then associated with itineraries that pass through every contains_id zone. |
-|   |  | For example, if fare class "c" is associated with all travel on the GRT route that passes through zones 5, 6, and 7 the fare_rules.txt would contain these rows: |
-|   |  | `c,GRT,,,5` |
-|   |  | `c,GRT,,,6` |
-|   |  | `c,GRT,,,7` |
-|   |  | Because all contains_id zones must be matched for the fare to apply, an itinerary that passes through zones 5 and 6 but not zone 7 would not have fare class "c". For more detail, see [FareExamples](https://code.google.com/p/googletransitdatafeed/wiki/FareExamples) in the GoogleTransitDataFeed project wiki. |
+|   |  | | For example, if fare class "c" is associated with all travel on the GRT route that passes through zones 5, 6, and 7 the fare_rules.txt would contain these rows: |
+|   |  | | `c,GRT,,,5` |
+|   |  | | `c,GRT,,,6` |
+|   |  | | `c,GRT,,,7` |
+|   |  | | Because all contains_id zones must be matched for the fare to apply, an itinerary that passes through zones 5 and 6 but not zone 7 would not have fare class "c". For more detail, see [FareExamples](https://code.google.com/p/googletransitdatafeed/wiki/FareExamples) in the GoogleTransitDataFeed project wiki. |
 
 ### shapes.txt
 
