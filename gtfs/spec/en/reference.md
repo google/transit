@@ -148,7 +148,7 @@ File: **Required**
 File: **Required**
 
 |  Field Name | Type | Required | Details |
-|  ------ | ------ | ------ |
+|  ------ | ------ | ------ | ------ |
 |  route_id | ID | **Required** | The **route_id** field contains an ID that uniquely identifies a route. |
 |  agency_id | Optional ID | The **agency_id** field defines an agency for the specified route. This value is referenced from the [agency.txt](#agencytxt) file. Use this field when you are providing data for routes from more than one agency. |
 |  route_short_name | Text | **Required** | The **route_short_name** contains the short name of a route. This will often be a short, abstract identifier like "32", "100X", or "Green" that riders use to identify a route, but which doesn't give any indication of what places the route serves. At least one of *route_short_name* or *route_long_name* must be specified, or potentially both if appropriate. If the route does not have a short name, please specify a *route_long_name* and use an empty string as the value for this field. |
@@ -172,28 +172,28 @@ File: **Required**
 
 File: **Required**
 
-|  Field Name | Required & Type | Details |
-|  ------ | ------ | ------ |
-|  route_id | **Required ID** | The **route_id** field contains an ID that uniquely identifies a route. This value is referenced from the [routes.txt](#routestxt) file. |
-|  service_id | **Required ID** | The **service_id** contains an ID that uniquely identifies a set of dates when service is available for one or more routes. This value is referenced from the [calendar.txt](#calendartxt) or [calendar_dates.txt](#calendar_datestxt) file. |
-|  trip_id | **Require ID** | The **trip_id** field contains an ID that uniquely identifies a trip. |
-|  trip_headsign | Optional text | The **trip_headsign** field contains the text that appears on a sign that identifies the trip's destination to passengers. Use this field to distinguish between different patterns of service in the same route. If the headsign changes during a trip, you can override the **trip_headsign** by specifying values for the **stop_headsign** field in [stop_times.txt](#stop_timestxt). |
-|  trip_short_name | Optional text | The **trip_short_name** field contains the text that appears in schedules and sign boards to identify the trip to passengers, for example, to identify train numbers for commuter rail trips. If riders do not commonly rely on trip names, please leave this field blank.  A **trip_short_name** value, if provided, should uniquely identify a trip within a service day; it should not be used for destination names or limited/express designations. |
-|  direction_id | Optional enum | The **direction_id** field contains a binary value that indicates the direction of travel for a trip. Use this field to distinguish between bi-directional trips with the same **route_id**. This field is not used in routing; it provides a way to separate trips by direction when publishing time tables. You can specify names for each direction with the **trip_headsign** field. |
-|   |  | * 0 - travel in one direction (e.g. outbound travel) |
-|   |  | * 1 - travel in the opposite direction (e.g. inbound travel) |
-|   |  | For example, you could use the *trip_headsign* and *direction_id* fields together to assign a name to travel in each direction for a set of trips. A [trips.txt](#tripstxt) file could contain these rows for use in time tables: |
-|   |  | * `trip_id,...,trip_headsign,direction_id` |
-|   |  | * `1234,...,Airport,0` |
-|   |  | * `1505,...,Downtown,1` |
-|  block_id | Optional ID | The **block_id** field identifies the block to which the trip belongs. A block consists of a single trip or many sequential trips made using the same vehicle, defined by shared service day and block_id. A block_id can have trips with different service days, making distinct blocks. (See [example below](#example-showing-blocks-and-service-day)) |
-|  shape_id | Optional ID | The **shape_id** field contains an ID that defines a shape for the trip. This value is referenced from the [shapes.txt](#shapestxt) file. The shapes.txt file allows you to define how a line should be drawn on the map to represent a trip. |
-|  wheelchair_accessible | Optional enum | * **0** (or empty) - indicates that there is no accessibility information for the trip |
+|  Field Name | Type | Required | Details |
+|  ------ | ------ | ------ | ------ |
+|  route_id | ID | **Required** | The **route_id** field contains an ID that uniquely identifies a route. This value is referenced from the [routes.txt](#routestxt) file. |
+|  service_id | ID | **Required** | The **service_id** contains an ID that uniquely identifies a set of dates when service is available for one or more routes. This value is referenced from the [calendar.txt](#calendartxt) or [calendar_dates.txt](#calendar_datestxt) file. |
+|  trip_id | ID | **Required** | The **trip_id** field contains an ID that uniquely identifies a trip. |
+|  trip_headsign | Text | Optional | The **trip_headsign** field contains the text that appears on a sign that identifies the trip's destination to passengers. Use this field to distinguish between different patterns of service in the same route. If the headsign changes during a trip, you can override the **trip_headsign** by specifying values for the **stop_headsign** field in [stop_times.txt](#stop_timestxt). |
+|  trip_short_name | Text | Optional | The **trip_short_name** field contains the text that appears in schedules and sign boards to identify the trip to passengers, for example, to identify train numbers for commuter rail trips. If riders do not commonly rely on trip names, please leave this field blank.  A **trip_short_name** value, if provided, should uniquely identify a trip within a service day; it should not be used for destination names or limited/express designations. |
+|  direction_id | Enum | Optional | The **direction_id** field contains a binary value that indicates the direction of travel for a trip. Use this field to distinguish between bi-directional trips with the same **route_id**. This field is not used in routing; it provides a way to separate trips by direction when publishing time tables. You can specify names for each direction with the **trip_headsign** field. |
+|   |  | | * 0 - travel in one direction (e.g. outbound travel) |
+|   |  | | * 1 - travel in the opposite direction (e.g. inbound travel) |
+|   |  | | For example, you could use the *trip_headsign* and *direction_id* fields together to assign a name to travel in each direction for a set of trips. A [trips.txt](#tripstxt) file could contain these rows for use in time tables: |
+|   |  | | * `trip_id,...,trip_headsign,direction_id` |
+|   |  | | * `1234,...,Airport,0` |
+|   |  | | * `1505,...,Downtown,1` |
+|  block_id | ID | Optional | The **block_id** field identifies the block to which the trip belongs. A block consists of a single trip or many sequential trips made using the same vehicle, defined by shared service day and block_id. A block_id can have trips with different service days, making distinct blocks. (See [example below](#example-showing-blocks-and-service-day)) |
+|  shape_id | ID | Optional | The **shape_id** field contains an ID that defines a shape for the trip. This value is referenced from the [shapes.txt](#shapestxt) file. The shapes.txt file allows you to define how a line should be drawn on the map to represent a trip. |
+|  wheelchair_accessible | Enum | Optional | * **0** (or empty) - indicates that there is no accessibility information for the trip |
 |   |  | * **1** - indicates that the vehicle being used on this particular trip can accommodate at least one rider in a wheelchair |
-|   |  | * **2** - indicates that no riders in wheelchairs can be accommodated on this trip |
+|   |  | | * **2** - indicates that no riders in wheelchairs can be accommodated on this trip |
 |  bikes_allowed | Optional | 0 (or empty) - indicates that there is no bike information for the trip |
-|   |  | * **1** - indicates that the vehicle being used on this particular trip can accommodate at least one bicycle |
-|   |  | * **2** - indicates that no bicycles are allowed on this trip |
+|   |  | | * **1** - indicates that the vehicle being used on this particular trip can accommodate at least one bicycle |
+|   |  | | * **2** - indicates that no bicycles are allowed on this trip |
 
 #### Example showing blocks and service day
 
