@@ -41,8 +41,8 @@ This section defines terms that are used throughout this document.
 - **Enum** - The field contains a value from a set of predefined constants defined in the "Details" column. For example: the route_type field contains a "0" for tram, a "1" for subway...
 - **ID** - The field contains an identifier which uniquely identifies an entity (therefore  is dataset unique). Its value is not aimed to be displayed to the user, and is a sequence of any UTF-8 characters, but using only printable ASCII characters is recommended.
 - **Language Code** - The field contains a IETF BCP 47 language code. For an introduction to IETF BCP 47, please refer to http://www.rfc-editor.org/rfc/bcp/bcp47.txt and http://www.w3.org/International/articles/language-tags/. For example: "en" for English, "en-US" for American English or "de" for German.
-- **Latitude** - The field contains the WGS84 latitude in decimal degrees. The value must be greater than or equal to -90.0 and less than or equal to 90.0. For example: "41.890169" for the Colloseum in Roma.
-- **Longitude** - The field contains the WGS84 longitude in decimal degrees. The value must be geater than or equal to -180.0 and less than or equal to 180.0. For example: "12.492269" for the Colloseum in Roma.
+- **Latitude** - The field contains the WGS84 latitude in decimal degrees. The value must be greater than or equal to -90.0 and less than or equal to 90.0. For example: "41.890169" for the Colloseum in Rome.
+- **Longitude** - The field contains the WGS84 longitude in decimal degrees. The value must be geater than or equal to -180.0 and less than or equal to 180.0. For example: "12.492269" for the Colloseum in Rome.
 - **Non-negative Float** - The field contains a non-negative floating point number (which includes 0).
 - **Non-negative Integer** - The field contains a non-negative whole number (which includes 0).
 - **Phone number** - The field contains a phone number.
