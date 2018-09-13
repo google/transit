@@ -97,7 +97,7 @@ The following example demonstrates how a field value would appear in a comma-del
 File: **Required**
 
 |  Field Name | Details |
-|  ------ | ------ | ------ |
+|  ------ | ------ |
 |  agency_id | (Optional, ID) The **agency_id** field contains an ID that uniquely identifies a transit agency. A transit feed may represent data from more than one agency. This field is optional for transit feeds that only contain data for a single agency. |
 |  agency_name | **(Required, text)** The **agency_name** field contains the full name of the transit agency. Google Maps will display this name. |
 |  agency_url | **(Required, URL)** The **agency_url** field contains the URL of the transit agency. |
@@ -112,7 +112,7 @@ File: **Required**
 File: **Required**
 
 |  Field Name | Required | Type | Details |  |  |
-|  ------ | ------ | ------ | ------ | ------ |
+|  ------ | ------ | ------ | ------ | ------ | ------ |
 |  stop_id | **Required** | **ID** | The **stop_id** field contains an ID that uniquely identifies a stop, station, or station entrance. Multiple routes may use the same stop.  |  |  |
 |  stop_code | Optional text | The **stop_code** field contains short text or a number that uniquely identifies the stop for passengers. Stop codes are often used in phone-based transit information systems or printed on stop signage to make it easier for riders to get a stop schedule or real-time arrival information for a particular stop.  The **stop_code** field contains short text or a number that uniquely identifies the stop for passengers. The **stop_code** can be the same as **stop_id** if it is passenger-facing. This field should be left blank for stops without a code presented to passengers. |  |  |
 |  stop_name | **Required** | **text** | The **stop_name** field contains the name of a stop, station, or station entrance. Please use a name that people will understand in the local and tourist vernacular. |  |  |
