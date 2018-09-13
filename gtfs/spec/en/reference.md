@@ -35,14 +35,13 @@ This section defines terms that are used throughout this document.
 
 ## Field Types
 
-- **Ad-hoc** - Please see the detail column of the field for the definition of the field type.
 - **Color** - The field contains a color encoded as a six-digit hexadecimal number. Refer to https://htmlcolorcodes.com/ to generate a valid value (the leading "#" is not included). For example: "FFFFFF" for white, "000000" for black or "0039A6" for the A,C,E lines in NYMTA.
 - **Enum** - The field contains a value from a set of predefined constants defined in the "Details" column. For example: the route_type field contains a "0" for tram, a "1" for subway...
 - **ID** - The field contains an identifier which uniquely identifies an entity (therefore  is dataset unique). Its value is not aimed to be displayed to the user, and is a sequence of any UTF-8 characters, but using only printable ASCII characters is recommended.
-- **Non-negative Integer** - The field contains a non-negative whole number (which includes 0).
 - **Language Code** - The field contains a IETF BCP 47 language code. For an introduction to IETF BCP 47, please refer to http://www.rfc-editor.org/rfc/bcp/bcp47.txt and http://www.w3.org/International/articles/language-tags/. For example: "en" for English, "en-US" for American English or "de" for German.
-- **Latitude** - The field contains the WGS84 latitude as a floating point number. The value must be greater than or equal to -90.0 and less than or equal to 90.0. For example: "41.890169" for the Colloseum in Roma.
-- **Longitude** - The field contains the WGS84 longitude as a a floating point number. The value must be geater than or equal to -180.0 and less than or equal to 180.0. For example: "12.492269" for the Colloseum in Roma.
+- **Latitude** - The field contains the WGS84 latitude in decimal degrees. The value must be greater than or equal to -90.0 and less than or equal to 90.0. For example: "41.890169" for the Colloseum in Roma.
+- **Longitude** - The field contains the WGS84 longitude in decimal degrees. The value must be geater than or equal to -180.0 and less than or equal to 180.0. For example: "12.492269" for the Colloseum in Roma.
+- **Non-negative Integer** - The field contains a non-negative whole number (which includes 0).
 - **Service Date** - The field contains the service date in the YYYYMMDD format. Since service time within a service date can be above 24:00:00, a service date often contains information for the subsequent day(s). E.g "20180913" for September 13th, 2018.
 - **Service Time** - The field contains the service time in the HH:MM:SS format (H:MM:SS is also accepted). The time is measured from "noon minus 12h" of the service day (effectively midnight except for days on which daylight savings time changes occur). For times occurring after midnight, enter the time as a value greater than 24:00:00 in HH:MM:SS local time for the day on which the trip schedule begins. For example: "14:30:00" for 2:30PM or "25:35:00" for 1:35AM on the next date.
 - **Text string** - The field contains a string of UTF-8 characters, which is aimed to be displayed to the rider and which must therefore be human readable.
