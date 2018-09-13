@@ -97,11 +97,11 @@ The following example demonstrates how a field value would appear in a comma-del
 File: **Required**
 
 |  Field Name | Type | Required | Details |
-|  ------ | ------ |
+|  ------ | ------ | ------ | ------ |
 |  agency_id | ID | Optional | The **agency_id** field contains an ID that uniquely identifies a transit agency. A transit feed may represent data from more than one agency. This field is optional for transit feeds that only contain data for a single agency. |
 |  agency_name | Text | **Required** | The **agency_name** field contains the full name of the transit agency. Google Maps will display this name. |
 |  agency_url | URL | **Required** | The **agency_url** field contains the URL of the transit agency. | |
-|  agency_timezone | timezone | **Required** The **agency_timezone** field contains the timezone where the transit agency is located. If multiple agencies are specified in the feed, each must have the same agency_timezone. |
+|  agency_timezone | Timezone | **Required** The **agency_timezone** field contains the timezone where the transit agency is located. If multiple agencies are specified in the feed, each must have the same agency_timezone. |
 |  agency_lang | Language code | Optional | The **agency_lang field** contains the code of the primary language used by this transit agency. This setting defines capitalization rules and other language-specific settings for all text contained in this transit agency's feed. |
 |  agency_phone | Phone number | Optional | The **agency_phone field** contains a single voice telephone number for the specified agency. This field is a string value that presents the telephone number as typical for the agency's service area. It can and should contain punctuation marks to group the digits of the number. Dialable text (for example, TriMet's "503-238-RIDE") is permitted, but the field must not contain any other descriptive text. |
 |  agency_fare_url | URL | Optional | The **agency_fare_url** specifies the URL of a web page that allows a rider to purchase tickets or other fare instruments for that agency online. |
@@ -126,10 +126,9 @@ File: **Required**
 |   |  | | * **1** - Station. A physical structure or area that contains one or more stop. |  |  |
 |   |  | | * **2** - Station Entrance/Exit. A location where passengers can enter or exit a station from the street. The stop entry must also specify a parent_station value referencing the stop ID of the parent station for the entrance. |  |  |
 |  parent_station | Enum | Optional | For stops that are physically located inside stations, the **parent_station** field identifies the station associated with the stop. To use this field, stops.txt must also contain a row where this stop ID is assigned location type=1. |  |  |
-|   |  | | **This stop ID represents...** | **This entry's location type...** | **This entry's parent_station field contains...** |
-|   |  | | A stop located inside a station. | 0 or blank | The stop ID of the station where this stop is located. The stop referenced by parent_station must have location_type=1. |
-|   |  | | A stop located outside a station. | 0 or blank | A blank value. The parent_station field doesn't apply to this stop. |
-|   |  | | A station. | 1 | A blank value. Stations can't contain other stations. |
+|   |  | | If this stop ID represents **a stop located inside a station**, this entry's location type must be **0 or blank**, and this entry's parent_station field contains **the stop ID of the station where this stop is located. The stop referenced by parent_station must have location_type=1.** |
+|   |  | | If this stop ID represents **a stop located outside a station**, this entry's location type must be **0 or blank**, and this entry's parent_station field contains **a blank value. the parent_station field doesn't apply to this stop.** |
+|   |  | | If this stop ID represents **a station**, this entry's location type must be **1**, and this entry's parent_station field contains **a blank value, stations can't contain other stations.** |
 |  stop_timezone | Timezone | Optional | The **stop_timezone** field contains the timezone in which this stop, station, or station entrance is located. If omitted, the stop should be assumed to be located in the timezone specified by **agency_timezone** in [agency.txt](#agencytxt).   When a stop has a parent station, the stop is considered to be in the timezone specified by the parent station's **stop_timezone** value. If the parent has no stop_timezone value, the stops that belong to that station are assumed to be in the timezone specified by **agency_timezone**, even if the stops have their own **stop_timezone** values. In other words, if a given stop has a **parent_station** value, any **stop_timezone** value specified for that stop must be ignored.  Even if **stop_timezone** values are provided in stops.txt, the times in [stop_times.txt](#stop_timestxt) should continue to be specified as time since midnight in the timezone specified by **agency_timezone** in agency.txt. This ensures that the time values in a trip always increase over the course of a trip, regardless of which timezones the trip crosses. |  |  |
 |  wheelchair_boarding | Enum | Optional | The **wheelchair_boarding field** identifies whether wheelchair boardings are possible from the specified stop, station, or station entrance. The field can have the following values: |  |  |
 |   |  | | * **0** (or empty) - indicates that there is no accessibility information for the stop |  |  |
