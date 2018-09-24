@@ -48,7 +48,7 @@ This section defines terms that are used throughout this document.
 - **Phone number** - The field contains a phone number.
 - **Date** - The field contains the service day in the YYYYMMDD format. E.g "20180913" for September 13th, 2018. Since time within a service day can be above 24:00:00, a service day often contains information for the subsequent day(s). 
 - **Time** - The field contains the time in the HH:MM:SS format (H:MM:SS is also accepted). For example: "14:30:00" for 2:30PM or "25:35:00" for 1:35AM on the next day. The time is measured from "noon minus 12h" of the service day (effectively midnight except for days on which daylight savings time changes occur). For times occurring after midnight, enter the time as a value greater than 24:00:00 in HH:MM:SS local time for the day on which the trip schedule begins. 
-- **Text** - The field contains a string of UTF-8 characters, which is aimed to be displayed to the rider and which must therefore be human readable.
+- **Text** - The field contains a string of UTF-8 characters, which is aimed to be displayed and which must therefore be human readable.
 - **Timezone** - The field contains a TZ timezone from the [TZ database](https://www.iana.org/time-zones). Timezone names never contain the space character but may contain an underscore. Refer to http://en.wikipedia.org/wiki/List_of_tz_zones for a list of valid values. For example: "Asia/Tokyo", "America/Los_Angeles" or "Africa/Cairo".
 - **URL** - The field contains a fully qualified URL that includes http:// or https://, and any special characters in the URL must be correctly escaped. See http://www.w3.org/Addressing/URL/4_URI_Recommentations.html for a description of how to create fully qualified URL values.
 
