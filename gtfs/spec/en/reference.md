@@ -100,7 +100,7 @@ File: **Required**
 |  Field Name | Type | Required | Details |
 |  ------ | ------ | ------ | ------ |
 |  agency_id | ID | Optional | The **agency_id** field contains an ID that uniquely identifies a transit agency. A transit feed may represent data from more than one agency. This field is optional for transit feeds that only contain data for a single agency. |
-|  agency_name | Required | The **agency_name** field contains the full name of the transit agency. Google Maps will display this name. |
+|  agency_name | Text | Required | The **agency_name** field contains the full name of the transit agency. Google Maps will display this name. |
 |  agency_url | URL | **Required** | The **agency_url** field contains the URL of the transit agency. |
 |  agency_timezone | Timezone | **Required** | The **agency_timezone** field contains the timezone where the transit agency is located. If multiple agencies are specified in the feed, each must have the same agency_timezone. |
 |  agency_lang | Language code | Optional | The **agency_lang** field contains a language code specifying the primary language used by this transit agency. This setting helps GTFS consumers choose capitalization rules and other language-specific settings for the feed. |
