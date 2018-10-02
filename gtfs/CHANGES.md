@@ -50,9 +50,21 @@ Every new feature adds complexity to the creation and reading of feeds. Therefor
 
 ### Revision History
 
+#### August 22, 2018
+
+* Added `feed_contact_email` and `feed_contact_url` fields in the `feed_info.txt` file. See [discussion](https://github.com/google/transit/pull/31).
+
+#### December 11, 2017
+
+* Added `route_sort_order` field in the `routes.txt` file. See [discussion](https://github.com/google/transit/pull/83).
+
 #### March 16, 2016
 
 * Transition of GTFS documentation to Github at https://github.com/google/transit
+
+#### February 3, 2016
+
+* Added agency.txt 'agency_email' proposal to spec: [discussion](https://groups.google.com/forum/?fromgroups#!topic/gtfs-changes/aezjQsriLYA)
 
 #### February 2, 2015
 
