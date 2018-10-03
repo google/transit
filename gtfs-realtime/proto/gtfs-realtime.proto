@@ -221,6 +221,28 @@ message TripUpdate {
     optional ScheduleRelationship schedule_relationship = 5
         [default = SCHEDULED];
 
+    // Experimental feild, subject to change
+    // PredictionType represent the source of data of the prediction 
+    // This lets consumer know if they should display a 
+    // real time symbol next to a departure and the type of prediction 
+    // PredictionType is ignored when schedule_relationship = SKIPPED or NO_DATA
+    enum PredictionType {
+      // Update are based on information from a vehicle 
+      // that is followed in real time
+      // This is the default
+      REALTIME = 0;
+
+      // Update are based on information from a vehicle that was followed 
+      // in real time but is imprecise. Imprecision can come from things like 
+      // a bus losing internet connection after the start of the run.
+      IMPRECISE_REALTIME = 1;
+
+      // Update are based on information from schedule but improved 
+      // from what is present in the static GTFS
+      IMPROVED_SCHEDULE = 2;
+    }
+    optional PredictionType prediction_type = 6 [default = REALTIME]
+
     // The extensions namespace allows 3rd-party developers to extend the
     // GTFS Realtime Specification in order to add and evaluate new features
     // and modifications to the spec.

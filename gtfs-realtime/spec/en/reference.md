@@ -177,6 +177,21 @@ The update is linked to a specific stop either through stop_sequence or stop_id,
 | **arrival** | [StopTimeEvent](#message-stoptimeevent) | Conditionally required | One | If schedule_relationship is empty or SCHEDULED, either arrival or departure must be provided within a StopTimeUpdate - both fields cannot be empty. arrival and departure may both be empty when schedule_relationship is SKIPPED.  If schedule_relationship is NO_DATA, arrival and departure must be empty. |
 | **departure** | [StopTimeEvent](#message-stoptimeevent) | Conditionally required | One | If schedule_relationship is empty or SCHEDULED, either arrival or departure must be provided within a StopTimeUpdate - both fields cannot be empty. arrival and departure may both be empty when schedule_relationship is SKIPPED.  If schedule_relationship is NO_DATA, arrival and departure must be empty. |
 | **schedule_relationship** | [ScheduleRelationship](#enum-schedulerelationship) | Optional | One | The default relationship is SCHEDULED. |
+| **prediction_type** | [PredictionType](#enum-predictiontype) | Optional | One | The default relationship is REALTIME. |
+
+## _enum_ PredictionType
+
+Experimental feild, subject to change.
+PredictionType represent the source of data of the prediction. This lets consumer adjust their display of the information depending on the source (for example, with a real time symbol).
+PredictionType is ignored when schedule_relationship is SKIPPED or NO_DATA.
+
+#### Values
+
+| _**Value**_ | _**Comment**_ |
+|-------------|---------------|
+| **REALTIME** | This is the **default** behavior. Update are based on information from a vehicle that is followed in real time. |
+| **IMPRECISE_REALTIME** | Update are based on information from a vehicle that was followed in real time but is imprecise. Imprecision can come from things like a bus losing internet connection after the start of the run. |
+| **IMPROVED_SCHEDULE** | Update are based on information from schedule but improved from what is present in the static GTFS. |
 
 ## _enum_ ScheduleRelationship
 
