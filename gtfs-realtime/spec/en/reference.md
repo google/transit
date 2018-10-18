@@ -181,7 +181,7 @@ The update is linked to a specific stop either through stop_sequence or stop_id,
 
 ## _enum_ PredictionType
 
-Experimental feild, subject to change.
+Experimental field, subject to change.
 PredictionType represent the source of data of the prediction. This lets consumer adjust their display of the information depending on the source (for example, with a real time symbol).
 PredictionType is ignored when schedule_relationship is SKIPPED or NO_DATA.
 
@@ -189,9 +189,9 @@ PredictionType is ignored when schedule_relationship is SKIPPED or NO_DATA.
 
 | _**Value**_ | _**Comment**_ |
 |-------------|---------------|
-| **REALTIME** | This is the **default** behavior. Update are based on information from a vehicle that is followed in real time. |
-| **IMPRECISE_REALTIME** | Update are based on information from a vehicle that was followed in real time but is imprecise. Imprecision can come from things like a bus losing connection after the start of the run, or when a vehicle is a the start of the run but start of the run is dependent on driver behavior. This value should be used when the prediction is not precise enough to show the real time indicator next to the predictions in other interfaces (ex bus stop displays) but that still have information based on real time condition. |
-| **UPDATED_SCHEDULE** | Update are based on information from schedule but updated from what is present in the static GTFS. This value should be used when changes are due to control action where the applicable schedule is different but when the vehicle has not been followed yet. |
+| **REALTIME** | This is the **default** behavior. Updates are based on information from a vehicle that is followed in real time. |
+| **IMPRECISE_REALTIME** | Updates are based on information from a vehicle that was followed in real time but is imprecise. Imprecision can come from things like a bus losing connection after the start of the run, or when a vehicle is a the start of the run but start of the run is dependent on driver behavior. This value should be used when the prediction is not precise enough to show the real time indicator next to the predictions in other interfaces (ex bus stop displays) but that still have information based on real time condition. |
+| **UPDATED_SCHEDULE** | Updates are based on information from schedule but updated from what is present in the static GTFS. This value should be used when changes are due to control action where the applicable schedule is different but when the vehicle has not been followed yet. |
 
 ## _enum_ ScheduleRelationship
 
