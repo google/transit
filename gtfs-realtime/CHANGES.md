@@ -1,8 +1,20 @@
 The GTFS Realtime Specification is not set in stone. Instead, it is an open specification developed and maintained by the community of transit agencies, developers, and other stakeholders who use GTFS Realtime. It is expected that this community of producers and consumers of GTFS Realtime data will have proposals for extending the spec to enable new capabilities. To help manage that process, the following procedures and guidelines have been established.
 
-### Specification amendment process
 The official specification, reference and documentation are written in English. If a translation to a different language differs from the English original, the latter takes precedence. All communication is performed in English.
 
+## Adding new fields to GTFS Realtime
+
+When a producer or consumer is interested in adding a new field to the GTFS Realtime specification, they should open a new issue on the [GTFS Realtime GitHub repository](https://github.com/google/transit) describing the proposed field and announce this new field (including a link to the issue) on the [GTFS Realtime mailing list](https://groups.google.com/forum/#!forum/gtfs-realtime).
+
+### *Experimental* fields
+
+1. If the community can come to consensus (a) that the proposed field seems useful and (b) on the type of the field (`optional` vs `repeated`, `string` vs `int` vs `bool`), then a field number will be allocated in the GTFS Realtime message and a note will be made in the [.proto file](/gtfs-realtime/proto/gtfs-realtime.proto) and documentation that this is an *experimental* field that may change in the future. 
+      - GTFS Realtime producers and consumers that wish to use the new *experimental* field will re-generate their library using the .proto file with the new field (e.g., Google will update the [gtfs-realtime-bindings library](https://github.com/google/gtfs-realtime-bindings)), and start populating and parsing the field with live data. 
+      - Once we are satisfied that the *experimental* field is worthwhile and both producers and consumers are using the field, then we will follow the below [Specification amendment process](#specification-amendment-process) to officially add the field to the spec.
+ 
+1. If the new field is considered specific to a single producer or there is dispute over the data type, then we will assign a [custom extension](#extensions) to the producer so they can use the field in their own feed.  When possible we should avoid extensions and add fields useful to many agencies to the main specification to avoid fragmentation and extra work for consumers to support various extensions to the spec.
+
+### Specification amendment process
 1. Create a git branch with update of all relevant parts of protocol definition, specification and documentation files (except for translations).
 1. Create pull request on https://github.com/google/transit. Pull request must contain an extended description of the patch. The creator of the pull request becomes the _advocate_.
 1. Once pull request is registered, it must be announced by its advocate in the [GTFS Realtime mailing list](https://groups.google.com/forum/#!forum/gtfs-realtime). Once announced, the pull request is considered a proposal.
@@ -25,7 +37,7 @@ The official specification, reference and documentation are written in English. 
     Either decision of the advocate must be announced in the mailing list.
   - If the advocate continues the work on proposal then a new vote can be called for at any point in time but no later than 30 calendar days after the end of the previous vote.
   - If a vote was not called within 30 calendar days from the original proposal or 30 calendar days since end of the previous vote, then the proposal is abandoned.
-1. If the proposal is abandoned, the corresponding pull request is closed.
+1. If the proposal is abandoned, the corresponding pull request is closed.  Note that the advocate may choose to implement the feature as an [custom extension](#extensions) instead of part of the official spec.
 1. If the proposal is accepted:
   - Google is committed to merging the voted upon version of the pull request (provided that the contributors have signed the [CLA](../CONTRIBUTING.md)), and performing the pull request within 5 business days.
   - Google is committed to timely updating https://github.com/google/gtfs-realtime-bindings repository. Commits to gtfs-realtime-bindigs that are a result of a proposal, should reference the pull request of the proposal.
@@ -47,12 +59,12 @@ When adding features to the specification, we want to avoid making changes that 
 #### Speculative features are discouraged.
 Every new feature adds complexity to creating and reading of feeds. Therefore, we want to take care to only add features that we know to be useful. Ideally, any proposal will have been tested by generating data for a real transit system that uses the new feature and writing software to read and display it.
 
-We will make use of extensions, described in the following section, to support new features. GTFS Realtime producers and consumers can first test a new feature in the extension space. When the feature is ready for official adoption, we will add the feature to the official GTFS Realtime proto definition itself.
-
 ### Extensions
-To facilitate the testing of new features and to allow developers to add extra information to a GTFS Realtime feed, we will take advantage of the [Extensions feature of Protocol Buffers](https://developers.google.com/protocol-buffers/docs/proto#extensions). Extensions allow us to define a namespace in a Protocol Buffer message where third-party developers can define additional fields without the need to modify the original proto definition.
+To allow producers to add custom information to a GTFS Realtime feed, we will take advantage of the [Extensions feature of Protocol Buffers](https://developers.google.com/protocol-buffers/docs/proto#extensions). Extensions allow us to define a namespace in a Protocol Buffer message where third-party developers can define additional fields without the need to modify the original proto definition.
 
-When a developer is interested in extending the GTFS Realtime Specification, they should contact the [GTFS Realtime mailing list](https://groups.google.com/forum/#!forum/gtfs-realtime) and we will assign them the next available extension id, picked incrementally from a list of numbers starting at 1000 and going up and documented in the Extension Registry section found below.
+When possible we should avoid extensions and add fields useful to many agencies to the main specification to avoid fragmentation and extra work for consumers to support various extensions to the spec.  Before requesting an extension id, producers should propose adding the field to the specification (see [Adding new fields to GTFS Realtime](#adding-new-fields-to-gtfs-realtime)) 
+
+To create a new extension, we will assign a producer the next available extension id, picked incrementally from a list of numbers starting at 1000 and going up and documented in the Extension Registry section found below.
 
 These assigned extension ids corresponds to the tag ids available in the "extension" namespace for each GTFS Realtime message definition. Now that the developer has an assigned extension id, they will use that id when extending any and all GTFS Realtime messages. Even if the developer only plans to extend a single message, the assigned extension id will be reserved for ALL messages.
 
