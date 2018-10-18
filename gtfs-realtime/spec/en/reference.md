@@ -12,7 +12,7 @@ The following values are used in the *Required* field:
 
 *   **Required**: This field must be provided by a GTFS-realtime feed producer.
 *   **Conditionally required**: This field is required under certain conditions, which are outlined in the field *Description*. Outside of these conditions, the field is optional.
-*   **Optional**: This field is optional and is not required to be implemented by producers. However, if the data is available in the underlying automatic vehicle location systems (e.g., VehiclePosition `timestamp`) it is recommended that producers provide these optional fields when possible. 
+*   **Optional**: This field is optional and is not required to be implemented by producers. However, if the data is available in the underlying automatic vehicle location systems (e.g., VehiclePosition `timestamp`) it is recommended that producers provide these optional fields when possible.
 
 *Note that semantic requirements were not defined in GTFS-realtime version 1.0, and therefore feeds with `gtfs_realtime_version` of `1` may not meet these requirements (see [the proposal for semantic requirements](https://github.com/google/transit/pull/64) for details).*
 
@@ -191,7 +191,7 @@ PredictionType is ignored when schedule_relationship is SKIPPED or NO_DATA.
 |-------------|---------------|
 | **REALTIME** | This is the **default** behavior. Update are based on information from a vehicle that is followed in real time. |
 | **IMPRECISE_REALTIME** | Update are based on information from a vehicle that was followed in real time but is imprecise. Imprecision can come from things like a bus losing internet connection after the start of the run. |
-| **IMPROVED_SCHEDULE** | Update are based on information from schedule but improved from what is present in the static GTFS. |
+| **UPDATED_SCHEDULE** | Update are based on information from schedule but updated from what is present in the static GTFS due to control actions. |
 
 ## _enum_ ScheduleRelationship
 
@@ -220,7 +220,7 @@ Realtime positioning information for a given vehicle.
 | **stop_id** | [string](https://developers.google.com/protocol-buffers/docs/proto#scalar) | Optional | One | Identifies the current stop. The value must be the same as in stops.txt in the corresponding GTFS feed. |
 | **current_status** | [VehicleStopStatus](#enum-vehiclestopstatus) | Optional | One | The exact status of the vehicle with respect to the current stop. Ignored if current_stop_sequence is missing. |
 | **timestamp** | [uint64](https://developers.google.com/protocol-buffers/docs/proto#scalar) | Optional | One | Moment at which the vehicle's position was measured. In POSIX time (i.e., number of seconds since January 1st 1970 00:00:00 UTC). |
-| **congestion_level** | [CongestionLevel](#enum-congestionlevel) | Optional | One | 
+| **congestion_level** | [CongestionLevel](#enum-congestionlevel) | Optional | One |
 | _**occupancy_status**_ | _[OccupancyStatus](#enum-occupancystatus)_ | _Optional_ | One | The degree of passenger occupancy of the vehicle.<br>**Caution:** this field is still **experimental**, and subject to change. It may be formally adopted in the future.|
 
 ## _enum_ VehicleStopStatus
@@ -275,8 +275,8 @@ An alert, indicating some sort of incident in the public transit network.
 |------------------|------------|----------------|-------------------|-------------------|
 | **active_period** | [TimeRange](#message-timerange) | Optional | Many | Time when the alert should be shown to the user. If missing, the alert will be shown as long as it appears in the feed. If multiple ranges are given, the alert will be shown during all of them. |
 | **informed_entity** | [EntitySelector](#message-entityselector) | Required | Many | Entities whose users we should notify of this alert.  At least one informed_entity must be provided. |
-| **cause** | [Cause](#enum-cause) | Optional | One | 
-| **effect** | [Effect](#enum-effect) | Optional | One | 
+| **cause** | [Cause](#enum-cause) | Optional | One |
+| **effect** | [Effect](#enum-effect) | Optional | One |
 | **url** | [TranslatedString](#message-translatedstring) | Optional | One | The URL which provides additional information about the alert. |
 | **header_text** | [TranslatedString](#message-translatedstring) | Required | One | Header for the alert. This plain-text string will be highlighted, for example in boldface. |
 | **description_text** | [TranslatedString](#message-translatedstring) | Required | One | Description for the alert. This plain-text string will be formatted as the body of the alert (or shown on an explicit "expand" request by the user). The information in the description should add to the information of the header. |
