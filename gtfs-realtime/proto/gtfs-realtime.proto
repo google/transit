@@ -221,7 +221,7 @@ message TripUpdate {
     optional ScheduleRelationship schedule_relationship = 5
         [default = SCHEDULED];
 
-    // Experimental feild, subject to change
+    // Experimental field, subject to change
     // PredictionType represent the source of data of the prediction
     // This lets consumer know if they should display a
     // real time symbol next to a departure and the type of prediction
