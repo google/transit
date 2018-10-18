@@ -234,7 +234,7 @@ message TripUpdate {
 
       // Update are based on information from a vehicle that was followed
       // in real time but is imprecise. Imprecision can come from things like
-      // a bus losing internet connection after the start of the run.
+      // a bus losing connection after the start of the run.
       IMPRECISE_REALTIME = 1;
 
       // Update are based on information from schedule but updated

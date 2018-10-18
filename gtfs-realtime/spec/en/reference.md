@@ -190,7 +190,7 @@ PredictionType is ignored when schedule_relationship is SKIPPED or NO_DATA.
 | _**Value**_ | _**Comment**_ |
 |-------------|---------------|
 | **REALTIME** | This is the **default** behavior. Update are based on information from a vehicle that is followed in real time. |
-| **IMPRECISE_REALTIME** | Update are based on information from a vehicle that was followed in real time but is imprecise. Imprecision can come from things like a bus losing internet connection after the start of the run. |
+| **IMPRECISE_REALTIME** | Update are based on information from a vehicle that was followed in real time but is imprecise. Imprecision can come from things like a bus losing connection after the start of the run. |
 | **UPDATED_SCHEDULE** | Update are based on information from schedule but updated from what is present in the static GTFS due to control actions. |
 
 ## _enum_ ScheduleRelationship
