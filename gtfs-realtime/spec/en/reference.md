@@ -372,7 +372,7 @@ Identification information for the vehicle performing the trip.
 
 ## _message_ EntitySelector
 
-A selector for an entity in a GTFS feed. The values of the fields should correspond to the appropriate fields in the GTFS feed. At least one specifier must be given. If several are given, then the matching has to apply to all the given specifiers.
+A selector for an entity in a GTFS feed. The values of the fields should correspond to the appropriate fields in the GTFS feed. At least one specifier must be given. If several are given, they should be interpreted as being joined by the `AND` operator and the combination of specifiers should match the information in the corresponding GTFS feed.
 
 #### Fields
 
