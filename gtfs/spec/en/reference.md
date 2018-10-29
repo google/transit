@@ -328,7 +328,7 @@ File: **Optional**
 |   |  | | * **1** - Passenger may transfer once. |
 |   |  | | * **2** - Passenger may transfer twice. |
 |   |  | | * **(empty)** - If this field is empty, unlimited transfers are permitted. |
-|  agency_id | ID | **Conditionally required** | Required for feeds with multiple agencies defined in the agency.txt file. Each fare attribute must specify an agency_id value to indicate which agency the fare applies to. This field is required for feeds that contain more than one transit agency in [agency.txt](#agencytxt), otherwise it is optional.|
+|  agency_id | ID | **Conditionally required** | Each fare attribute must specify an agency_id value to indicate which agency the fare applies to. This field is required for feeds that contain more than one transit agency in [agency.txt](#agencytxt), otherwise it is optional.|
 |  transfer_duration | Non-negative integer | Optional | The **transfer_duration** field specifies the length of time in seconds before a transfer expires.  When used with a **transfers** value of 0, the **transfer_duration** field indicates how long a ticket is valid for a fare where no transfers are allowed. Unless you intend to use this field to indicate ticket validity, **transfer_duration** should be omitted or empty when **transfers** is set to 0. |
 
 ### fare_rules.txt
