@@ -190,7 +190,7 @@ RealTimePrecision is ignored when schedule_relationship is SKIPPED or NO_DATA.
 | _**Value**_ | _**Comment**_ |
 |-------------|---------------|
 | **PRECISE** | This is the **default** behavior. Updates are based on information from a vehicle that is followed in real time. The prediction is as accurate as the producer can provide. |
-| **IMPRECISE** | Updates are based on information from a vehicle that is or was followed in real time but is now imprecise. Imprecision can come from things like a bus losing connection after the start of the run, or when a vehicle is a the start of the run but that start is dependent on driver behavior. This value should be used when the prediction is not precise enough to show the real time indicator next to the predictions in other interfaces (ex bus stop displays) but that still have information based on real time condition. |
+| **IMPRECISE** | Updates are based on information from a vehicle that is or was followed in real time but is now imprecise. Imprecision can come from things like a bus losing connection after the start of the run, or when a vehicle is at the start of the run but that start is dependent on driver behavior. This value should be used when the prediction is not precise enough to show the real time indicator next to the predictions in other interfaces (ex bus stop displays) but that still have information based on real time condition. If IMPRECISE and PRECISE information are both shown to riders, consumers should represent these types of information differently in the user interface. IMPRECISE values should not be represented in the same way as schedule data to the rider.|
 
 ## _enum_ ScheduleRelationship
 
