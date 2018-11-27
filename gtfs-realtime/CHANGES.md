@@ -9,6 +9,7 @@ When a producer or consumer is interested in adding a new field to the GTFS Real
 ### *Experimental* fields
 
 1. If the community can come to consensus (a) that the proposed field seems useful and (b) on the type of the field (`optional` vs `repeated`, `string` vs `int` vs `bool`), then a field number will be allocated in the GTFS Realtime message and a note will be made in the [.proto file](/gtfs-realtime/proto/gtfs-realtime.proto) and documentation that this is an *experimental* field that may change in the future. 
+      - Consensus is reached via a discussion and voting process that is the same as the below [Specification amendment process](#specification-amendment-process), but instead of unanimous consent only 80% yes votes are required for approval.
       - GTFS Realtime producers and consumers that wish to use the new *experimental* field will re-generate their library using the .proto file with the new field (e.g., Google will update the [gtfs-realtime-bindings library](https://github.com/google/gtfs-realtime-bindings)), and start populating and parsing the field with live data. 
       - Once we are satisfied that the *experimental* field is worthwhile and both producers and consumers are using the field, then we will follow the below [Specification amendment process](#specification-amendment-process) to officially add the field to the spec.
  
