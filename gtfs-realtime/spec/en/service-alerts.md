@@ -24,6 +24,10 @@ Entities are selected using their GTFS identifiers, and you can select any of th
 *   Trip - affects a particular trip
 *   Stop - affects a particular stop
 
+You may include more than one of the fields listed above in one `informed_entity`. When multiple fields are included in one `informed_entity`, they should be interpreted as being joined by the `AND` logical operator. In other words, the alert should only be applied in a context that meets all of the fields provided in an `informed_entity`. For example, if `route_id: "1"` and `stop_id: "5"` are both included in one `informed_entity`, then the alert should apply only to route 1 at stop 5.  It should NOT be applied to any other stop on route 1, and it should NOT be applied to any other route at stop 5.
+
+If you would like to represent an alert that affects more than one entity (e.g. an alert for both route 1 and stop 5) , you should add multiple `informed_entity` to your `alert`, with each of them applying to the affected entity (e.g. one `informed_entity` that includes route 1 and another `informed_entity` that includes stop 5).
+
 ### Cause
 
 What is the cause of this alert? You may specify one of the following:
