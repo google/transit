@@ -386,7 +386,7 @@ Identification information for the vehicle performing the trip.
 
 ## _message_ EntitySelector
 
-A selector for an entity in a GTFS feed. The values of the fields should correspond to the appropriate fields in the GTFS feed. At least one specifier must be given. If several are given, then the matching has to apply to all the given specifiers.
+A selector for an entity in a GTFS feed. The values of the fields should correspond to the appropriate fields in the GTFS feed. At least one specifier must be given. If several are given, they should be interpreted as being joined by the logical `AND` operator.  Additionally, the combination of specifiers must match the corresponding information in the GTFS feed.  In other words, in order for an alert to apply to an entity in GTFS it must match all of the provided EntitySelector fields.  For example, an EntitySelector that includes the fields `route_id: "5"` and `route_type: "3"` applies only to the `route_id: "5"` bus - it does not apply to any other routes of `route_type: "3"`.  If a producer wants an alert to apply to `route_id: "5"` as well as `route_type: "3"`, it should provide two separate EntitySelectors, one referencing `route_id: "5"` and another referencing `route_type: "3"`.
 
 #### Fields
 

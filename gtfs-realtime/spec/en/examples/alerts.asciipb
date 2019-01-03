@@ -30,9 +30,16 @@ entity {
       # agency_id, route_id, route_type, stop_id, trip (see TripDescriptor)
       route_id: "219"
     }
-    # multiple selectors (informed_entity) can be given
+    # multiple selectors (informed_entity) can be included in one alert entity
     informed_entity {
       stop_id: "16230"
+    }
+    # multiple fields can be included in one informed_entity
+    informed_entity {
+      stop_id: "16299"
+      route_id: "100"
+      # This example means route 100 at stop 16299.
+      # This does not apply to any other stop on route 100 and any other route at stop 16299.
     }
 
     # cause of the alert - see gtfs-realtime.proto for valid values
