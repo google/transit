@@ -177,20 +177,21 @@ The update is linked to a specific stop either through stop_sequence or stop_id,
 | **arrival** | [StopTimeEvent](#message-stoptimeevent) | Conditionally required | One | If schedule_relationship is empty or SCHEDULED, either arrival or departure must be provided within a StopTimeUpdate - both fields cannot be empty. arrival and departure may both be empty when schedule_relationship is SKIPPED.  If schedule_relationship is NO_DATA, arrival and departure must be empty. |
 | **departure** | [StopTimeEvent](#message-stoptimeevent) | Conditionally required | One | If schedule_relationship is empty or SCHEDULED, either arrival or departure must be provided within a StopTimeUpdate - both fields cannot be empty. arrival and departure may both be empty when schedule_relationship is SKIPPED.  If schedule_relationship is NO_DATA, arrival and departure must be empty. |
 | **schedule_relationship** | [ScheduleRelationship](#enum-schedulerelationship) | Optional | One | The default relationship is SCHEDULED. |
-| **real_time_precision** | [RealTimePrecision](#enum-realtimeprecision) | Optional | One | The default relationship is PRECISE. |
+| **certainty** | [RealTimeCertainty](#enum-realtimecertainty) | Optional | One | The default certainty is UNKOWN. |
 
-## _enum_ RealTimePrecision
+## _enum_ RealTimeCertainty
 
-Experimental field, subject to change.
-RealTimePrecision represents the accuracy of the real time information provided. This allows the consumer to adjust their display of the real time information depending on the precision.
-RealTimePrecision is ignored when schedule_relationship is SKIPPED or NO_DATA.
+Experimental field, subject to change
+RealTimeCertainty represents the certainty of the real time information provided. This allows the consumer to decide how to display the real time information to the user depending on the precision. If HIGH and LOW certainty information are both shown to riders, consumers should represent these types of information differently in the user interface. LOW certainty values should not be represented in the same way as schedule data to the rider.
+RealTimeCertainty is ignored if schedule_relationship = SKIPPED or NO_DATA
 
 #### Values
 
 | _**Value**_ | _**Comment**_ |
 |-------------|---------------|
-| **PRECISE** | This is the **default** behavior. Updates are based on information from a vehicle that is followed in real time. The prediction is as accurate as the producer can provide. |
-| **IMPRECISE** | Updates are based on information from a vehicle that is or was followed in real time but is now imprecise. Imprecision can come from things like a bus losing connection after the start of the run, or when a vehicle is at the start of the run but that start is dependent on driver behavior. If IMPRECISE and PRECISE information are both shown to riders, consumers should represent these types of information differently in the user interface. IMPRECISE values should not be represented in the same way as schedule data to the rider.|
+| **UNKOWN** | Precision of the real time is unknown, default behavior |
+| **HIGH** | Update is based on real time information with high certainty. High certainty is usually the certainty users expect when talking about real time information. It's used to be constrasted with LOW certainty. |
+| **LOW** | Update is based on information from a vehicle that is or was followed in real time but is now low certainty. Lower certainty can come from things like a bus losing connection after the start of the run or when the prediction is dependant on driver behaviour. |
 
 ## _enum_ ScheduleRelationship
 

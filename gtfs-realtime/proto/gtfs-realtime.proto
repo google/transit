@@ -222,29 +222,31 @@ message TripUpdate {
         [default = SCHEDULED];
 
     // Experimental field, subject to change
-    // RealTimePrecision represents the accuracy of the
+    // RealTimeCertainty represents the certainty of the
     // real time information provided.
     // This allows the consumer to decide how to display the real time information
     // to the user depending on the precision.
-    // RealTimePrecision is ignored if schedule_relationship = SKIPPED or NO_DATA
-    enum RealTimePrecision {
-      // Update is based on information from a vehicle
-      // that is followed in real time.
-      // The prediction is as accurate as the producer can provide.
-      // This is the default.
-      PRECISE = 0;
+    // If HIGH and LOW certainty information are both shown to riders,
+    // consumers should represent these types of information differently in the
+    // user interface. LOW certainty values should not be represented in the same
+    // way as schedule data to the rider.
+    // RealTimeCertainty is ignored if schedule_relationship = SKIPPED or NO_DATA
+    enum RealTimeCertainty {
+      // Precision of the real time is unknown, default behavior
+      UNKOWN = 0;
+      
+      // Update is based on real time information with high certainty. 
+      // High certainty is usually the certainty users expect when talking 
+      // about real time information. It's used to be constrasted with LOW certainty.
+      HIGH = 1;
 
       // Update is based on information from a vehicle that is or was followed
-      // in real time but is now imprecise. Imprecision can come from things like
+      // in real time but is now low certainty. Lower certainty can come from things like
       // a bus losing connection after the start of the run or when the prediction
       // is dependant on driver behaviour.
-      // If IMPRECISE and PRECISE information are both shown to riders,
-      // consumers should represent these types of information differently in the
-      // user interface. IMPRECISE values should not be represented in the same
-      // way as schedule data to the rider.
-      IMPRECISE = 1;
+      LOW = 2;
     }
-    optional RealTimePrecision real_time_precision = 6 [default = PRECISE];
+    optional RealTimeCertainty certainty = 6 [default = UNKNOWN];
 
     // The extensions namespace allows 3rd-party developers to extend the
     // GTFS Realtime Specification in order to add and evaluate new features
