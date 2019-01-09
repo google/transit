@@ -427,6 +427,15 @@ message Alert {
   // Full description for the alert as plain-text. The information in the
   // description should add to the information of the header.
   optional TranslatedString description_text = 11;
+  
+  //Time alert is created, in POSIX time (i.e., number of seconds since January 1st 1970 00:00:00 UTC)
+  optional uint64 created_timestamp = 12
+  
+  //Time alert is last modified, in POSIX time (i.e., number of seconds since January 1st 1970 00:00:00 UTC)
+  optional uint64 last_modified_timestamp = 13
+  
+  //Time alert is closed, in POSIX time (i.e., number of seconds since January 1st 1970 00:00:00 UTC)
+  optional uint64 closed_timestamp = 14
 
   // The extensions namespace allows 3rd-party developers to extend the
   // GTFS Realtime Specification in order to add and evaluate new features

@@ -5,6 +5,9 @@ You have the option to provide the following:
 *   URL - link to your site explaining more about the alert
 *   Header text - a summary of the alert
 *   Description - a full description of the alert, which will always be shown alongside the header (so should not repeat this information).
+*   Created timestamp - a timestamp denoting the time when the alert was created.
+*   Last modified timestamp - a timestamp denoting the time when the alert was last modified.
+*   Closed timestamp - a timestamp denoting the time when the alert was closed.
 
 ### Time Range
 

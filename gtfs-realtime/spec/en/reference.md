@@ -265,6 +265,9 @@ An alert, indicating some sort of incident in the public transit network.
 | **url** | [TranslatedString](#message-translatedstring) | Optional | One | The URL which provides additional information about the alert. |
 | **header_text** | [TranslatedString](#message-translatedstring) | Required | One | Header for the alert. This plain-text string will be highlighted, for example in boldface. |
 | **description_text** | [TranslatedString](#message-translatedstring) | Required | One | Description for the alert. This plain-text string will be formatted as the body of the alert (or shown on an explicit "expand" request by the user). The information in the description should add to the information of the header. |
+| **created_timestamp** | [uint64](https://developers.google.com/protocol-buffers/docs/proto#scalar) | Optional | One | This timestamp identifies the moment when the alert has been created. In POSIX time (i.e., number of seconds since January 1st 1970 00:00:00 UTC). |
+| **last_modified_timestamp** | [uint64](https://developers.google.com/protocol-buffers/docs/proto#scalar) | Optional | One | This timestamp identifies the moment when the alert was last modified. In POSIX time (i.e., number of seconds since January 1st 1970 00:00:00 UTC). |
+| **closed_timestamp** | [uint64](https://developers.google.com/protocol-buffers/docs/proto#scalar) | Optional | One | This timestamp identifies the moment when the alert has been closed. In POSIX time (i.e., number of seconds since January 1st 1970 00:00:00 UTC). |
 
 ## _enum_ Cause
 
