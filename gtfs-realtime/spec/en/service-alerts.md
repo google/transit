@@ -5,6 +5,7 @@ You have the option to provide the following:
 *   URL - link to your site explaining more about the alert
 *   Header text - a summary of the alert
 *   Description - a full description of the alert, which will always be shown alongside the header (so should not repeat this information).
+*   IVR text-to-speech text - the text containing a message to be used by an IVR system's text-to-speech generator.
 
 ### Time Range
 
