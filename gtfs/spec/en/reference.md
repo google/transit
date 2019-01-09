@@ -207,7 +207,7 @@ File: **Conditionally required**
 
 |  Field Name | Type | Required | Description |
 |  ------ | ------ | ------ |------ |
-|  `service_id` | ID | **Required** | Uniquely identifies a set of dates when service is available for one or more routes. |
+|  `service_id` | ID | **Required** | Uniquely identifies a set of dates when service is available for one or more routes. Each `service_id` value can appear at most once in a [calendar.txt](#calendartxt) file. |
 |  `monday` | Enum | **Required** | Indicates whether the service operates on all Mondays in the date range specified by the `start_date` and `end_date` fields. Note that exceptions for particular dates may be listed in [calendar_dates.txt](#calendar_datestxt). Valid options are:<br><br>`1` - Service is available for all Mondays in the date range.<br>`0` - Service is not available for Mondays in the date range. |
 |  `tuesday` | Enum | **Required** | Functions in the same way as `monday` except applies to Tuesdays |
 |  `wednesday` | Enum | **Required** | Functions in the same way as `monday` except applies to Wednesdays  |
