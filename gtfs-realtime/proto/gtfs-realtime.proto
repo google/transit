@@ -233,7 +233,7 @@ message TripUpdate {
     // RealTimeCertainty is ignored if schedule_relationship = SKIPPED or NO_DATA
     enum RealTimeCertainty {
       // Precision of the real time is unknown, default behavior
-      UNKOWN = 0;
+      UNKNOWN = 0;
       
       // Update is based on real time information with high certainty. 
       // High certainty is usually the certainty users expect when talking 
