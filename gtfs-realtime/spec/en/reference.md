@@ -177,7 +177,7 @@ The update is linked to a specific stop either through stop_sequence or stop_id,
 | **arrival** | [StopTimeEvent](#message-stoptimeevent) | Conditionally required | One | If schedule_relationship is empty or SCHEDULED, either arrival or departure must be provided within a StopTimeUpdate - both fields cannot be empty. arrival and departure may both be empty when schedule_relationship is SKIPPED.  If schedule_relationship is NO_DATA, arrival and departure must be empty. |
 | **departure** | [StopTimeEvent](#message-stoptimeevent) | Conditionally required | One | If schedule_relationship is empty or SCHEDULED, either arrival or departure must be provided within a StopTimeUpdate - both fields cannot be empty. arrival and departure may both be empty when schedule_relationship is SKIPPED.  If schedule_relationship is NO_DATA, arrival and departure must be empty. |
 | **schedule_relationship** | [ScheduleRelationship](#enum-schedulerelationship) | Optional | One | The default relationship is SCHEDULED. |
-| **certainty** | [RealTimeCertainty](#enum-realtimecertainty) | Optional | One | The default certainty is UNKOWN. |
+| **certainty** | [RealTimeCertainty](#enum-realtimecertainty) | Optional | One | The default certainty is UNKNOWN. |
 
 ## _enum_ RealTimeCertainty
 
@@ -189,7 +189,7 @@ RealTimeCertainty is ignored if schedule_relationship = SKIPPED or NO_DATA
 
 | _**Value**_ | _**Comment**_ |
 |-------------|---------------|
-| **UNKOWN** | Precision of the real time is unknown, default behavior |
+| **UNKNOWN** | Precision of the real time is unknown, default behavior |
 | **HIGH** | Update is based on real time information with high certainty. High certainty is usually the certainty users expect when talking about real time information. It's used to be constrasted with LOW certainty. |
 | **LOW** | Update is based on information from a vehicle that is or was followed in real time but is now low certainty. Lower certainty can come from things like a bus losing connection after the start of the run or when the prediction is dependant on driver behaviour. |
 
