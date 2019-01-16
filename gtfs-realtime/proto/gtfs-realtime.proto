@@ -427,6 +427,16 @@ message Alert {
   // Full description for the alert as plain-text. The information in the
   // description should add to the information of the header.
   optional TranslatedString description_text = 11;
+  
+  //Severity of this alert.
+  enum SeverityLevel {
+	UNKNOWN_SEVERITY = 1;
+	INFORMATIONAL = 2;
+	WARNING = 3;
+	SEVERE = 4;
+  }
+  
+  optional SeverityLevel severity_level = 12 [default = UNKNOWN_SEVERITY];
 
   // The extensions namespace allows 3rd-party developers to extend the
   // GTFS Realtime Specification in order to add and evaluate new features
