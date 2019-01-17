@@ -304,6 +304,7 @@ The effect of this problem on the affected entity.
 | **OTHER_EFFECT** |
 | **UNKNOWN_EFFECT** |
 | **STOP_MOVED** |
+| **NO_EFFECT** |
 
 ## _message_ TimeRange
 

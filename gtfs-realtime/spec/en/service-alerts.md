@@ -58,3 +58,4 @@ What effect does this problem have on the specified entity? You may specify one 
 *   Stop moved
 *   Other effect (not represented by any of these options)
 *   Unknown effect
+*   No effect: The alert provides information to riders but does not affect operations.  Examples include reminding riders of upcoming holiday schedules, advertising public meetings, and soliciting feedback via surveys.
