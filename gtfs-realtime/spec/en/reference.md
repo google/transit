@@ -1,6 +1,6 @@
 A GTFS Realtime feed lets transit agencies provide consumers with realtime information about disruptions to their service (stations closed, lines not operating, important delays, etc.) location of their vehicles, and expected arrival times.
 
-Version 2.0 of the feed specification is discussed and documented on this site.
+Version 2.0 of the feed specification is discussed and documented on this site. Valid versions are "2.0", "1.0".
 
 ### Term Definitions
 
