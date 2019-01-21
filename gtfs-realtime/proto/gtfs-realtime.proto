@@ -431,7 +431,7 @@ message Alert {
   // Text for alert header to be used in text-to-speech implementations. This field is the text-to-speech version of header_text.
   optional TranslatedString tts_header_text = 12;
   
-  //Text for full description for the alert to be used in text-to-speech implementations. This field is the text-to-speech version of description_text.
+  // Text for full description for the alert to be used in text-to-speech implementations. This field is the text-to-speech version of description_text.
   optional TranslatedString tts_description_text = 13;
 
   // The extensions namespace allows 3rd-party developers to extend the
