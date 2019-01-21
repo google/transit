@@ -428,8 +428,11 @@ message Alert {
   // description should add to the information of the header.
   optional TranslatedString description_text = 11;
   
-  // Text containing a message to be used by an IVR system's text-to-speech generator.
-  optional TranslatedString tts_ivr = 12;
+  // Text for alert header to be used in text-to-speech implementations.
+  optional TranslatedString tts_header_text = 12;
+  
+  //Text for full description for the alert to be used in text-to-speech implementations.
+  optional TranslatedString tts_description_text = 13;
 
   // The extensions namespace allows 3rd-party developers to extend the
   // GTFS Realtime Specification in order to add and evaluate new features

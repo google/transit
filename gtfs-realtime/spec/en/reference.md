@@ -265,7 +265,8 @@ An alert, indicating some sort of incident in the public transit network.
 | **url** | [TranslatedString](#message-translatedstring) | Optional | One | The URL which provides additional information about the alert. |
 | **header_text** | [TranslatedString](#message-translatedstring) | Required | One | Header for the alert. This plain-text string will be highlighted, for example in boldface. |
 | **description_text** | [TranslatedString](#message-translatedstring) | Required | One | Description for the alert. This plain-text string will be formatted as the body of the alert (or shown on an explicit "expand" request by the user). The information in the description should add to the information of the header. |
-| **tts_ivr** | [TranslatedString](#message-translatedstring) | Optional | One | Text containing a message to be used by an IVR system's text-to-speech generator. |
+| **tts_header_text** | [TranslatedString](#message-translatedstring) | Optional | One | Text containing the alert's header to be used for text-to-speech implementations. |
+| **tts_description_text** | [TranslatedString](#message-translatedstring) | Optional | One | Text containing a description for the alert to be used for text-to-speech implementations. |
 
 ## _enum_ Cause
 
