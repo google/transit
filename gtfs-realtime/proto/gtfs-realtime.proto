@@ -428,10 +428,10 @@ message Alert {
   // description should add to the information of the header.
   optional TranslatedString description_text = 11;
   
-  //Severity of this alert.
+  // Severity of this alert.
   enum SeverityLevel {
 	UNKNOWN_SEVERITY = 1;
-	INFORMATIONAL = 2;
+	INFO = 2;
 	WARNING = 3;
 	SEVERE = 4;
   }
