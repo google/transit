@@ -266,7 +266,7 @@ An alert, indicating some sort of incident in the public transit network.
 | **url** | [TranslatedString](#message-translatedstring) | Optional | One | The URL which provides additional information about the alert. |
 | **header_text** | [TranslatedString](#message-translatedstring) | Required | One | Header for the alert. This plain-text string will be highlighted, for example in boldface. |
 | **description_text** | [TranslatedString](#message-translatedstring) | Required | One | Description for the alert. This plain-text string will be formatted as the body of the alert (or shown on an explicit "expand" request by the user). The information in the description should add to the information of the header. |
-| **severity_level** | [SeverityLevel](#enum-severitylevel) | Optional | One | Severity of the alert. |
+| **severity_level** | [SeverityLevel](#enum-severitylevel) | Optional | One | Severity of the alert.<br>**Caution:** this field is still **experimental**, and subject to change. It may be formally adopted in the future. |
 
 ## _enum_ Cause
 
@@ -311,11 +311,13 @@ The effect of this problem on the affected entity.
 
 The severity of the alert.
 
+**Caution:** this field is still **experimental**, and subject to change. It may be formally adopted in the future.
+
 #### Values
 | _**Value**_ |
 |-------------|
 | **UNKNOWN_SEVERITY** |
-| **INFORMATIONAL** |
+| **INFO** |
 | **WARNING** |
 | **SEVERE** |
 
