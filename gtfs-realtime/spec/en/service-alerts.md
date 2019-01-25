@@ -54,8 +54,8 @@ What effect does this problem have on the specified entity? You may specify one 
 *   Significant delays (insignificant delays should only be provided through [Trip updates](trip-updates.md)).
 *   Detour
 *   Additional service
-*   Modified service
+*   Modified service: Operations are different from what the rider would normally expect.  An example is an alert that reminds riders of an upcoming holiday schedule that is different from normal service on that day of the week.
 *   Stop moved
 *   Other effect (not represented by any of these options)
 *   Unknown effect
-*   No effect: The alert provides information to riders but does not affect operations.  Examples include reminding riders of upcoming holiday schedules, advertising public meetings, and soliciting feedback via surveys.
+*   No effect: The alert provides information to riders but does not affect operations.  Examples include advertising public meetings and soliciting feedback via surveys.
