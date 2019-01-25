@@ -428,8 +428,8 @@ message Alert {
   // description should add to the information of the header.
   optional TranslatedString description_text = 11;
   
-  // Severity of this alert. This field is still experimental, 
-  // and subject to change. It may be formally adopted in the future.
+  // Severity of this alert. 
+  // This field is still experimental, and subject to change. It may be formally adopted in the future.
   enum SeverityLevel {
 	UNKNOWN_SEVERITY = 1;
 	INFO = 2;

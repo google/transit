@@ -66,7 +66,7 @@ Fields labeled as **experimental** are subject to change and not yet formally ad
             *   [Effect](#enum-effect)
             *   [TranslatedString](#message-translatedstring)
                 *   [Translation](#message-translation)
-			*	[SeverityLevel](#enum-severitylevel)
+            *   [SeverityLevel](#enum-severitylevel)
 
 # Elements
 
