@@ -222,7 +222,7 @@ message TripUpdate {
         [default = SCHEDULED];
 
     // Experimental field, subject to change
-    // RealTimeCertainty represents the certainty of the
+    // PredictionCertainty represents the certainty of the
     // real time information provided.
     // This allows the consumer to decide how to display the real time information
     // to the user depending on the precision.
@@ -230,13 +230,13 @@ message TripUpdate {
     // consumers should represent these types of information differently in the
     // user interface. LOW certainty values should not be represented in the same
     // way as schedule data to the rider.
-    // RealTimeCertainty is ignored if schedule_relationship = SKIPPED or NO_DATA
-    enum RealTimeCertainty {
+    // PredictionCertainty is ignored if schedule_relationship = SKIPPED or NO_DATA
+    enum PredictionCertainty {
       // Precision of the real time is unknown, default behavior
       UNKNOWN = 0;
-      
-      // Update is based on real time information with high certainty. 
-      // High certainty is usually the certainty users expect when talking 
+
+      // Update is based on real time information with high certainty.
+      // High certainty is usually the certainty users expect when talking
       // about real time information. It's used to be constrasted with LOW certainty.
       HIGH = 1;
 
@@ -246,7 +246,7 @@ message TripUpdate {
       // is dependant on driver behaviour.
       LOW = 2;
     }
-    optional RealTimeCertainty certainty = 6 [default = UNKNOWN];
+    optional PredictionCertainty certainty = 6 [default = UNKNOWN];
 
     // The extensions namespace allows 3rd-party developers to extend the
     // GTFS Realtime Specification in order to add and evaluate new features
