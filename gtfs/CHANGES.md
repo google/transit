@@ -50,6 +50,10 @@ Every new feature adds complexity to the creation and reading of feeds. Therefor
 
 ### Revision History
 
+#### January 17, 2019
+
+* Editorial and formatting changes for clarity.  See [pull request](https://github.com/google/transit/pull/120).
+
 #### August 22, 2018
 
 * Added `feed_contact_email` and `feed_contact_url` fields in the `feed_info.txt` file. See [discussion](https://github.com/google/transit/pull/31).
