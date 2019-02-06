@@ -415,6 +415,7 @@ message Alert {
     OTHER_EFFECT = 7;
     UNKNOWN_EFFECT = 8;
     STOP_MOVED = 9;
+    NO_EFFECT = 10;
   }
   optional Effect effect = 7 [default = UNKNOWN_EFFECT];
 
