@@ -188,7 +188,7 @@ The relation between this StopTime and the static schedule.
 | _**Value**_ | _**Comment**_ |
 |-------------|---------------|
 | **SCHEDULED** | The vehicle is proceeding in accordance with its static schedule of stops, although not necessarily according to the times of the schedule. This is the **default** behavior. At least one of arrival and departure must be provided. |
-| **SKIPPED** | The stop is skipped, i.e., the vehicle will not stop at this stop. Arrival and departure are optional. |
+| **SKIPPED** | The stop is skipped, i.e., the vehicle will not stop at this stop. Arrival and departure are optional. When set `SKIPPED` is not propagated to subsequent stops in the same trip (i.e., the vehicle will stop at subsequent stops in the trip unless those stops also have a `stop_time_update` with `schedule_relationship: SKIPPED`). Delay from a previous stop in the trip does not propagate through the `SKIPPED` stop. A `stop_time_update` with an `arrival` or `departure` prediction must be set for a stop after the `SKIPPED` stop for real-time information to be shown for stops downstream of the `SKIPPED` stop.  |
 | **NO_DATA** | No data is given for this stop. It indicates that there is no realtime information available. When set NO_DATA is propagated through subsequent stops so this is the recommended way of specifying from which stop you do not have realtime information. When NO_DATA is set neither arrival nor departure should be supplied. |
 
 ## _message_ VehiclePosition
