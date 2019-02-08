@@ -1,6 +1,6 @@
 A GTFS Realtime feed lets transit agencies provide consumers with realtime information about disruptions to their service (stations closed, lines not operating, important delays, etc.) location of their vehicles, and expected arrival times.
 
-Version 2.0 of the feed specification is discussed and documented on this site.
+Version 2.0 of the feed specification is discussed and documented on this site. Valid versions are "2.0", "1.0".
 
 ### Term Definitions
 
@@ -66,6 +66,7 @@ Fields labeled as **experimental** are subject to change and not yet formally ad
             *   [Effect](#enum-effect)
             *   [TranslatedString](#message-translatedstring)
                 *   [Translation](#message-translation)
+            *   [SeverityLevel](#enum-severitylevel)
 
 # Elements
 
@@ -265,6 +266,9 @@ An alert, indicating some sort of incident in the public transit network.
 | **url** | [TranslatedString](#message-translatedstring) | Optional | One | The URL which provides additional information about the alert. |
 | **header_text** | [TranslatedString](#message-translatedstring) | Required | One | Header for the alert. This plain-text string will be highlighted, for example in boldface. |
 | **description_text** | [TranslatedString](#message-translatedstring) | Required | One | Description for the alert. This plain-text string will be formatted as the body of the alert (or shown on an explicit "expand" request by the user). The information in the description should add to the information of the header. |
+| **tts_header_text** | [TranslatedString](#message-translatedstring) | Optional | One | Text containing the alert's header to be used for text-to-speech implementations. This field is the text-to-speech version of header_text. It should contain the same information as header_text but formatted such that it can read as text-to-speech (for example, abbreviations removed, numbers spelled out, etc.) **Caution:** this field is still **experimental**, and subject to change. It may be formally adopted in the future. |
+| **tts_description_text** | [TranslatedString](#message-translatedstring) | Optional | One | Text containing a description for the alert to be used for text-to-speech implementations. This field is the text-to-speech version of description_text. It should contain the same information as description_text but formatted such that it can be read as text-to-speech (for example, abbreviations removed, numbers spelled out, etc.) **Caution:** this field is still **experimental**, and subject to change. It may be formally adopted in the future. |
+| **severity_level** | [SeverityLevel](#enum-severitylevel) | Optional | One | Severity of the alert.<br>**Caution:** this field is still **experimental**, and subject to change. It may be formally adopted in the future. |
 
 ## _enum_ Cause
 
@@ -304,6 +308,21 @@ The effect of this problem on the affected entity.
 | **OTHER_EFFECT** |
 | **UNKNOWN_EFFECT** |
 | **STOP_MOVED** |
+| **NO_EFFECT** |
+
+## _enum_ SeverityLevel
+
+The severity of the alert.
+
+**Caution:** this field is still **experimental**, and subject to change. It may be formally adopted in the future.
+
+#### Values
+| _**Value**_ |
+|-------------|
+| **UNKNOWN_SEVERITY** |
+| **INFO** |
+| **WARNING** |
+| **SEVERE** |
 
 ## _message_ TimeRange
 

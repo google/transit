@@ -51,7 +51,7 @@ message FeedMessage {
 // Metadata about a feed, included in feed messages.
 message FeedHeader {
   // Version of the feed specification.
-  // The current version is 2.0.
+  // The current version is 2.0.  Valid versions are "2.0", "1.0".
   required string gtfs_realtime_version = 1;
 
   // Determines whether the current fetch is incremental.  Currently,
@@ -415,6 +415,7 @@ message Alert {
     OTHER_EFFECT = 7;
     UNKNOWN_EFFECT = 8;
     STOP_MOVED = 9;
+    NO_EFFECT = 10;
   }
   optional Effect effect = 7 [default = UNKNOWN_EFFECT];
 
@@ -427,6 +428,25 @@ message Alert {
   // Full description for the alert as plain-text. The information in the
   // description should add to the information of the header.
   optional TranslatedString description_text = 11;
+  
+  // Text for alert header to be used in text-to-speech implementations. This field is the text-to-speech version of header_text.
+  // This field is still experimental, and subject to change. It may be formally adopted in the future.
+  optional TranslatedString tts_header_text = 12;
+  
+  // Text for full description for the alert to be used in text-to-speech implementations. This field is the text-to-speech version of description_text.
+  // This field is still experimental, and subject to change. It may be formally adopted in the future.
+  optional TranslatedString tts_description_text = 13;
+  
+  // Severity of this alert. 
+  // This field is still experimental, and subject to change. It may be formally adopted in the future.
+  enum SeverityLevel {
+	UNKNOWN_SEVERITY = 1;
+	INFO = 2;
+	WARNING = 3;
+	SEVERE = 4;
+  }
+  
+  optional SeverityLevel severity_level = 14 [default = UNKNOWN_SEVERITY];
 
   // The extensions namespace allows 3rd-party developers to extend the
   // GTFS Realtime Specification in order to add and evaluate new features
