@@ -178,6 +178,7 @@ The update is linked to a specific stop either through stop_sequence or stop_id,
 | **arrival** | [StopTimeEvent](#message-stoptimeevent) | Conditionally required | One | If schedule_relationship is empty or SCHEDULED, either arrival or departure must be provided within a StopTimeUpdate - both fields cannot be empty. arrival and departure may both be empty when schedule_relationship is SKIPPED.  If schedule_relationship is NO_DATA, arrival and departure must be empty. |
 | **departure** | [StopTimeEvent](#message-stoptimeevent) | Conditionally required | One | If schedule_relationship is empty or SCHEDULED, either arrival or departure must be provided within a StopTimeUpdate - both fields cannot be empty. arrival and departure may both be empty when schedule_relationship is SKIPPED.  If schedule_relationship is NO_DATA, arrival and departure must be empty. |
 | **schedule_relationship** | [ScheduleRelationship](#enum-schedulerelationship) | Optional | One | The default relationship is SCHEDULED. |
+| **sign_text** | [string](https://developers.google.com/protocol-buffers/docs/proto#scalar) | Optional | One | Text to be displayed on a digital sign at the stop for this StopTimeUpdate. Examples: "Now Boarding", "All aboard", "Stopped 3 stops away" |
 
 ## _enum_ ScheduleRelationship
 

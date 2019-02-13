@@ -221,6 +221,9 @@ message TripUpdate {
     optional ScheduleRelationship schedule_relationship = 5
         [default = SCHEDULED];
 
+    // Optional text displayed on signs for this trip at the given stop.
+    optional string sign_text = 6;
+
     // The extensions namespace allows 3rd-party developers to extend the
     // GTFS Realtime Specification in order to add and evaluate new features
     // and modifications to the spec.
