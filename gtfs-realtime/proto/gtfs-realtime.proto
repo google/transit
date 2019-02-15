@@ -576,7 +576,7 @@ message TripDescriptor {
     // A trip that existed in the schedule but was removed.
     CANCELED = 3;
 
-    // Should not be used - for backwards-compatibility only
+    // Should not be used - for backwards-compatibility only.
     REPLACEMENT = 5 [deprecated=true];
   }
   optional ScheduleRelationship schedule_relationship = 4;
