@@ -6,7 +6,7 @@ There should be **at most** one trip update for each scheduled trip. In case the
 
 ## Stop Time Updates
 
-A trip update consists of one or more updates to vehicle stop times, which are referred to as [StopTimeUpdates](reference.md#StopTimeUpdate). These can be supplied for past and future stop times. You are allowed, but not required, to drop past stop times.  Producers should not drop a past `StopTimeUpdate` if it refers to a stop with a scheduled arrival time in the future for the given trip (i.e. the vehicle has passed the stop ahead of schedule), as otherwise it will be concluded that there is no update for this stop.  
+A trip update consists of one or more updates to vehicle stop times, which are referred to as [StopTimeUpdates](reference.md#StopTimeUpdate). These can be supplied for past and future stop times. You are allowed, but not required, to drop past stop times.  Producers should not drop a past `StopTimeUpdate` if it refers to a stop with a scheduled arrival time in the future for the given trip (i.e. the vehicle has passed the stop ahead of schedule), as otherwise it will be concluded that there is no update for this stop.
 
 For example, if the following data appears in the GTFS-rt feed:
 
@@ -55,7 +55,7 @@ The information provided by the trip descriptor depends on the schedule relation
 | **Unscheduled** | This trip is running and is never associated with a schedule. For example, if there is no schedule and the buses run on a shuttle service. |
 | **Canceled** | This trip was scheduled, but is now removed. |
 
-In most cases, you should provide the trip_id of the scheduled trip in GTFS that this update relates to. 
+In most cases, you should provide the trip_id of the scheduled trip in GTFS that this update relates to.
 
 #### Systems with repeated trip_ids
 

@@ -428,16 +428,16 @@ message Alert {
   // Full description for the alert as plain-text. The information in the
   // description should add to the information of the header.
   optional TranslatedString description_text = 11;
-  
+
   // Text for alert header to be used in text-to-speech implementations. This field is the text-to-speech version of header_text.
   // This field is still experimental, and subject to change. It may be formally adopted in the future.
   optional TranslatedString tts_header_text = 12;
-  
+
   // Text for full description for the alert to be used in text-to-speech implementations. This field is the text-to-speech version of description_text.
   // This field is still experimental, and subject to change. It may be formally adopted in the future.
   optional TranslatedString tts_description_text = 13;
-  
-  // Severity of this alert. 
+
+  // Severity of this alert.
   // This field is still experimental, and subject to change. It may be formally adopted in the future.
   enum SeverityLevel {
 	UNKNOWN_SEVERITY = 1;
@@ -445,7 +445,7 @@ message Alert {
 	WARNING = 3;
 	SEVERE = 4;
   }
-  
+
   optional SeverityLevel severity_level = 14 [default = UNKNOWN_SEVERITY];
 
   // The extensions namespace allows 3rd-party developers to extend the
@@ -575,6 +575,9 @@ message TripDescriptor {
 
     // A trip that existed in the schedule but was removed.
     CANCELED = 3;
+
+    // Should not be used - for backwards-compatibility only.
+    REPLACEMENT = 5 [deprecated=true];
   }
   optional ScheduleRelationship schedule_relationship = 4;
 
