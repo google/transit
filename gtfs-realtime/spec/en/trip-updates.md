@@ -23,7 +23,7 @@ For each [StopTimeUpdate](reference.md#StopTimeUpdate), the default schedule rel
 
 **Updates should be sorted by stop_sequence** (or stop_ids in the order they occur in the trip).
 
-If one or more stops are missing along the trip the delay from the update is propagated to all subsequent stops. This means that updating a stop time for a certain stop will change all subsequent stops in the absence of any other information. Note that updates with a schedule relationship of `SKIPPED` will not stop delay propagation, but updates with schedule relationships of `SCHEDULED` (also the default value if schedule relationship is not provided) or `NO_DATA` will.
+If one or more stops are missing along the trip the `delay` from the update (or, if only `time` is provided in the update, a delay computed by comparing the `time` against the GTFS schedule time) is propagated to all subsequent stops. This means that updating a stop time for a certain stop will change all subsequent stops in the absence of any other information. Note that updates with a schedule relationship of `SKIPPED` will not stop delay propagation, but updates with schedule relationships of `SCHEDULED` (also the default value if schedule relationship is not provided) or `NO_DATA` will.
 
 **Example 1**
 
