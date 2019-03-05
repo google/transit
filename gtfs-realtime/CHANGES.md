@@ -12,7 +12,8 @@ When a producer or consumer is interested in adding a new field to the GTFS Real
       - Consensus is reached via a discussion and voting process that is the same as the below [Specification amendment process](#specification-amendment-process), but instead of unanimous consent only 80% yes votes are required for approval.
       - GTFS Realtime producers and consumers that wish to use the new *experimental* field will re-generate their library using the .proto file with the new field (e.g., Google will update the [gtfs-realtime-bindings library](https://github.com/google/gtfs-realtime-bindings)), and start populating and parsing the field with live data.
       - Once we are satisfied that the *experimental* field is worthwhile and both producers and consumers are using the field, then we will follow the below [Specification amendment process](#specification-amendment-process) to officially add the field to the spec.
-
+      - If the *experimental* field is not adopted via the [Specification amendment process](#specification-amendment-process) within 2 years of being approved as an *experimental* field, it will be deprecated by adding `[deprecated=true]` next to the field value in the [.proto file](/gtfs-realtime/proto/gtfs-realtime.proto) file.  By using `[deprecated=true]` (instead of `RESERVED`), producers and consumers that have already adopted the field do not have to remove it from use.  Additionally, the field may be "un-deprecated" in the future if it is approved in a subsequent vote following the [Specification amendment process](#specification-amendment-process) (e.g., when additional producers and/or consumers start using the field).
+ 
 1. If the new field is considered specific to a single producer or there is dispute over the data type, then we will assign a [custom extension](#extensions) to the producer so they can use the field in their own feed.  When possible we should avoid extensions and add fields useful to many agencies to the main specification to avoid fragmentation and extra work for consumers to support various extensions to the spec.
 
 ### Specification amendment process
@@ -25,6 +26,8 @@ When a producer or consumer is interested in adding a new field to the GTFS Real
   	- The advocate is responsible for timely update of the proposal (i.e. pull request) based on the comments for which they agree to.
   	- At any point in time the advocate can claim proposal abandoned.
 1. The advocate can call for a vote on a version of the proposal at any point in time following the initial 7-day interval required for discussion.
+    - Before calling for a vote, at least one GTFS-realtime producer and one GTFS-realtime consumer should implement the proposed change. It is expected that the GTFS-realtime producer(s) include the change in a public-facing GTFS-realtime feed and provide a link to that data within the pull request comments, and that the GTFS-realtime consumer(s) provides a link in the pull request comments to an application that is utilizing the change in a non-trivial manner (i.e, it is supporting new or improved functionality).
+    - When calling for a vote, the advocate should clearly state whether the vote is for official adoption of the field into the spec or for an experimental field.
 1. Vote lasts the minimum period sufficient to cover 7 full calendar days and 5 full Swiss business days. Vote ends at 23:59:59 UTC.
   	- The advocate should announce the specific end time at the start of the vote.
   	- During voting period only editorial changes to the proposal are allowed (typos, wording may change as long as it does not change the meaning).
