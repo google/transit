@@ -42,6 +42,19 @@ NEW_TRANSLATIONS_FIELDS = [
     'field_value',
 ]
 
+TRANSLATABLE_FIELD_NAME_SUFFIXES = [
+    '_name',
+    '_desc',
+    '_headsign',
+    '_url',
+    '_text',
+    '_abbreviation',
+    # Handle pathway fields "signposted_as", "reversed_signposted_as"
+    # and "instructions".
+    'signposted_as',
+    'instructions',
+]
+
 
 class RecordIdHelper(object):
     def __init__(self, table_name, field_names):
@@ -91,7 +104,7 @@ def read_first_available_value(filename, field_name):
 
 
 def is_translatable_field(gtfs_file, field):
-    for suffix in '_name', '_desc', '_headsign', '_url', 'signposted_as':
+    for suffix in TRANSLATABLE_FIELD_NAME_SUFFIXES:
         if field.endswith(suffix):
             return True
     return False
