@@ -183,7 +183,7 @@ class TranslationsConverter(object):
             writer = csv.DictWriter(
                 out_file, fieldnames=NEW_TRANSLATIONS_FIELDS)
             writer.writeheader()
-            for filename in os.listdir(self.src_dir):
+            for filename in sorted(os.listdir(self.src_dir)):
                 if not (filename.endswith('.txt') and
                         os.path.isfile(os.path.join(self.src_dir, filename))):
                     print('Skipping %s' % filename)
