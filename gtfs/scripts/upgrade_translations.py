@@ -11,6 +11,7 @@ Upgrades GTFS from Google translations extension [1] to GTFS-Translations [2].
 import csv
 import os
 import os.path
+import shutil
 import sys
 
 RECORD_ID_MAP = {
@@ -94,6 +95,10 @@ def is_translatable_field(gtfs_file, field):
         if field.endswith(suffix):
             return True
     return False
+
+
+def any_translatable_field(gtfs_file, fields):
+    return any(is_translatable_field(gtfs_file, field) for field in fields)
 
 
 class OldTranslations(object):
@@ -188,8 +193,10 @@ class TranslationsConverter(object):
         out_filename = os.path.join(dest_dir, '%s.txt' % table_name)
         with open(in_filename, newline='') as in_file:
             reader = csv.DictReader(in_file)
-            if not reader.fieldnames:
-                print('Skipping %s with no columns' % table_name)
+            if not reader.fieldnames or not any_translatable_field(
+                    table_name, reader.fieldnames):
+                print('Copying %s with no translatable columns' % table_name)
+                shutil.copy(in_filename, out_filename)
                 return 0
             table_translator = TableTranslator(
                 table_name, reader.fieldnames, self.old_translations,
