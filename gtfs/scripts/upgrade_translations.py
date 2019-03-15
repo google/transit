@@ -26,12 +26,9 @@ RECORD_ID_MAP = {
     'shapes': ('shape_id', 'shape_pt_sequence'),
     'frequencies': ('trip_id', 'start_time'),
     'transfers': ('from_stop_id', 'to_stop_id'),
-    # Additional record ids supported by Google.
     'pathways': ('pathway_id', None),
     'levels': ('level_id', None),
     'properties': ('property_id', None),
-    'vehicle_carriages': ('carriage_id', None),
-    'vehicles': ('vehicle_id', None),
 }
 
 NEW_TRANSLATIONS_FIELDS = [
