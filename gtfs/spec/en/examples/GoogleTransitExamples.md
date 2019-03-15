@@ -16,8 +16,8 @@ The fare\_attributes.txt and fare_rules.txt files in the [Google Transit Feed Sp
 
 Suppose Demo Transit Agency has the following fare structure:
 
-* riders pay $1.00 on boarding (`price`=`1.00`, `currency`=`USD`, `payment_method`=`0`) 
-* a ticket is good for all vehicles and doesn't expire (`transfers` is empty) 
+* riders pay $1.00 on boarding (`price`=`1.00`, `currency`=`USD`, `payment_method`=`0`)
+* a ticket is good for all vehicles and doesn't expire (`transfers` is empty)
 * passengers can ride as long as they like. (`transfer_duration` is omitted)
 
 Since all trips have the same fare, Demo Transit can omit fare_rules.txt.
@@ -25,7 +25,7 @@ Since all trips have the same fare, Demo Transit can omit fare_rules.txt.
 fare_attributes.txt
 
 | fare_id | price | currency_type | payment_method |transfers |
-|:-----|:-----|:-----|:-----|:-----| 
+|:-----|:-----|:-----|:-----|:-----|
 | only_fare | 1.00 | USD | 0 | |
 
 #### Calculating an adult fare
@@ -34,10 +34,10 @@ The trip planner calculates a fare of $1.00 for each leg of the itinerary that i
 <hr>
 
 ### Example 2: All trips have the same fare, no transfers
-Suppose Demo Transit Agency has the following fare structure: 
+Suppose Demo Transit Agency has the following fare structure:
 
 * riders pay $1.00 on boarding (`price`=`1.00`, `currency`=`USD`, `payment_method`=`0`)
-* passengers can ride as long as they like. (`transfer_duration` is omitted) 
+* passengers can ride as long as they like. (`transfer_duration` is omitted)
 * any change in vehicles requires a new fare. (`transfers`=`0`)
 
 Since all trips have the same fare, Demo Transit can omit fare_rules.txt.
@@ -54,9 +54,9 @@ The trip planner calculates a fare of $1.00 for each leg of the itinerary that i
 <hr>
 
 ### Example 3: All trips have the same fare, transfers allowed
-Suppose Demo Transit Agency has the following fare structure: 
+Suppose Demo Transit Agency has the following fare structure:
 
-* riders pay $1 on boarding (`price`=`1.00`, `currency`=`USD`, `payment_method`=`0`) 
+* riders pay $1 on boarding (`price`=`1.00`, `currency`=`USD`, `payment_method`=`0`)
 * unlimited transfers are allowed within 90 minutes (`transfers` is empty,`transfer_duration`=`5400`)
 
 Since all trips have the same fare, Demo Transit can omit fare_rules.txt.
@@ -64,7 +64,7 @@ Since all trips have the same fare, Demo Transit can omit fare_rules.txt.
 fare_attributes.txt
 
 | fare_id | price | currency_type | payment_method | transfers | transfer_duration |
-|:--------------|:----------|:-------------------|:--------------------|:--------------|:-----------------------| 
+|:--------------|:----------|:-------------------|:--------------------|:--------------|:-----------------------|
 | only_fare | 1.00 | USD | 0 | | 5400 |
 
 #### Calculating an adult fare
@@ -73,10 +73,10 @@ The trip planner calculates a fare of $1.00 for each leg of the itinerary that i
 <hr>
 
 ### Example 4: Different pricing for local and express routes
-Suppose Demo Transit Agency has the following fare structure: 
+Suppose Demo Transit Agency has the following fare structure:
 
-* riders pay $1.75 on boarding local buses (route 1) 
-* riders pay $5.00 on boarding express buses (routes 2 and 3) 
+* riders pay $1.75 on boarding local buses (route 1)
+* riders pay $5.00 on boarding express buses (routes 2 and 3)
 * transfers aren't allowed.
 
 Since some trips cost more than others, Demo Transit must include fare_rules.txt, and each route must have an entry to associate it with a fare.
@@ -90,9 +90,9 @@ fare_attributes.txt
 fare_rules.txt
 
 | fare_id | route_id |
-|:-------------|:--------------| 
+|:-------------|:--------------|
 | local_fare | Route_1 |
-| express_fare | Route_2 | 
+| express_fare | Route_2 |
 | express_fare | Route_3 |
 
 #### Calculating an adult fare
@@ -101,10 +101,10 @@ The $5.00 fare is only applicable if you ride routes 2 or 3. The $1.75 fare only
 <hr>
 
 ### Example 5: Buying a transfer increases the fare
-Suppose Demo Transit Agency has the following fare structure: 
+Suppose Demo Transit Agency has the following fare structure:
 
-* riders pay $1.75 on boarding local buses 
-* riders can pay an extra $0.25 on boarding to purchase a transfer 
+* riders pay $1.75 on boarding local buses
+* riders can pay an extra $0.25 on boarding to purchase a transfer
 * transfers purchased are valid for 90 minutes
 
 Since these rules apply to all trips, Demo Transit can omit fare_rules.txt.
@@ -112,14 +112,14 @@ Since these rules apply to all trips, Demo Transit can omit fare_rules.txt.
 fare_attributes.txt
 
 | fare_id | price | currency_type | payment_method | transfers | transfer_duration |
-|:--------------|:----------|:-------------------|:--------------------|:--------------|:-----------------------| 
-| simple_fare | 1.75 | USD | 0 | 0 | | 
+|:--------------|:----------|:-------------------|:--------------------|:--------------|:-----------------------|
+| simple_fare | 1.75 | USD | 0 | 0 | |
 | plustransfer_fare | 2.00 | USD | 0 | | 5400 |
 
 #### Calculating an adult fare
-Technically, both fares apply on itinerary that has no transfers. However, the trip planner always chooses the least expensive applicable fare: 
+Technically, both fares apply on itinerary that has no transfers. However, the trip planner always chooses the least expensive applicable fare:
 
-* For an itinerary with one transfer, `simple_fare` is $3.50 vs. $2.00 when a transfer is purchased. So the trip planner will report $2.00 fare on all itineraries that require a change of vehicle. 
+* For an itinerary with one transfer, `simple_fare` is $3.50 vs. $2.00 when a transfer is purchased. So the trip planner will report $2.00 fare on all itineraries that require a change of vehicle.
 * For an itinerary with no transfers, $1.75 fare is less than `plustransfer_fare` of $2.00. So if an itinerary doesn't require a change of vehicle, the fare is $1.75.
 
 <hr>
@@ -134,22 +134,22 @@ In fare\_attributes.txt, the `origin_id` and `destination_id` fields identify st
 
 fare_attributes.txt
 
-| fare_id | price | currency_type | payment_method | transfers | 
-|:--------------|:----------|:-------------------|:--------------------|:--------------| 
-| S1\_to\_S2 | 1.75 | USD | 0 | | 
-| S1\_to\_S3 | 3.25 | USD | 0 | | 
-| S1\_to\_S4 | 4.55 | USD | 0 | | 
-| ... | | | | | 
+| fare_id | price | currency_type | payment_method | transfers |
+|:--------------|:----------|:-------------------|:--------------------|:--------------|
+| S1\_to\_S2 | 1.75 | USD | 0 | |
+| S1\_to\_S3 | 3.25 | USD | 0 | |
+| S1\_to\_S4 | 4.55 | USD | 0 | |
+| ... | | | | |
 | S10\_to\_S1 | 5.65 | USD | 0 | |
 
 fare_rules.txt
 
-| fare_id | origin_id | destination_id | 
-|:-------------|:---------------|:--------------------| 
-| S1\_to\_S2 | S1 | S2 | 
-| S1\_to\_S3 | S1 | S3 | 
-| S1\_to\_S4 | S1 | S4 | 
-| ... | | | 
+| fare_id | origin_id | destination_id |
+|:-------------|:---------------|:--------------------|
+| S1\_to\_S2 | S1 | S2 |
+| S1\_to\_S3 | S1 | S3 |
+| S1\_to\_S4 | S1 | S4 |
+| ... | | |
 | S10\_to\_S1 | S10 | S1 |
 
 #### Calculating an adult fare
@@ -167,41 +167,41 @@ To define this fare structure for the feed, fare\_attributes.txt and fare\_rules
 fare_attributes.txt
 
 | fare_id | price | currency_type | payment_method | transfers |
-|:--------------|:----------|:-------------------|:--------------------|:--------------| | F1 | 4.15 | USD | 0 | | 
-| F2 | 2.20 | USD | 0 | | 
-| F3 | 2.20 | USD | 0 | | 
-| F4 | 2.95 | USD | 0 | | 
-| F5 | 1.25 | USD | 0 | | 
-| F6 | 1.95 | USD | 0 | | 
+|:--------------|:----------|:-------------------|:--------------------|:--------------| | F1 | 4.15 | USD | 0 | |
+| F2 | 2.20 | USD | 0 | |
+| F3 | 2.20 | USD | 0 | |
+| F4 | 2.95 | USD | 0 | |
+| F5 | 1.25 | USD | 0 | |
+| F6 | 1.95 | USD | 0 | |
 | F7 | 1.95 | USD | 0 | |
 
 fare_rules.txt
 
-| fare_id | contains_id | 
-|:-------------|:-----------------| 
-| F1 | 1 | 
-| F1 | 2 | 
-| F1 | 3 | 
-| F2 | 1 | 
-| F2 | 2 | 
-| F3 | 1 | 
-| F3 | 3 | 
-| F4 | 2 | 
-| F4 | 3 | 
-| F5 | 1 | 
-| F6 | 2 | 
+| fare_id | contains_id |
+|:-------------|:-----------------|
+| F1 | 1 |
+| F1 | 2 |
+| F1 | 3 |
+| F2 | 1 |
+| F2 | 2 |
+| F3 | 1 |
+| F3 | 3 |
+| F4 | 2 |
+| F4 | 3 |
+| F5 | 1 |
+| F6 | 2 |
 | F7 | 3 |
 
 
 #### Calculating an adult fare
-Let's look more closely at the definitions in fare_rules.txt. 
+Let's look more closely at the definitions in fare_rules.txt.
 
-* F1 applies to any trip that passes through zones (1,2,3). 
-* F2 applies to any trip that passes through zones (1,2). 
-* F3 applies to any trip that passes through zones (1,3). 
-* F4 applies to any trip that passes through zones (2,3). 
-* F5 applies to any trip that passes through zone 1 only. 
-* F6 applies to any trip that passes through zone 2 only. 
+* F1 applies to any trip that passes through zones (1,2,3).
+* F2 applies to any trip that passes through zones (1,2).
+* F3 applies to any trip that passes through zones (1,3).
+* F4 applies to any trip that passes through zones (2,3).
+* F5 applies to any trip that passes through zone 1 only.
+* F6 applies to any trip that passes through zone 2 only.
 * F7 applies to any trip that passes through zone 3 only.
 
 The trip planner calculates an itinerary, and then looks up the fare rules to determine the fares that apply based on zone. Since F1 also includes travel in zone 1, only F4 ($2.95) applies to a trip from zone 2 to zone 3.
