@@ -6,6 +6,50 @@ Upgrades GTFS from Google translations extension [1] to GTFS-Translations [2].
 
 [1] http://developers.google.com/transit/gtfs/reference/gtfs-extensions#translationstxt
 [2] http://bit.ly/gtfs-translations
+
+Usage.
+
+Upgrade translations of a feed unpacked to `my-feed` directory and store them
+to `my-feed_updated`:
+
+  $ upgrade_translations.py my-feed
+
+Specify output directory name explicitly:
+
+  $ upgrade_translations.py my-feed-old my-feed-new
+
+Sample feed.
+
+  feed_info.txt:
+  feed_publisher_name,feed_publisher_url,feed_lang
+  Narnia,http://en.wikipedia.org/wiki/Narnia,en
+
+  stops.txt:
+  stop_id,stop_name,stop_lat,stop_lon
+  stop1,Palace,10,11
+
+  trips.txt:
+  route_id,service_id,trip_id,trip_headsign
+  sledge,service1,trip1,To Palace
+
+Translations in Google extension format.
+
+  translations.txt:
+  trans_id,lang,translation
+  http://en.wikipedia.org/wiki/Narnia,en,http://en.wikipedia.org/wiki/Narnia
+  http://en.wikipedia.org/wiki/Narnia,es,http://es.wikipedia.org/wiki/Narnia
+  Palace,en,Palace
+  Palace,es,Palacio
+  To Palace,en,To Palace
+  To Palace,es,Palacio
+
+Translations in GTFS-Translations format.
+
+  translations.txt:
+  table_name,field_name,language,translation,record_id,record_sub_id,field_value
+  feed_info,feed_publisher_url,es,http://es.wikipedia.org/wiki/Narnia,,,
+  stops,stop_name,es,Palacio,stop1,,
+  trips,trip_headsign,es,Palacio,,,To Palace
 """
 
 import csv
@@ -14,6 +58,8 @@ import os.path
 import shutil
 import sys
 
+# GTFS-Translations defines record_id and record_sub_id used for referencing a
+# row in a GTFS table that requires translation.
 RECORD_ID_MAP = {
     'agency': ('agency_id', None),
     'stops': ('stop_id', None),
@@ -32,6 +78,7 @@ RECORD_ID_MAP = {
     'levels': ('level_id', None),
 }
 
+# File translations.txt in GTFS-Translations has the following fields.
 NEW_TRANSLATIONS_FIELDS = [
     'table_name',
     'field_name',
@@ -42,6 +89,8 @@ NEW_TRANSLATIONS_FIELDS = [
     'field_value',
 ]
 
+# Fields whose names end with the following suffixes are translated according
+# to Google translations extension.
 TRANSLATABLE_FIELD_NAME_SUFFIXES = [
     '_name',
     '_desc',
@@ -57,6 +106,9 @@ TRANSLATABLE_FIELD_NAME_SUFFIXES = [
 
 
 class RecordIdHelper(object):
+    """Helper object to find record_id and record_sub_id based on GTFS table
+    name and its fields.
+    """
     def __init__(self, table_name, field_names):
         id_and_sub_id = RECORD_ID_MAP.get(table_name)
         if id_and_sub_id is None:
@@ -92,6 +144,8 @@ class RecordIdHelper(object):
 
 
 def read_first_available_value(filename, field_name):
+    """Reads the first assigned value of the given field in the CSV table.
+    """
     if not os.path.exists(filename):
         return None
     with open(filename, newline='') as csvfile:
@@ -115,6 +169,8 @@ def any_translatable_field(gtfs_file, fields):
 
 
 class OldTranslations(object):
+    """Reads all old translations and keeps them for further usage.
+    """
     def __init__(self, src_dir):
         self.src_dir = src_dir
         self._find_feed_language()
@@ -122,6 +178,8 @@ class OldTranslations(object):
         self._find_context_dependent_names()
 
     def _find_feed_language(self):
+        """Find feed language based specified feed_info.txt or agency.txt.
+        """
         self.feed_language = (read_first_available_value(
             os.path.join(self.src_dir, 'feed_info.txt'), 'feed_lang') or
             read_first_available_value(
@@ -132,6 +190,8 @@ class OldTranslations(object):
         print('\tfeed language: %s' % self.feed_language)
 
     def _read_translations(self):
+        """Read from the old translations.txt.
+        """
         print('Reading original translations')
         self.translations_map = {}
         n_translations = 0
@@ -146,6 +206,18 @@ class OldTranslations(object):
         print('\ttotal original translations: %s' % n_translations)
 
     def _find_context_dependent_names(self):
+        """Finds texts whose translation depends on context.
+
+        Example.
+          Here the word "Palacio" is translated from Spanish to English in
+          multiple ways. Feed language is es (Spanish).
+
+          trans_id,lang,translation
+          stop-name-1,es,Palacio
+          stop-name-1,en,Palace
+          headsign-1,es,Palacio
+          headsign-1,en,To Palace
+        """
         n_occurences_of_original = {}
         for trans_id, translations in self.translations_map.items():
             try:
@@ -167,6 +239,8 @@ class OldTranslations(object):
 
 
 class TranslationsConverter(object):
+    """Converts translations from the old to the new format.
+    """
     def __init__(self, src_dir):
         self.src_dir = src_dir
         self.old_translations = OldTranslations(src_dir)
@@ -227,6 +301,8 @@ class TranslationsConverter(object):
 
 
 class TableTranslator(object):
+    """Translates a given GTFS table.
+    """
     def __init__(self, table_name, field_names, old_translations,
                  translations_writer):
         self.table_name = table_name
