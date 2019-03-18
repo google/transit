@@ -1,0 +1,6 @@
+table_name,field_name,language,translation,record_id,record_sub_id,field_value
+feed_info,feed_publisher_url,es,http://es.wikipedia.org/wiki/Narnia,,,
+stops,stop_name,es,Palacio,stop1,,
+trips,trip_headsign,es,Palacio,trip1,,
+trips,trip_headsign,es,Puerto del Palacio,trip2,,
+trips,trip_headsign,es,Desierto,,,Desert
