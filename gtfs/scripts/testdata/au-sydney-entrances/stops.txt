@@ -1,0 +1,15 @@
+stop_id,stop_name,stop_lat,stop_lon,vehicle_type,wheelchair_boarding,location_type,parent_station,platform_code,level_id
+LR_TavHill,Taverners Hill,-33.889184, 151.145263,900,,1,,,
+LR_TavHill_P1,Platform 1,-33.889174,151.145208,,1,0,LR_TavHill,1,1
+LR_TavHill_P2,Platform 2,-33.888672,151.145362,,1,0,LR_TavHill,2,1
+LR_TavHill_EntranceLiftN,Parramatta Road,-33.889618,151.145126,,1,2,LR_TavHill,,0
+LR_TavHill_EntranceStairsN,Parramatta Road,-33.889554,151.145100,,2,2,LR_TavHill,,0
+LR_TavHill_EntranceLiftS,Parramatta Road,-33.889887, 151.145104,,1,2,LR_TavHill,,0
+LR_TavHill_EntranceStairsS,Parramatta Road,-33.889904, 151.145054,,2,2,LR_TavHill,,0
+LR_TavHill_BridgeN,,-33.889563,151.145183,,1,3,LR_TavHill,,1
+LR_TavHill_BridgeS,,-33.889918,151.145149,,1,3,LR_TavHill,,1
+LR_TavHill_P1_N,,-33.889063,151.145211,,1,4,LR_TavHill_P1,,1
+LR_TavHill_P1_M,,-33.889312,151.145195,,1,4,LR_TavHill_P1,,1
+LR_TavHill_P1_S,,-33.889481,151.145187,,1,4,LR_TavHill_P1,,1
+LR_TavHill_P2_N,,-33.888478,151.145359,,1,4,LR_TavHill_P2,,1
+LR_TavHill_P2_S,,-33.888898,151.145334,,1,4,LR_TavHill_P2,,1
