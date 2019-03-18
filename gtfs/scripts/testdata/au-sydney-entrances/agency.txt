@@ -1,0 +1,3 @@
+agency_id,agency_name,agency_url,agency_timezone,agency_lang,agency_phone
+SydneyLightRail,"Sydney Light Rail","http://transportnsw.info",Australia/Sydney,EN,"131500"
+

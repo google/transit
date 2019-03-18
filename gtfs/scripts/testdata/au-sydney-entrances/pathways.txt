@@ -1,0 +1,11 @@
+pathway_id,pathway_mode,from_stop_id,to_stop_id,is_bidirectional,traversal_time,stair_count,length,signposted_as,reversed_signposted_as
+LR_TavHill_Walk_P2,1,LR_TavHill_P2_N,LR_TavHill_P2_S,1,,,,,
+LR_TavHill_Walk_P1_P2,1,LR_TavHill_P1_N,LR_TavHill_P2_S,1,,,30,,Parramatta Road
+LR_TavHill_Walk_P1_N_M,1,LR_TavHill_P1_N,LR_TavHill_P1_M,1,,,,,
+LR_TavHill_Walk_P1_M_S,1,LR_TavHill_P1_M,LR_TavHill_P1_S,1,,,,,
+LR_TavHill_Walk_P1_Bridge,1,LR_TavHill_P1_S,LR_TavHill_BridgeN,1,,,,,
+LR_TavHill_Walk_Bridge,1,LR_TavHill_BridgeN,LR_TavHill_BridgeS,1,,,,,
+LR_TavHill_StairsN,2,LR_TavHill_P1_M,LR_TavHill_EntranceStairsN,1,32,41,,,
+LR_TavHill_LiftN,5,LR_TavHill_BridgeN,LR_TavHill_EntranceLiftN,1,,,,Lift to Street,Lift to Platform
+LR_TavHill_StairsS,2,LR_TavHill_BridgeS,LR_TavHill_EntranceStairsS,1,40,45,,,
+LR_TavHill_LiftS,5,LR_TavHill_BridgeS,LR_TavHill_EntranceLiftS,1,,,,Lift to Street,Lift to Platform
