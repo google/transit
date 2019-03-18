@@ -1,8 +1,10 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
-"""Generates a GraphViz DOT file that Visualizes pathway graph for a given GTFS feed.
+"""Visualizes pathway graph for a given GTFS feed with GraphViz.
 
-Graph vertices are stations, platforms, entrances, generic nodes and boarding areas.
+Graph vertices are stations, platforms, entrances, generic nodes and
+boarding areas.
+
 Graph edges are pathways.
 
 Legend for vertices:
@@ -14,14 +16,18 @@ Legend for vertices:
 
 Usage:
 
-  $ visualize_pathways.py my-feed-dir my-feed.dot
-  $ dot -T png -o my-feed.png my-feed.dot
+  $ visualize_pathways.py --png my-feed
+    Generated my-feed.dot
+    Generated my-feed.png
+
 """
 
 from enum import Enum
+import argparse
 import csv
 import re
 import os
+import subprocess
 import sys
 
 
@@ -406,13 +412,35 @@ def gtfs_to_graphviz(gtfs):
 
 
 def main():
-    if len(sys.argv) < 2:
-        print('usage: visualize_pathways.py [GTFS DIR] [OUTPUT DIR]',
-              file=sys.stderr)
-        sys.exit(1)
-    graph = gtfs_to_graphviz(GtfsReader(sys.argv[1]))
-    with open(sys.argv[2], 'w+') as dot_f:
+    parser = argparse.ArgumentParser(description='Visualize pathway graph.')
+    parser.add_argument('gtfs_directory', metavar='GTFS_DIR', type=str,
+                        nargs=1, help='Unzipped GTFS directory')
+    parser.add_argument('--dot', '-d',
+                        help='Output GraphViz DOT file')
+    parser.add_argument('--png', '-p', dest='png',
+                        action='store_true',
+                        help='Additionally generate a PNG file with GraphViz')
+
+    args = parser.parse_args()
+
+    graph = gtfs_to_graphviz(GtfsReader(args.gtfs_directory[0]))
+    if args.dot:
+        dot_filename = args.dot
+    else:
+        dot_filename = '%s.dot' % os.path.normpath(args.gtfs_directory[0])
+
+    with open(dot_filename, 'w+') as dot_f:
         dot_f.write(str(graph))
+    print('Generated %s' % dot_filename)
+
+    if args.png:
+        png_filename = '%s.png' % os.path.splitext(dot_filename)[0]
+        subprocess.run([
+            'dot',
+            '-T', 'png',
+            '-o', png_filename,
+            dot_filename])
+        print('Generated %s' % png_filename)
 
 
 if __name__ == '__main__':
