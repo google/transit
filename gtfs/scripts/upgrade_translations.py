@@ -157,15 +157,15 @@ def read_first_available_value(filename, field_name):
     return None
 
 
-def is_translatable_field(gtfs_file, field):
+def is_translatable_field(field):
     for suffix in TRANSLATABLE_FIELD_NAME_SUFFIXES:
         if field.endswith(suffix):
             return True
     return False
 
 
-def any_translatable_field(gtfs_file, fields):
-    return any(is_translatable_field(gtfs_file, field) for field in fields)
+def any_translatable_field(fields):
+    return any(is_translatable_field(field) for field in fields)
 
 
 class OldTranslations(object):
@@ -180,10 +180,11 @@ class OldTranslations(object):
     def _find_feed_language(self):
         """Find feed language based specified feed_info.txt or agency.txt.
         """
-        self.feed_language = (read_first_available_value(
-            os.path.join(self.src_dir, 'feed_info.txt'), 'feed_lang') or
+        self.feed_language = (
             read_first_available_value(
-            os.path.join(self.src_dir, 'agency.txt'), 'agency_lang'))
+                os.path.join(self.src_dir, 'feed_info.txt'), 'feed_lang') or
+            read_first_available_value(
+                os.path.join(self.src_dir, 'agency.txt'), 'agency_lang'))
         if not self.feed_language:
             raise Exception(
                 'Cannot find feed language in feed_info.txt and agency.txt')
@@ -195,9 +196,8 @@ class OldTranslations(object):
         print('Reading original translations')
         self.translations_map = {}
         n_translations = 0
-        with open(
-                os.path.join(self.src_dir, 'translations.txt'),
-                newline='') as csvfile:
+        with open(os.path.join(self.src_dir, 'translations.txt'),
+                  newline='') as csvfile:
             reader = csv.DictReader(csvfile)
             for row in reader:
                 self.translations_map.setdefault(
@@ -281,7 +281,7 @@ class TranslationsConverter(object):
         with open(in_filename, newline='') as in_file:
             reader = csv.DictReader(in_file)
             if not reader.fieldnames or not any_translatable_field(
-                    table_name, reader.fieldnames):
+                    reader.fieldnames):
                 print('Copying %s with no translatable columns' % table_name)
                 shutil.copy(in_filename, out_filename)
                 return 0
@@ -332,7 +332,7 @@ class TableTranslator(object):
         context_dependent_names = self.old_translations.context_dependent_names
         out_row = row
         for field_name, field_value in row.items():
-            if not is_translatable_field(table_name, field_name):
+            if not is_translatable_field(field_name):
                 continue
             field_translations = translations_map.get(field_value)
             if not field_translations:
