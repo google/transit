@@ -1,0 +1,2 @@
+stop_id,stop_name,stop_lat,stop_lon
+stop1,Palace,10,11

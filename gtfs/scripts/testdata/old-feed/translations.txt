@@ -1,0 +1,11 @@
+trans_id,lang,translation
+http://en.wikipedia.org/wiki/Narnia,en,http://en.wikipedia.org/wiki/Narnia
+http://en.wikipedia.org/wiki/Narnia,es,http://es.wikipedia.org/wiki/Narnia
+Palace,en,Palace
+Palace,es,Palacio
+sledge_palace,en,To Palace
+sledge_palace,es,Palacio
+port_palace,en,To Palace
+port_palace,es,Puerto del Palacio
+Desert,en,Desert
+Desert,es,Desierto
