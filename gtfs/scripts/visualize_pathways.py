@@ -332,8 +332,8 @@ def location_shape(location_type):
     shapes = {
         LocationType.platform: "box",
         LocationType.station: "polygon",
-        LocationType.entrance: "triangle",
-        LocationType.generic_node: "diamond",
+        LocationType.entrance: "doubleoctagon",
+        LocationType.generic_node: "hexagon",
         LocationType.boarding_area: "oval",
     }
     return shapes.get(location_type, "blue")

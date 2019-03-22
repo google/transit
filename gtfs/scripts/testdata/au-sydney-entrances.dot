@@ -22,17 +22,17 @@ digraph D {
       LR_TavHill_P2_S [ label=LR_TavHill_P2_S color=springgreen shape=oval ]
     }
 
-    LR_TavHill_EntranceLiftN [ label="LR_TavHill_EntranceLiftN\nParramatta Road" color=lightcoral shape=triangle ]
+    LR_TavHill_EntranceLiftN [ label="LR_TavHill_EntranceLiftN\nParramatta Road" color=lightcoral shape=doubleoctagon ]
 
-    LR_TavHill_EntranceStairsN [ label="LR_TavHill_EntranceStairsN\nParramatta Road" color=lightcoral shape=triangle ]
+    LR_TavHill_EntranceStairsN [ label="LR_TavHill_EntranceStairsN\nParramatta Road" color=lightcoral shape=doubleoctagon ]
 
-    LR_TavHill_EntranceLiftS [ label="LR_TavHill_EntranceLiftS\nParramatta Road" color=lightcoral shape=triangle ]
+    LR_TavHill_EntranceLiftS [ label="LR_TavHill_EntranceLiftS\nParramatta Road" color=lightcoral shape=doubleoctagon ]
 
-    LR_TavHill_EntranceStairsS [ label="LR_TavHill_EntranceStairsS\nParramatta Road" color=lightcoral shape=triangle ]
+    LR_TavHill_EntranceStairsS [ label="LR_TavHill_EntranceStairsS\nParramatta Road" color=lightcoral shape=doubleoctagon ]
 
-    LR_TavHill_BridgeN [ label=LR_TavHill_BridgeN color=lightgrey shape=diamond ]
+    LR_TavHill_BridgeN [ label=LR_TavHill_BridgeN color=lightgrey shape=hexagon ]
 
-    LR_TavHill_BridgeS [ label=LR_TavHill_BridgeS color=lightgrey shape=diamond ]
+    LR_TavHill_BridgeS [ label=LR_TavHill_BridgeS color=lightgrey shape=hexagon ]
   }
 
 
