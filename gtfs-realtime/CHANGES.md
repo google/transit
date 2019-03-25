@@ -37,7 +37,8 @@ When a producer or consumer is interested in adding a new field to the GTFS Real
 		- Voter name
 		- Organization affiliation
 		- Software where the proposed change has been implemented (with link, if applicable)
-		- Voter category (GTFS producer or GTFS consumer) 
+		- Voter category (GTFS producer or GTFS consumer)
+	- It is recomended that voters include name and organization affiliation in their Github profile. 
   	- Votes before the start of the voting period are not considered.
 1. The proposal is accepted if there is a unanimous consensus yes with at least 3 votes.
   	- The proposer's vote does not count towards the 3 vote total. For example, if Proposer X creates a pull request and votes yes, and User Y and Z vote yes, this is counted as 2 total yes votes.
