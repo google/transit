@@ -1,2 +1,0 @@
-feed_publisher_name,feed_publisher_url,feed_lang
-Narnia,http://en.wikipedia.org/wiki/Narnia,en
