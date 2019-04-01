@@ -20,10 +20,10 @@ The official specification, reference and documentation are written in English. 
     If a voter changes her vote, it is recommended to do it by updating the original vote comment by striking through the vote and writing the new vote.
 	- Comments containing a yes/no vote must also include the following information:
 		- Voter name
-		- Organization affiliation
-		- Software where the proposed change has been implemented (with link, if applicable)
+		- Organization affiliation 
 		- Voter category (GTFS producer or GTFS consumer)
-	- It is recomended that voters include name and organization affiliation in their Github profile
+		- Link to the relevant data or application if you are the consumer or producer that has implemented the proposed change as per step 5. 
+	- It is recommended that voters include name and organization affiliation in their Github profile
   	- Votes before the start of the voting period are not considered.
 1. The proposal is accepted if there is a unanimous consensus yes with at least 3 votes.
   	- The proposer's vote does not count towards the 3 vote total. For example, if Proposer X creates a pull request and votes yes, and User Y and Z vote yes, this is counted as 2 total yes votes.
