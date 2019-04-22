@@ -413,8 +413,9 @@ At least one specifier must be given - all fields in an EntitySelector cannot be
 | _**Field Name**_ | _**Type**_ | _**Required**_ | _**Cardinality**_ | _**Description**_ |
 |------------------|------------|----------------|-------------------|-------------------|
 | **agency_id** | [string](https://developers.google.com/protocol-buffers/docs/proto#scalar) | Conditionally required | One | The agency_id from the GTFS feed that this selector refers to.
-| **route_id** | [string](https://developers.google.com/protocol-buffers/docs/proto#scalar) | Conditionally required | One | The route_id from the GTFS that this selector refers to.
+| **route_id** | [string](https://developers.google.com/protocol-buffers/docs/proto#scalar) | Conditionally required | One | The route_id from the GTFS that this selector refers to. If direction_id is provided, route_id must also be provided.
 | **route_type** | [int32](https://developers.google.com/protocol-buffers/docs/proto#scalar) | Conditionally required | One | The route_type from the GTFS that this selector refers to.
+| **direction_id** | [uint32](https://developers.google.com/protocol-buffers/docs/proto#scalar) | Conditionally required | One | The direction_id from the GTFS feed trips.txt file, used to select all trips in one direction for a route, specified by route_id. If direction_id is provided, route_id must also be provided. <br>**Caution:** this field is still **experimental**, and subject to change. It may be formally adopted in the future.<br>|
 | **trip** | [TripDescriptor](#message-tripdescriptor) | Conditionally required | One | The trip instance from the GTFS that this selector refers to. This TripDescriptor must resolve to a single trip instance in the GTFS data (e.g., a producer cannot provide only a trip_id for exact_times=0 trips). If the ScheduleRelationship field is populated within this TripDescriptor it will be ignored by consumers when attempting to identify the GTFS trip.
 | **stop_id** | [string](https://developers.google.com/protocol-buffers/docs/proto#scalar) | Conditionally required | One | The stop_id from the GTFS feed that this selector refers to.
 
