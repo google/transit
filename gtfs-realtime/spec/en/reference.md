@@ -309,7 +309,7 @@ The effect of this problem on the affected entity.
 | **UNKNOWN_EFFECT** |
 | **STOP_MOVED** |
 | **NO_EFFECT** |
-| **ACCESSBILITY_ISSUE** |
+| **ACCESSIBILITY_ISSUE** |
 
 ## _enum_ SeverityLevel
 
