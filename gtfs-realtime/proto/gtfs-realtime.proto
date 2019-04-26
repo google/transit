@@ -416,7 +416,7 @@ message Alert {
     UNKNOWN_EFFECT = 8;
     STOP_MOVED = 9;
     NO_EFFECT = 10;
-    OUT_OF_SERVICE_ELEVATOR = 11;
+    ACCESSBILITY_ISSUE = 11;
   }
   optional Effect effect = 7 [default = UNKNOWN_EFFECT];
 
