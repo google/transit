@@ -59,3 +59,4 @@ What effect does this problem have on the specified entity? You may specify one 
 *   Other effect (not represented by any of these options)
 *   Unknown effect
 *   No effect: The alert provides information to riders but does not affect operations.  Examples include advertising public meetings and soliciting feedback via surveys.
+*   Accessibility issue: The alert provides information about accessibility issues that affects step-free access. Examples include an out of service elevator or movable ramps.
