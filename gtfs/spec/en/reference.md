@@ -146,14 +146,25 @@ File: **Required**
 |  ------ | ------ | ------ | ------ |
 |  `route_id` | ID | **Required** | Identifies a route. |
 |  `agency_id` | ID referencing `agency.agency_id` | **Conditionally required** | Agency for the specified route. This field is required when the dataset provides data for routes from more than one agency in [agency.txt](#agency), otherwise it is optional.  |
-|  `route_short_name` | Text | **Conditionally required** | Short name of a route. This will often be a short, abstract identifier like "32", "100X", or "Green" that riders use to identify a route, but which doesn't give any indication of what places the route serves. Either `route_short_name` or `route_long_name` must be specified, or potentially both if appropriate. |
-|  `route_long_name` | Text | **Conditionally required** | Full name of a route. This name is generally more descriptive than the `route_short_name` and often includes the route's destination or stop. Either `route_short_name` or `route_long_name` must be specified, or potentially both if appropriate. |
+|  `route_short_name` | Text | **Conditionally required** | Short name of a route. This will often be a short, abstract identifier like "32", "100X", or "Green" that riders use to identify a route, but which doesn't give any indication of what places the route serves. Either `route_short_name` or `route_long_name` must be specified, or potentially both if appropriate. See the table below for examples. |
+|  `route_long_name` | Text | **Conditionally required** | Full name of a route. This name is generally more descriptive than the `route_short_name` and often includes the route's destination or stop. Either `route_short_name` or `route_long_name` must be specified, or potentially both if appropriate. `route_long_name` should not contain the `route_short_name`. Use the full designation including service identity. <hr> _Example: The red line of the MAX light rail should have `MAX Red Line` as `route_long_name`_. |
 |  `route_desc` | Text | Optional | Description of a route that provides useful, quality information. Do not simply duplicate the name of the route. <hr> _Example: "A" trains operate between Inwood-207 St, Manhattan and Far Rockaway-Mott Avenue, Queens at all times. Also from about 6AM until about midnight, additional "A" trains operate between Inwood-207 St and Lefferts Boulevard (trains typically alternate between Lefferts Blvd and Far Rockaway)._ |
 |  `route_type` | Enum | **Required** | Indicates the type of transportation used on a route. Valid options are: <br><br>`0` - Tram, Streetcar, Light rail. Any light rail or street level system within a metropolitan area.<br>`1` - Subway, Metro. Any underground rail system within a metropolitan area.<br>`2` - Rail. Used for intercity or long-distance travel.<br>`3` - Bus. Used for short- and long-distance bus routes.<br>`4` - Ferry. Used for short- and long-distance boat service.<br>`5` - Cable car. Used for street-level cable cars where the cable runs beneath the car.<br>`6` - Gondola, Suspended cable car. Typically used for aerial cable cars where the car is suspended from the cable.<br>`7` - Funicular. Any rail system designed for steep inclines. |
 |  `route_url` | URL | Optional | URL of a web page about the particular route. Should be different from the `agency.agency_url` value. |
 |  `route_color` | Color | Optional | Route color designation that matches public facing material. Defaults to white (`FFFFFF`) when omitted or left empty. The color difference between `route_color` and `route_text_color` should provide sufficient contrast when viewed on a black and white screen. |
 |  `route_text_color` | Color | Optional | Legible color to use for text drawn against a background of `route_color`. Defaults to black (`000000`) when omitted or left empty. The color difference between `route_color` and `route_text_color` should provide sufficient contrast when viewed on a black and white screen. |
 |  `route_sort_order` | Non-negative integer | Optional | Orders the routes in a way which is ideal for presentation to customers. Routes with smaller `route_sort_order` values should be displayed first. |
+
+####Examples: Route long name and Route short name
+
+The following are several examples of `route_long_name` and corresponding `route_short_name`.
+
+ |`route_long_name` | `route_short_name` | Agency |
+|----|----|----|
+| Judah | N | Muni, in San Francisco |
+| ML King Jr Blvd | 6 | TriMet, in Portland, OR |
+| Nation-Étoile | 6 | RATP, in Paris, France|
+| Pankow - Ruhleben | U2 | BVG, in Berlin, Germany |
 
 ### trips.txt
 
@@ -188,6 +199,19 @@ Notes on above table:
 
 * On Friday into Saturday morning, for example, a single vehicle operates `trip_1`, `trip_2`, and `trip_3` (10:00 PM through 12:55 AM). Note that the last trip occurs on Saturday, 12:00 AM to 12:55 AM, but is part of the Friday “service day” because the times are 24:00:00 to 24:55:00.
 * On Monday, Tuesday, Wednesday, and Thursday, a single vehicle operates `trip_1`, `trip_4`, and `trip_5` in a block from 8:00 PM to 10:55 PM.
+
+####Example: Trip Headsigns
+
+ `trip_headsign` should contain destination, direction, and/or other trip designation text shown on the headsign of the vehicle which may be used to distinguish amongst trips in a route. Consistency with direction information shown on the vehicle is the primary and overriding goal for determining headsign text. Other information should be included only if it does not compromise this primary goal. Do not begin a headsign with the words “To” or “Towards”. Below are recommendations for some possible cases:
+
+ |Route Description | Recommendation |
+|----|----|
+|Destination-only | Provide the terminus destination. e.g. "Transit Center", “Portland City Center”, or “Jantzen Beach” |
+|Destinations with waypoints | \<destination> via \<waypoint> “Highgate via Charing Cross”. If waypoint(s) are removed from the headsign show to passengers after the vehicle passes those waypoints, use `stop_times.stop_headsign` to set an updated headsign. |
+|Regional placename with local stops | If there will be multiple stops inside the city or borough of destination, use `stop_times.stop_headsign` once reaching the destination city. |
+|Direction-only | Indicate using terms such as “Northbound”, “Inbound”, “Clockwise,” or similar directions. |
+|Direction with destination | \<direction> to \<terminus name> e.g. “Southbound to San Jose” |
+|Direction with destination and waypoints | \<direction> via \<waypoint> to \<destination> e.g. “Northbound via Charing Cross to Highgate” |
 
 ### stop_times.txt
 
