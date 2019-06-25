@@ -277,7 +277,7 @@ For examples that demonstrate how to specify a fare structure with [fare_rules.t
 
 File: **Optional**
 
-Shapes describe the physical path that a vehicle takes as a set of ordered latitude and longitude coordinates.  Tracing the coordinates in order provides the vehicle's path. Coordinates do not need to match stop locations.
+Shapes describe the path that a vehicle travels along a route alignment, and are defined in the file shapes.txt. Shapes are associated with Trips, and consist of a sequence of points through which the vehicle passes in order. Shapes do not need to intercept the location of Stops exactly, but all Stops on a trip should lie within a small distance of the shape for that trip, i.e. close to straight line segments connecting the shape points.
 
 |  Field Name | Type | Required | Description |
 |  ------ | ------ | ------ | ------ |
