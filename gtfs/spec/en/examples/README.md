@@ -5,7 +5,7 @@ This example GTFS feed shows comma-delimited data samples for each file in a tra
 ### agency.txt
 
 ~~~
-agency_id, agency_name,agency_url,agency_timezone,agency_phone,agency_lang
+agency_id,agency_name,agency_url,agency_timezone,agency_phone,agency_lang
 FunBus,The Fun Bus,http://www.thefunbus.org,America/Los_Angeles,(310) 555-0222,en
 ~~~
 

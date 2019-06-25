@@ -6,7 +6,7 @@ There should be **at most** one trip update for each scheduled trip. In case the
 
 ## Stop Time Updates
 
-A trip update consists of one or more updates to vehicle stop times, which are referred to as [StopTimeUpdates](reference.md#StopTimeUpdate). These can be supplied for past and future stop times. You are allowed, but not required, to drop past stop times.  Producers should not drop a past `StopTimeUpdate` if it refers to a stop with a scheduled arrival time in the future for the given trip (i.e. the vehicle has passed the stop ahead of schedule), as otherwise it will be concluded that there is no update for this stop.  
+A trip update consists of one or more updates to vehicle stop times, which are referred to as [StopTimeUpdates](reference.md#StopTimeUpdate). These can be supplied for past and future stop times. You are allowed, but not required, to drop past stop times.  Producers should not drop a past `StopTimeUpdate` if it refers to a stop with a scheduled arrival time in the future for the given trip (i.e. the vehicle has passed the stop ahead of schedule), as otherwise it will be concluded that there is no update for this stop.
 
 For example, if the following data appears in the GTFS-rt feed:
 
@@ -23,7 +23,7 @@ For each [StopTimeUpdate](reference.md#StopTimeUpdate), the default schedule rel
 
 **Updates should be sorted by stop_sequence** (or stop_ids in the order they occur in the trip).
 
-If one or more stops are missing along the trip the update is propagated to all subsequent stops. This means that updating a stop time for a certain stop will change all subsequent stops in the absence of any other information.
+If one or more stops are missing along the trip the `delay` from the update (or, if only `time` is provided in the update, a delay computed by comparing the `time` against the GTFS schedule time) is propagated to all subsequent stops. This means that updating a stop time for a certain stop will change all subsequent stops in the absence of any other information. Note that updates with a schedule relationship of `SKIPPED` will not stop delay propagation, but updates with schedule relationships of `SCHEDULED` (also the default value if schedule relationship is not provided) or `NO_DATA` will.
 
 **Example 1**
 
@@ -35,7 +35,7 @@ For the same trip instance, three [StopTimeUpdates](reference.md#StopTimeUpdate)
 
 *   delay of 300 seconds for stop_sequence 3
 *   delay of 60 seconds for stop_sequence 8
-*   delay of unspecified duration for stop_sequence 10
+*   [ScheduleRelationship](/gtfs-realtime/spec/en/reference.md/#enum-schedulerelationship) of `NO_DATA` for stop_sequence 10
 
 This will be interpreted as:
 
@@ -55,7 +55,7 @@ The information provided by the trip descriptor depends on the schedule relation
 | **Unscheduled** | This trip is running and is never associated with a schedule. For example, if there is no schedule and the buses run on a shuttle service. |
 | **Canceled** | This trip was scheduled, but is now removed. |
 
-In most cases, you should provide the trip_id of the scheduled trip in GTFS that this update relates to. 
+In most cases, you should provide the trip_id of the scheduled trip in GTFS that this update relates to.
 
 #### Systems with repeated trip_ids
 
