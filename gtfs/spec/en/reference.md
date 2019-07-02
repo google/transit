@@ -49,6 +49,7 @@ This section defines terms that are used throughout this document.
 - **Email** - An email address. <br> *Example: `example@example.com`*
 - **Enum** - An option from a set of predefined constants defined in the "Description" column. <br> *Example: The `route_type` field contains a `0` for tram, a `1` for subway...*
 - **ID** - A sequence of any UTF-8 characters which uniquely identifies an entity, but does not necessarily identify a specific record in a table. IDs defined in one .txt file are often referenced in another .txt file. An ID field value is not aimed to be displayed to the user, and is a sequence of any UTF-8 characters, but using only printable ASCII characters is recommended. <br> *Example: The `stop_id` field in [stops.txt](#stopstxt) is a ID. The `stop_id` field in [stop_times.txt](#stop_timestxt) is an ID referencing `stops.stop_id`.*
+- **ID stability** - Where ID stability is required, ID values must not be reused to describe a different entity than in the original usage. ID values for entities should also be maintained across datasets. 
 - **Language Code** - An IETF BCP 47 language code. For an introduction to IETF BCP 47, refer to [http://www.rfc-editor.org/rfc/bcp/bcp47.txt](http://www.rfc-editor.org/rfc/bcp/bcp47.txt) and [http://www.w3.org/International/articles/language-tags/](http://www.w3.org/International/articles/language-tags/). <br> *Example: `en` for English, `en-US` for American English or `de` for German.*
 - **Latitude** - WGS84 latitude in decimal degrees. The value must be greater than or equal to -90.0 and less than or equal to 90.0. *<br> Example: `41.890169` for the Colosseum in Rome.*
 - **Longitude** - WGS84 longitude in decimal degrees. The value must be greater than or equal to -180.0 and less than or equal to 180.0. <br> *Example: `12.492269` for the Colosseum in Rome.*
@@ -108,7 +109,7 @@ File: **Required**
 
 |  Field Name | Type | Required | Description |
 |  ------ | ------ | ------ | ------ |
-|  `agency_id` | ID | **Conditionally Required** | Identifies a transit brand which is often synonymous with a transit agency. Note that in some cases, such as when a single agency operates multiple separate services, agencies and brands are distinct. This document uses the term "agency" in place of "brand". A dataset may contain data from multiple agencies. This field is required when the dataset contains data for multiple transit agencies, otherwise it is optional. |
+|  `agency_id` | ID | **Conditionally Required** | Identifies a transit brand which is often synonymous with a transit agency. Note that in some cases, such as when a single agency operates multiple separate services, agencies and brands are distinct. This document uses the term "agency" in place of "brand". A dataset may contain data from multiple agencies. This field is required when the dataset contains data for multiple transit agencies, otherwise it is optional. ID stability is required (see term definitions). |
 |  `agency_name` | Text | **Required** | Full name of the transit agency. |
 |  `agency_url` | URL | **Required** | URL of the transit agency. |
 |  `agency_timezone` | Timezone | **Required** | Timezone where the transit agency is located. If multiple agencies are specified in the dataset, each must have the same `agency_timezone`. |
@@ -123,7 +124,7 @@ File: **Required**
 
 |  Field Name | Type | Required | Description |
 |  ------ | ------ | ------ | ------ |
-|  `stop_id` | ID | **Required** | Identifies a stop, station, or station entrance. The term "station entrance" refers to both station entrances and station exits. Stops, stations or station entrances are collectively referred to as locations. Multiple routes may use the same stop. |
+|  `stop_id` | ID | **Required** | Identifies a stop, station, or station entrance. The term "station entrance" refers to both station entrances and station exits. Stops, stations or station entrances are collectively referred to as locations. Multiple routes may use the same stop. ID stability is required (see term definitions). |
 |  `stop_code` | Text | Optional | Short text or a number that identifies the location for riders. These codes are often used in phone-based transit information systems or printed on signage to make it easier for riders to get information for a particular location. The `stop_code` can be the same as `stop_id` if it is public facing. This field should be left empty for locations without a code presented to riders. |
 |  `stop_name` | Text | **Conditionally Required** | Name of the location. Use a name that people will understand in the local and tourist vernacular.<br><br>When the location is a boarding area (`location_type=4`), the `stop_name` should contains the name of the boarding area as displayed by the agency. It could be just one letter (like on some European intercity railway stations), or text like “Wheelchair boarding area” (NYC’s Subway) or “Head of short trains” (Paris’ RER).<br><br>Conditionally Required:<br>• **Required** for locations which are stops (`location_type=0`), stations (`location_type=1`) or entrances/exits (`location_type=2`).<br>• Optional for locations which are generic nodes (`location_type=3`) or boarding areas (`location_type=4`).|
 |  `stop_desc` | Text | Optional | Description of the location that provides useful, quality information. Do not simply duplicate the name of the location. |
@@ -144,7 +145,7 @@ File: **Required**
 
 |  Field Name | Type | Required | Description |
 |  ------ | ------ | ------ | ------ |
-|  `route_id` | ID | **Required** | Identifies a route. |
+|  `route_id` | ID | **Required** | Identifies a route. ID stability is required (see term definitions). |
 |  `agency_id` | ID referencing `agency.agency_id` | **Conditionally required** | Agency for the specified route. This field is required when the dataset provides data for routes from more than one agency in [agency.txt](#agency), otherwise it is optional.  |
 |  `route_short_name` | Text | **Conditionally required** | Short name of a route. This will often be a short, abstract identifier like "32", "100X", or "Green" that riders use to identify a route, but which doesn't give any indication of what places the route serves. Either `route_short_name` or `route_long_name` must be specified, or potentially both if appropriate. |
 |  `route_long_name` | Text | **Conditionally required** | Full name of a route. This name is generally more descriptive than the `route_short_name` and often includes the route's destination or stop. Either `route_short_name` or `route_long_name` must be specified, or potentially both if appropriate. |
