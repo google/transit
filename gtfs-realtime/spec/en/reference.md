@@ -187,9 +187,10 @@ The relation between this StopTime and the static schedule.
 
 | _**Value**_ | _**Comment**_ |
 |-------------|---------------|
-| **SCHEDULED** | The vehicle is proceeding in accordance with its static schedule of stops, although not necessarily according to the times of the schedule. This is the **default** behavior. At least one of arrival and departure must be provided. |
+| **SCHEDULED** | The vehicle is proceeding in accordance with its static schedule of stops, although not necessarily according to the times of the schedule. This is the **default** behavior. At least one of arrival and departure must be provided. Frequency-based trips (GTFS frequencies.txt with exact_times = 0) should not have a SCHEDULED value and should use UNSCHEDULED instead. |
 | **SKIPPED** | The stop is skipped, i.e., the vehicle will not stop at this stop. Arrival and departure are optional. When set `SKIPPED` is not propagated to subsequent stops in the same trip (i.e., the vehicle will stop at subsequent stops in the trip unless those stops also have a `stop_time_update` with `schedule_relationship: SKIPPED`). Delay from a previous stop in the trip *does* propagate over the `SKIPPED` stop. In other words, if a `stop_time_update` with an `arrival` or `departure` prediction is not set for a stop after the `SKIPPED` stop, the prediction upstream of the `SKIPPED` stop will be propagated to the stop after the `SKIPPED` stop and subsequent stops in the trip until a `stop_time_update` for a subsequent stop is provided.  |
 | **NO_DATA** | No data is given for this stop. It indicates that there is no realtime information available. When set NO_DATA is propagated through subsequent stops so this is the recommended way of specifying from which stop you do not have realtime information. When NO_DATA is set neither arrival nor departure should be supplied. |
+| **UNSCHEDULED** | The vehicle is operating a frequency-based trip (GTFS frequencies.txt with exact_times = 0). This value should not be used for trips that are not defined in GTFS frequencies.txt, or trips in GTFS frequencies.txt with exact_times = 1. Trips containing `stop_time_updates` with `schedule_relationship: UNSCHEDULED` must also set the TripDescriptor `schedule_relationship: UNSCHEDULED`.
 
 ## _message_ VehiclePosition
 
@@ -388,7 +389,7 @@ The relation between this trip and the static schedule. If a trip is done in acc
 |-------------|---------------|
 | **SCHEDULED** | Trip that is running in accordance with its GTFS schedule, or is close enough to the scheduled trip to be associated with it. |
 | **ADDED** | An extra trip that was added in addition to a running schedule, for example, to replace a broken vehicle or to respond to sudden passenger load. |
-| **UNSCHEDULED** | A trip that is running with no schedule associated to it - this value is used to identify trips defined in GTFS frequencies.txt with exact_times = 0. It should not be used to describe trips not defined in GTFS frequencies.txt, or trips in GTFS frequencies.txt with exact_times = 1. |
+| **UNSCHEDULED** | A trip that is running with no schedule associated to it - this value is used to identify trips defined in GTFS frequencies.txt with exact_times = 0. It should not be used to describe trips not defined in GTFS frequencies.txt, or trips in GTFS frequencies.txt with exact_times = 1. Trips with `schedule_relationship: UNSCHEDULED` must also set all StopTimeUpdates `schedule_relationship: UNSCHEDULED`|
 | **CANCELED** | A trip that existed in the schedule but was removed. |
 
 ## _message_ VehicleDescriptor
