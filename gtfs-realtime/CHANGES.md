@@ -68,6 +68,8 @@ To allow producers to add custom information to a GTFS Realtime feed, we will ta
 
 When possible we should avoid extensions and add fields useful to many agencies to the main specification to avoid fragmentation and extra work for consumers to support various extensions to the spec.  Before requesting an extension id, producers should propose adding the field to the specification (see [Adding new fields to GTFS Realtime](#adding-new-fields-to-gtfs-realtime))
 
+The extension IDs >= 9000 are reserved for private use by GTFS-rt producers. These IDs should only be used to convey information internally to your organization. If you need to publish information in the GTFS-rt you produce, it is encouraged to ask for a new extension ID (see below). 
+
 To create a new extension, we will assign a producer the next available extension id, picked incrementally from a list of numbers starting at 1000 and going up and documented in the Extension Registry section found below.
 
 These assigned extension ids corresponds to the tag ids available in the "extension" namespace for each GTFS Realtime message definition. Now that the developer has an assigned extension id, they will use that id when extending any and all GTFS Realtime messages. Even if the developer only plans to extend a single message, the assigned extension id will be reserved for ALL messages.
