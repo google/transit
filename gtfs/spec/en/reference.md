@@ -25,6 +25,7 @@ This document defines the format and structure of the files that comprise a GTFS
     -   [transfers.txt](#transferstxt)
     -   [pathways.txt](#pathwaystxt)
     -   [levels.txt](#levelstxt)
+    -   [translations.txt](#translationstxt)
     -   [feed\_info.txt](#feed_infotxt)
 
 ## Term Definitions
@@ -359,9 +360,23 @@ Describe the different levels of a station. Is mostly useful when used in conjun
 |  `level_name` | Text | Optional | Optional name of the level (that matches level lettering/numbering used inside the building or the station). Is useful for elevator routing (e.g. “take the elevator to level “Mezzanine” or “Platforms” or “-1”).|
 
 
-### feed_info.txt
+### translations.txt
 
 File: **Optional**
+
+In regions that have multiple official languages, transit agencies/operators typically have language-specific names and web pages. In order to best serve riders in those regions, it is useful for the dataset to include these language-dependent values.
+
+|  Field Name | Type | Required | Description |
+|  ------ | ------ | ------ | ------ |
+|  `table_name` | Enum | **Required** | Defines the table that contains the field to be translated. Allowed values are: `agency`, `stops`, `routes`, `trips`, `stop_times`, `levels` and `feed_info` (do not include the `.txt` file extension). If a table with a new file name is added by another proposal in the future, the table name is the name of the filename without the `.txt` file extension. |
+|  `field_name` | Text | **Required** | Name of the field to be translated. Fields with type `Text` can be translated, fields with type `URL`, `Email` and `Phone number` can also be “translated” to provide resources in the correct language. Fields with other types should not be translated. |
+|  `language` | Language code | **Required** | Language of translation.<br><br>If the language is the same as in `feed_info.feed_lang`, the original value of the field will be assumed to be the default value to use in languages without specific translations (if `default_lang` doesn't specify otherwise).<br><br>Example: In Switzerland, a city in an officially bilingual canton is officially called “Biel/Bienne”, but would simply be called “Bienne” in French and “Biel” in German. |
+|  `translation` | Text or URL or Email or Phone number | **Required** | Translated value. |
+|  `record_id` | ID | **Conditionally Required** | Defines the record that corresponds to the field to be translated. The value in `record_id` should be a main ID of the table, as defined below:<br>• `agency_id` for `agency.txt`;<br>• `stop_id` for `stops.txt`;<br>• `route_id` for `routes.txt`;<br>• `trip_id` for `trips.txt`;<br>• `trip_id` for `stop_times.txt`;<br>• `NONE` for `feed_info.txt`.<br><br>No field should be translated in the other tables. However producers sometimes add extra fields that are outside the official specification and these unofficial fields may need to be translated. Below is the recommended way to use `record_id` for those tables:<br>• `service_id` for `calendar.txt`;<br>• `service_id` for `calendar_dates.txt`;<br>• `fare_id` for `fare_attributes.txt`;<br>• `fare_id` for `fare_rules.txt`;<br>• `shape_id` for `shapes.txt`;<br>• `trip_id` for `frequencies.txt`;<br>• `from_stop_id` for `transfers.txt`.<br><br>**Conditionally Required:**<br>- **forbidden** if `table_name` is `feed_info`;<br>- **forbidden** if `field_value` is defined;<br>- **required** if `field_value` is empty;. |
+
+### feed_info.txt
+
+File: **Optional** (**Required** if `translations.txt` is provided)
 
 The file contains information about the dataset itself, rather than the services that the dataset describes. Note that, in some cases, the publisher of the dataset is a different entity than any of the agencies.
 
@@ -369,7 +384,8 @@ The file contains information about the dataset itself, rather than the services
 |  ------ | ------ | ------ | ------ |
 |  `feed_publisher_name` | Text | **Required** | Full name of the organization that publishes the dataset. This may be the same as one of the `agency.agency_name` values. |
 |  `feed_publisher_url` | URL | **Required** | URL of the dataset publishing organization's website. This may be the same as one of the `agency.agency_url` values. |
-|  `feed_lang` | Language code | **Required** | Default language used for the text in this dataset. This setting helps GTFS consumers choose capitalization rules and other language-specific settings for the dataset. |
+|  `feed_lang` | Language code | **Required** | Default language used for the text in this dataset. This setting helps GTFS consumers choose capitalization rules and other language-specific settings for the dataset.<br><br>`translations.txt` can be used if languages other than the default language need to be defined.<br><br>If the dataset contains values in multiple languages (e.g. in multilingual countries like Switzerland, Belgium or Canada), the norm ISO 639-2 contains the language code “`mul`” to describe such reality. In such case, the best practice is to provide a translation for each of the languages used in the dataset.<br><br>For example, a dataset in Switzerland will have `feed_lang=mul` and will contain by default stop names “Genève” for Geneva, “Zürich” for Zurich and “Biel/Bienne” for the bilingual city of Biel/Bienne. But translations will be provided, in German: “Genf”, “Zürich” and “Biel”; in French: “Genève”, “Zurich” and “Bienne”; in Italian: “Ginevra”, “Zurigo” and “Bienna”; and in English: “Geneva”, “Zurich” and “Biel/Bienne”. |
+|  `default_lang` | Language code | Optional | Defines the language that should be used when the data consumer doesn’t know the language of the rider. It will often be "`en`" (English). |
 |  `feed_start_date` | Date | Optional | The dataset provides complete and reliable schedule information for service in the period from the beginning of the `feed_start_date` day to the end of the `feed_end_date` day. Both days can be left empty if unavailable. The `feed_end_date` date must not precede the `feed_start_date` date if both are given. Dataset providers are encouraged to give schedule data outside this period to advise of likely future service, but dataset consumers should treat it mindful of its non-authoritative status. If `feed_start_date` or `feed_end_date` extend beyond the active calendar dates defined in [calendar.txt](#calendartxt) and [calendar_dates.txt](#calendar_datestxt), the dataset is making an explicit assertion that there is no service for dates within the `feed_start_date` or `feed_end_date` range but not included in the active calendar dates. |
 |  `feed_end_date` | Date | Optional | (see above) |
 |  `feed_version` | Text | Optional | String that indicates the current version of their GTFS dataset. GTFS-consuming applications can display this value to help dataset publishers determine whether the latest dataset has been incorporated. |
