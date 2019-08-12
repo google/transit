@@ -68,7 +68,7 @@ To allow producers to add custom information to a GTFS Realtime feed, we will ta
 
 When possible we should avoid extensions and add fields useful to many agencies to the main specification to avoid fragmentation and extra work for consumers to support various extensions to the spec.  Before requesting an extension id, producers should propose adding the field to the specification (see [Adding new fields to GTFS Realtime](#adding-new-fields-to-gtfs-realtime))
 
-The extension IDs >= 9000 are reserved for private use by GTFS-rt producers. These IDs should only be used to convey information internally to your organization. If you need to publish information in the GTFS-rt you produce, it is encouraged to ask for a new extension ID (see below). 
+The extension IDs within the range 9000-9999 are reserved for private use by GTFS-rt producers. These IDs should only be used to convey information internally to your organization. Extensions in this range **must not** be used in public feeds. 
 
 To create a new extension, we will assign a producer the next available extension id, picked incrementally from a list of numbers starting at 1000 and going up and documented in the Extension Registry section found below.
 
@@ -116,4 +116,4 @@ message MyTripDescriptorExtension {
 |1008|SEPTA - Southeastern Pennsylvania Transportation Authority|[Gregory Apessos](mailto:GApessos@septa.org)|https://github.com/septadev|
 |1009|Swiftly|[mike@goswift.ly](mailto:mike@goswift.ly)|[Group Discussion](https://groups.google.com/forum/#!msg/gtfs-realtime/mmnZV6L-2ls/wVWdknhLBwAJ)|
 |1010|IBI Group|[Ritesh Warade](mailto:transitrealtime@ibigroup.com)|[GitHub proposal for new timestamps in Service Alerts](https://github.com/google/transit/pull/134)|
-|\>=9000|RESERVED - INTERNAL USE ONLY|[GTFS Community](https://groups.google.com/forum/#!forum/gtfs-realtime)|[Group discussion](https://github.com/google/transit/pull/178/)|
+|9000-9999|RESERVED - INTERNAL USE ONLY|[GTFS Community](https://groups.google.com/forum/#!forum/gtfs-realtime)|[Group discussion](https://github.com/google/transit/pull/178/)|
