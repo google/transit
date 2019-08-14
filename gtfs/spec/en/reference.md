@@ -228,16 +228,16 @@ File: **Conditionally required**
 
 File: **Conditionally required**
 
-The [calendar_dates.txt](#calender_datestxt) table can explicitly activate or disable service by date. It can be used in two ways.
+The [calendar_dates.txt](#calendar_datestxt) table can explicitly activate or disable service by date. It can be used in two ways.
 
-* Recommended: Use [calendar_dates.txt](#calender_datestxt) in conjunction with [calendar.txt](#calendartxt) to define exceptions to the default service patterns defined in [calendar.txt](#calendartxt). If service is generally regular, with a few changes on explicit dates (for instance, to accommodate special event services, or a school schedule), this is a good approach. In this case `calendar_dates.service_id` is an ID referencing `calendar.service_id`.
-* Alternate: Omit [calendar.txt](#calendartxt), and specify each date of service in [calendar_dates.txt](#calenderdatestxt). This allows for considerable service variation and accommodates service without normal weekly schedules. In this case `service_id` is an ID.
+* Recommended: Use [calendar_dates.txt](#calendar_datestxt) in conjunction with [calendar.txt](#calendartxt) to define exceptions to the default service patterns defined in [calendar.txt](#calendartxt). If service is generally regular, with a few changes on explicit dates (for instance, to accommodate special event services, or a school schedule), this is a good approach. In this case `calendar_dates.service_id` is an ID referencing `calendar.service_id`.
+* Alternate: Omit [calendar.txt](#calendartxt), and specify each date of service in [calendar_dates.txt](#calendardatestxt). This allows for considerable service variation and accommodates service without normal weekly schedules. In this case `service_id` is an ID.
 
 |  Field Name | Type | Required | Description |
 |  ------ | ------ | ------ | ------ |
-|  `service_id` | ID referencing `calendar.service_id` or ID | **Required** | Identifies a set of dates when a service exception occurs for one or more routes. Each (`service_id`, `date`) pair can only appear once in [calendar_dates.txt](#calender_datestxt) if using [calendar.txt](#calendartxt) and [calendar_dates.txt](#calender_datestxt) in conjunction. If a `service_id` value appears in both [calendar.txt](#calendartxt) and [calendar_dates.txt](#calender_datestxt), the information in [calendar_dates.txt](#calenderdatestxt) modifies the service information specified in [calendar.txt](#calendartxt). |
+|  `service_id` | ID referencing `calendar.service_id` or ID | **Required** | Identifies a set of dates when a service exception occurs for one or more routes. Each (`service_id`, `date`) pair can only appear once in [calendar_dates.txt](#calendar_datestxt) if using [calendar.txt](#calendartxt) and [calendar_dates.txt](#calendar_datestxt) in conjunction. If a `service_id` value appears in both [calendar.txt](#calendartxt) and [calendar_dates.txt](#calendar_datestxt), the information in [calendar_dates.txt](#calendardatestxt) modifies the service information specified in [calendar.txt](#calendartxt). |
 |  `date` | Date | **Required** | Date when service exception occurs. |
-|  `exception_type` | Enum | **Required** | Indicates whether service is available on the date specified in the date field. Valid options are:<br><br> `1` - Service has been added for the specified date.<br>`2` - Service has been removed for the specified date.<hr>*Example: Suppose a route has one set of trips available on holidays and another set of trips available on all other days. One `service_id` could correspond to the regular service schedule and another `service_id` could correspond to the holiday schedule. For a particular holiday, the [calendar_dates.txt](#calender_datestxt) file could be used to add the holiday to the holiday `service_id` and to remove the holiday from the regular `service_id` schedule.* |
+|  `exception_type` | Enum | **Required** | Indicates whether service is available on the date specified in the date field. Valid options are:<br><br> `1` - Service has been added for the specified date.<br>`2` - Service has been removed for the specified date.<hr>*Example: Suppose a route has one set of trips available on holidays and another set of trips available on all other days. One `service_id` could correspond to the regular service schedule and another `service_id` could correspond to the holiday schedule. For a particular holiday, the [calendar_dates.txt](#calendar_datestxt) file could be used to add the holiday to the holiday `service_id` and to remove the holiday from the regular `service_id` schedule.* |
 
 ### fare_attributes.txt
 
@@ -293,7 +293,7 @@ File: **Optional**
 
 [Frequencies.txt](#frequenciestxt) represents trips that operate on regular headways (time between trips). This file can be used to represent two different types of service.
 
-* Frequency-based service (`exact_times`=`0`) in which service does not follow a fixed schedule throughout the the day. Instead, operators attempt to strictly maintain predetermined headways for trips.
+* Frequency-based service (`exact_times`=`0`) in which service does not follow a fixed schedule throughout the day. Instead, operators attempt to strictly maintain predetermined headways for trips.
 * A compressed representation of schedule-based service (`exact_times`=`1`) that has the exact same headway for trips over specified time period(s). In schedule-based service operators try to strictly adhere to a schedule.
 
 
