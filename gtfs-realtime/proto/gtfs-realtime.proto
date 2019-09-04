@@ -46,6 +46,9 @@ message FeedMessage {
   // GTFS Realtime specification in order to add and evaluate new features and
   // modifications to the spec.
   extensions 1000 to 1999;
+
+  // The following extension IDs are reserved for private use by any organization.
+  extensions 9000 to 9999;
 }
 
 // Metadata about a feed, included in feed messages.
@@ -74,6 +77,9 @@ message FeedHeader {
   // GTFS Realtime specification in order to add and evaluate new features and
   // modifications to the spec.
   extensions 1000 to 1999;
+
+  // The following extension IDs are reserved for private use by any organization.
+  extensions 9000 to 9999;
 }
 
 // A definition (or update) of an entity in the transit feed.
@@ -102,6 +108,9 @@ message FeedEntity {
   // GTFS Realtime Specification in order to add and evaluate new features and
   // modifications to the spec.
   extensions 1000 to 1999;
+
+  // The following extension IDs are reserved for private use by any organization.
+  extensions 9000 to 9999;
 }
 
 //
@@ -180,6 +189,9 @@ message TripUpdate {
     // GTFS Realtime Specification in order to add and evaluate new features
     // and modifications to the spec.
     extensions 1000 to 1999;
+
+    // The following extension IDs are reserved for private use by any organization.
+    extensions 9000 to 9999;
   }
 
   // Realtime update for arrival and/or departure events for a given stop on a
@@ -234,6 +246,9 @@ message TripUpdate {
     // GTFS Realtime Specification in order to add and evaluate new features
     // and modifications to the spec.
     extensions 1000 to 1999;
+
+    // The following extension IDs are reserved for private use by any organization.
+    extensions 9000 to 9999;
   }
 
   // Updates to StopTimes for the trip (both future, i.e., predictions, and in
@@ -285,6 +300,9 @@ message TripUpdate {
   // GTFS Realtime Specification in order to add and evaluate new features and
   // modifications to the spec.
   extensions 1000 to 1999;
+
+  // The following extension IDs are reserved for private use by any organization.
+  extensions 9000 to 9999;
 }
 
 // Realtime positioning information for a given vehicle.
@@ -379,6 +397,9 @@ message VehiclePosition {
   // GTFS Realtime Specification in order to add and evaluate new features and
   // modifications to the spec.
   extensions 1000 to 1999;
+
+  // The following extension IDs are reserved for private use by any organization.
+  extensions 9000 to 9999;
 }
 
 // An alert, indicating some sort of incident in the public transit network.
@@ -462,6 +483,9 @@ message Alert {
   // GTFS Realtime Specification in order to add and evaluate new features
   // and modifications to the spec.
   extensions 1000 to 1999;
+
+  // The following extension IDs are reserved for private use by any organization.
+  extensions 9000 to 9999;
 }
 
 //
@@ -485,6 +509,9 @@ message TimeRange {
   // GTFS Realtime Specification in order to add and evaluate new features and
   // modifications to the spec.
   extensions 1000 to 1999;
+
+  // The following extension IDs are reserved for private use by any organization.
+  extensions 9000 to 9999;
 }
 
 // A position.
@@ -511,6 +538,9 @@ message Position {
   // GTFS Realtime Specification in order to add and evaluate new features and
   // modifications to the spec.
   extensions 1000 to 1999;
+
+  // The following extension IDs are reserved for private use by any organization.
+  extensions 9000 to 9999;
 }
 
 // A descriptor that identifies an instance of a GTFS trip, or all instances of
@@ -595,6 +625,9 @@ message TripDescriptor {
   // GTFS Realtime Specification in order to add and evaluate new features and
   // modifications to the spec.
   extensions 1000 to 1999;
+
+  // The following extension IDs are reserved for private use by any organization.
+  extensions 9000 to 9999;
 }
 
 // Identification information for the vehicle performing the trip.
@@ -615,6 +648,9 @@ message VehicleDescriptor {
   // GTFS Realtime Specification in order to add and evaluate new features and
   // modifications to the spec.
   extensions 1000 to 1999;
+
+  // The following extension IDs are reserved for private use by any organization.
+  extensions 9000 to 9999;
 }
 
 // A selector for an entity in a GTFS feed.
@@ -638,6 +674,9 @@ message EntitySelector {
   // GTFS Realtime Specification in order to add and evaluate new features and
   // modifications to the spec.
   extensions 1000 to 1999;
+
+  // The following extension IDs are reserved for private use by any organization.
+  extensions 9000 to 9999;
 }
 
 // An internationalized message containing per-language versions of a snippet of
@@ -663,6 +702,9 @@ message TranslatedString {
     // GTFS Realtime Specification in order to add and evaluate new features and
     // modifications to the spec.
     extensions 1000 to 1999;
+
+    // The following extension IDs are reserved for private use by any organization.
+    extensions 9000 to 9999;
   }
   // At least one translation must be provided.
   repeated Translation translation = 1;
@@ -671,4 +713,7 @@ message TranslatedString {
   // GTFS Realtime Specification in order to add and evaluate new features and
   // modifications to the spec.
   extensions 1000 to 1999;
+
+  // The following extension IDs are reserved for private use by any organization.
+  extensions 9000 to 9999;
 }
