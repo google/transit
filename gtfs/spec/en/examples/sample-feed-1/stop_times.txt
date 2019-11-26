@@ -1,4 +1,4 @@
-trip_id,arrival_time,departure_time,stop_id,stop_sequence,stop_headsign,pickup_type,drop_off_time,shape_dist_traveled
+trip_id,arrival_time,departure_time,stop_id,stop_sequence,stop_headsign,pickup_type,drop_off_type,shape_dist_traveled
 STBA,6:00:00,6:00:00,STAGECOACH,1,,,,
 STBA,6:20:00,6:20:00,BEATTY_AIRPORT,2,,,,
 CITY1,6:00:00,6:00:00,STAGECOACH,1,,,,
