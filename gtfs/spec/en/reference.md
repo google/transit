@@ -359,6 +359,7 @@ Describe the different levels of a station. Is mostly useful when used in conjun
 |  `level_index` | Float | **Required** | Numeric index of the level that indicates relative position of this level in relation to other levels (levels with higher indices are assumed to be located above levels with lower indices).<br><br>Ground level should have index 0, with levels above ground indicated by positive indices and levels below ground by negative indices.|
 |  `level_name` | Text | Optional | Optional name of the level (that matches level lettering/numbering used inside the building or the station). Is useful for elevator routing (e.g. “take the elevator to level “Mezzanine” or “Platforms” or “-1”).|
 
+
 ### feed_info.txt
 
 File: **Optional**
@@ -389,7 +390,7 @@ The file defines the attributions applied to the dataset.
 |  `route_id` |  ID referencing `routes.route_id`  | Optional | Functions in the same way as `agency_id` except the attribution applies to a route. Multiple attributions can apply to the same route. |
 |  `trip_id` |  ID referencing `trips.trip_id`  | Optional | Functions in the same way as `agency_id` except the attribution applies to a trip. Multiple attributions can apply to the same trip. |
 |  `organization_name` | Text | **Required** | Name of the organization that the dataset is attributed to. |
-|  `is_producer` | Enum | Optional | The role of the organization is producer. Valid options are:<br><br>`0` or empty - Organization doesn’t have this role.<br>`1` - Organization does have this role.<br><br>At least one of the fields `is_producer`, `is_operator`, or `is_authority` should be set at `1`. If none of them is set to `1` (e.g. because they are non-official fields defining other types of attribution), the data consumer is allowed to ignore them. |
+|  `is_producer` | Enum | Optional | The role of the organization is producer. Valid options are:<br><br>`0` or empty - Organization doesn’t have this role.<br>`1` - Organization does have this role.<br><br>At least one of the fields `is_producer`, `is_operator`, or `is_authority` should be set at `1`. |
 |  `is_operator` | Enum | Optional | Functions in the same way as `is_producer` except the role of the organization is operator. |
 |  `is authority` | Enum | Optional | Functions in the same way as `is_producer` except the role of the organization is authority. |
 |  `attribution_url` | URL | Optional | URL of the organization. |
