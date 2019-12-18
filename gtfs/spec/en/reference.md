@@ -171,6 +171,7 @@ File: **Required**
 |  `shape_id` | ID referencing `shapes.shape_id` | Optional | Identifies a geospatial shape describing the vehicle travel path for a trip. |
 |  `wheelchair_accessible` | Enum | Optional | Indicates wheelchair accessibility. Valid options are:<br><br>`0` or empty - No accessibility information for the trip.<br>`1` - Vehicle being used on this particular trip can accommodate at least one rider in a wheelchair.<br>`2` - No riders in wheelchairs can be accommodated on this trip. |
 |  `bikes_allowed` | Enum | Optional | Indicates whether bikes are allowed. Valid options are:<br><br>`0` or empty - No bike information for the trip.<br>`1` - Vehicle being used on this particular trip can accommodate at least one bicycle.<br>`2` - No bicycles are allowed on this trip. |
+| `run_id` | ID | Optional | Identifies the run to which the trip belongs. A run consists of a single trip or many sequential trips driven by the same driver, defined by shared service days and `run_id`. A `run_id` can have trips with different service days, making distinct runs.  Mid-trip driver changes are indicated with `stop_times.run_id`. |
 
 #### Example: Blocks and service day
 
@@ -205,7 +206,7 @@ File: **Required**
 |  `drop_off_type` | Enum | Optional | Indicates drop off method. Valid options are:<br><br>`0` or empty - Regularly scheduled drop off.<br>`1` - No drop off available.<br>`2` - Must phone agency to arrange drop off.<br>`3` - Must coordinate with driver to arrange drop off. |
 |  `shape_dist_traveled` | Non-negative float | Optional | Actual distance traveled along the associated shape, from the first stop to the stop specified in this record. This field specifies how much of the shape to draw between any two stops during a trip. Must be in the same units used in [shapes.txt](#shapestxt). Values used for `shape_dist_traveled` must increase along with `stop_sequence`; they cannot be used to show reverse travel along a route.<hr>*Example: If a bus travels a distance of 5.25 kilometers from the start of the shape to the stop,`shape_dist_traveled`=`5.25`.*|
 |  `timepoint` | Enum | Optional | Indicates if arrival and departure times for a stop are strictly adhered to by the vehicle or if they are instead approximate and/or interpolated times. This field allows a GTFS producer to provide interpolated stop-times, while indicating that the times are approximate. Valid options are:<br><br>`0` - Times are considered approximate.<br>`1` or empty - Times are considered exact. |
-
+|  `run_id` | ID | Optional | This value overrides the default `trips.run_id` to indicate a change in drivers, such as is the case for a mid-trip relief.   A `run_id` value specified for one `stop_time` does not apply to subsequent `stop_time`s in the same trip. The `run_id` value must be repeated in each subsequent row for the remainder of the trip following a driver switch.  If the entire trip is performed by a single driver, use `trips.run_id`. |
 
 ### calendar.txt
 
