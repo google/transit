@@ -82,6 +82,7 @@ This specification defines the following files:
 |  [pathways.txt](#pathwaystxt)  | Optional | Pathways linking together locations within stations. |
 |  [levels.txt](#levelstxt)  | Optional | Levels within stations. |
 |  [feed_info.txt](#feed_infotxt)  | Optional | Dataset metadata, including publisher, version, and expiration information. |
+|  [attributions.txt](#attributionstxt)  | Optional | Dataset attributions. |
 
 ## File Requirements
 
