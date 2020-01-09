@@ -411,7 +411,7 @@ The file defines the attributions applied to the dataset.
 |  `organization_name` | Text | **Required** | Name of the organization that the dataset is attributed to. |
 |  `is_producer` | Enum | Optional | The role of the organization is producer. Valid options are:<br><br>`0` or empty - Organization doesn’t have this role.<br>`1` - Organization does have this role.<br><br>At least one of the fields `is_producer`, `is_operator`, or `is_authority` should be set at `1`. |
 |  `is_operator` | Enum | Optional | Functions in the same way as `is_producer` except the role of the organization is operator. |
-|  `is authority` | Enum | Optional | Functions in the same way as `is_producer` except the role of the organization is authority. |
+|  `is_authority` | Enum | Optional | Functions in the same way as `is_producer` except the role of the organization is authority. |
 |  `attribution_url` | URL | Optional | URL of the organization. |
 |  `attribution_email` | Email | Optional | Email of the organization. |
 |  `attribution_phone` | Phone number | Optional | Phone number of the organization. |
