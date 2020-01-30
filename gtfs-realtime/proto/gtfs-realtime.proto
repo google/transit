@@ -58,6 +58,7 @@ message StopTimeProperties{
   optional PickupType pickup_type = 3;
   optional DropOffType drop_off_type = 4;
   optional float shape_dist_traveled = 5;
+  optional string stop_id = 6;
 
   enum PickupType{
     REGULAR_PICKUP = 0;
@@ -226,6 +227,30 @@ message Route{
   }
 }
 
+message Stop{
+  required string stop_id = 1;
+  optional string stop_code = 2;
+  required TranslatedString stop_name = 3;
+  optional TranslatedString stop_desc = 4;
+  required float stop_lat = 5;
+  required float stop_lon = 6;
+  optional string zone_id = 7;
+  optional TranslatedString stop_url = 8;
+  optional string parent_station = 9;
+  optional string stop_timezone = 10;
+  optional WheelchairBoardingStatus wheelchair_boarding = 11;
+  optional string level_id = 12;
+  optional string platform_code = 13;
+
+  enum WheelchairBoardingStatus{
+    UNKNOWN_WHEELCHAIR_BOARDING = 0;
+    WHEELCHAIR_ACCESSIBLE = 1;
+    NOT_WHEELCHAIR_ACCESSIBLE = 2;
+  }
+
+
+}
+
 // A definition (or update) of an entity in the transit feed.
 message FeedEntity {
   // The ids are used only to provide incrementality support. The id should be
@@ -250,6 +275,7 @@ message FeedEntity {
   optional Trip trip = 6;
   optional Shape shape = 7;
   optional Route route = 8;
+  optional Stop stop = 9;
   // The extensions namespace allows 3rd-party developers to extend the
   // GTFS Realtime Specification in order to add and evaluate new features and
   // modifications to the spec.
