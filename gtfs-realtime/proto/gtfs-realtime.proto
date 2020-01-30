@@ -26,6 +26,74 @@ syntax = "proto2";
 option java_package = "com.google.transit.realtime";
 package transit_realtime;
 
+message StopTimeProperties{
+  optional string platform_id = 1;
+  optional TranslatedString stop_headsign = 2;
+  optional PickupType pickup_type = 3;
+  optional DropOffType drop_off_type = 4;
+  optional float shape_dist_traveled = 5;
+
+  enum PickupType{
+    REGULAR_PICKUP = 0;
+    NO_PICKUP = 1;
+    MUST_PHONE_AGENCY = 2;
+    MUST_ASK_DRIVER = 3;
+  }
+
+  enum DropOffType{
+    REGULAR_DROP_OFF = 0;
+    NO_DROP_OFF = 1;
+    MUST_PHONE_AGENCY = 2;
+    MUST_ASK_DRIVER = 3;
+  }
+}
+
+message VehicleProperties{
+  optional WheelchairAccessibleStatus wheelchair_accessible = 1;
+  optional BikesAllowedSatus biked_allowed = 2;
+
+  enum WheelchairAccessibleStatus{
+    UNKNOWN_WHEELCHAIR_ACCESSIBILITY = 0;
+    WHEELCHAIR_ACCESSIBLE = 1;
+    NOT_WHEELCHAIR_ACCESSIBLE = 2;
+  }
+
+  enum BikesAllowedSatus{
+    UNKNOWN_BIKES_ALLOWANCE = 0;
+    BIKES_ALLOWED = 1;
+    BIKES_NOT_ALLOWED = 2;
+  }
+}
+
+
+message Trip {
+
+  required string trip_id = 1;
+  optional string route_id = 2;
+  required TranslatedString trip_headsign = 3 ;
+  required string trip_short_name = 4;
+  optional int64 direction_id = 5;
+  optional string block_id = 6;
+  optional string shape_id = 7;
+  optional WheelchairAccessibleStatus wheelchair_accessible = 8;
+  optional BikesAllowedSatus biked_allowed = 9;
+  optional string replaces_trip_id = 10;
+
+  enum WheelchairAccessibleStatus{
+    UNKNOWN_WHEELCHAIR_ACCESSIBILITY = 0;
+    WHEELCHAIR_ACCESSIBLE = 1;
+    NOT_WHEELCHAIR_ACCESSIBLE = 2;
+  }
+
+  enum BikesAllowedSatus{
+    UNKNOWN_BIKES_ALLOWANCE = 0;
+    BIKES_ALLOWED = 1;
+    BIKES_NOT_ALLOWED = 2;
+  }
+
+
+
+}
 
 message TripProperties {
   // Metadata about this feed and feed message.
@@ -117,6 +185,7 @@ message FeedEntity {
   optional TripUpdate trip_update = 3;
   optional VehiclePosition vehicle = 4;
   optional Alert alert = 5;
+  optional Trip trip = 6;
 
   // The extensions namespace allows 3rd-party developers to extend the
   // GTFS Realtime Specification in order to add and evaluate new features and
@@ -199,6 +268,8 @@ message TripUpdate {
     // To specify a completely certain prediction, set its uncertainty to 0.
     optional int32 uncertainty = 3;
 
+    optional int64 scheduled_time = 4;
+
     // The extensions namespace allows 3rd-party developers to extend the
     // GTFS Realtime Specification in order to add and evaluate new features
     // and modifications to the spec.
@@ -256,6 +327,8 @@ message TripUpdate {
     optional ScheduleRelationship schedule_relationship = 5
         [default = SCHEDULED];
 
+    optional StopTimeProperties stop_time_properties = 6;
+
     // The extensions namespace allows 3rd-party developers to extend the
     // GTFS Realtime Specification in order to add and evaluate new features
     // and modifications to the spec.
@@ -309,6 +382,10 @@ message TripUpdate {
   // NOTE: This field is still experimental, and subject to change. It may be
   // formally adopted in the future.
   optional int32 delay = 5;
+  optional TripProperties trip_properties = 6;
+  optional VehicleProperties vehicle_properties = 7;
+
+
 
   // The extensions namespace allows 3rd-party developers to extend the
   // GTFS Realtime Specification in order to add and evaluate new features and
