@@ -26,6 +26,32 @@ syntax = "proto2";
 option java_package = "com.google.transit.realtime";
 package transit_realtime;
 
+message StopTime{
+  required int64 stop_sequence = 1;
+  required Timestamp arrival_time = 2;
+  required Timestamp departure_time = 3;
+  required string stop_id = 4;
+  optional TranslatedString stop_headsign = 5;
+  optional PickupType pickup_type = 6;
+  optional DropOffType drop_off_type = 7;
+  optional float shape_dist_traveled = 8;
+
+  enum PickupType{
+    REGULAR_PICKUP = 0;
+    NO_PICKUP = 1;
+    MUST_PHONE_AGENCY = 2;
+    MUST_ASK_DRIVER = 3;
+  }
+
+  enum DropOffType{
+    REGULAR_DROP_OFF = 0;
+    NO_DROP_OFF = 1;
+    MUST_PHONE_AGENCY = 2;
+    MUST_ASK_DRIVER = 3;
+  }
+
+}
+
 message StopTimeProperties{
   optional string platform_id = 1;
   optional TranslatedString stop_headsign = 2;
@@ -164,6 +190,16 @@ message FeedHeader {
   extensions 9000 to 9999;
 }
 
+message Shape{
+  required string shape_id = 1;
+  required ShapePoint shape_point = 2;
+}
+
+message ShapePoint{
+  required float shape_pt_lat = 1;
+  required float shape_pt_lon = 2;
+  optional float shape_dist_traveled = 3;
+}
 // A definition (or update) of an entity in the transit feed.
 message FeedEntity {
   // The ids are used only to provide incrementality support. The id should be
@@ -186,7 +222,7 @@ message FeedEntity {
   optional VehiclePosition vehicle = 4;
   optional Alert alert = 5;
   optional Trip trip = 6;
-
+  optional Shape shape = 7;
   // The extensions namespace allows 3rd-party developers to extend the
   // GTFS Realtime Specification in order to add and evaluate new features and
   // modifications to the spec.
