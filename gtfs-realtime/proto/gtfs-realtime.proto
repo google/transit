@@ -131,6 +131,7 @@ message TripProperties {
   optional TranslatedString trip_short_name = 6;
   optional string block_id = 7;
   optional string shape_id = 8;
+
 }
 
 
@@ -200,6 +201,31 @@ message ShapePoint{
   required float shape_pt_lon = 2;
   optional float shape_dist_traveled = 3;
 }
+
+message Route{
+  required string route_id = 1;
+  required string agency_id = 2;
+  optional TranslatedString route_short_name = 3;
+  optional TranslatedString route_long_name = 4;
+  optional TranslatedString route_desc = 5;
+  optional RouteType route_type = 6;
+  optional TranslatedString route_url = 7;
+  optional string route_color = 8;
+  optional string route_text_color = 9;
+  optional uint32 route_sort_order = 10;
+
+  enum RouteType{
+    LIGHT_RAIL = 0;
+    SUBWAY = 1;
+    RAIL = 2;
+    BUS = 3;
+    FERRY = 4;
+    CABLE_CAR =5;
+    GONDOLA = 6;
+    FUNICULAR =7;
+  }
+}
+
 // A definition (or update) of an entity in the transit feed.
 message FeedEntity {
   // The ids are used only to provide incrementality support. The id should be
@@ -223,6 +249,7 @@ message FeedEntity {
   optional Alert alert = 5;
   optional Trip trip = 6;
   optional Shape shape = 7;
+  optional Route route = 8;
   // The extensions namespace allows 3rd-party developers to extend the
   // GTFS Realtime Specification in order to add and evaluate new features and
   // modifications to the spec.
