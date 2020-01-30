@@ -26,6 +26,20 @@ syntax = "proto2";
 option java_package = "com.google.transit.realtime";
 package transit_realtime;
 
+
+message TripProperties {
+  // Metadata about this feed and feed message.
+  required string id = 1;
+  required string start_date = 2;
+  required string start_time = 3;
+  optional string route_id = 4;
+  optional TranslatedString trip_headsign = 5;
+  optional TranslatedString trip_short_name = 6;
+  optional string block_id = 7;
+  optional string shape_id = 8;
+}
+
+
 // The contents of a feed message.
 // A feed is a continuous stream of feed messages. Each message in the stream is
 // obtained as a response to an appropriate HTTP GET request.
