@@ -28,8 +28,8 @@ package transit_realtime;
 
 message StopTime{
   required int64 stop_sequence = 1;
-  required Timestamp arrival_time = 2;
-  required Timestamp departure_time = 3;
+  required uint64 arrival_time = 2;
+  required uint64 departure_time = 3;
   required string stop_id = 4;
   optional TranslatedString stop_headsign = 5;
   optional PickupType pickup_type = 6;
