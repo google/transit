@@ -112,7 +112,7 @@ message MyTripDescriptorExtension {
 |1004|Metra|[William Ashbaugh <w.l.ashbaugh@gmail.com>](mailto:w.l.ashbaugh@gmail.com)|
 |1005|Metro-North Railroad|[John Larsen](mailto:mnrappdev@mnr.org)|
 |1006|realCity|[David Varga](mailto:transit@realcity.io)|http://realcity.io|
-|1007|NSW TrainLink|[Gregory Nicholls](mailto:gregory.nicholls@transport.nsw.gov.au)|[Group discussion](https://groups.google.com/d/msg/gtfs-realtime/G75O1zyQS_Q/VtNmTJvSAwAJ)|
+|1007|Transport for NSW|[timetable@transport.nsw.gov.au](mailto:timetable@transport.nsw.gov.au)|[Group discussion](https://groups.google.com/d/msg/gtfs-realtime/G75O1zyQS_Q/VtNmTJvSAwAJ)|
 |1008|SEPTA - Southeastern Pennsylvania Transportation Authority|[Gregory Apessos](mailto:GApessos@septa.org)|https://github.com/septadev|
 |1009|Swiftly|[mike@goswift.ly](mailto:mike@goswift.ly)|[Group Discussion](https://groups.google.com/forum/#!msg/gtfs-realtime/mmnZV6L-2ls/wVWdknhLBwAJ)|
 |1010|IBI Group|[Ritesh Warade](mailto:transitrealtime@ibigroup.com)|[GitHub proposal for new timestamps in Service Alerts](https://github.com/google/transit/pull/134)|
