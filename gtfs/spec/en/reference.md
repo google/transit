@@ -26,6 +26,7 @@ This document defines the format and structure of the files that comprise a GTFS
     -   [pathways.txt](#pathwaystxt)
     -   [levels.txt](#levelstxt)
     -   [translations.txt](#translationstxt)
+    -   [travel\_restrictions.txt](#travel_restrictionstxt)
     -   [feed\_info.txt](#feed_infotxt)
     -   [attributions.txt](#attributionstxt)
 
@@ -82,6 +83,7 @@ This specification defines the following files:
 |  [transfers.txt](#transferstxt)  | Optional | Rules for making connections at transfer points between routes. |
 |  [pathways.txt](#pathwaystxt)  | Optional | Pathways linking together locations within stations. |
 |  [levels.txt](#levelstxt)  | Optional | Levels within stations. |
+|  [travel_restrictions.txt](#travelrestrictionstxt)  | Optional | Boarding and alighting restrictions for `stop_time` groups. |
 |  [feed_info.txt](#feed_infotxt)  | Optional | Dataset metadata, including publisher, version, and expiration information. |
 |  [attributions.txt](#attributionstxt)  | Optional | Dataset attributions. |
 
@@ -377,6 +379,18 @@ In regions that have multiple official languages, transit agencies/operators typ
 |  `record_id` | ID | **Conditionally Required** | Defines the record that corresponds to the field to be translated. The value in `record_id` should be a main ID of the table, as defined below:<br>• `agency_id` for `agency.txt`;<br>• `stop_id` for `stops.txt`;<br>• `route_id` for `routes.txt`;<br>• `trip_id` for `trips.txt`;<br>• `trip_id` for `stop_times.txt`.<br><br>No field should be translated in the other tables. However producers sometimes add extra fields that are outside the official specification and these unofficial fields may need to be translated. Below is the recommended way to use `record_id` for those tables:<br>• `service_id` for `calendar.txt`;<br>• `service_id` for `calendar_dates.txt`;<br>• `fare_id` for `fare_attributes.txt`;<br>• `fare_id` for `fare_rules.txt`;<br>• `shape_id` for `shapes.txt`;<br>• `trip_id` for `frequencies.txt`;<br>• `from_stop_id` for `transfers.txt`;<br>• `pathway_id` for `pathways.txt`;<br>• `level_id` for `levels.txt`.<br><br>**Conditionally Required:**<br>- **forbidden** if `table_name` is `feed_info`;<br>- **forbidden** if `field_value` is defined;<br>- **required** if `field_value` is empty. |
 |  `record_sub_id` | ID | **Conditionally Required** | Helps the record that contains the field to be translated when the table doesn’t have a unique ID. Therefore, the value in `record_sub_id` is the secondary ID of the table, as defined by the table below:<br>• None for `agency.txt`;<br>• None for `stops.txt`;<br>• None for `routes.txt`;<br>• None for `trips.txt`;<br>• `stop_sequence` for `stop_times.txt`;<br><br>No field should be translated in the other tables. However producers sometimes add extra fields that are outside the official specification and these unofficial fields may need to be translated. Below is the recommended way to use `record_sub_id` for those tables:<br>• None for `calendar.txt`;<br>• `date` for `calendar_dates.txt`;<br>• None for `fare_attributes.txt`;<br>• `route_id` for `fare_rules.txt`;<br>• None for `shapes.txt`;<br>• `start_time` for `frequencies.txt`;<br>• `to_stop_id` for `transfers.txt`;<br>• None for `pathways.txt`;<br>• None for `levels.txt`.<br><br>**Conditionally Required:**<br>- **forbidden** if `table_name` is `feed_info`;<br>- **forbidden** if `field_value` is defined;<br>- **required** if `table_name=stop_times` and `record_id` is defined. |
 |  `field_value` | Text or URL or Email or Phone number | **Conditionally Required** | Instead of defining which record should be translated by using `record_id` and `record_sub_id`, this field can be used to define the value which should be translated. When used, the translation will be applied when the fields identified by `table_name` and `field_name` contains the exact same value defined in field_value.<br><br>The field must have **exactly** the value defined in `field_value`. If only a subset of the value matches `field_value`, the translation won’t be applied.<br><br>If two translation rules match the same record (one with `field_value`, and the other one with `record_id`), then the rule with `record_id` is the one which should be used.<br><br>**Conditionally Required:**<br>- **forbidden** if `table_name` is `feed_info`;<br>- **forbidden** if `record_id` is defined;<br>- **required** if `record_id` is empty. |
+
+### travel_restrictions.txt
+
+File: **Optional**
+
+This file defines travel restrictions that prevent riders to board and alight vehicles within `stop_time` groups.
+
+|  Field Name | Type | Required | Description |
+|  ------ | ------ | ------ | ------ |
+|  `trip_id` | ID referencing `trips.trip_id` | **Required** | Identifies a trip. |
+|  `stop_sequence` | Non-negative integer referencing `stop_times.stop_sequence` | **Required** | Identifies a `stop_time` within the trip. |
+|  `restriction_id` | ID | **Required** | Identifies a travel restriction. Overrides any `stop_times.pickup_type` and `stop_times.drop_off_type` values, making the pickup and the drop-off unavailable **only** between the `stop_time`s that are grouped with the same `restriction_id`. <hr> _Example: Consider a trip with 5 consecutive `stop_times.stop_sequence` values from `10` to `14`. All of them have `stop_times.pickup_type=0` and `stop_times.drop_off_type=0`. Only the `stop_times.stop_sequence` values `11`, `12`, and `13` are grouped with the same `restriction_id`. It would result: <br><br> • `stop_sequence=10`: pickup and drop-off are allowed. <br> • `stop_sequence=11`: pickup and drop-off are allowed. <br> • `stop_sequence=12`: pickup is allowed, drop-off is also allowed if the rider has not boarded the vehicle at the `stop_sequence=11`. <br> • `stop_sequence=13`: pickup is allowed, drop-off is also allowed if the rider has not boarded the vehicle at the `stop_sequence=11` or `stop_sequence=12`. <br> • `stop_sequence=14`: pickup and drop-off are allowed._ |
 
 ### feed_info.txt
 
