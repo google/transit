@@ -384,7 +384,7 @@ message VehiclePosition {
 
   // A percentage value representing the degree of passenger occupancy of the vehicle.
   // The value 100 should represent the total maximum occupancy the vehicle was designed for, including both seated and standing capacity.
-  // It's not impossible that the value goes over 100 if there are currently more passenger than the vehicle was designed for.
+  // It is possible that the value goes over 100 if there are currently more passengers than what the vehicle was designed for.
   optional OccupancyStatus occupancy_percentage = 10;
 
   // The extensions namespace allows 3rd-party developers to extend the
