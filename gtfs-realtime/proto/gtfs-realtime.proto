@@ -347,42 +347,45 @@ message VehiclePosition {
   }
   optional CongestionLevel congestion_level = 6;
 
-  // The degree of passenger occupancy of the vehicle. This field is still
-  // experimental, and subject to change. It may be formally adopted in the
-  // future.
+  // The degree of passenger occupancy of the vehicle
   enum OccupancyStatus {
     // The vehicle is considered empty by most measures, and has few or no
     // passengers onboard, but is still accepting passengers.
-    EMPTY = 0;
+    EMPTY = 0 [deprecated=true];
 
-    // The vehicle has a relatively large percentage of seats available.
-    // What percentage of free seats out of the total seats available is to be
-    // considered large enough to fall into this category is determined at the
-    // discretion of the producer.
-    MANY_SEATS_AVAILABLE = 1;
+    // The vehicle has seats available.
+    SEATS_AVAILABLE = 1;
 
     // The vehicle has a relatively small percentage of seats available.
     // What percentage of free seats out of the total seats available is to be
     // considered small enough to fall into this category is determined at the
     // discretion of the feed producer.
-    FEW_SEATS_AVAILABLE = 2;
+    // Deprecated, if you need more granularity than the available enum please use occupancy_percentage
+    FEW_SEATS_AVAILABLE = 2 [deprecated=true];
 
     // The vehicle can currently accommodate only standing passengers.
     STANDING_ROOM_ONLY = 3;
 
     // The vehicle can currently accommodate only standing passengers
     // and has limited space for them.
-    CRUSHED_STANDING_ROOM_ONLY = 4;
+    // Deprecated, if you need more granularity than the available enum please use occupancy_percentage
+    CRUSHED_STANDING_ROOM_ONLY = 4 [deprecated=true];
 
     // The vehicle is considered full by most measures, but may still be
     // allowing passengers to board.
     FULL = 5;
 
     // The vehicle is not accepting additional passengers.
-    NOT_ACCEPTING_PASSENGERS = 6;
+    // Deprecated, if you need more granularity than the available enum please use occupancy_percentage
+    NOT_ACCEPTING_PASSENGERS = 6 [deprecated=true];
 
   }
   optional OccupancyStatus occupancy_status = 9;
+
+  // A percentage value representing the degree of passenger occupancy of the vehicle.
+  // The value 100 should represent total the maximum occupancy the vehicle was designed for.
+  // It's not impossible that the value goes over 100 if there are currently more passenger than the vehicle was designed for.
+  optional OccupancyStatus occupancy_percentage = 10;
 
   // The extensions namespace allows 3rd-party developers to extend the
   // GTFS Realtime Specification in order to add and evaluate new features and

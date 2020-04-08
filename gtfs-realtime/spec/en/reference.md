@@ -207,7 +207,8 @@ Realtime positioning information for a given vehicle.
 | **current_status** | [VehicleStopStatus](#enum-vehiclestopstatus) | Optional | One | The exact status of the vehicle with respect to the current stop. Ignored if current_stop_sequence is missing. |
 | **timestamp** | [uint64](https://developers.google.com/protocol-buffers/docs/proto#scalar) | Optional | One | Moment at which the vehicle's position was measured. In POSIX time (i.e., number of seconds since January 1st 1970 00:00:00 UTC). |
 | **congestion_level** | [CongestionLevel](#enum-congestionlevel) | Optional | One |
-| _**occupancy_status**_ | _[OccupancyStatus](#enum-occupancystatus)_ | _Optional_ | One | The degree of passenger occupancy of the vehicle.<br>**Caution:** this field is still **experimental**, and subject to change. It may be formally adopted in the future.|
+| **occupancy_status** | [OccupancyStatus](#enum-occupancystatus) | Optional | One | The degree of passenger occupancy of the vehicle. More detail can be provided with _occupancy_percentage_. |
+| **occupancy_percentage** | [uint32](https://developers.google.com/protocol-buffers/docs/proto#scalar) | Optionals | One | A percentage value representing the degree of passenger occupancy of the vehicle. The value 100 should represent total the maximum occupancy the vehicle was designed for. It's not impossible that the value goes over 100 if there are currently more passenger than the vehicle was designed for.  |
 
 ## _enum_ VehicleStopStatus
 
@@ -235,21 +236,15 @@ Congestion level that is affecting this vehicle.
 
 ## _enum OccupancyStatus_
 
-The degree of passenger occupancy for the vehicle.
-
-**Caution:** this field is still **experimental**, and subject to change. It may be formally adopted in the future.
+The degree of passenger occupancy for the vehicle. OccupancyStatus should be used to display a textual or
 
 #### _Values_
 
 | _**Value**_ | _**Comment**_ |
 |-------------|---------------|
-| _**EMPTY**_ | _The vehicle is considered empty by most measures, and has few or no passengers onboard, but is still accepting passengers._ |
-| _**MANY_SEATS_AVAILABLE**_ | _The vehicle has a large percentage of seats available. What percentage of free seats out of the total seats available is to be considered large enough to fall into this category is determined at the discretion of the producer._ |
-| _**FEW_SEATS_AVAILABLE**_ | _The vehicle has a small percentage of seats available. What percentage of free seats out of the total seats available is to be considered small enough to fall into this category is determined at the discretion of the producer._ |
+| _**SEATS_AVAILABLE**_ | _The vehicle has seats available._ |
 | _**STANDING_ROOM_ONLY**_ | _The vehicle can currently accommodate only standing passengers._ |
-| _**CRUSHED_STANDING_ROOM_ONLY**_ | _The vehicle can currently accommodate only standing passengers and has limited space for them._ |
 | _**FULL**_ | _The vehicle is considered full by most measures, but may still be allowing passengers to board._ |
-| _**NOT_ACCEPTING_PASSENGERS**_ | _The vehicle can not accept passengers._ |
 
 ## _message_ Alert
 
@@ -359,7 +354,7 @@ To specify a single trip instance, in many cases a `trip_id` by itself is suffic
 * If the trip lasts for more than 24 hours, or is delayed such that it would collide with a scheduled trip on the following day, then `start_date` is required in addition to `trip_id`
 * If the `trip_id` field can't be provided, then `route_id`, `direction_id`, `start_date`, and `start_time` must all be provided
 
-In all cases, if `route_id` is provided in addition to `trip_id`, then the `route_id` must be the same `route_id` as assigned to the given trip in GTFS trips.txt. 
+In all cases, if `route_id` is provided in addition to `trip_id`, then the `route_id` must be the same `route_id` as assigned to the given trip in GTFS trips.txt.
 
 The `trip_id` field cannot, by itself or in combination with other TripDescriptor fields, be used to identify multiple trip instances. For example, a TripDescriptor should never specify trip_id by itself for GTFS frequencies.txt exact_times=0 trips because start_time is also required to resolve to a single trip instance starting at a specific time of the day. If the TripDescriptor does not resolve to a single trip instance (i.e., it resolves to zero or multiple trip instances), it is considered an error and the entity containing the erroneous TripDescriptor may be discarded by consumers.
 
