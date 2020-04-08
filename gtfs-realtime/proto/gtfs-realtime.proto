@@ -230,7 +230,7 @@ message TripUpdate {
       // stops in the trip are considered to be unspecified as well.
       // Neither arrival nor departure should be supplied.
       NO_DATA = 2;
-      
+
       // The vehicle is operating a trip defined in GTFS frequencies.txt with exact_times = 0.
       // This value should not be used for trips that are not defined in GTFS frequencies.txt,
       // or trips in GTFS frequencies.txt with exact_times = 1. Trips containing StopTimeUpdates
@@ -563,9 +563,7 @@ message TripDescriptor {
   optional string route_id = 5;
 
   // The direction_id from the GTFS feed trips.txt file, indicating the
-  // direction of travel for trips this selector refers to. This field is
-  // still experimental, and subject to change. It may be formally adopted in
-  // the future.
+  // direction of travel for trips this selector refers to.
   optional uint32 direction_id = 6;
 
   // The initially scheduled start time of this trip instance.
@@ -666,8 +664,7 @@ message EntitySelector {
   optional TripDescriptor trip = 4;
   optional string stop_id = 5;
   // Corresponds to trip direction_id in GTFS trips.txt. If provided the
-  // route_id must also be provided. This field is still experimental, and
-  // subject to change. It may be formally adopted in the future.
+  // route_id must also be provided.
   optional uint32 direction_id = 6;
 
   // The extensions namespace allows 3rd-party developers to extend the
