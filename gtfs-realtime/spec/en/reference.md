@@ -208,7 +208,7 @@ Realtime positioning information for a given vehicle.
 | **timestamp** | [uint64](https://developers.google.com/protocol-buffers/docs/proto#scalar) | Optional | One | Moment at which the vehicle's position was measured. In POSIX time (i.e., number of seconds since January 1st 1970 00:00:00 UTC). |
 | **congestion_level** | [CongestionLevel](#enum-congestionlevel) | Optional | One |
 | **occupancy_status** | [OccupancyStatus](#enum-occupancystatus) | Optional | One | The degree of passenger occupancy of the vehicle. More detail can be provided with _occupancy_percentage_. |
-| **occupancy_percentage** | [uint32](https://developers.google.com/protocol-buffers/docs/proto#scalar) | Optional | One | A percentage value representing the degree of passenger occupancy of the vehicle. The value 100 should represent total the maximum occupancy the vehicle was designed for including both seating and standing capacity. It's not impossible that the value goes over 100 if there are currently more passenger than the vehicle was designed for.  |
+| **occupancy_percentage** | [uint32](https://developers.google.com/protocol-buffers/docs/proto#scalar) | Optional | One | A percentage value representing the degree of passenger occupancy of the vehicle. The value 100 should represent total the maximum occupancy the vehicle was designed for including both seating and standing capacity. It's not impossible that the value goes over 100 if there are currently more passenger than the vehicle was designed for. The precision of precision should be low enough that you can't track a single person boarding and alighting for privacy reasons. |
 
 ## _enum_ VehicleStopStatus
 

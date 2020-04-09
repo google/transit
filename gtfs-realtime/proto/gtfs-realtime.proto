@@ -386,6 +386,7 @@ message VehiclePosition {
   // The values are represented as an integer without decimals. 0 means 0% and 100 means 100%.
   // The value 100 should represent the total maximum occupancy the vehicle was designed for, including both seated and standing capacity.
   // It is possible that the value goes over 100 if there are currently more passengers than what the vehicle was designed for.
+  // The precision of precision should be low enough that you can't track a single person boarding and alighting for privacy reasons.
   optional OccupancyStatus occupancy_percentage = 10;
 
   // The extensions namespace allows 3rd-party developers to extend the
