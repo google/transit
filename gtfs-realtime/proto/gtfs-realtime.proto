@@ -349,25 +349,18 @@ message VehiclePosition {
 
   // The degree of passenger occupancy of the vehicle
   enum OccupancyStatus {
-    // The vehicle is considered empty by most measures, and has few or no
-    // passengers onboard, but is still accepting passengers.
+    // Deprecated, if you need more granularity than the available enum please use occupancy_percentage
     EMPTY = 0 [deprecated=true];
 
     // The vehicle has seats available.
     SEATS_AVAILABLE = 1;
 
-    // The vehicle has a relatively small percentage of seats available.
-    // What percentage of free seats out of the total seats available is to be
-    // considered small enough to fall into this category is determined at the
-    // discretion of the feed producer.
     // Deprecated, if you need more granularity than the available enum please use occupancy_percentage
     FEW_SEATS_AVAILABLE = 2 [deprecated=true];
 
     // The vehicle can currently accommodate only standing passengers.
     STANDING_ROOM_ONLY = 3;
 
-    // The vehicle can currently accommodate only standing passengers
-    // and has limited space for them.
     // Deprecated, if you need more granularity than the available enum please use occupancy_percentage
     CRUSHED_STANDING_ROOM_ONLY = 4 [deprecated=true];
 
@@ -375,7 +368,6 @@ message VehiclePosition {
     // allowing passengers to board.
     FULL = 5;
 
-    // The vehicle is not accepting additional passengers.
     // Deprecated, if you need more granularity than the available enum please use occupancy_percentage
     NOT_ACCEPTING_PASSENGERS = 6 [deprecated=true];
 
