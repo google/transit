@@ -216,7 +216,8 @@ message TripUpdate {
       // stops, although not necessarily according to the times of the schedule.
       // At least one of arrival and departure must be provided. If the schedule
       // for this stop contains both arrival and departure times then so must
-      // this update.
+      // this update. Frequency-based trips (GTFS frequencies.txt with exact_times = 0)
+      // should not have a SCHEDULED value and should use UNSCHEDULED instead.
       SCHEDULED = 0;
 
       // The stop is skipped, i.e., the vehicle will not stop at this stop.
@@ -229,6 +230,14 @@ message TripUpdate {
       // stops in the trip are considered to be unspecified as well.
       // Neither arrival nor departure should be supplied.
       NO_DATA = 2;
+      
+      // The vehicle is operating a trip defined in GTFS frequencies.txt with exact_times = 0.
+      // This value should not be used for trips that are not defined in GTFS frequencies.txt,
+      // or trips in GTFS frequencies.txt with exact_times = 1. Trips containing StopTimeUpdates
+      // with ScheduleRelationship=UNSCHEDULED must also set TripDescriptor.ScheduleRelationship=UNSCHEDULED.
+      // NOTE: This field is still experimental, and subject to change. It may be
+      // formally adopted in the future.
+      UNSCHEDULED = 3;
     }
     optional ScheduleRelationship schedule_relationship = 5
         [default = SCHEDULED];
@@ -597,8 +606,8 @@ message TripDescriptor {
     // load.
     ADDED = 1;
 
-    // A trip that is running with no schedule associated to it, for example, if
-    // there is no schedule at all.
+    // A trip that is running with no schedule associated to it (GTFS frequencies.txt exact_times=0).
+    // Trips with ScheduleRelationship=UNSCHEDULED must also set all StopTimeUpdates.ScheduleRelationship=UNSCHEDULED.
     UNSCHEDULED = 2;
 
     // A trip that existed in the schedule but was removed.
