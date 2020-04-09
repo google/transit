@@ -213,6 +213,8 @@ Realtime positioning information for a given vehicle.
 | **timestamp** | [uint64](https://developers.google.com/protocol-buffers/docs/proto#scalar) | Optional | One | Moment at which the vehicle's position was measured. In POSIX time (i.e., number of seconds since January 1st 1970 00:00:00 UTC). |
 | **congestion_level** | [CongestionLevel](#enum-congestionlevel) | Optional | One |
 | _**occupancy_status**_ | _[OccupancyStatus](#enum-occupancystatus)_ | _Optional_ | One | The degree of passenger occupancy of the vehicle.<br>**Caution:** this field is still **experimental**, and subject to change. It may be formally adopted in the future.|
+| **occupancy_percentage** | [uint32](https://developers.google.com/protocol-buffers/docs/proto#scalar) | Optional | One | A percentage value representing the degree of passenger occupancy of the vehicle. The value 100 should represent total the maximum occupancy the vehicle was designed for including both seating and standing capacity. It's not impossible that the value goes over 100 if there are currently more passenger than the vehicle was designed for. The precision of precision should be low enough that you can't track a single person boarding and alighting for privacy reasons.<br>**Caution:** this field is still **experimental**, and subject to change. It may be formally adopted in the future. |
+
 
 ## _enum_ VehicleStopStatus
 
@@ -364,7 +366,7 @@ To specify a single trip instance, in many cases a `trip_id` by itself is suffic
 * If the trip lasts for more than 24 hours, or is delayed such that it would collide with a scheduled trip on the following day, then `start_date` is required in addition to `trip_id`
 * If the `trip_id` field can't be provided, then `route_id`, `direction_id`, `start_date`, and `start_time` must all be provided
 
-In all cases, if `route_id` is provided in addition to `trip_id`, then the `route_id` must be the same `route_id` as assigned to the given trip in GTFS trips.txt. 
+In all cases, if `route_id` is provided in addition to `trip_id`, then the `route_id` must be the same `route_id` as assigned to the given trip in GTFS trips.txt.
 
 The `trip_id` field cannot, by itself or in combination with other TripDescriptor fields, be used to identify multiple trip instances. For example, a TripDescriptor should never specify trip_id by itself for GTFS frequencies.txt exact_times=0 trips because start_time is also required to resolve to a single trip instance starting at a specific time of the day. If the TripDescriptor does not resolve to a single trip instance (i.e., it resolves to zero or multiple trip instances), it is considered an error and the entity containing the erroneous TripDescriptor may be discarded by consumers.
 

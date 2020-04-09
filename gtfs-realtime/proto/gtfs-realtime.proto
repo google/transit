@@ -230,7 +230,7 @@ message TripUpdate {
       // stops in the trip are considered to be unspecified as well.
       // Neither arrival nor departure should be supplied.
       NO_DATA = 2;
-      
+
       // The vehicle is operating a trip defined in GTFS frequencies.txt with exact_times = 0.
       // This value should not be used for trips that are not defined in GTFS frequencies.txt,
       // or trips in GTFS frequencies.txt with exact_times = 1. Trips containing StopTimeUpdates
@@ -392,6 +392,15 @@ message VehiclePosition {
 
   }
   optional OccupancyStatus occupancy_status = 9;
+
+  // A percentage value representing the degree of passenger occupancy of the vehicle.
+  // The values are represented as an integer without decimals. 0 means 0% and 100 means 100%.
+  // The value 100 should represent the total maximum occupancy the vehicle was designed for,
+  // including both seated and standing capacity.
+  // It is possible that the value goes over 100 if there are currently more passengers than what the vehicle was designed for.
+  // The precision of precision should be low enough that you can't track a single person boarding and alighting for privacy reasons.
+  // This field is still experimental, and subject to change. It may be formally adopted in the future.
+  optional uint32 occupancy_percentage = 10;
 
   // The extensions namespace allows 3rd-party developers to extend the
   // GTFS Realtime Specification in order to add and evaluate new features and
