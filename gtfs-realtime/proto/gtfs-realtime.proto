@@ -363,8 +363,8 @@ message VehiclePosition {
     // Deprecated, if you need more granularity than the available enum please use occupancy_percentage
     FEW_SEATS_AVAILABLE = 2 [deprecated=true];
 
-    // The vehicle can currently accommodate only standing passengers.
-    STANDING_ROOM_ONLY = 3;
+    // The vehicle can currently accommodate standing passengers.
+    STANDING_AVAILABLE = 3;
 
     // The vehicle can currently accommodate only standing passengers
     // and has limited space for them.
