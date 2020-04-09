@@ -243,7 +243,7 @@ The degree of passenger occupancy for the vehicle. OccupancyStatus should be use
 | _**Value**_ | _**Comment**_ |
 |-------------|---------------|
 | _**SEATS_AVAILABLE**_ | _The vehicle has seats available._ |
-| _**STANDING_ROOM_ONLY**_ | _The vehicle can currently accommodate only standing passengers._ |
+| _**STANDING_AVAILABLE**_ | _The vehicle can currently accommodate standing passengers._ |
 | _**FULL**_ | _The vehicle is considered full by most measures, but may still be allowing passengers to board._ |
 
 ## _message_ Alert
