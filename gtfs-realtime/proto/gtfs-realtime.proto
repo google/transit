@@ -478,7 +478,6 @@ message Alert {
   optional TranslatedString tts_description_text = 13;
 
   // Severity of this alert.
-  // This field is still experimental, and subject to change. It may be formally adopted in the future.
   enum SeverityLevel {
 	UNKNOWN_SEVERITY = 1;
 	INFO = 2;
