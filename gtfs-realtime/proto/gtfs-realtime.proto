@@ -240,7 +240,15 @@ message TripUpdate {
       UNSCHEDULED = 3;
     }
     optional ScheduleRelationship schedule_relationship = 5
-        [default = SCHEDULED];
+    [default = SCHEDULED];
+
+    // Provides the updated values for the stop time.
+    message StopTimeProperties {
+      // Supports real-time platform changes. Refers to a stop_id defined in the GTFS stops.txt. This stop_id must
+      // belong to the same station as the stop originally defined in GTFS stop_times.txt.
+      optional string platform_id = 1;
+    }
+    optional StopTimeProperties stop_time_properties = 6;
 
     // The extensions namespace allows 3rd-party developers to extend the
     // GTFS Realtime Specification in order to add and evaluate new features

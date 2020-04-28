@@ -49,6 +49,7 @@ Fields labeled as **experimental** are subject to change and not yet formally ad
             *   [StopTimeUpdate](#message-stoptimeupdate)
                 *   [StopTimeEvent](#message-stoptimeevent)
                 *   [ScheduleRelationship](#enum-schedulerelationship)
+                *   [StopTimeProperties](#message-stoptimeproperties)
         *   [VehiclePosition](#message-vehicleposition)
             *   [TripDescriptor](#message-tripdescriptor)
                 *   [ScheduleRelationship](#enum-schedulerelationship-1)
@@ -177,8 +178,8 @@ The update is linked to a specific stop either through stop_sequence or stop_id,
 
 | _**Field Name**_ | _**Type**_ | _**Required**_ | _**Cardinality**_ | _**Description**_ |
 |------------------|------------|----------------|-------------------|-------------------|
-| **stop_sequence** | [uint32](https://developers.google.com/protocol-buffers/docs/proto#scalar) | Conditionally required | One | Must be the same as in stop_times.txt in the corresponding GTFS feed.  Either stop_sequence or stop_id must be provided within a StopTimeUpdate - both fields cannot be empty.  stop_sequence is required for trips that visit the same stop_id more than once (e.g., a loop) to disambiguate which stop the prediction is for. |
-| **stop_id** | [string](https://developers.google.com/protocol-buffers/docs/proto#scalar) | Conditionally required | One | Must be the same as in stops.txt in the corresponding GTFS feed. Either stop_sequence or stop_id must be provided within a StopTimeUpdate - both fields cannot be empty. |
+| **stop_sequence** | [uint32](https://developers.google.com/protocol-buffers/docs/proto#scalar) | Conditionally required | One | Must be the same as in stop_times.txt in the corresponding GTFS feed.  Either stop_sequence or stop_id must be provided within a StopTimeUpdate - both fields cannot be empty.  stop_sequence is required for trips that visit the same stop_id more than once (e.g., a loop) to disambiguate which stop the prediction is for. The pairing of stop_sequence and stop_id must match the corresponding values in GTFS stop_times.txt for this trip. |
+| **stop_id** | [string](https://developers.google.com/protocol-buffers/docs/proto#scalar) | Conditionally required | One | Must be the same as in stops.txt in the corresponding GTFS feed. Either stop_sequence or stop_id must be provided within a StopTimeUpdate - both fields cannot be empty. The pairing of stop_sequence and stop_id must match the corresponding values in GTFS stop_times.txt for this trip. |
 | **arrival** | [StopTimeEvent](#message-stoptimeevent) | Conditionally required | One | If schedule_relationship is empty or SCHEDULED, either arrival or departure must be provided within a StopTimeUpdate - both fields cannot be empty. arrival and departure may both be empty when schedule_relationship is SKIPPED.  If schedule_relationship is NO_DATA, arrival and departure must be empty. |
 | **departure** | [StopTimeEvent](#message-stoptimeevent) | Conditionally required | One | If schedule_relationship is empty or SCHEDULED, either arrival or departure must be provided within a StopTimeUpdate - both fields cannot be empty. arrival and departure may both be empty when schedule_relationship is SKIPPED.  If schedule_relationship is NO_DATA, arrival and departure must be empty. |
 | **schedule_relationship** | [ScheduleRelationship](#enum-schedulerelationship) | Optional | One | The default relationship is SCHEDULED. |
@@ -195,6 +196,16 @@ The relation between this StopTime and the static schedule.
 | **SKIPPED** | The stop is skipped, i.e., the vehicle will not stop at this stop. Arrival and departure are optional. When set `SKIPPED` is not propagated to subsequent stops in the same trip (i.e., the vehicle will stop at subsequent stops in the trip unless those stops also have a `stop_time_update` with `schedule_relationship: SKIPPED`). Delay from a previous stop in the trip *does* propagate over the `SKIPPED` stop. In other words, if a `stop_time_update` with an `arrival` or `departure` prediction is not set for a stop after the `SKIPPED` stop, the prediction upstream of the `SKIPPED` stop will be propagated to the stop after the `SKIPPED` stop and subsequent stops in the trip until a `stop_time_update` for a subsequent stop is provided.  |
 | **NO_DATA** | No data is given for this stop. It indicates that there is no realtime information available. When set NO_DATA is propagated through subsequent stops so this is the recommended way of specifying from which stop you do not have realtime information. When NO_DATA is set neither arrival nor departure should be supplied. |
 | **UNSCHEDULED** | The vehicle is operating a frequency-based trip (GTFS frequencies.txt with exact_times = 0). This value should not be used for trips that are not defined in GTFS frequencies.txt, or trips in GTFS frequencies.txt with exact_times = 1. Trips containing `stop_time_updates` with `schedule_relationship: UNSCHEDULED` must also set the TripDescriptor `schedule_relationship: UNSCHEDULED` <br>**Caution:** this field is still **experimental**, and subject to change. It may be formally adopted in the future.<br>.
+
+## _message_ StopTimeProperties
+
+Realtime update for certain properties defined within GTFS stop_times.txt. 
+
+#### Fields
+
+| _**Field Name**_ | _**Type**_ | _**Required**_ | _**Cardinality**_ | _**Description**_ |
+|------------------|------------|----------------|-------------------|-------------------|
+| **platform_id** | [string](https://developers.google.com/protocol-buffers/docs/proto#scalar) | Optional | One | Supports real-time platform changes at stations. Refers to a stop_id defined in the GTFS stops.txt. This stop_id must belong to the same station as the stop originally defined in GTFS stop_times.txt for the `stop_sequence` defined in the StopTimeUpdate. If this field is populated, StopTimeUpdate `stop_sequence` must be populated and StopTimeUpdate `stop_id` should not be populated. |
 
 ## _message_ VehiclePosition
 
