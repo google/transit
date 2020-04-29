@@ -296,6 +296,22 @@ message TripUpdate {
   // formally adopted in the future.
   optional int32 delay = 5;
 
+  // Defines updated properties of the trip
+  message TripProperties {
+    // Defines the identifier of a new trip that is a duplicate of an existing trip defined in (CSV) GTFS trips.txt
+    // but will start at a different service date and/or time (defined using the TripProperties.start_date and
+    // TripProperties.start_time fields). See definition of trips.trip_id in (CSV) GTFS. Its value must be different
+    // than the ones used in the (CSV) GTFS. Required if schedule_relationship=DUPLICATED, forbidden otherwise.
+    optional string trip_id = 1;
+    // Service date on which the DUPLICATED trip will be run, in YYYYMMDD format. Required if
+    // schedule_relationship=DUPLICATED, forbidden otherwise.
+    optional string start_date = 2;
+    // Departure start time of the trip when it’s duplicated. See definition of stop_times.departure_time in (CSV) GTFS.
+    // Required if schedule_relationship=DUPLICATED, forbidden otherwise.
+    optional string start_time = 3;
+  }
+  optional TripProperties trip_properties = 6;
+
   // The extensions namespace allows 3rd-party developers to extend the
   // GTFS Realtime Specification in order to add and evaluate new features and
   // modifications to the spec.
@@ -564,7 +580,8 @@ message TripDescriptor {
   // The trip_id from the GTFS feed that this selector refers to.
   // For non frequency-based trips, this field is enough to uniquely identify
   // the trip. For frequency-based trip, start_time and start_date might also be
-  // necessary.
+  // necessary. When schedule_relationship is DUPLICATED, the trip_id identifies the trip from static GTFS to be
+  // duplicated.
   optional string trip_id = 1;
 
   // The route_id from the GTFS that this selector refers to.
@@ -613,7 +630,7 @@ message TripDescriptor {
     // An extra trip that was added in addition to a running schedule, for
     // example, to replace a broken vehicle or to respond to sudden passenger
     // load.
-    ADDED = 1;
+    ADDED = 1 [deprecated = true];
 
     // A trip that is running with no schedule associated to it (GTFS frequencies.txt exact_times=0).
     // Trips with ScheduleRelationship=UNSCHEDULED must also set all StopTimeUpdates.ScheduleRelationship=UNSCHEDULED.
@@ -623,7 +640,17 @@ message TripDescriptor {
     CANCELED = 3;
 
     // Should not be used - for backwards-compatibility only.
-    REPLACEMENT = 5 [deprecated=true];
+    REPLACEMENT = 5 [deprecated = true];
+
+    // An extra trip that was added in addition to a running schedule, for example, to replace a broken vehicle or to
+    // respond to sudden passenger load. Used with TripProperties.trip_id, TripProperties.start_date, and
+    // TripProperties.start_time to copy an existing trip from static GTFS but start at a different service
+    // date and/or time. Duplicating a trip is allowed if the service related to the original trip in (CSV) GTFS
+    // (in calendar.txt or calendar_dates.txt) is operating within the next 30 days. The trip to be duplicated is
+    // identified via TripDescriptor.trip_id. This enumeration does not modify the existing trip referenced by
+    // TripDescriptor.trip_id - if a producer wants to cancel the original trip, it must publish a separate TripUpdate
+    // with the value of CANCELED.
+    DUPLICATED = 6;
   }
   optional ScheduleRelationship schedule_relationship = 4;
 

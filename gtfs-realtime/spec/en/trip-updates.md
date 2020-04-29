@@ -1,4 +1,4 @@
-Trip updates represent fluctuations in the timetable. We would expect to receive trip updates for all trips you have scheduled that are realtime-capable. These updates would give a predicted arrival or departure time for stops along the route. Trip updates can also provide for more complex scenarios where trips are canceled or added to the schedule, or even re-routed.
+Trip updates represent fluctuations in the timetable. We would expect to receive trip updates for all trips you have scheduled that are realtime-capable. These updates would give a predicted arrival or departure time for stops along the route.
 
 **Reminder:** In [GTFS](https://developers.google.com/transit/gtfs/), a trip is a sequence of two of more stops occurring at a specific time.
 
@@ -55,9 +55,9 @@ The information provided by the trip descriptor depends on the schedule relation
 |_**Value**_|_**Comment**_|
 |-----------|-------------|
 | **Scheduled** | This trip is running according to a GTFS schedule, or is close enough to still be associated with it. |
-| **Added** | This trip was not scheduled and has been added. For example, to cope with demand, or replace a broken down vehicle. |
 | **Unscheduled** | This trip is running and is never associated with a schedule. For example, if there is no schedule and the buses run on a shuttle service. |
 | **Canceled** | This trip was scheduled, but is now removed. |
+| **Duplicated** | This new trip is a copy of an existing trip in static GTFS. The new trip will run at the service date and time specified in TripProperties. |
 
 In most cases, you should provide the trip_id of the scheduled trip in GTFS that this update relates to.
 
