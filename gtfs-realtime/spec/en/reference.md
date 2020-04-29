@@ -205,7 +205,7 @@ Realtime update for certain properties defined within GTFS stop_times.txt.
 
 | _**Field Name**_ | _**Type**_ | _**Required**_ | _**Cardinality**_ | _**Description**_ |
 |------------------|------------|----------------|-------------------|-------------------|
-| **platform_id** | [string](https://developers.google.com/protocol-buffers/docs/proto#scalar) | Optional | One | Supports real-time platform changes at stations. Refers to a stop_id defined in the GTFS stops.txt. This stop_id must belong to the same station as the stop originally defined in GTFS stop_times.txt for the `stop_sequence` defined in the StopTimeUpdate. If this field is populated, StopTimeUpdate `stop_sequence` must be populated and StopTimeUpdate `stop_id` should not be populated. |
+| **platform_id** | [string](https://developers.google.com/protocol-buffers/docs/proto#scalar) | Optional | One | Supports real-time platform changes at stations. Refers to a stop_id defined in the GTFS stops.txt which must have the `location_type` of `0` or blank. This stop_id must belong to the same station as the stop originally defined in GTFS stop_times.txt for the `stop_sequence` defined in the StopTimeUpdate. If this field is populated, StopTimeUpdate `stop_sequence` must be populated and StopTimeUpdate `stop_id` should not be populated. |
 
 ## _message_ VehiclePosition
 
