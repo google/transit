@@ -86,8 +86,6 @@ This specification defines the following files:
 |  [feed_info.txt](#feed_infotxt)  | Optional | Dataset metadata, including publisher, version, and expiration information. |
 |  [attributions.txt](#attributionstxt)  | Optional | Dataset attributions. |
 
-[translations.txt](#translationstxt)
-
 ## File Requirements
 
 The following requirements apply to the format and contents of the dataset files:
