@@ -183,6 +183,7 @@ The update is linked to a specific stop either through stop_sequence or stop_id,
 | **arrival** | [StopTimeEvent](#message-stoptimeevent) | Conditionally required | One | If schedule_relationship is empty or SCHEDULED, either arrival or departure must be provided within a StopTimeUpdate - both fields cannot be empty. arrival and departure may both be empty when schedule_relationship is SKIPPED.  If schedule_relationship is NO_DATA, arrival and departure must be empty. |
 | **departure** | [StopTimeEvent](#message-stoptimeevent) | Conditionally required | One | If schedule_relationship is empty or SCHEDULED, either arrival or departure must be provided within a StopTimeUpdate - both fields cannot be empty. arrival and departure may both be empty when schedule_relationship is SKIPPED.  If schedule_relationship is NO_DATA, arrival and departure must be empty. |
 | **schedule_relationship** | [ScheduleRelationship](#enum-schedulerelationship) | Optional | One | The default relationship is SCHEDULED. |
+| **stop_time_properties** | [StopTimeProperties](#message-stoptimeproperties) | Optional | One | Realtime updates for certain properties defined within GTFS stop_times.txt |
 
 ## _enum_ ScheduleRelationship
 
