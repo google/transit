@@ -630,7 +630,7 @@ message TripDescriptor {
     // An extra trip that was added in addition to a running schedule, for
     // example, to replace a broken vehicle or to respond to sudden passenger
     // load.
-    ADDED = 1 [deprecated = true];
+    ADDED = 1;
 
     // A trip that is running with no schedule associated to it (GTFS frequencies.txt exact_times=0).
     // Trips with ScheduleRelationship=UNSCHEDULED must also set all StopTimeUpdates.ScheduleRelationship=UNSCHEDULED.

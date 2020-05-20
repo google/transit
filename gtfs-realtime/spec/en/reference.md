@@ -130,7 +130,7 @@ Depending on the value of ScheduleRelationship, a TripUpdate can specify:
 
 *   A trip that proceeds along the schedule.
 *   A trip that proceeds along a route but has no fixed schedule.
-*   A trip that has been canceled.
+*   A trip that has been added or removed with regard to schedule.
 *   A new trip that is a copy of an existing trip in static GTFS. It will run at the service date and time specified in TripProperties.
 
 The updates can be for future, predicted arrival/departure events, or for past events that already occurred. In most cases information about past events is a measured value thus its uncertainty value is recommended to be 0\. Although there could be cases when this does not hold so it is allowed to have uncertainty value different from 0 for past events. If an update's uncertainty is not 0, either the update is an approximate prediction for a trip that has not completed or the measurement is not precise or the update was a prediction for the past that has not been verified after the event occurred.
@@ -402,16 +402,17 @@ TripDescriptor.route_id cannot be used within an Alert EntitySelector to specify
 
 ## _enum_ ScheduleRelationship
 
-The relation between this trip and the static schedule.
+The relation between this trip and the static schedule. If a trip is done in accordance with temporary schedule, not reflected in GTFS, then it shouldn't be marked as SCHEDULED, but marked as ADDED.
 
 #### Values
 
 | _**Value**_ | _**Comment**_ |
 |-------------|---------------|
 | **SCHEDULED** | Trip that is running in accordance with its GTFS schedule, or is close enough to the scheduled trip to be associated with it. |
+| **ADDED** | An extra trip that was added in addition to a running schedule, for example, to replace a broken vehicle or to respond to sudden passenger load. |
 | **UNSCHEDULED** | A trip that is running with no schedule associated to it - this value is used to identify trips defined in GTFS frequencies.txt with exact_times = 0. It should not be used to describe trips not defined in GTFS frequencies.txt, or trips in GTFS frequencies.txt with exact_times = 1. Trips with `schedule_relationship: UNSCHEDULED` must also set all StopTimeUpdates `schedule_relationship: UNSCHEDULED`|
 | **CANCELED** | A trip that existed in the schedule but was removed. |
-| **DUPLICATED** | An extra trip that was added in addition to a running schedule, for example, to replace a broken vehicle or to respond to sudden passenger load. Used with `TripProperties.trip_id`, `TripProperties.start_date`, and `TripProperties.start_time` to copy an existing trip from static GTFS but start at a different service date and/or time. Duplicating a trip is allowed if the service related to the original trip in (CSV) GTFS (in `calendar.txt` or `calendar_dates.txt`) is operating today or within the next 30 days. The trip to be duplicated from (CSV) GTFS is identified via `TripDescriptor.trip_id`. This enumeration does not modify the existing trip referenced by `TripDescriptor.trip_id` - if a producer wants to cancel the original trip, it must publish a separate TripUpdate with the value of `CANCELED`. |
+| **DUPLICATED** | A new trip that is the same as an existing scheduled trip except for service start date and time. Used with `TripProperties.trip_id`, `TripProperties.start_date`, and `TripProperties.start_time` to copy an existing trip from static GTFS but start at a different service date and/or time. Duplicating a trip is allowed if the service related to the original trip in (CSV) GTFS (in `calendar.txt` or `calendar_dates.txt`) is operating today or within the next 30 days. The trip to be duplicated from (CSV) GTFS is identified via `TripDescriptor.trip_id`. This enumeration does not modify the existing trip referenced by `TripDescriptor.trip_id` - if a producer wants to cancel the original trip, it must publish a separate TripUpdate with the value of `CANCELED`. |
 
 ## _message_ VehicleDescriptor
 
