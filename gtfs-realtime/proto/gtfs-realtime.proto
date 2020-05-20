@@ -240,7 +240,7 @@ message TripUpdate {
       UNSCHEDULED = 3;
     }
     optional ScheduleRelationship schedule_relationship = 5
-    [default = SCHEDULED];
+        [default = SCHEDULED];
 
     // Provides the updated values for the stop time.
     message StopTimeProperties {
