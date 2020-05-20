@@ -301,13 +301,14 @@ message TripUpdate {
     // Defines the identifier of a new trip that is a duplicate of an existing trip defined in (CSV) GTFS trips.txt
     // but will start at a different service date and/or time (defined using the TripProperties.start_date and
     // TripProperties.start_time fields). See definition of trips.trip_id in (CSV) GTFS. Its value must be different
-    // than the ones used in the (CSV) GTFS. Required if schedule_relationship=DUPLICATED, forbidden otherwise.
+    // than the ones used in the (CSV) GTFS. Required if schedule_relationship=DUPLICATED, otherwise this field must not
+    // be populated and will be ignored by consumers.
     optional string trip_id = 1;
     // Service date on which the DUPLICATED trip will be run, in YYYYMMDD format. Required if
-    // schedule_relationship=DUPLICATED, forbidden otherwise.
+    // schedule_relationship=DUPLICATED, otherwise this field must not be populated and will be ignored by consumers.
     optional string start_date = 2;
     // Departure start time of the trip when it’s duplicated. See definition of stop_times.departure_time in (CSV) GTFS.
-    // Required if schedule_relationship=DUPLICATED, forbidden otherwise.
+    // Required if schedule_relationship=DUPLICATED, otherwise this field must not be populated and will be ignored by consumers.
     optional string start_time = 3;
   }
   optional TripProperties trip_properties = 6;
