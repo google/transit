@@ -203,6 +203,8 @@ The relation between this StopTime and the static schedule.
 
 Defines updated properties of the trip
 
+**Caution:** this message is still **experimental**, and subject to change. It may be formally adopted in the future.<br>.
+
 #### Fields
 
 | _**Field Name**_ | _**Type**_ | _**Required**_ | _**Cardinality**_ | _**Description**_ |
