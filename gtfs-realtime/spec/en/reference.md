@@ -183,7 +183,7 @@ The update is linked to a specific stop either through stop_sequence or stop_id,
 | **arrival** | [StopTimeEvent](#message-stoptimeevent) | Conditionally required | One | If schedule_relationship is empty or SCHEDULED, either arrival or departure must be provided within a StopTimeUpdate - both fields cannot be empty. arrival and departure may both be empty when schedule_relationship is SKIPPED.  If schedule_relationship is NO_DATA, arrival and departure must be empty. |
 | **departure** | [StopTimeEvent](#message-stoptimeevent) | Conditionally required | One | If schedule_relationship is empty or SCHEDULED, either arrival or departure must be provided within a StopTimeUpdate - both fields cannot be empty. arrival and departure may both be empty when schedule_relationship is SKIPPED.  If schedule_relationship is NO_DATA, arrival and departure must be empty. |
 | **schedule_relationship** | [ScheduleRelationship](#enum-schedulerelationship) | Optional | One | The default relationship is SCHEDULED. |
-| **stop_time_properties** | [StopTimeProperties](#message-stoptimeproperties) | Optional | One | Realtime updates for certain properties defined within GTFS stop_times.txt |
+| **stop_time_properties** | [StopTimeProperties](#message-stoptimeproperties) | Optional | One | Realtime updates for certain properties defined within GTFS stop_times.txt <br>**Caution:** this field is still **experimental**, and subject to change. It may be formally adopted in the future.<br>. |
 
 ## _enum_ ScheduleRelationship
 
@@ -200,13 +200,15 @@ The relation between this StopTime and the static schedule.
 
 ## _message_ StopTimeProperties
 
-Realtime update for certain properties defined within GTFS stop_times.txt. 
+Realtime update for certain properties defined within GTFS stop_times.txt.
+
+**Caution:** this message is still **experimental**, and subject to change. It may be formally adopted in the future.<br>. 
 
 #### Fields
 
 | _**Field Name**_ | _**Type**_ | _**Required**_ | _**Cardinality**_ | _**Description**_ |
 |------------------|------------|----------------|-------------------|-------------------|
-| **platform_id** | [string](https://developers.google.com/protocol-buffers/docs/proto#scalar) | Optional | One | Supports real-time platform changes at stations. Refers to a stop_id defined in the GTFS stops.txt which must have the `location_type` of `0` or blank. This stop_id must belong to the same station as the stop originally defined in GTFS stop_times.txt for the `stop_sequence` defined in the StopTimeUpdate. If this field is populated, StopTimeUpdate `stop_sequence` must be populated and StopTimeUpdate `stop_id` should not be populated. |
+| **platform_id** | [string](https://developers.google.com/protocol-buffers/docs/proto#scalar) | Optional | One | Supports real-time platform changes at stations. Refers to a stop_id defined in the GTFS stops.txt which must have the `location_type` of `0` or blank. This stop_id must belong to the same station as the stop originally defined in GTFS stop_times.txt for the `stop_sequence` defined in the StopTimeUpdate. If this field is populated, StopTimeUpdate `stop_sequence` must be populated and StopTimeUpdate `stop_id` should not be populated. <br>**Caution:** this field is still **experimental**, and subject to change. It may be formally adopted in the future.<br>. |
 
 ## _message_ VehiclePosition
 
