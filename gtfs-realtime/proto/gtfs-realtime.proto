@@ -658,6 +658,7 @@ message TripDescriptor {
     // NOTE: This field is still experimental, and subject to change. It may be formally adopted in the future.
     DUPLICATED = 6;
   }
+  // NOTE: This field is still experimental, and subject to change. It may be formally adopted in the future.
   optional ScheduleRelationship schedule_relationship = 4;
 
   // The extensions namespace allows 3rd-party developers to extend the
