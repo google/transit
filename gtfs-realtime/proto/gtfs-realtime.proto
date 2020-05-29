@@ -297,18 +297,22 @@ message TripUpdate {
   optional int32 delay = 5;
 
   // Defines updated properties of the trip
+  // NOTE: This message is still experimental, and subject to change. It may be formally adopted in the future.
   message TripProperties {
     // Defines the identifier of a new trip that is a duplicate of an existing trip defined in (CSV) GTFS trips.txt
     // but will start at a different service date and/or time (defined using the TripProperties.start_date and
     // TripProperties.start_time fields). See definition of trips.trip_id in (CSV) GTFS. Its value must be different
     // than the ones used in the (CSV) GTFS. Required if schedule_relationship=DUPLICATED, otherwise this field must not
     // be populated and will be ignored by consumers.
+    // NOTE: This field is still experimental, and subject to change. It may be formally adopted in the future.
     optional string trip_id = 1;
     // Service date on which the DUPLICATED trip will be run, in YYYYMMDD format. Required if
     // schedule_relationship=DUPLICATED, otherwise this field must not be populated and will be ignored by consumers.
+    // NOTE: This field is still experimental, and subject to change. It may be formally adopted in the future.
     optional string start_date = 2;
     // Departure start time of the trip when it’s duplicated. See definition of stop_times.departure_time in (CSV) GTFS.
     // Required if schedule_relationship=DUPLICATED, otherwise this field must not be populated and will be ignored by consumers.
+    // NOTE: This field is still experimental, and subject to change. It may be formally adopted in the future.
     optional string start_time = 3;
   }
   optional TripProperties trip_properties = 6;
@@ -651,6 +655,7 @@ message TripDescriptor {
     // identified via TripDescriptor.trip_id. This enumeration does not modify the existing trip referenced by
     // TripDescriptor.trip_id - if a producer wants to cancel the original trip, it must publish a separate TripUpdate
     // with the value of CANCELED.
+    // NOTE: This field is still experimental, and subject to change. It may be formally adopted in the future.
     DUPLICATED = 6;
   }
   optional ScheduleRelationship schedule_relationship = 4;
