@@ -63,10 +63,6 @@ Every new feature adds complexity to the creation and reading of feeds. Therefor
 
 * Defined text-to-speech field and added `tts_stop_name` to `stops.txt`. See [discussion](https://github.com/google/transit/pull/49).
 
-#### March 20, 2020
-
-* Added recommendation for handling TripUpdate predictions for multiple trips in the same block. See [discussion](https://github.com/google/transit/pull/206).
-
 #### February 5, 2020
 
 * Added trolleybus and monorail `route_types`. See [discussion](https://github.com/google/transit/pull/174).
@@ -111,7 +107,7 @@ Every new feature adds complexity to the creation and reading of feeds. Therefor
 
 #### October 2, 2018
 
-* Factorized field types for concision.  See [discussion](https://github.com/google/transit/pull/104).
+* Factorized field types for conciseness.  See [discussion](https://github.com/google/transit/pull/104).
 
 #### September 4, 2018
 
