@@ -394,7 +394,7 @@ The relation between this trip and the static schedule. If a trip is done in acc
 | _**Value**_ | _**Comment**_ |
 |-------------|---------------|
 | **SCHEDULED** | Trip that is running in accordance with its GTFS schedule, or is close enough to the scheduled trip to be associated with it. |
-| **ADDED** | An extra trip that was added in addition to a running schedule, for example, to replace a broken vehicle or to respond to sudden passenger load. |
+| **ADDED** | An extra trip that was added in addition to a running schedule, for example, to replace a broken vehicle or to respond to sudden passenger load. *NOTE: Currently, behavior is unspecified for feeds that use this mode. There are discussions on the GTFS GitHub [(1)](https://github.com/google/transit/issues/106) [(2)](https://github.com/google/transit/pull/221) [(3)](https://github.com/google/transit/pull/219) around fully specifying or deprecating ADDED trips and the documentation will be updated when those discussions are finalized.* |
 | **UNSCHEDULED** | A trip that is running with no schedule associated to it - this value is used to identify trips defined in GTFS frequencies.txt with exact_times = 0. It should not be used to describe trips not defined in GTFS frequencies.txt, or trips in GTFS frequencies.txt with exact_times = 1. Trips with `schedule_relationship: UNSCHEDULED` must also set all StopTimeUpdates `schedule_relationship: UNSCHEDULED`|
 | **CANCELED** | A trip that existed in the schedule but was removed. |
 
