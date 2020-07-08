@@ -22,4 +22,4 @@ jobs:
     - name: Install Protoc
       uses: arduino/setup-protoc@master
     - name: Compile Java bindings
-      run: protoc --java_out=temp gtfs-realtime/proto/gtfs-realtime.proto
+      run: protoc --java_out=gtfs-realtime/proto gtfs-realtime/proto/gtfs-realtime.proto
