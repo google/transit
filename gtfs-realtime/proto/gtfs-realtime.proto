@@ -211,7 +211,7 @@ message TripUpdate {
     optional StopTimeEvent departure = 3;
 
     // The relation between this StopTime and the static schedule.
-    enum ScheduleRelationship {
+    enum ScheduleRelationship 
       // The vehicle is proceeding in accordance with its static schedule of
       // stops, although not necessarily according to the times of the schedule.
       // At least one of arrival and departure must be provided. If the schedule
