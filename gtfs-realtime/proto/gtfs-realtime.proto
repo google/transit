@@ -668,6 +668,9 @@ message TripDescriptor {
     // equal to 0 cannot be duplicated. The VehiclePosition.TripDescriptor.trip_id for the new trip must contain
     // the matching value from TripUpdate.TripProperties.trip_id and VehiclePosition.TripDescriptor.ScheduleRelationship
     // must also be set to DUPLICATED.
+    // Existing producers and consumers that were using the ADDED enumeration to represent duplicated trips must follow
+    // the migration guide (https://github.com/google/transit/tree/master/gtfs-realtime/spec/en/examples/migration-duplicated.md)
+    // to transition to the DUPLICATED enumeration.
     // NOTE: This field is still experimental, and subject to change. It may be formally adopted in the future.
     DUPLICATED = 6;
   }
