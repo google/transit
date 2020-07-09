@@ -23,8 +23,8 @@ entity {
     trip: {
       trip_id: "1" // <-- trip_id from static GTFS to copy
       schedule_relationship: ADDED
-      start_date: "20200821" // <-- Defines the new trip date
-      start_time: "11:30:00" // <-- Defines the new trip time
+      start_date: "20200821" // <-- New trip date
+      start_time: "11:30:00" // <-- New trip time
     }
     stop_time_update {
 	...
@@ -44,9 +44,9 @@ entity {
       schedule_relationship: DUPLICATED
     }
     trip_properties {
-      trip_id: "NewTripId987" // new trip_id unique to this trip
-      start_date: "20200821"  // new trip date
-      start_time: "11:30:00"  // new trip time
+      trip_id: "NewTripId987" // <-- New trip_id unique to this trip
+      start_date: "20200821"  // <-- New trip date
+      start_time: "11:30:00"  // <-- New trip time
     }
     stop_time_update {
 	...
