@@ -613,6 +613,10 @@ message TripDescriptor {
     // An extra trip that was added in addition to a running schedule, for
     // example, to replace a broken vehicle or to respond to sudden passenger
     // load.
+    // NOTE: Currently, behavior is unspecified for feeds that use this mode. There are discussions on the GTFS GitHub
+    // [(1)](https://github.com/google/transit/issues/106) [(2)](https://github.com/google/transit/pull/221)
+    // [(3)](https://github.com/google/transit/pull/219) around fully specifying or deprecating ADDED trips and the
+    // documentation will be updated when those discussions are finalized.
     ADDED = 1;
 
     // A trip that is running with no schedule associated to it (GTFS frequencies.txt exact_times=0).
