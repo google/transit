@@ -390,6 +390,10 @@ message VehiclePosition {
     // The vehicle is not accepting additional passengers.
     NOT_ACCEPTING_PASSENGERS = 6;
 
+    // Used in context of multi car crowding. There is no data available for this car in this vehicle
+    // Useful for padding, in case a vehicle composed of several cars has data available only for some of those
+    NO_DATA_AVAILABLE = 7;
+
   }
   optional OccupancyStatus occupancy_status = 9;
 
@@ -401,6 +405,32 @@ message VehiclePosition {
   // The precision of occupancy_percentage should be low enough that you can't track a single person boarding and alighting for privacy reasons.
   // This field is still experimental, and subject to change. It may be formally adopted in the future.
   optional uint32 occupancy_percentage = 10;
+
+  // Car specific details, used for vehicles composed of several cars
+  message CarDetails {
+
+    // Occupancy status for this given car, in this vehicle
+    optional OccupancyStatus occupancy_status = 1;
+
+    // Occupancy percentage for this given car, in this vehicle
+    // Follows the same rules as "VehiclePosition.occupancy_percentage"
+    // In addition, value -1 will be used to determine that crowding percentage is currently not available for this given car
+    // -1 is useful for padding, in case a vehicle composed of several cars has data available only for some of those
+    optional int32 occupancy_percentage = 2;
+
+    // The extensions namespace allows 3rd-party developers to extend the
+    // GTFS Realtime Specification in order to add and evaluate new features and
+    // modifications to the spec.
+    extensions 1000 to 1999;
+
+    // The following extension IDs are reserved for private use by any organization.
+    extensions 9000 to 9999;
+  }
+
+  // Details of the multiple cars of this given vehicle.
+  // The first occurence represents the first car of the vehicle, given the current direction of travel. 
+  // The number of occurrences of the multi_car_details field represents the number of cars of the vehicle.
+  repeated CarDetails multi_car_details = 11;
 
   // The extensions namespace allows 3rd-party developers to extend the
   // GTFS Realtime Specification in order to add and evaluate new features and
@@ -470,9 +500,11 @@ message Alert {
   optional TranslatedString description_text = 11;
 
   // Text for alert header to be used in text-to-speech implementations. This field is the text-to-speech version of header_text.
+  // This field is still experimental, and subject to change. It may be formally adopted in the future.
   optional TranslatedString tts_header_text = 12;
 
   // Text for full description for the alert to be used in text-to-speech implementations. This field is the text-to-speech version of description_text.
+  // This field is still experimental, and subject to change. It may be formally adopted in the future.
   optional TranslatedString tts_description_text = 13;
 
   // Severity of this alert.
