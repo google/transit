@@ -390,7 +390,7 @@ message VehiclePosition {
     // The vehicle is not accepting additional passengers.
     NOT_ACCEPTING_PASSENGERS = 6;
 
-    // Used in context of multi car crowding. There is no data available for this car in this vehicle
+    // There is no data available for this car in this vehicle. Used in context of multi car crowding. 
     // Useful for padding, in case a vehicle composed of several cars has data available only for some of those
     NO_DATA_AVAILABLE = 7;
 
