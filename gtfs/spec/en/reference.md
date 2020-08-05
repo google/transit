@@ -237,6 +237,7 @@ File: **Conditionally required**
 |  `sunday` | Enum | **Required** | Functions in the same way as `monday` except applies to Sundays. |
 |  `start_date` | Date | **Required** | Start service day for the service interval. |
 |  `end_date` | Date | **Required** | End service day for the service interval. This service day is included in the interval. |
+|  `service_type` | Enum | Optional | Indicates the type of service that the `service_id` is describing. Valid options are:<br><br>`0` or empty - The `service_id` is used for describing the days that a trip is in service.<br>`1` - the `service_id` is used for describing occupancies on different days.
 
 ### calendar_dates.txt
 
@@ -446,9 +447,9 @@ File: **Optional**
 | ----- | ----- | ----- | ----- |
 | `occupancy_pattern_id` | ID | **Required** | Identifies an occupancy pattern. |
 | `occupancy_id` | ID referencing `occupancies.occupancy_id` | **Required** | Identifies the occupancy profile for the `occupancy_pattern_id`.<br><br>Multiple `occupancy_id` can share the same `occupancy_pattern_id`. |
-| `service_id` | ID referencing `calendars.service_id` | Optional | Identifies the day(s) of the week that the occupancy pattern applies. |
-| `parent_id` | ID referencing `vehicle_couplings.parent_id` | Optional | Identifies a parent vehicle that has 2 or more child vehicles. | 
-| `child_sequence` | Non-negative Integer referencing `vehicle_couplings.child_sequence` | Conditionally Required | Denotes the location of the child vehicle from the beginning of the parent vehicle for which the `occupancy_pattern_id` is being described.<br><br>Many `child_sequence` may be defined for the same `occupancy_pattern_id`.<br><br>The `occupancy_pattern_id` applies to subsequent `child_sequence` for omitted entries.<br><br>Conditionally Required if `parent_id` is defined. |
+| `service_id` | ID referencing `calendars.service_id` | Optional | Identifies the day(s) of the week that the occupancy pattern applies. Valid for `service_id` where `calendars.service_type=1`. |
+| `parent_vehicle_id` | ID referencing `vehicle_couplings.parent_id` | Optional | Identifies a parent vehicle that has 2 or more child vehicles. | 
+| `child_vehicle_sequence` | Non-negative Integer referencing `vehicle_couplings.child_sequence` | Conditionally Required | Denotes the location of the child vehicle from the beginning of the parent vehicle for which the `occupancy_pattern_id` is being described.<br><br>Many `child_sequence` may be defined for the same `occupancy_pattern_id`.<br><br>The `occupancy_pattern_id` applies to subsequent `child_sequence` for omitted entries.<br><br>Conditionally Required if `parent_id` is defined. |
 
 ### vehicle_couplings.txt
 
@@ -456,5 +457,5 @@ File: **Optional**
 
 | Field Name | Type | Required | Description |
 | ----- | ----- | ----- | ----- |
-| `parent_id` | ID | **Required** | Identifies a parent vehicle with 2 or more child vehicles. |
-| `child_sequence` | Non-negative Integer | **Required** | Denotes the location of the child vehicle from the beginning of the parent vehicle. The order number must be a non-negative integer increasing along the vehicle. |
+| `parent_vehicle_id` | ID | **Required** | Identifies a parent vehicle with 2 or more child vehicles. |
+| `child_vehicle_sequence` | Non-negative Integer | **Required** | Denotes the location of the child vehicle from the beginning of the parent vehicle. The order number must be a non-negative integer increasing along the vehicle. |
