@@ -378,16 +378,20 @@ Describe the different levels of a station. Is mostly useful when used in conjun
 
 File: **Optional**
 
+The file describes mean occupancy profiles of vehicles at boarding time.
+
 | Field Name | Type | Required | Description |
 | ----- | ----- | ----- | ----- |
 | `occupancy_id` | ID | **Required** | Identifies an occupancy profile. |
 | `mean_occupancy_percentage` | Integer | **Required** | Describes the mean occupancy percentage of the vehicle at boarding time. <br><br> Valid percentage values are greater than or equal to `0`. The value `100` should represent the total maximum occupancy the vehicle was designed for, according to the `occupancy_type`, and current operating regulations allow. <br><br> It is possible that the value goes over `100` if the occupancy is greater than what the vehicle was designed for. The degree of precision should be low enough that you can't track a single rider boarding and alighting for privacy reasons. <br><br> A value of `-1` indicates that the vehicle is likely not accepting riders for this `occupancy_type`. |
-| `mean_occupancy_status` | Enum | **Conditionally Required** | Describes the nominal degree of passenger occupancy for the vehicle. This field refers to the GTFS Realtime [`OccupancyStatus`](http://gtfs.org/reference/realtime/v2/#enum-occupancystatus) enums. <br><br> `0` - Empty. The vehicle is considered empty by most measures, and has few or no passengers onboard, but is still accepting passengers. <br> `1` - Many seats available. The vehicle has a large percentage of seats available. What percentage of free seats out of the total seats available is to be considered large enough to fall into this category is determined at the discretion of the producer. <br> `2` - Few seats available. The vehicle has a small percentage of seats available. What percentage of free seats out of the total seats available is to be considered small enough to fall into this category is determined at the discretion of the producer. <br> `3` - Standing room only. The vehicle can currently accommodate only standing passengers. <br> `4` - Crushed standing room only. The vehicle can currently accommodate only standing passengers and has limited space for them. <br> `5` - Full. The vehicle is considered full by most measures, but may still be allowing passengers to board. <br> `6` - Not accepting passengers. The vehicle can not accept passengers. <br><br> Conditionally Required: <br> - **Required** if `occupancy_type=0`, or if `occupancy_type` is empty or not provided. <br> - Forbidden otherwise. |
+| `mean_occupancy_status` | Enum | **Conditionally Required** | Describes the nominal degree of rider occupancy for the vehicle at boarding time. This field refers to the GTFS Realtime [`OccupancyStatus`](http://gtfs.org/reference/realtime/v2/#enum-occupancystatus) enums. <br><br> `0` - Empty. The vehicle is considered empty by most measures, and has few or no passengers onboard, but is still accepting passengers. <br> `1` - Many seats available. The vehicle has a large percentage of seats available. What percentage of free seats out of the total seats available is to be considered large enough to fall into this category is determined at the discretion of the producer. <br> `2` - Few seats available. The vehicle has a small percentage of seats available. What percentage of free seats out of the total seats available is to be considered small enough to fall into this category is determined at the discretion of the producer. <br> `3` - Standing room only. The vehicle can currently accommodate only standing passengers. <br> `4` - Crushed standing room only. The vehicle can currently accommodate only standing passengers and has limited space for them. <br> `5` - Full. The vehicle is considered full by most measures, but may still be allowing passengers to board. <br> `6` - Not accepting passengers. The vehicle can not accept passengers. <br><br> Conditionally Required: <br> - **Required** if `occupancy_type=0`, or if `occupancy_type` is empty or not provided. <br> - Forbidden otherwise. |
 | `occupancy_type` | Enum | Optional | Describes the type of occupancy. Valid options are: <br><br> `0` or empty - Seating and standing. <br> `1` - Riders in a wheelchair. <br> `2` - Bikes. <br> `3` - Cars. <br><br> Multiple `occupancy_type` can be defined for the same `occupancy_id`. <br><br> If this field is not provided, it is assumed the occupancy profile refers to the seating and standing occupancy.  |
 
 ### occupancy_patterns.txt
 
 File: **Optional**
+
+The file describes patterns of mean occupancy per date and/or per child vehicle. 
 
 | Field Name | Type | Required | Description |
 | ----- | ----- | ----- | ----- |
@@ -400,6 +404,8 @@ File: **Optional**
 ### vehicle_couplings.txt
 
 File: **Optional** 
+
+The file describes the arrangement of child vehicles in composed parent vehicles.
 
 | Field Name | Type | Required | Description |
 | ----- | ----- | ----- | ----- |
