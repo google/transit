@@ -58,6 +58,7 @@ The information provided by the trip descriptor depends on the schedule relation
 | **Added** | This trip was not scheduled and has been added. For example, to cope with demand, or replace a broken down vehicle. |
 | **Unscheduled** | This trip is running and is never associated with a schedule. For example, if there is no schedule and the buses run on a shuttle service. |
 | **Canceled** | This trip was scheduled, but is now removed. |
+| **Duplicated** | This new trip is a copy of an existing trip in static GTFS except for the service start date and time. The new trip will run at the service date and time specified in TripProperties. |
 
 In most cases, you should provide the trip_id of the scheduled trip in GTFS that this update relates to.
 

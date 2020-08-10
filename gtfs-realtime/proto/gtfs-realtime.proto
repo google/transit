@@ -315,6 +315,44 @@ message TripUpdate {
   // formally adopted in the future.
   optional int32 delay = 5;
 
+  // Defines updated properties of the trip
+  // NOTE: This message is still experimental, and subject to change. It may be formally adopted in the future.
+  message TripProperties {
+    // Defines the identifier of a new trip that is a duplicate of an existing trip defined in (CSV) GTFS trips.txt
+    // but will start at a different service date and/or time (defined using the TripProperties.start_date and
+    // TripProperties.start_time fields). See definition of trips.trip_id in (CSV) GTFS. Its value must be different
+    // than the ones used in the (CSV) GTFS. Required if schedule_relationship=DUPLICATED, otherwise this field must not
+    // be populated and will be ignored by consumers.
+    // NOTE: This field is still experimental, and subject to change. It may be formally adopted in the future.
+    optional string trip_id = 1;
+    // Service date on which the DUPLICATED trip will be run, in YYYYMMDD format. Required if
+    // schedule_relationship=DUPLICATED, otherwise this field must not be populated and will be ignored by consumers.
+    // NOTE: This field is still experimental, and subject to change. It may be formally adopted in the future.
+    optional string start_date = 2;
+    // Defines the departure start time of the trip when it’s duplicated. See definition of stop_times.departure_time
+    // in (CSV) GTFS. Scheduled arrival and departure times for the duplicated trip are calculated based on the offset
+    // between the original trip departure_time and this field. For example, if a GTFS trip has stop A with a
+    // departure_time of 10:00:00 and stop B with departure_time of 10:01:00, and this field is populated with the value
+    // of 10:30:00, stop B on the duplicated trip will have a scheduled departure_time of 10:31:00. Real-time prediction
+    // delay values are applied to this calculated schedule time to determine the predicted time. For example, if a
+    // departure delay of 30 is provided for stop B, then the predicted departure time is 10:31:30. Real-time
+    // prediction time values do not have any offset applied to them and indicate the predicted time as provided.
+    // For example, if a departure time representing 10:31:30 is provided for stop B, then the predicted departure time
+    // is 10:31:30. This field is required if schedule_relationship is DUPLICATED, otherwise this field must not be
+    // populated and will be ignored by consumers.
+    // NOTE: This field is still experimental, and subject to change. It may be formally adopted in the future.
+    optional string start_time = 3;
+
+    // The extensions namespace allows 3rd-party developers to extend the
+    // GTFS Realtime Specification in order to add and evaluate new features
+    // and modifications to the spec.
+    extensions 1000 to 1999;
+
+    // The following extension IDs are reserved for private use by any organization.
+    extensions 9000 to 9999;
+  }
+  optional TripProperties trip_properties = 6;
+
   // The extensions namespace allows 3rd-party developers to extend the
   // GTFS Realtime Specification in order to add and evaluate new features and
   // modifications to the spec.
@@ -489,11 +527,9 @@ message Alert {
   optional TranslatedString description_text = 11;
 
   // Text for alert header to be used in text-to-speech implementations. This field is the text-to-speech version of header_text.
-  // This field is still experimental, and subject to change. It may be formally adopted in the future.
   optional TranslatedString tts_header_text = 12;
 
   // Text for full description for the alert to be used in text-to-speech implementations. This field is the text-to-speech version of description_text.
-  // This field is still experimental, and subject to change. It may be formally adopted in the future.
   optional TranslatedString tts_description_text = 13;
 
   // Severity of this alert.
@@ -583,7 +619,9 @@ message TripDescriptor {
   // The trip_id from the GTFS feed that this selector refers to.
   // For non frequency-based trips, this field is enough to uniquely identify
   // the trip. For frequency-based trip, start_time and start_date might also be
-  // necessary.
+  // necessary. When schedule_relationship is DUPLICATED within a TripUpdate, the trip_id identifies the trip from
+  // static GTFS to be duplicated. When schedule_relationship is DUPLICATED within a VehiclePosition, the trip_id
+  // identifies the new duplicate trip and must contain the value for the corresponding TripUpdate.TripProperties.trip_id.
   optional string trip_id = 1;
 
   // The route_id from the GTFS that this selector refers to.
@@ -632,6 +670,10 @@ message TripDescriptor {
     // An extra trip that was added in addition to a running schedule, for
     // example, to replace a broken vehicle or to respond to sudden passenger
     // load.
+    // NOTE: Currently, behavior is unspecified for feeds that use this mode. There are discussions on the GTFS GitHub
+    // [(1)](https://github.com/google/transit/issues/106) [(2)](https://github.com/google/transit/pull/221)
+    // [(3)](https://github.com/google/transit/pull/219) around fully specifying or deprecating ADDED trips and the
+    // documentation will be updated when those discussions are finalized.
     ADDED = 1;
 
     // A trip that is running with no schedule associated to it (GTFS frequencies.txt exact_times=0).
@@ -643,6 +685,23 @@ message TripDescriptor {
 
     // Should not be used - for backwards-compatibility only.
     REPLACEMENT = 5 [deprecated=true];
+
+    // An extra trip that was added in addition to a running schedule, for example, to replace a broken vehicle or to
+    // respond to sudden passenger load. Used with TripUpdate.TripProperties.trip_id, TripUpdate.TripProperties.start_date,
+    // and TripUpdate.TripProperties.start_time to copy an existing trip from static GTFS but start at a different service
+    // date and/or time. Duplicating a trip is allowed if the service related to the original trip in (CSV) GTFS
+    // (in calendar.txt or calendar_dates.txt) is operating within the next 30 days. The trip to be duplicated is
+    // identified via TripUpdate.TripDescriptor.trip_id. This enumeration does not modify the existing trip referenced by
+    // TripUpdate.TripDescriptor.trip_id - if a producer wants to cancel the original trip, it must publish a separate
+    // TripUpdate with the value of CANCELED. Trips defined in GTFS frequencies.txt with exact_times that is empty or
+    // equal to 0 cannot be duplicated. The VehiclePosition.TripDescriptor.trip_id for the new trip must contain
+    // the matching value from TripUpdate.TripProperties.trip_id and VehiclePosition.TripDescriptor.ScheduleRelationship
+    // must also be set to DUPLICATED.
+    // Existing producers and consumers that were using the ADDED enumeration to represent duplicated trips must follow
+    // the migration guide (https://github.com/google/transit/tree/master/gtfs-realtime/spec/en/examples/migration-duplicated.md)
+    // to transition to the DUPLICATED enumeration.
+    // NOTE: This field is still experimental, and subject to change. It may be formally adopted in the future.
+    DUPLICATED = 6;
   }
   optional ScheduleRelationship schedule_relationship = 4;
 

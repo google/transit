@@ -50,9 +50,73 @@ Every new feature adds complexity to the creation and reading of feeds. Therefor
 
 ### Revision History
 
-#### January 17, 2019
+#### May 28, 2020
 
-* Editorial and formatting changes for clarity.  See [pull request](https://github.com/google/transit/pull/120).
+* Updated major GTFS changes under "Revision History" in `CHANGES.md`. Last revised in January 2019 with some historical entries missing.
+
+#### May 13, 2020
+
+* Added `continuous_pickup` and `continuous_drop_off` to `routes.txt` and `stop_times.txt`.  See [discussion](https://github.com/google/transit/pull/208).
+* Changed `shape_id` from "Optional" to "Conditionally required". See [discussion](https://github.com/google/transit/pull/208).
+
+#### March 24, 2020
+
+* Defined text-to-speech field and added `tts_stop_name` to `stops.txt`. See [discussion](https://github.com/google/transit/pull/49).
+
+#### February 5, 2020
+
+* Added trolleybus and monorail `route_types`. See [discussion](https://github.com/google/transit/pull/174).
+
+#### January 9, 2020
+
+* Added `translations.txt`. See [discussion](https://github.com/google/transit/pull/180).
+
+#### December 26, 2019
+
+* Updated definitions for cable tram and aerial lift in `route_type`. See [discussion](https://github.com/google/transit/pull/186).
+
+#### December 20, 2019
+
+* Added `attributions.txt`. See [discussion](https://github.com/google/transit/pull/192).
+
+#### August 26, 2019
+
+* Specified that `stop_lat` and `stop_lon` be positioned where passengers wait to board the vehicle. See [discussion](https://github.com/google/transit/pull/179).
+
+#### July 9, 2019
+
+* Added arrival and departure time best practices. See [discussion](https://github.com/google/transit/pull/165).
+* Added headsign best practices. See [discussion](https://github.com/google/transit/pull/167).
+* Added `stop_id` best practices. See [discussion](https://github.com/google/transit/pull/169).
+
+#### June 25, 2019
+
+* Clarified relationship of shape points and stops. See [discussion](https://github.com/google/transit/pull/39).
+
+#### April 4, 2019
+
+* Added `platform_code` field in `stops.txt`. See [discussion](https://github.com/google/transit/pull/146).
+
+#### March 27, 2019
+
+* Added `pathways.txt` and `levels.txt` to GTFS-static. See [discussion](https://github.com/google/transit/pull/143).
+
+#### February 6, 2019
+
+* Editorial and formatting changes for clarity.  See [discussion](https://github.com/google/transit/pull/120).
+
+#### October 2, 2018
+
+* Factorized field types for conciseness.  See [discussion](https://github.com/google/transit/pull/104).
+
+#### September 4, 2018
+
+* Added "Conditionally required" concept. See [discussion](https://github.com/google/transit/pull/100).
+* Unified the definitions of `agency_lang` and `feed_lang`. See [discussion](https://github.com/google/transit/pull/98).
+
+#### August 27, 2018
+
+* Updated `CHANGES.md` and last revised date. See [discussion](https://github.com/google/transit/pull/99).
 
 #### August 22, 2018
 
@@ -60,7 +124,30 @@ Every new feature adds complexity to the creation and reading of feeds. Therefor
 
 #### December 11, 2017
 
+* Added `route_sort_order` to `routes.txt`. See [discussion](https://github.com/google/transit/pull/83).
+
+#### March 15, 2017
+
+* Clarified that a proposer's vote does not count towards total. See [discussion](https://github.com/google/transit/pull/50).
+* Specified that at before calling a vote, at least one GTFS producer and one GTFS consumer should implement the proposed change. See [discussion](https://github.com/google/transit/pull/46).
+
+#### February 7, 2017
+
+* Clarified relationship of `block_id` and `service_id`. See [discussion](https://github.com/google/transit/pull/44).
+* Clarified that frequency-based service begins at vehicle departure. See [discussion](https://github.com/google/transit/pull/42).
+* Clarified descriptions of `stop_id` and `stop_code`. See [discussion](https://github.com/google/transit/pull/40).
+
+#### December 11, 2017
+
 * Added `route_sort_order` field in the `routes.txt` file. See [discussion](https://github.com/google/transit/pull/83).
+
+#### November 27, 2016
+
+* Added station entrance as a `stops.location_type`. See [discussion](https://github.com/google/transit/pull/30).
+
+#### September 2, 2016
+
+* Updated documentation to add `agency_id` under `fare_attributes.txt`. See [discussion](https://github.com/google/transit/pull/27).
 
 #### March 16, 2016
 
@@ -68,7 +155,7 @@ Every new feature adds complexity to the creation and reading of feeds. Therefor
 
 #### February 3, 2016
 
-* Added agency.txt 'agency_email' proposal to spec: [discussion](https://groups.google.com/forum/?fromgroups#!topic/gtfs-changes/aezjQsriLYA)
+* Added  `agency_email` to `agency.txt` proposal to spec: [discussion](https://groups.google.com/forum/?fromgroups#!topic/gtfs-changes/aezjQsriLYA)
 
 #### February 2, 2015
 
