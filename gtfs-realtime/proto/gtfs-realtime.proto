@@ -249,6 +249,14 @@ message TripUpdate {
       // belong to the same station as the stop originally defined in GTFS stop_times.txt.
       // NOTE: This field is still experimental, and subject to change. It may be formally adopted in the future.
       optional string platform_id = 1;
+
+      // The extensions namespace allows 3rd-party developers to extend the
+      // GTFS Realtime Specification in order to add and evaluate new features
+      // and modifications to the spec.
+      extensions 1000 to 1999;
+
+      // The following extension IDs are reserved for private use by any organization.
+      extensions 9000 to 9999;
     }
     // NOTE: This field is still experimental, and subject to change. It may be formally adopted in the future.
     optional StopTimeProperties stop_time_properties = 6;
