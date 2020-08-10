@@ -211,7 +211,7 @@ Realtime update for certain properties defined within GTFS stop_times.txt.
 
 | _**Field Name**_ | _**Type**_ | _**Required**_ | _**Cardinality**_ | _**Description**_ |
 |------------------|------------|----------------|-------------------|-------------------|
-| **platform_id** | [string](https://developers.google.com/protocol-buffers/docs/proto#scalar) | Optional | One | Supports real-time platform changes at stations. Refers to a stop_id defined in the GTFS stops.txt which must have the `location_type` of `0` or blank. This stop_id must belong to the same station as the stop originally defined in GTFS stop_times.txt for the `stop_sequence` defined in the StopTimeUpdate. If this field is populated, StopTimeUpdate `stop_sequence` must be populated and StopTimeUpdate `stop_id` should not be populated. <br>**Caution:** this field is still **experimental**, and subject to change. It may be formally adopted in the future.<br>. |
+| **platform_id** | [string](https://developers.google.com/protocol-buffers/docs/proto#scalar) | Optional | One | Supports real-time platform assignments at stations. Refers to a stop_id defined in the GTFS stops.txt which must have the `location_type` of `0` or blank. This stop_id must belong to the same station as the stop originally defined in GTFS stop_times.txt for the `stop_sequence` defined in the StopTimeUpdate. If this field is populated, StopTimeUpdate `stop_sequence` must be populated and StopTimeUpdate `stop_id` should not be populated. Platform assignments should be reflected in other GTFS-realtime fields as well (e.g., `VehiclePosition.stop_id`). <br>**Caution:** this field is still **experimental**, and subject to change. It may be formally adopted in the future.<br>. |
 
 ## _message_ TripProperties
 
@@ -239,7 +239,7 @@ Realtime positioning information for a given vehicle.
 | **vehicle** | [VehicleDescriptor](#message-vehicledescriptor) | Optional | One | Additional information on the vehicle that is serving this trip. Each entry should have a **unique** vehicle id. |
 | **position** | [Position](#message-position) | Optional | One | Current position of this vehicle. |
 | **current_stop_sequence** | [uint32](https://developers.google.com/protocol-buffers/docs/proto#scalar) | Optional | One | The stop sequence index of the current stop. The meaning of current_stop_sequence (i.e., the stop that it refers to) is determined by current_status. If current_status is missing IN_TRANSIT_TO is assumed. |
-| **stop_id** | [string](https://developers.google.com/protocol-buffers/docs/proto#scalar) | Optional | One | Identifies the current stop. The value must be the same as in stops.txt in the corresponding GTFS feed. |
+| **stop_id** | [string](https://developers.google.com/protocol-buffers/docs/proto#scalar) | Optional | One | Identifies the current stop. The value must be the same as in stops.txt in the corresponding GTFS feed. If `StopTimeProperties.platform_id` is used to assign a platform, this field should also reflect the change in `stop_id`. |
 | **current_status** | [VehicleStopStatus](#enum-vehiclestopstatus) | Optional | One | The exact status of the vehicle with respect to the current stop. Ignored if current_stop_sequence is missing. |
 | **timestamp** | [uint64](https://developers.google.com/protocol-buffers/docs/proto#scalar) | Optional | One | Moment at which the vehicle's position was measured. In POSIX time (i.e., number of seconds since January 1st 1970 00:00:00 UTC). |
 | **congestion_level** | [CongestionLevel](#enum-congestionlevel) | Optional | One |

@@ -245,7 +245,7 @@ message TripUpdate {
     // Provides the updated values for the stop time.
     // NOTE: This message is still experimental, and subject to change. It may be formally adopted in the future.
     message StopTimeProperties {
-      // Supports real-time platform changes. Refers to a stop_id defined in the GTFS stops.txt. This stop_id must
+      // Supports real-time platform assignments. Refers to a stop_id defined in the GTFS stops.txt. This stop_id must
       // belong to the same station as the stop originally defined in GTFS stop_times.txt.
       // NOTE: This field is still experimental, and subject to change. It may be formally adopted in the future.
       optional string platform_id = 1;
