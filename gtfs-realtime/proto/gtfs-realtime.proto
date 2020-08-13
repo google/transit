@@ -439,7 +439,7 @@ message VehiclePosition {
     // the second carriage could have a carriage_sequence of 10, the third  
     // carriage could have a carriage_sequence of 105, and so forth.
     // Even if protobuf keeps sequencing, it will help with feed validation
-    optional uint32 carriage_sequence = 3;
+    optional uint32 carriage_sequence = 4;
 
     // The extensions namespace allows 3rd-party developers to extend the
     // GTFS Realtime Specification in order to add and evaluate new features and
@@ -450,10 +450,15 @@ message VehiclePosition {
     extensions 9000 to 9999;
   }
 
-  // Details of the multiple cars of this given vehicle.
-  // The first occurence represents the first car of the vehicle, given the current direction of travel. 
-  // The number of occurrences of the multi_car_details field represents the number of cars of the vehicle.
-  repeated CarDetails multi_car_details = 11;
+  // Details of the multiple carriages of this given vehicle.
+  // The first occurrence represents the first carriage of the vehicle, 
+  // given the current direction of travel. 
+  // The number of occurrences of the multi_carriage_details 
+  // field represents the number of carriages of the vehicle.
+  // It also includes non boardable carriages, 
+  // like engines, maintenance carriages, etc… as they provide valuable 
+  // information to passengers about where to stand on a platform
+  repeated CarriageStatus multi_carriage_status = 11;
 
   // The extensions namespace allows 3rd-party developers to extend the
   // GTFS Realtime Specification in order to add and evaluate new features and
