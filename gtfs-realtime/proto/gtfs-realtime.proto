@@ -360,39 +360,44 @@ message VehiclePosition {
   // experimental, and subject to change. It may be formally adopted in the
   // future.
   enum OccupancyStatus {
-    // The vehicle is considered empty by most measures, and has few or no
+    // The vehicle/carriage is considered empty by most measures, and has few or no
     // passengers onboard, but is still accepting passengers.
     EMPTY = 0;
 
-    // The vehicle has a relatively large percentage of seats available.
+    // The vehicle/carriage has a relatively large percentage of seats available.
     // What percentage of free seats out of the total seats available is to be
     // considered large enough to fall into this category is determined at the
     // discretion of the producer.
     MANY_SEATS_AVAILABLE = 1;
 
-    // The vehicle has a relatively small percentage of seats available.
+    // The vehicle/carriage has a relatively small percentage of seats available.
     // What percentage of free seats out of the total seats available is to be
     // considered small enough to fall into this category is determined at the
     // discretion of the feed producer.
     FEW_SEATS_AVAILABLE = 2;
 
-    // The vehicle can currently accommodate only standing passengers.
+    // The vehicle/carriage can currently accommodate only standing passengers.
     STANDING_ROOM_ONLY = 3;
 
-    // The vehicle can currently accommodate only standing passengers
+    // The vehicle/carriage can currently accommodate only standing passengers
     // and has limited space for them.
     CRUSHED_STANDING_ROOM_ONLY = 4;
 
-    // The vehicle is considered full by most measures, but may still be
+    // The vehicle/carriage is considered full by most measures, but may still be
     // allowing passengers to board.
     FULL = 5;
 
-    // The vehicle is not accepting additional passengers.
+    // The vehicle/carriage is not accepting passengers.
+    // The vehicle/carriage usually accepts passengers for boarding
     NOT_ACCEPTING_PASSENGERS = 6;
 
-    // There is no data available for this car in this vehicle. Used in context of multi car crowding. 
-    // Useful for padding, in case a vehicle composed of several cars has data available only for some of those
+    // The vehicle/carriage doesn't have any occupancy data available at that time
     NO_DATA_AVAILABLE = 7;
+
+    // The vehicle/carriage is not boardable.
+    // The vehicle/carriage never accepts passengers
+    // Useful for special vehicles/carriages (engine, maintenance carriage, etc…)
+    NOT_BOARDABLE = 8;
 
   }
   optional OccupancyStatus occupancy_status = 9;
@@ -403,20 +408,38 @@ message VehiclePosition {
   // including both seated and standing capacity, and current operating regulations allow.
   // It is possible that the value goes over 100 if there are currently more passengers than what the vehicle was designed for.
   // The precision of occupancy_percentage should be low enough that you can't track a single person boarding and alighting for privacy reasons.
+  // If multi_carriage_status is populated with per-carriage occupancy_percentage, 
+  // then this field should describe the entire vehicle with all carriages accepting passengers considered.
   // This field is still experimental, and subject to change. It may be formally adopted in the future.
   optional uint32 occupancy_percentage = 10;
 
-  // Car specific details, used for vehicles composed of several cars
-  message CarDetails {
+  // Carriage specific details, used for vehicles composed of several carriages
+  message CarriageStatus {
 
-    // Occupancy status for this given car, in this vehicle
-    optional OccupancyStatus occupancy_status = 1;
+    // User visible label that may be shown to the passenger to help identify
+    // the carriage. Example: "7712", "Car ABC-32", etc...
+    optional string label = 1;
 
-    // Occupancy percentage for this given car, in this vehicle
+    // Occupancy status for this given carriage, in this vehicle
+    optional OccupancyStatus occupancy_status = 2 [default = NO_DATA_AVAILABLE];
+
+    // Occupancy percentage for this given carriage, in this vehicle
     // Follows the same rules as "VehiclePosition.occupancy_percentage"
-    // In addition, value -1 will be used to determine that crowding percentage is currently not available for this given car
-    // -1 is useful for padding, in case a vehicle composed of several cars has data available only for some of those
-    optional int32 occupancy_percentage = 2;
+    // -1 in case data is not available (as protobuf defaults to 0 otherwise)
+    optional int32 occupancy_percentage = 3 [default = -1];
+
+    // Identifies the order of this carriage with respect to the other
+    // carriages in the vehicle's list of CarriageStatus. The values must
+    // be non-negative, and there cannot be duplicate values in the list of
+    // CarriageStatus. The values must be set such that the lowest value
+    // corresponds to the first carriage in the direction of travel, the
+    // second-lowest value corresponds to the second carriage in the direction
+    // of travel and so forth. For example, the first carriage in the direction
+    // of travel could have a carriage_sequence of 4, 
+    // the second carriage could have a carriage_sequence of 10, the third  
+    // carriage could have a carriage_sequence of 105, and so forth.
+    // Even if protobuf keeps sequencing, it will help with feed validation
+    optional uint32 carriage_sequence = 3;
 
     // The extensions namespace allows 3rd-party developers to extend the
     // GTFS Realtime Specification in order to add and evaluate new features and
