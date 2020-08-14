@@ -334,6 +334,17 @@ message TripUpdate {
   }
   optional TripProperties trip_properties = 6;
 
+  // When set to true, this field is a hint to the consumer that the producer has published the final TripUpdate for the
+  // trip identified in the TripDescriptor and no future TripUpdates with different values will be published. This
+  // allows consumers who have already received the final TripUpdate for this trip to ignore additional TripUpdates for
+  // the same trip in subsequent messages.
+  //
+  // Even if this field is set to true, producers should not drop a TripUpdate from a feed if it is prior to the
+  // scheduled arrival time for the last stop on the trip, as otherwise it will be concluded that there is no update for
+  // this trip.
+  // NOTE: This field is still experimental, and subject to change. It may be formally adopted in the future.
+  optional bool is_trip_finished = 7 [default = false];
+
   // The extensions namespace allows 3rd-party developers to extend the
   // GTFS Realtime Specification in order to add and evaluate new features and
   // modifications to the spec.
