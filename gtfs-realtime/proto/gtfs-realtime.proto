@@ -356,50 +356,51 @@ message VehiclePosition {
   }
   optional CongestionLevel congestion_level = 6;
 
-  // The degree of passenger occupancy of the vehicle. This field is still
-  // experimental, and subject to change. It may be formally adopted in the
-  // future.
+  // The degree of passenger occupancy of the vehicle or carriage. This field is still
+  // experimental, and subject to change. It may be formally adopted in the future.
   enum OccupancyStatus {
     // The vehicle/carriage is considered empty by most measures, and has few or no
     // passengers onboard, but is still accepting passengers.
     EMPTY = 0;
 
-    // The vehicle/carriage has a relatively large percentage of seats available.
+    // The vehicle or carriage has a relatively large percentage of seats available.
     // What percentage of free seats out of the total seats available is to be
     // considered large enough to fall into this category is determined at the
     // discretion of the producer.
     MANY_SEATS_AVAILABLE = 1;
 
-    // The vehicle/carriage has a relatively small percentage of seats available.
+    // The vehicle or carriage has a relatively small percentage of seats available.
     // What percentage of free seats out of the total seats available is to be
     // considered small enough to fall into this category is determined at the
     // discretion of the feed producer.
     FEW_SEATS_AVAILABLE = 2;
 
-    // The vehicle/carriage can currently accommodate only standing passengers.
+    // The vehicle or carriage can currently accommodate only standing passengers.
     STANDING_ROOM_ONLY = 3;
 
-    // The vehicle/carriage can currently accommodate only standing passengers
+    // The vehicle or carriage can currently accommodate only standing passengers
     // and has limited space for them.
     CRUSHED_STANDING_ROOM_ONLY = 4;
 
-    // The vehicle/carriage is considered full by most measures, but may still be
+    // The vehicle or carriage is considered full by most measures, but may still be
     // allowing passengers to board.
     FULL = 5;
 
-    // The vehicle/carriage is not accepting passengers.
-    // The vehicle/carriage usually accepts passengers for boarding
+    // The vehicle or carriage is not accepting passengers.
+    // The vehicle or carriage usually accepts passengers for boarding.
     NOT_ACCEPTING_PASSENGERS = 6;
 
-    // The vehicle/carriage doesn't have any occupancy data available at that time
+    // The vehicle or carriage doesn't have any occupancy data available at that time
     NO_DATA_AVAILABLE = 7;
 
-    // The vehicle/carriage is not boardable.
-    // The vehicle/carriage never accepts passengers
-    // Useful for special vehicles/carriages (engine, maintenance carriage, etc…)
+    // The vehicle or carriage is not boardable.
+    // The vehicle or carriage never accepts passengers.
+    // Useful for special vehicles or carriages (engine, maintenance carriage, etc…).
     NOT_BOARDABLE = 8;
 
   }
+  // If multi_carriage_status is populated with per-carriage OccupancyStatus,
+  // then this field should describe the entire vehicle with all carriages accepting passengers considered.
   optional OccupancyStatus occupancy_status = 9;
 
   // A percentage value representing the degree of passenger occupancy of the vehicle.
@@ -423,21 +424,19 @@ message VehiclePosition {
     // Occupancy status for this given carriage, in this vehicle
     optional OccupancyStatus occupancy_status = 2 [default = NO_DATA_AVAILABLE];
 
-    // Occupancy percentage for this given carriage, in this vehicle
+    // Occupancy percentage for this given carriage, in this vehicle.
     // Follows the same rules as "VehiclePosition.occupancy_percentage"
-    // -1 in case data is not available (as protobuf defaults to 0 otherwise)
+    // Use -1 in case data is not available for this given carriage (as protobuf defaults to 0 otherwise)
     optional int32 occupancy_percentage = 3 [default = -1];
 
     // Identifies the order of this carriage with respect to the other
-    // carriages in the vehicle's list of CarriageStatus. The values must
-    // be non-negative, and there cannot be duplicate values in the list of
-    // CarriageStatus. The values must be set such that the lowest value
-    // corresponds to the first carriage in the direction of travel, the
-    // second-lowest value corresponds to the second carriage in the direction
-    // of travel and so forth. For example, the first carriage in the direction
-    // of travel could have a carriage_sequence of 4, 
-    // the second carriage could have a carriage_sequence of 10, the third  
-    // carriage could have a carriage_sequence of 105, and so forth.
+    // carriages in the vehicle's list of CarriageStatus.
+    // The first carriage in the direction of travel must have a value of 1.
+    // The second value corresponds to the second carriage in the direction
+    // of travel and must have a value of 2, and so forth.
+    // For example, the first carriage in the direction of travel has a value of 1.
+    // If the second carriage in the direction of travel has a value of 3,
+    // consumers will detect an issue with the sequencing.
     // Even if protobuf keeps sequencing, it will help with feed validation
     optional uint32 carriage_sequence = 4;
 
@@ -457,7 +456,7 @@ message VehiclePosition {
   // field represents the number of carriages of the vehicle.
   // It also includes non boardable carriages, 
   // like engines, maintenance carriages, etc… as they provide valuable 
-  // information to passengers about where to stand on a platform
+  // information to passengers about where to stand on a platform.
   repeated CarriageStatus multi_carriage_status = 11;
 
   // The extensions namespace allows 3rd-party developers to extend the
