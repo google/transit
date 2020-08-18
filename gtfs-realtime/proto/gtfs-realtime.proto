@@ -359,7 +359,7 @@ message VehiclePosition {
   // The degree of passenger occupancy of the vehicle or carriage. This field is still
   // experimental, and subject to change. It may be formally adopted in the future.
   enum OccupancyStatus {
-    // The vehicle/carriage is considered empty by most measures, and has few or no
+    // The vehicle or carriage is considered empty by most measures, and has few or no
     // passengers onboard, but is still accepting passengers.
     EMPTY = 0;
 
@@ -386,15 +386,13 @@ message VehiclePosition {
     // allowing passengers to board.
     FULL = 5;
 
-    // The vehicle or carriage is not accepting passengers.
-    // The vehicle or carriage usually accepts passengers for boarding.
+    // The vehicle or carriage is not accepting passengers, but usually accepts passengers for boarding.
     NOT_ACCEPTING_PASSENGERS = 6;
 
     // The vehicle or carriage doesn't have any occupancy data available at that time
     NO_DATA_AVAILABLE = 7;
 
-    // The vehicle or carriage is not boardable.
-    // The vehicle or carriage never accepts passengers.
+    // The vehicle or carriage is not boardable and never accepts passengers.
     // Useful for special vehicles or carriages (engine, maintenance carriage, etc…).
     NOT_BOARDABLE = 8;
 

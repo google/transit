@@ -260,7 +260,7 @@ The degree of passenger occupancy for the vehicle or carriage.
 | _**FULL**_ | _The vehicle is considered full by most measures, but may still be allowing passengers to board._ |
 | _**NOT_ACCEPTING_PASSENGERS**_ | _The vehicle or carriage is not accepting passengers. The vehicle or carriage usually accepts passengers for boarding._ |
 | _**NO_DATA_AVAILABLE**_ | _The vehicle or carriage doesn't have any occupancy data available at that time._ |
-| _**NOT_BOARDABLE**_ | _The vehicle or carriage is not boardable. The vehicle or carriage never accepts passengers. Useful for special vehicles or carriages (engine, maintenance carriage, etc…)._ |
+| _**NOT_BOARDABLE**_ | _The vehicle or carriage is not boardable and never accepts passengers. Useful for special vehicles or carriages (engine, maintenance carriage, etc…)._ |
 
 
 ## _message_ CarriageStatus
