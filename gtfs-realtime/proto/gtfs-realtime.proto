@@ -413,18 +413,22 @@ message VehiclePosition {
   optional uint32 occupancy_percentage = 10;
 
   // Carriage specific details, used for vehicles composed of several carriages
+  // This message/field is still experimental, and subject to change. It may be formally adopted in the future.
   message CarriageStatus {
 
     // User visible label that may be shown to the passenger to help identify
     // the carriage. Example: "7712", "Car ABC-32", etc...
+    // This message/field is still experimental, and subject to change. It may be formally adopted in the future.
     optional string label = 1;
 
     // Occupancy status for this given carriage, in this vehicle
+    // This message/field is still experimental, and subject to change. It may be formally adopted in the future.
     optional OccupancyStatus occupancy_status = 2 [default = NO_DATA_AVAILABLE];
 
     // Occupancy percentage for this given carriage, in this vehicle.
     // Follows the same rules as "VehiclePosition.occupancy_percentage"
-    // Use -1 in case data is not available for this given carriage (as protobuf defaults to 0 otherwise)
+    // -1 in case data is not available for this given carriage (as protobuf defaults to 0 otherwise)
+    // This message/field is still experimental, and subject to change. It may be formally adopted in the future.
     optional int32 occupancy_percentage = 3 [default = -1];
 
     // Identifies the order of this carriage with respect to the other
@@ -435,7 +439,7 @@ message VehiclePosition {
     // For example, the first carriage in the direction of travel has a value of 1.
     // If the second carriage in the direction of travel has a value of 3,
     // consumers will detect an issue with the sequencing.
-    // Even if protobuf keeps sequencing, it will help with feed validation
+    // This message/field is still experimental, and subject to change. It may be formally adopted in the future.
     optional uint32 carriage_sequence = 4;
 
     // The extensions namespace allows 3rd-party developers to extend the
@@ -455,6 +459,7 @@ message VehiclePosition {
   // It also includes non boardable carriages, 
   // like engines, maintenance carriages, etc… as they provide valuable 
   // information to passengers about where to stand on a platform.
+  // This message/field is still experimental, and subject to change. It may be formally adopted in the future.
   repeated CarriageStatus multi_carriage_status = 11;
 
   // The extensions namespace allows 3rd-party developers to extend the
