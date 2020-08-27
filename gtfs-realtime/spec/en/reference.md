@@ -267,6 +267,8 @@ The degree of passenger occupancy for the vehicle or carriage.
 
 Carriage specific details, used for vehicles composed of several carriages
 
+**Caution:** this message is still **experimental**, and subject to change. It may be formally adopted in the future.
+
 #### Fields
 
 | _**Field Name**_ | _**Type**_ | _**Required**_ | _**Cardinality**_ | _**Description**_ |
