@@ -414,25 +414,28 @@ message VehiclePosition {
 
   // Carriage specific details, used for vehicles composed of several carriages
   // This message/field is still experimental, and subject to change. It may be formally adopted in the future.
-  message CarriageStatus {
+  message CarriageDetails {
+
+    // Identification of the carriage. Should be unique per vehicle.
+    optional string id = 1;
 
     // User visible label that may be shown to the passenger to help identify
     // the carriage. Example: "7712", "Car ABC-32", etc...
     // This message/field is still experimental, and subject to change. It may be formally adopted in the future.
-    optional string label = 1;
+    optional string label = 2;
 
     // Occupancy status for this given carriage, in this vehicle
     // This message/field is still experimental, and subject to change. It may be formally adopted in the future.
-    optional OccupancyStatus occupancy_status = 2 [default = NO_DATA_AVAILABLE];
+    optional OccupancyStatus occupancy_status = 3 [default = NO_DATA_AVAILABLE];
 
     // Occupancy percentage for this given carriage, in this vehicle.
     // Follows the same rules as "VehiclePosition.occupancy_percentage"
     // -1 in case data is not available for this given carriage (as protobuf defaults to 0 otherwise)
     // This message/field is still experimental, and subject to change. It may be formally adopted in the future.
-    optional int32 occupancy_percentage = 3 [default = -1];
+    optional int32 occupancy_percentage = 4 [default = -1];
 
     // Identifies the order of this carriage with respect to the other
-    // carriages in the vehicle's list of CarriageStatus.
+    // carriages in the vehicle's list of CarriageDetails.
     // The first carriage in the direction of travel must have a value of 1.
     // The second value corresponds to the second carriage in the direction
     // of travel and must have a value of 2, and so forth.
@@ -440,7 +443,7 @@ message VehiclePosition {
     // If the second carriage in the direction of travel has a value of 3,
     // consumers will detect an issue with the sequencing.
     // This message/field is still experimental, and subject to change. It may be formally adopted in the future.
-    optional uint32 carriage_sequence = 4;
+    optional uint32 carriage_sequence = 5;
 
     // The extensions namespace allows 3rd-party developers to extend the
     // GTFS Realtime Specification in order to add and evaluate new features and
@@ -460,7 +463,7 @@ message VehiclePosition {
   // like engines, maintenance carriages, etc… as they provide valuable 
   // information to passengers about where to stand on a platform.
   // This message/field is still experimental, and subject to change. It may be formally adopted in the future.
-  repeated CarriageStatus multi_carriage_status = 11;
+  repeated CarriageDetails multi_carriage_details = 11;
 
   // The extensions namespace allows 3rd-party developers to extend the
   // GTFS Realtime Specification in order to add and evaluate new features and

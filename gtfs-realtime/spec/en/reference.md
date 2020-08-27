@@ -57,7 +57,7 @@ Fields labeled as **experimental** are subject to change and not yet formally ad
             *   [VehicleStopStatus](#enum-vehiclestopstatus)
             *   [CongestionLevel](#enum-congestionlevel)
             *   [OccupancyStatus](#enum-occupancystatus)
-            *   [CarriageStatus](#message-carriagestatus)
+            *   [CarriageDetails](#message-CarriageDetails)
         *   [Alert](#message-alert)
             *   [TimeRange](#message-timerange)
             *   [EntitySelector](#message-entityselector)
@@ -213,9 +213,9 @@ Realtime positioning information for a given vehicle.
 | **current_status** | [VehicleStopStatus](#enum-vehiclestopstatus) | Optional | One | The exact status of the vehicle with respect to the current stop. Ignored if current_stop_sequence is missing. |
 | **timestamp** | [uint64](https://developers.google.com/protocol-buffers/docs/proto#scalar) | Optional | One | Moment at which the vehicle's position was measured. In POSIX time (i.e., number of seconds since January 1st 1970 00:00:00 UTC). |
 | **congestion_level** | [CongestionLevel](#enum-congestionlevel) | Optional | One |
-| **occupancy_status** | [OccupancyStatus](#enum-occupancystatus) | _Optional_ | One | The degree of passenger occupancy of the vehicle or carriage. If multi_carriage_status is populated with per-carriage OccupancyStatus, then this field should describe the entire vehicle with all carriages accepting passengers considered.<br>**Caution:** this field is still **experimental**, and subject to change. It may be formally adopted in the future.|
-| **occupancy_percentage** | [uint32](https://developers.google.com/protocol-buffers/docs/proto#scalar) | Optional | One | A percentage value representing the degree of passenger occupancy of the vehicle. The value 100 should represent total the maximum occupancy the vehicle was designed for, including both seating and standing capacity, and current operating regulations allow. It's not impossible that the value goes over 100 if there are currently more passenger than the vehicle was designed for. The precision of occupancy_percentage should be low enough that you can't track a single person boarding and alighting for privacy reasons. If multi_carriage_status is populated with per-carriage occupancy_percentage, then this field should describe the entire vehicle with all carriages accepting passengers considered.<br>**Caution:** this field is still **experimental**, and subject to change. It may be formally adopted in the future. |
-| **multi_carriage_status** | [CarriageStatus](#message-carriagestatus) | Optional | Many | Details of the multiple carriages of this given vehicle. The first occurrence represents the first carriage of the vehicle, **given the current direction of travel**. The number of occurrences of the multi_carriage_details field represents the number of carriages of the vehicle. It also includes non boardable carriages, like engines, maintenance carriages, etc… as they provide valuable information to passengers about where to stand on a platform.<br>**Caution:** this field is still **experimental**, and subject to change. It may be formally adopted in the future. |
+| **occupancy_status** | [OccupancyStatus](#enum-occupancystatus) | _Optional_ | One | The degree of passenger occupancy of the vehicle or carriage. If multi_carriage_details is populated with per-carriage OccupancyStatus, then this field should describe the entire vehicle with all carriages accepting passengers considered.<br>**Caution:** this field is still **experimental**, and subject to change. It may be formally adopted in the future.|
+| **occupancy_percentage** | [uint32](https://developers.google.com/protocol-buffers/docs/proto#scalar) | Optional | One | A percentage value representing the degree of passenger occupancy of the vehicle. The value 100 should represent total the maximum occupancy the vehicle was designed for, including both seating and standing capacity, and current operating regulations allow. It's not impossible that the value goes over 100 if there are currently more passenger than the vehicle was designed for. The precision of occupancy_percentage should be low enough that you can't track a single person boarding and alighting for privacy reasons. If multi_carriage_details is populated with per-carriage occupancy_percentage, then this field should describe the entire vehicle with all carriages accepting passengers considered.<br>**Caution:** this field is still **experimental**, and subject to change. It may be formally adopted in the future. |
+| **multi_carriage_details** | [CarriageDetails](#message-CarriageDetails) | Optional | Many | Details of the multiple carriages of this given vehicle. The first occurrence represents the first carriage of the vehicle, **given the current direction of travel**. The number of occurrences of the multi_carriage_details field represents the number of carriages of the vehicle. It also includes non boardable carriages, like engines, maintenance carriages, etc… as they provide valuable information to passengers about where to stand on a platform.<br>**Caution:** this field is still **experimental**, and subject to change. It may be formally adopted in the future. |
 
 
 ## _enum_ VehicleStopStatus
@@ -263,7 +263,7 @@ The degree of passenger occupancy for the vehicle or carriage.
 | _**NOT_BOARDABLE**_ | _The vehicle or carriage is not boardable and never accepts passengers. Useful for special vehicles or carriages (engine, maintenance carriage, etc…)._ |
 
 
-## _message_ CarriageStatus
+## _message_ CarriageDetails
 
 Carriage specific details, used for vehicles composed of several carriages
 
@@ -271,10 +271,11 @@ Carriage specific details, used for vehicles composed of several carriages
 
 | _**Field Name**_ | _**Type**_ | _**Required**_ | _**Cardinality**_ | _**Description**_ |
 |------------------|------------|----------------|-------------------|-------------------|
+| **id** | [string](https://developers.google.com/protocol-buffers/docs/proto#scalar) | Optional | One | Identification of the carriage. Should be unique per vehicle.|
 | **label** | [string](https://developers.google.com/protocol-buffers/docs/proto#scalar) | Optional | One | User visible label that may be shown to the passenger to help identify the carriage. Example: "7712", "Car ABC-32", etc... |
 | **occupancy_status** | [OccupancyStatus](#enum-occupancystatus) | Optional | One | Occupancy status for this given carriage, in this vehicle. Default is set to `NO_DATA_AVAILABLE`.<br>**Caution:** this field is still **experimental**, and subject to change. It may be formally adopted in the future.|
 | **occupancy_percentage** | [int32](https://developers.google.com/protocol-buffers/docs/proto#scalar) | Optional | One | Occupancy percentage for this given carriage, in this vehicle. Follows the same rules as "VehiclePosition.occupancy_percentage". Use -1 in case data is not available for this given carriage.<br>**Caution:** this field is still **experimental**, and subject to change. It may be formally adopted in the future. |
-| **carriage_sequence** | [uint32](https://developers.google.com/protocol-buffers/docs/proto#scalar) | Required | One | Identifies the order of this carriage with respect to the other carriages in the vehicle's list of CarriageStatus. The first carriage in the direction of travel must have a value of 1. The second value corresponds to the second carriage in the direction of travel and must have a value of 2, and so forth. For example, the first carriage in the direction of travel has a value of 1. If the second carriage in the direction of travel has a value of 3, consumers will detect an issue with the sequencing. |
+| **carriage_sequence** | [uint32](https://developers.google.com/protocol-buffers/docs/proto#scalar) | Required | One | Identifies the order of this carriage with respect to the other carriages in the vehicle's list of CarriageDetails. The first carriage in the direction of travel must have a value of 1. The second value corresponds to the second carriage in the direction of travel and must have a value of 2, and so forth. For example, the first carriage in the direction of travel has a value of 1. If the second carriage in the direction of travel has a value of 3, consumers will detect an issue with the sequencing. |
 
 ## _message_ Alert
 
