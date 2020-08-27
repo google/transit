@@ -267,15 +267,17 @@ The degree of passenger occupancy for the vehicle or carriage.
 
 Carriage specific details, used for vehicles composed of several carriages
 
+**Caution:** this message is still **experimental**, and subject to change. It may be formally adopted in the future.
+
 #### Fields
 
 | _**Field Name**_ | _**Type**_ | _**Required**_ | _**Cardinality**_ | _**Description**_ |
 |------------------|------------|----------------|-------------------|-------------------|
-| **id** | [string](https://developers.google.com/protocol-buffers/docs/proto#scalar) | Optional | One | Identification of the carriage. Should be unique per vehicle.|
-| **label** | [string](https://developers.google.com/protocol-buffers/docs/proto#scalar) | Optional | One | User visible label that may be shown to the passenger to help identify the carriage. Example: "7712", "Car ABC-32", etc... |
+| **id** | [string](https://developers.google.com/protocol-buffers/docs/proto#scalar) | Optional | One | Identification of the carriage. Should be unique per vehicle. <br>**Caution:** this field is still **experimental**, and subject to change. It may be formally adopted in the future. |
+| **label** | [string](https://developers.google.com/protocol-buffers/docs/proto#scalar) | Optional | One | User visible label that may be shown to the passenger to help identify the carriage. Example: "7712", "Car ABC-32", etc... <br>**Caution:** this field is still **experimental**, and subject to change. It may be formally adopted in the future. |
 | **occupancy_status** | [OccupancyStatus](#enum-occupancystatus) | Optional | One | Occupancy status for this given carriage, in this vehicle. Default is set to `NO_DATA_AVAILABLE`.<br>**Caution:** this field is still **experimental**, and subject to change. It may be formally adopted in the future.|
 | **occupancy_percentage** | [int32](https://developers.google.com/protocol-buffers/docs/proto#scalar) | Optional | One | Occupancy percentage for this given carriage, in this vehicle. Follows the same rules as "VehiclePosition.occupancy_percentage". Use -1 in case data is not available for this given carriage.<br>**Caution:** this field is still **experimental**, and subject to change. It may be formally adopted in the future. |
-| **carriage_sequence** | [uint32](https://developers.google.com/protocol-buffers/docs/proto#scalar) | Required | One | Identifies the order of this carriage with respect to the other carriages in the vehicle's list of CarriageDetails. The first carriage in the direction of travel must have a value of 1. The second value corresponds to the second carriage in the direction of travel and must have a value of 2, and so forth. For example, the first carriage in the direction of travel has a value of 1. If the second carriage in the direction of travel has a value of 3, consumers will detect an issue with the sequencing. |
+| **carriage_sequence** | [uint32](https://developers.google.com/protocol-buffers/docs/proto#scalar) | Required | One | Identifies the order of this carriage with respect to the other carriages in the vehicle's list of CarriageStatus. The first carriage in the direction of travel must have a value of 1. The second value corresponds to the second carriage in the direction of travel and must have a value of 2, and so forth. For example, the first carriage in the direction of travel has a value of 1. If the second carriage in the direction of travel has a value of 3, consumers will detect an issue with the sequencing. <br>**Caution:** this field is still **experimental**, and subject to change. It may be formally adopted in the future. |
 
 ## _message_ Alert
 
