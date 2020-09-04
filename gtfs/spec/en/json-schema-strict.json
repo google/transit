@@ -1,0 +1,1039 @@
+{
+  "$schema":"http://json-schema.org/draft/2019-09/schema#",
+  "$id":"http://ids.mobilitydata.org/schema/gtfs",
+  "title":"General Transit Feed Specification (GTFS) for scheduled data",
+
+  "definitions": {
+    "type:string:trimmed:required": {
+      "type":"string",
+      "minLength": 1,
+      "pattern":"^([^ ](.*[^ ])?)$"
+    },
+    "type:string:trimmed:optional": {
+      "anyOf": [
+        {"const": null},
+        {"const": ""},
+        {"$ref": "#/definitions/type:string:trimmed:required"}
+      ]
+    },
+    "format:uri:trimmed:required": {
+      "allOf": [
+        {"$ref": "#/definitions/type:string:trimmed:required"},
+        {"format": "uri"}
+      ]
+    },
+    "format:uri:trimmed:optional": {
+      "anyOf": [
+        {"const": null},
+        {"const": ""},
+        {"$ref": "#/definitions/format:uri:trimmed:required"}
+      ]
+    },
+    "gtfs-type:phone-number:required": {
+      "allOf": [
+        {"$ref": "#/definitions/type:string:trimmed:required"},
+        {"pattern":"^\\+[\\d,]+$"}
+      ]
+    },
+    "gtfs-type:phone-number:optional": {
+      "anyOf": [
+        {"const": null},
+        {"const": ""},
+        {"$ref": "#/definitions/gtfs-type:phone-number:required"}
+      ]
+    },
+    "gtfs-type:email:required": {
+      "allOf": [
+        {"$ref": "#/definitions/type:string:trimmed:required"},
+        {"format":"email"}
+      ]
+    },
+    "gtfs-type:email:optional": {
+      "anyOf": [
+        {"const": null},
+        {"const": ""},
+        {"$ref": "#/definitions/gtfs-type:email:required"}
+      ]
+    },
+    "gtfs-type:latitude:required": {
+      "type":"number",
+      "maximum":90,
+      "minimum":-90
+    },
+    "gtfs-type:latitude:optional": {
+      "anyOf": [
+        {"const": null},
+        {"$ref": "#/definitions/gtfs-type:latitude:required"}
+      ]
+    },
+    "gtfs-type:longitude:required": {
+      "type":"number",
+      "maximum":180,
+      "minimum":-180
+    },
+    "gtfs-type:longitude:optional": {
+      "anyOf": [
+        {"const": null},
+        {"$ref": "#/definitions/gtfs-type:longitude:required"}
+      ]
+    },
+    "gtfs-type:color:required": {
+      "allOf": [
+        {"$ref": "#/definitions/type:string:trimmed:required"},
+        {"pattern":"^[\\dABCDEF]{6}$"}
+      ]
+    },
+    "gtfs-type:color:optional": {
+      "anyOf": [
+        {"const": null},
+        {"const": ""},
+        {"$ref": "#/definitions/gtfs-type:color:required"}
+      ]
+    },
+    "gtfs-type:non-negative-integer:required": {
+      "type": "integer",
+      "minimum": 0,
+      "multipleOf": 1
+    },
+    "gtfs-type:non-negative-integer:optional": {
+      "anyOf": [
+        {"const": null},
+        {"$ref": "#/definitions/gtfs-type:non-negative-integer:required"}
+      ]
+    },
+    "gtfs-type:positive-integer:required": {
+      "type": "integer",
+      "exclusiveMinimum": 0,
+      "multipleOf": 1
+    },
+    "gtfs-type:positive-integer:optional": {
+      "anyOf": [
+        {"const": null},
+        {"$ref": "#/definitions/gtfs-type:positive-integer:required"}
+      ]
+    },
+    "gtfs-type:negative-integer:required": {
+      "type": "integer",
+      "exclusiveMaximum": 0,
+      "multipleOf": 1
+    },
+    "gtfs-type:negative-integer:optional": {
+      "anyOf": [
+        {"const": null},
+        {"$ref": "#/definitions/gtfs-type:negative-integer:required"}
+      ]
+    },
+    "gtfs-type:non-null-integer:required": {
+      "anyOf": [
+        {"$ref": "#/definitions/gtfs-type:positive-integer:required"},
+        {"$ref": "#/definitions/gtfs-type:negative-integer:required"}
+      ]
+    },
+    "gtfs-type:non-null-integer:optional": {
+      "anyOf": [
+        {"$ref": "#/definitions/gtfs-type:positive-integer:optional"},
+        {"$ref": "#/definitions/gtfs-type:negative-integer:optional"}
+      ]
+    },
+    "gtfs-type:float:required": {
+      "type": "number"
+    },
+    "gtfs-type:float:optional": {
+      "anyOf": [
+        {"const": null},
+        {"$ref": "#/definitions/gtfs-type:float:required"}
+      ]
+    },
+    "gtfs-type:non-negative-float:required": {
+      "type": "number",
+      "minimum": 0
+    },
+    "gtfs-type:non-negative-float:optional": {
+      "anyOf": [
+        {"const": null},
+        {"$ref": "#/definitions/gtfs-type:non-negative-float:required"}
+      ]
+    },
+    "gtfs-type:time:required": {
+      "allOf": [
+        {"$ref": "#/definitions/type:string:trimmed:required"},
+        {"pattern":"^\\d?\\d:\\d\\d:\\d\\d$"}
+      ]
+    },
+    "gtfs-type:time:optional": {
+      "anyOf": [
+        {"const": null},
+        {"const": ""},
+        {"$ref": "#/definitions/gtfs-type:time:required"}
+      ]
+    },
+    "gtfs-type:date:required": {
+      "allOf": [
+        {"$ref": "#/definitions/type:string:trimmed:required"},
+        {"pattern":"^2[01]\\d\\d(0\\d|1[012])([012]\\d|3[01])$"}
+      ]
+    },
+    "gtfs-type:date:optional": {
+      "anyOf": [
+        {"const": null},
+        {"const": ""},
+        {"$ref": "#/definitions/gtfs-type:date:required"}
+      ]
+    },
+    "gtfs-type:currency-code:required": {
+      "allOf": [
+        {"$ref": "#/definitions/type:string:trimmed:required"},
+        {"pattern":"^[A-Z]{3}$"}
+      ]
+    },
+    "gtfs-type:currency-code:optional": {
+      "anyOf": [
+        {"const": null},
+        {"const": ""},
+        {"$ref": "#/definitions/gtfs-type:currency-code:required"}
+      ]
+    },
+    "gtfs-type:language-code:required": {
+      "allOf": [
+        {"$ref": "#/definitions/type:string:trimmed:required"},
+        {"pattern":".*"}
+      ]
+    },
+    "gtfs-type:language-code:optional": {
+      "anyOf": [
+        {"const": null},
+        {"const": ""},
+        {"$ref": "#/definitions/gtfs-type:currency-code:required"}
+      ]
+    }
+  },
+
+  "type":"object",
+  "properties":{
+    "agency.txt":{
+      "title":"Transit agencies with service represented in this dataset.",
+      "description":"",
+      "type":"array",
+      "minItems": 1,
+      "items":{
+        "type":"object",
+        "properties":{
+          "agency_id":{
+            "$ref": "#/definitions/type:string:trimmed:optional"
+          },
+          "agency_name":{
+            "$ref": "#/definitions/type:string:trimmed:required"
+          },
+          "agency_url":{
+            "$ref": "#/definitions/format:uri:trimmed:required"
+          },
+          "agency_timezone":{
+            "$ref": "#/definitions/type:string:trimmed:required"
+          },
+          "agency_lang":{
+            "$ref": "#/definitions/gtfs-type:language-code:optional"
+          },
+          "agency_phone":{
+            "$ref": "#/definitions/gtfs-type:phone-number:optional"
+          },
+          "agency_fare_url":{
+            "$ref": "#/definitions/format:uri:trimmed:optional"
+          },
+          "agency_email":{
+            "$ref": "#/definitions/gtfs-type:email:optional"
+          }
+        },
+        "required":[
+          "agency_name",
+          "agency_url",
+          "agency_timezone"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "stops.txt":{
+      "type":"array",
+      "minItems": 1,
+      "items":{
+        "type":"object",
+        "properties":{
+          "stop_id":{
+            "$ref": "#/definitions/type:string:trimmed:required"
+          },
+          "stop_code":{
+            "$ref": "#/definitions/type:string:trimmed:optional"
+          },
+          "stop_name":{
+            "$ref": "#/definitions/type:string:trimmed:optional"
+          },
+          "tts_stop_name":{
+            "$ref": "#/definitions/type:string:trimmed:optional"
+          },
+          "stop_desc":{
+            "$ref": "#/definitions/type:string:trimmed:optional"
+          },
+          "stop_lat":{
+            "$ref": "#/definitions/gtfs-type:latitude:optional"
+          },
+          "stop_lon":{
+            "$ref": "#/definitions/gtfs-type:longitude:optional"
+          },
+          "zone_id":{
+            "$ref": "#/definitions/type:string:trimmed:optional"
+          },
+          "location_type":{
+            "enum":[
+              null,
+              0,
+              1,
+              2,
+              3,
+              4
+            ]
+          },
+          "parent_station":{
+            "$ref": "#/definitions/type:string:trimmed:optional"
+          },
+          "stop_timezone":{
+            "$ref": "#/definitions/type:string:trimmed:optional"
+          },
+          "wheelchair_boarding":{
+            "enum":[
+              null,
+              0,
+              1,
+              2
+            ]
+          },
+          "level_id":{
+              "$ref": "#/definitions/type:string:trimmed:optional"
+          },
+          "platform_code":{
+            "$ref": "#/definitions/type:string:trimmed:optional"
+          }
+        },
+        "required":[
+          "stop_id"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "routes.txt": {
+      "type":"array",
+      "minItems": 1,
+      "items":{
+        "type":"object",
+        "properties":{
+          "route_id":{
+            "$ref": "#/definitions/type:string:trimmed:required"
+          },
+          "agency_id":{
+            "$ref": "#/definitions/type:string:trimmed:required"
+          },
+          "route_short_name":{
+            "$ref": "#/definitions/type:string:trimmed:optional"
+          },
+          "route_long_name":{
+            "$ref": "#/definitions/type:string:trimmed:optional"
+          },
+          "route_desc":{
+            "$ref": "#/definitions/type:string:trimmed:optional"
+          },
+          "route_type":{
+            "enum":[
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              11,
+              12
+            ]
+          },
+          "route_url":{
+            "$ref": "#/definitions/format:uri:trimmed:optional"
+          },
+          "route_color":{
+            "$ref": "#/definitions/gtfs-type:color:optional"
+          },
+          "route_text_color":{
+            "$ref": "#/definitions/gtfs-type:color:optional"
+          },
+          "route_sort_order":{
+            "$ref": "#/definitions/gtfs-type:non-negative-integer:optional"
+          },
+          "continuous_pickup":{
+            "enum":[
+              null,
+              0,
+              1,
+              2,
+              3
+            ]
+          },
+          "continuous_drop_off":{
+            "enum":[
+              null,
+              0,
+              1,
+              2,
+              3
+            ]
+          }
+        },
+        "required": [
+          "route_id",
+          "route_type"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "trips.txt": {
+      "type":"array",
+      "minItems": 1,
+      "items":{
+        "type":"object",
+        "properties":{
+          "route_id":{
+            "$ref": "#/definitions/type:string:trimmed:required"
+          },
+          "service_id":{
+            "$ref": "#/definitions/type:string:trimmed:required"
+          },
+          "trip_id":{
+            "$ref": "#/definitions/type:string:trimmed:required"
+          },
+          "trip_headsign":{
+            "$ref": "#/definitions/type:string:trimmed:optional"
+          },
+          "trip_short_name":{
+            "$ref": "#/definitions/type:string:trimmed:optional"
+          },
+          "direction_id":{
+            "enum":[
+              null,
+              0,
+              1
+            ]
+          },
+          "block_id":{
+            "$ref": "#/definitions/type:string:trimmed:optional"
+          },
+          "shape_id":{
+            "$ref": "#/definitions/type:string:trimmed:optional"
+          },
+          "wheelchair_accessible":{
+            "enum":[
+              null,
+              0,
+              1,
+              2
+            ]
+          },
+          "bikes_allowed":{
+            "enum":[
+              null,
+              0,
+              1,
+              2
+            ]
+          }
+        },
+        "required": [
+          "trip_id",
+          "service_id",
+          "route_id"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "stop_times.txt": {
+      "type":"array",
+      "minItems": 2,
+      "items":{
+        "type":"object",
+        "properties":{
+          "trip_id":{
+            "$ref": "#/definitions/type:string:trimmed:required"
+          },
+          "arrival_time":{
+            "$ref": "#/definitions/gtfs-type:time:optional"
+          },
+          "departure_time":{
+            "$ref": "#/definitions/gtfs-type:time:optional"
+          },
+          "stop_id":{
+            "$ref": "#/definitions/type:string:trimmed:required"
+          },
+          "stop_sequence":{
+            "$ref": "#/definitions/gtfs-type:non-negative-integer:optional"
+          },
+          "stop_headsign":{
+            "$ref": "#/definitions/type:string:trimmed:required"
+          },
+          "pickup_type":{
+            "enum":[
+              null,
+              0,
+              1,
+              2,
+              3
+            ]
+          },
+          "drop_off_type":{
+            "enum":[
+              null,
+              0,
+              1,
+              2,
+              3
+            ]
+          },
+          "continuous_pickup":{
+            "enum":[
+              null,
+              0,
+              1,
+              2,
+              3
+            ]
+          },
+          "continuous_drop_off":{
+            "enum":[
+              null,
+              0,
+              1,
+              2,
+              3
+            ]
+          },
+          "shape_dist_traveled":{
+            "$ref": "#/definitions/gtfs-type:non-negative-float:optional"
+          },
+          "timepoint":{
+            "enum":[
+              null,
+              0,
+              1
+            ]
+          }
+        },
+        "required": [
+          "trip_id",
+          "stop_id",
+          "stop_sequence"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "calendar.txt": {
+      "type":"array",
+      "items":{
+        "type":"object",
+        "properties":{
+          "service_id":{
+            "$ref": "#/definitions/type:string:trimmed:required"
+          },
+          "monday":{
+            "enum":[
+              0,
+              1
+            ]
+          },
+          "tuesday":{
+            "enum":[
+              0,
+              1
+            ]
+          },
+          "wednesday":{
+            "enum":[
+              0,
+              1
+            ]
+          },
+          "thursday":{
+            "enum":[
+              0,
+              1
+            ]
+          },
+          "friday":{
+            "enum":[
+              0,
+              1
+            ]
+          },
+          "saturday":{
+            "enum":[
+              0,
+              1
+            ]
+          },
+          "sunday":{
+            "enum":[
+              0,
+              1
+            ]
+          },
+          "start_date":{
+            "$ref": "#/definitions/gtfs-type:date:required"
+          },
+          "end_date":{
+            "$ref": "#/definitions/gtfs-type:date:required"
+          }
+        },
+        "required": [
+          "service_id",
+          "monday",
+          "tuesday",
+          "wednesday",
+          "thursday",
+          "friday",
+          "saturday",
+          "sunday",
+          "start_date",
+          "end_date"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "calendar_dates.txt": {
+      "type":"array",
+      "items":{
+        "type":"object",
+        "properties":{
+          "service_id": {
+            "$ref": "#/definitions/type:string:trimmed:required"
+          },
+          "date": {
+            "$ref": "#/definitions/gtfs-type:date:required"
+          },
+          "exception_type": {
+            "enum":[
+              1,
+              2
+            ]
+          }
+        },
+        "required": [
+          "service_id",
+          "date",
+          "exception_type"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "fare_attributes.txt": {
+      "type":"array",
+      "items":{
+        "type":"object",
+        "properties":{
+          "fare_id": {
+            "$ref": "#/definitions/type:string:trimmed:required"
+          },
+          "price": {
+            "$ref": "#/definitions/gtfs-type:non-negative-float:required"
+          },
+          "currency_type": {
+            "$ref": "#/definitions/gtfs-type:currency-code:required"
+          },
+          "payment_method": {
+            "enum":[
+              0,
+              1
+            ]
+          },
+          "transfers": {
+            "enum":[
+              0,
+              1,
+              2
+            ]
+          },
+          "agency_id": {
+            "$ref": "#/definitions/type:string:trimmed:required"
+          },
+          "transfer_duration": {
+            "$ref": "#/definitions/gtfs-type:non-negative-integer:required"
+          }
+        },
+        "required": [
+          "fare_id",
+          "price",
+          "currency_type",
+          "payment_method",
+          "transfers"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "fare_rules.txt": {
+      "type":"array",
+      "items":{
+        "type":"object",
+        "properties":{
+          "fare_id": {
+            "$ref": "#/definitions/type:string:trimmed:required"
+          },
+          "route_id": {
+            "$ref": "#/definitions/type:string:trimmed:required"
+          },
+          "origin_id": {
+            "$ref": "#/definitions/type:string:trimmed:required"
+          },
+          "destination_id": {
+            "$ref": "#/definitions/type:string:trimmed:required"
+          },
+          "contains_id": {
+            "$ref": "#/definitions/type:string:trimmed:required"
+          },
+        },
+        "required": [
+          "fare_id"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "shapes.txt": {
+      "type":"array",
+      "items":{
+        "type":"object",
+        "properties":{
+          "shape_id": {
+            "$ref": "#/definitions/type:string:trimmed:required"
+          },
+          "shape_pt_lat": {
+            "$ref": "#/definitions/gtfs-type:latitude:required"
+          },
+          "shape_pt_lon": {
+            "$ref": "#/definitions/gtfs-type:longitude:required"
+          },
+          "shape_pt_sequence": {
+            "$ref": "#/definitions/gtfs-type:non-negative-integer:required"
+          },
+          "shape_dist_traveled": {
+            "$ref": "#/definitions/gtfs-type:non-negative-float:required"
+          }
+        },
+        "required": [
+          "shape_id",
+          "shape_pt_lat",
+          "shape_pt_lon",
+          "shape_pt_sequence"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "frequencies.txt": {
+      "type":"array",
+      "items":{
+        "type":"object",
+        "properties":{
+          "trip_id": {
+            "$ref": "#/definitions/type:string:trimmed:required"
+          },
+          "start_time": {
+            "$ref": "#/definitions/gtfs-type:time:required"
+          },
+          "end_time": {
+            "$ref": "#/definitions/gtfs-type:time:required"
+          },
+          "headway_sec": {
+            "$ref": "#/definitions/gtfs-type:non-negative-integer:required"
+          },
+          "exact_times": {
+            "enum":[
+              null,
+              0,
+              1
+            ]
+          }
+        },
+        "required": [
+          "trip_id",
+          "start_time",
+          "end_time",
+          "headway_sec"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "transfers.txt": {
+      "type":"array",
+      "items":{
+        "type":"object",
+        "properties":{
+          "from_stop_id": {
+            "$ref": "#/definitions/type:string:trimmed:required"
+          },
+          "to_stop_id": {
+            "$ref": "#/definitions/type:string:trimmed:required"
+          },
+          "transfer_type": {
+            "enum":[
+              null,
+              0,
+              1,
+              2,
+              3
+            ]
+          },
+          "min_transfer_time": {
+            "$ref": "#/definitions/gtfs-type:non-negative-integer:required"
+          },
+          "exact_times": {
+            "enum":[
+              null,
+              0,
+              1
+            ]
+          }
+        },
+        "required": [
+          "from_stop_id",
+          "to_stop_id",
+          "transfer_type"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "pathways.txt": {
+      "type":"array",
+      "items":{
+        "type":"object",
+        "properties":{
+          "pathway_id": {
+            "$ref": "#/definitions/type:string:trimmed:required"
+          },
+          "from_stop_id": {
+            "$ref": "#/definitions/type:string:trimmed:required"
+          },
+          "to_stop_id": {
+            "$ref": "#/definitions/type:string:trimmed:required"
+          },
+          "pathway_mode": {
+            "enum":[
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7
+            ]
+          },
+          "is_bidirectional": {
+            "enum":[
+              0,
+              1
+            ]
+          },
+          "length": {
+            "$ref": "#/definitions/gtfs-type:non-negative-float:optional"
+          },
+          "traversal_time": {
+            "$ref": "#/definitions/gtfs-type:positive-integer:optional"
+          },
+          "stair_count": {
+            "$ref": "#/definitions/gtfs-type:non-null-integer:optional"
+          },
+          "max_slope": {
+            "$ref": "#/definitions/gtfs-type:float:optional"
+          },
+          "min_width": {
+            "$ref": "#/definitions/gtfs-type:non-negative-float:optional"
+          },
+          "signedposted_as": {
+            "$ref": "#/definitions/type:string:trimmed:optional"
+          },
+          "reversed_signedposted_as": {
+            "$ref": "#/definitions/type:string:trimmed:optional"
+          }
+        },
+        "required": [
+          "trip_id",
+          "start_time",
+          "end_time",
+          "headway_sec"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "levels.txt": {
+      "type":"array",
+      "items":{
+        "type":"object",
+        "properties":{
+          "level_id": {
+            "$ref": "#/definitions/type:string:trimmed:required"
+          },
+          "level_index": {
+            "$ref": "#/definitions/gtfs-type:float:required"
+          },
+          "level_name": {
+            "$ref": "#/definitions/type:string:trimmed:required"
+          }
+        },
+        "required": [
+          "level_id",
+          "level_index"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "translations.txt": {
+      "type":"array",
+      "items":{
+        "type":"object",
+        "properties":{
+          "table_name": {
+            "enum":[
+              "agency",
+              "stops",
+              "routes",
+              "trips",
+              "stop_times",
+              "pathways",
+              "levels",
+              "feed_info",
+              "attributions"
+            ]
+          },
+          "field_name": {
+            "$ref": "#/definitions/type:string:trimmed:required"
+          },
+          "language": {
+            "$ref": "#/definitions/gtfs-type:language-code:required"
+          },
+          "translations": {
+            "$ref": "#/definitions/type:string:trimmed:required"
+          },
+          "record_id": {
+            "$ref": "#/definitions/type:string:trimmed:optional"
+          },
+          "record_sub_id": {
+            "$ref": "#/definitions/type:string:trimmed:optional"
+          },
+          "field_value": {
+            "$ref": "#/definitions/type:string:trimmed:optional"
+          }
+        },
+        "required": [
+          "table_name",
+          "field_name",
+          "language",
+          "translations"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "feed_info.txt": {
+      "type":"array",
+      "minItems": 1,
+      "maxItems": 1,
+      "items":{
+        "type":"object",
+        "properties":{
+          "feed_publisher_name": {
+            "$ref": "#/definitions/type:string:trimmed:required"
+          },
+          "feed_publisher_url": {
+            "$ref": "#/definitions/format:uri:trimmed:required"
+          },
+          "feed_lang": {
+            "$ref": "#/definitions/gtfs-type:language-code:required"
+          },
+          "default_lang": {
+            "$ref": "#/definitions/gtfs-type:language-code:optional"
+          },
+          "feed_start_date": {
+            "$ref": "#/definitions/gtfs-type:date:optional"
+          },
+          "feed_end_date": {
+            "$ref": "#/definitions/gtfs-type:date:optional"
+          },
+          "feed_version": {
+            "$ref": "#/definitions/type:string:trimmed:optional"
+          },
+          "feed_contact_email": {
+            "$ref": "#/definitions/gtfs-type:email:optional"
+          },
+          "feed_contact_url":{
+            "$ref": "#/definitions/format:uri:trimmed:optional"
+          },
+        },
+        "required": [
+          "feed_publisher_name",
+          "feed_publisher_url",
+          "feed_lang"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "attributions.txt": {
+      "type":"array",
+      "items":{
+        "type":"object",
+        "properties":{
+          "attribution_id": {
+            "$ref": "#/definitions/type:string:trimmed:optional"
+          },
+          "agency_id": {
+            "$ref": "#/definitions/type:string:trimmed:optional"
+          },
+          "route_id": {
+            "$ref": "#/definitions/type:string:trimmed:optional"
+          },
+          "trip_id": {
+            "$ref": "#/definitions/type:string:trimmed:optional"
+          },
+          "organization_name": {
+            "$ref": "#/definitions/type:string:trimmed:required"
+          },
+          "is_producer": {
+            "enum":[
+              null,
+              0,
+              1
+            ]
+          },
+          "is_operator": {
+            "enum":[
+              null,
+              0,
+              1
+            ]
+          },
+          "is_authority": {
+            "enum":[
+              null,
+              0,
+              1
+            ]
+          },
+          "attribution_url": {
+            "$ref": "#/definitions/format:uri:trimmed:optional"
+          },
+          "attribution_email": {
+            "$ref": "#/definitions/gtfs-type:email:optional"
+          },
+          "attribution_phone": {
+            "$ref": "#/definitions/gtfs-type:phone-number:optional"
+          }
+        },
+        "required": [
+          "organization_name"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required":[
+    "agency.txt", "stops.txt", "routes.txt", "trips.txt", "stop_times.txt", "feed_info.txt"
+  ],
+  "additionalProperties": false
+}
