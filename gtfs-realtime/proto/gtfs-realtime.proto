@@ -389,7 +389,7 @@ message VehiclePosition {
     // The vehicle or carriage is not accepting passengers, but usually accepts passengers for boarding.
     NOT_ACCEPTING_PASSENGERS = 6;
 
-    // The vehicle or carriage doesn't have any occupancy data available at that time
+    // The vehicle or carriage doesn't have any occupancy data available at that time.
     NO_DATA_AVAILABLE = 7;
 
     // The vehicle or carriage is not boardable and never accepts passengers.
@@ -441,7 +441,9 @@ message VehiclePosition {
     // of travel and must have a value of 2, and so forth.
     // For example, the first carriage in the direction of travel has a value of 1.
     // If the second carriage in the direction of travel has a value of 3,
-    // consumers will detect an issue with the sequencing.
+    // consumers will discard data for all carriages (i.e., the multi_carriage_details field).
+    // Carriages without data must be represented with a valid carriage_sequence number and the fields 
+    // without data should be omitted (alternately, those fields could also be included and set to the "no data" values).
     // This message/field is still experimental, and subject to change. It may be formally adopted in the future.
     optional uint32 carriage_sequence = 5;
 
