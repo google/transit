@@ -394,41 +394,49 @@ message VehiclePosition {
   }
   optional CongestionLevel congestion_level = 6;
 
-  // The degree of passenger occupancy of the vehicle. This field is still
-  // experimental, and subject to change. It may be formally adopted in the
-  // future.
+  // The degree of passenger occupancy of the vehicle or carriage. This field is still
+  // experimental, and subject to change. It may be formally adopted in the future.
   enum OccupancyStatus {
-    // The vehicle is considered empty by most measures, and has few or no
+    // The vehicle or carriage is considered empty by most measures, and has few or no
     // passengers onboard, but is still accepting passengers.
     EMPTY = 0;
 
-    // The vehicle has a relatively large percentage of seats available.
+    // The vehicle or carriage has a relatively large percentage of seats available.
     // What percentage of free seats out of the total seats available is to be
     // considered large enough to fall into this category is determined at the
     // discretion of the producer.
     MANY_SEATS_AVAILABLE = 1;
 
-    // The vehicle has a relatively small percentage of seats available.
+    // The vehicle or carriage has a relatively small percentage of seats available.
     // What percentage of free seats out of the total seats available is to be
     // considered small enough to fall into this category is determined at the
     // discretion of the feed producer.
     FEW_SEATS_AVAILABLE = 2;
 
-    // The vehicle can currently accommodate only standing passengers.
+    // The vehicle or carriage can currently accommodate only standing passengers.
     STANDING_ROOM_ONLY = 3;
 
-    // The vehicle can currently accommodate only standing passengers
+    // The vehicle or carriage can currently accommodate only standing passengers
     // and has limited space for them.
     CRUSHED_STANDING_ROOM_ONLY = 4;
 
-    // The vehicle is considered full by most measures, but may still be
+    // The vehicle or carriage is considered full by most measures, but may still be
     // allowing passengers to board.
     FULL = 5;
 
-    // The vehicle is not accepting additional passengers.
+    // The vehicle or carriage is not accepting passengers, but usually accepts passengers for boarding.
     NOT_ACCEPTING_PASSENGERS = 6;
 
+    // The vehicle or carriage doesn't have any occupancy data available at that time.
+    NO_DATA_AVAILABLE = 7;
+
+    // The vehicle or carriage is not boardable and never accepts passengers.
+    // Useful for special vehicles or carriages (engine, maintenance carriage, etc…).
+    NOT_BOARDABLE = 8;
+
   }
+  // If multi_carriage_status is populated with per-carriage OccupancyStatus,
+  // then this field should describe the entire vehicle with all carriages accepting passengers considered.
   optional OccupancyStatus occupancy_status = 9;
 
   // A percentage value representing the degree of passenger occupancy of the vehicle.
@@ -437,8 +445,65 @@ message VehiclePosition {
   // including both seated and standing capacity, and current operating regulations allow.
   // It is possible that the value goes over 100 if there are currently more passengers than what the vehicle was designed for.
   // The precision of occupancy_percentage should be low enough that you can't track a single person boarding and alighting for privacy reasons.
+  // If multi_carriage_status is populated with per-carriage occupancy_percentage, 
+  // then this field should describe the entire vehicle with all carriages accepting passengers considered.
   // This field is still experimental, and subject to change. It may be formally adopted in the future.
   optional uint32 occupancy_percentage = 10;
+
+  // Carriage specific details, used for vehicles composed of several carriages
+  // This message/field is still experimental, and subject to change. It may be formally adopted in the future.
+  message CarriageDetails {
+
+    // Identification of the carriage. Should be unique per vehicle.
+    optional string id = 1;
+
+    // User visible label that may be shown to the passenger to help identify
+    // the carriage. Example: "7712", "Car ABC-32", etc...
+    // This message/field is still experimental, and subject to change. It may be formally adopted in the future.
+    optional string label = 2;
+
+    // Occupancy status for this given carriage, in this vehicle
+    // This message/field is still experimental, and subject to change. It may be formally adopted in the future.
+    optional OccupancyStatus occupancy_status = 3 [default = NO_DATA_AVAILABLE];
+
+    // Occupancy percentage for this given carriage, in this vehicle.
+    // Follows the same rules as "VehiclePosition.occupancy_percentage"
+    // -1 in case data is not available for this given carriage (as protobuf defaults to 0 otherwise)
+    // This message/field is still experimental, and subject to change. It may be formally adopted in the future.
+    optional int32 occupancy_percentage = 4 [default = -1];
+
+    // Identifies the order of this carriage with respect to the other
+    // carriages in the vehicle's list of CarriageDetails.
+    // The first carriage in the direction of travel must have a value of 1.
+    // The second value corresponds to the second carriage in the direction
+    // of travel and must have a value of 2, and so forth.
+    // For example, the first carriage in the direction of travel has a value of 1.
+    // If the second carriage in the direction of travel has a value of 3,
+    // consumers will discard data for all carriages (i.e., the multi_carriage_details field).
+    // Carriages without data must be represented with a valid carriage_sequence number and the fields 
+    // without data should be omitted (alternately, those fields could also be included and set to the "no data" values).
+    // This message/field is still experimental, and subject to change. It may be formally adopted in the future.
+    optional uint32 carriage_sequence = 5;
+
+    // The extensions namespace allows 3rd-party developers to extend the
+    // GTFS Realtime Specification in order to add and evaluate new features and
+    // modifications to the spec.
+    extensions 1000 to 1999;
+
+    // The following extension IDs are reserved for private use by any organization.
+    extensions 9000 to 9999;
+  }
+
+  // Details of the multiple carriages of this given vehicle.
+  // The first occurrence represents the first carriage of the vehicle, 
+  // given the current direction of travel. 
+  // The number of occurrences of the multi_carriage_details 
+  // field represents the number of carriages of the vehicle.
+  // It also includes non boardable carriages, 
+  // like engines, maintenance carriages, etc… as they provide valuable 
+  // information to passengers about where to stand on a platform.
+  // This message/field is still experimental, and subject to change. It may be formally adopted in the future.
+  repeated CarriageDetails multi_carriage_details = 11;
 
   // The extensions namespace allows 3rd-party developers to extend the
   // GTFS Realtime Specification in order to add and evaluate new features and
