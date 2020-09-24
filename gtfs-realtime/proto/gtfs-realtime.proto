@@ -437,18 +437,19 @@ message VehiclePosition {
   }
   // If multi_carriage_status is populated with per-carriage OccupancyStatus,
   // then this field should describe the entire vehicle with all carriages accepting passengers considered.
-  optional OccupancyStatus occupancy_status = 9;
+  optional OccupancyStatus occupancy_status = 9 [default = NO_DATA_AVAILABLE];
 
   // A percentage value representing the degree of passenger occupancy of the vehicle.
   // The values are represented as an integer without decimals. 0 means 0% and 100 means 100%.
   // The value 100 should represent the total maximum occupancy the vehicle was designed for,
   // including both seated and standing capacity, and current operating regulations allow.
   // It is possible that the value goes over 100 if there are currently more passengers than what the vehicle was designed for.
+  // -1 in case data is not available for this vehicle (as protobuf defaults to 0 otherwise).
   // The precision of occupancy_percentage should be low enough that you can't track a single person boarding and alighting for privacy reasons.
   // If multi_carriage_status is populated with per-carriage occupancy_percentage, 
   // then this field should describe the entire vehicle with all carriages accepting passengers considered.
   // This field is still experimental, and subject to change. It may be formally adopted in the future.
-  optional uint32 occupancy_percentage = 10;
+  optional int32 occupancy_percentage = 10 [default = -1];
 
   // Carriage specific details, used for vehicles composed of several carriages
   // This message/field is still experimental, and subject to change. It may be formally adopted in the future.
