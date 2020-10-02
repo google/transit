@@ -55,7 +55,10 @@ This section defines terms that are used throughout this document.
 - **Latitude** - WGS84 latitude in decimal degrees. The value must be greater than or equal to -90.0 and less than or equal to 90.0. *<br> Example: `41.890169` for the Colosseum in Rome.*
 - **Longitude** - WGS84 longitude in decimal degrees. The value must be greater than or equal to -180.0 and less than or equal to 180.0. <br> *Example: `12.492269` for the Colosseum in Rome.*
 - **Non-negative Float** - A floating point number greater than or equal to 0.
-- **Non-negative Integer** - A integer greater than or equal to 0.
+- **Non-negative Integer** - An integer greater than or equal to 0.
+- **Non-null Integer** - An integer not equal to 0.
+- **Positive Float** - A floating point number greater than 0.
+- **Positive Integer** - An integer greater than 0.
 - **Phone number** - A phone number.
 - **Time** - Time in the HH:MM:SS format (H:MM:SS is also accepted). The time is measured from "noon minus 12h" of the service day (effectively midnight except for days on which daylight savings time changes occur). For times occurring after midnight, enter the time as a value greater than 24:00:00 in HH:MM:SS local time for the day on which the trip schedule begins. <br> *Example: `14:30:00` for 2:30PM or `25:35:00` for 1:35AM on the next day.*
 - **Text** - A string of UTF-8 characters, which is aimed to be displayed and which must therefore be human readable.
