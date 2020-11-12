@@ -242,6 +242,37 @@ message TripUpdate {
     optional ScheduleRelationship schedule_relationship = 5
         [default = SCHEDULED];
 
+    // Provides the updated values for the stop time.
+    // NOTE: This message is still experimental, and subject to change. It may be formally adopted in the future.
+    message StopTimeProperties {
+      // Supports real-time stop assignments. Refers to a stop_id defined in the GTFS stops.txt.
+      // The new assigned_stop_id should not result in a significantly different trip experience for the end user than
+      // the stop_id defined in GTFS stop_times.txt. In other words, the end user should not view this new stop_id as an
+      // "unusual change" if the new stop was presented within an app without any additional context.
+      // For example, this field is intended to be used for platform assignments by using a stop_id that belongs to the
+      // same station as the stop originally defined in GTFS stop_times.txt.
+      // To assign a stop without providing any real-time arrival or departure predictions, populate this field and set
+      // StopTimeUpdate.schedule_relationship = NO_DATA.
+      // If this field is populated, it is preferred to omit `StopTimeUpdate.stop_id` and use only `StopTimeUpdate.stop_sequence`. If
+      // `StopTimeProperties.assigned_stop_id` and `StopTimeUpdate.stop_id` are populated, `StopTimeUpdate.stop_id` must match `assigned_stop_id`.
+      // Platform assignments should be reflected in other GTFS-realtime fields as well
+      // (e.g., `VehiclePosition.stop_id`).
+      // NOTE: This field is still experimental, and subject to change. It may be formally adopted in the future.
+      optional string assigned_stop_id = 1;
+
+      // The extensions namespace allows 3rd-party developers to extend the
+      // GTFS Realtime Specification in order to add and evaluate new features
+      // and modifications to the spec.
+      extensions 1000 to 1999;
+
+      // The following extension IDs are reserved for private use by any organization.
+      extensions 9000 to 9999;
+    }
+
+    // Realtime updates for certain properties defined within GTFS stop_times.txt
+    // NOTE: This field is still experimental, and subject to change. It may be formally adopted in the future.
+    optional StopTimeProperties stop_time_properties = 6;
+
     // The extensions namespace allows 3rd-party developers to extend the
     // GTFS Realtime Specification in order to add and evaluate new features
     // and modifications to the spec.
