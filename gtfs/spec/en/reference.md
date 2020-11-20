@@ -26,8 +26,6 @@ This document defines the format and structure of the files that comprise a GTFS
     -   [pathways.txt](#pathwaystxt)
     -   [levels.txt](#levelstxt)
     -   [occupancies.txt](#occupanciestxt)
-    -   [occupancy_patterns.txt](#occupancy_patternstxt)
-    -   [vehicle_couplings.txt](#vehicle_couplingstxt)
     -   [translations.txt](#translationstxt)
     -   [feed\_info.txt](#feed_infotxt)
     -   [attributions.txt](#attributionstxt)
@@ -85,9 +83,7 @@ This specification defines the following files:
 |  [transfers.txt](#transferstxt)  | Optional | Rules for making connections at transfer points between routes. |
 |  [pathways.txt](#pathwaystxt)  | Optional | Pathways linking together locations within stations. |
 |  [levels.txt](#levelstxt)  | Optional | Levels within stations. |
-|  [occupancies.txt](#occupanciestxt) | Optional | Mean occupancy profiles at boarding time. |
-|  [occupancy_patterns.txt](#occupancy_patternstxt) | Optional | Patterns of mean occupancy profiles at boarding time for different days of the week and child vehicles. |
-|  [vehicle_couplings.txt](#vehicle_couplingstxt) | Optional | Defines the arrangement of child vehicles in composed parent vehicles. |
+|  [occupancies.txt](#occupanciestxt) | Optional | Expected or usual in-vehicle occupancy levels. |
 |  [translations.txt](#translationstxt)  | Optional | Translations of customer-facing dataset values. |
 |  [feed_info.txt](#feed_infotxt)  | Optional | Dataset metadata, including publisher, version, and expiration information. |
 |  [attributions.txt](#attributionstxt)  | Optional | Dataset attributions. |
@@ -378,39 +374,28 @@ Describe the different levels of a station. Is mostly useful when used in conjun
 
 File: **Optional**
 
-The file describes mean occupancy profiles of vehicles at boarding time.
+Expected or usual in-vehicle occupancy levels.
+
+For describing historical average occupancies (`occupancies.date_source=0`), at least 4 weeks is suggested to average occupancy data across each unique day of the week, valid for up to 2 weeks thereafter in `occupancies.txt`.
+
+Methods of occupancy forecasting as input into `occupancies.txt` are not strictly specified. Beyond the guidelines given above, it is the responsibility of data producers to ensure that the data provided are meaningful to riders. 
 
 | Field Name | Type | Required | Description |
 | ----- | ----- | ----- | ----- |
-| `occupancy_id` | ID | **Required** | Identifies an occupancy profile. |
-| `mean_occupancy_percentage` | Integer | **Required** | Describes the mean occupancy percentage of the vehicle at boarding time. <br><br> Valid percentage values are greater than or equal to `0`. The value `100` should represent the total maximum occupancy the vehicle was designed for, according to the `occupancy_type`, and current operating regulations allow. <br><br> It is possible that the value goes over `100` if the occupancy is greater than what the vehicle was designed for. The degree of precision should be low enough that you can't track a single rider boarding and alighting for privacy reasons. <br><br> A value of `-1` indicates that the vehicle is likely not accepting riders for this `occupancy_type`. |
-| `mean_occupancy_status` | Enum | **Conditionally Required** | Describes the nominal degree of rider occupancy for the vehicle at boarding time. This field refers to the GTFS Realtime [`OccupancyStatus`](http://gtfs.org/reference/realtime/v2/#enum-occupancystatus) enums. <br><br> `0` - Empty. The vehicle is considered empty by most measures, and has few or no passengers onboard, but is still accepting passengers. <br> `1` - Many seats available. The vehicle has a large percentage of seats available. What percentage of free seats out of the total seats available is to be considered large enough to fall into this category is determined at the discretion of the producer. <br> `2` - Few seats available. The vehicle has a small percentage of seats available. What percentage of free seats out of the total seats available is to be considered small enough to fall into this category is determined at the discretion of the producer. <br> `3` - Standing room only. The vehicle can currently accommodate only standing passengers. <br> `4` - Crushed standing room only. The vehicle can currently accommodate only standing passengers and has limited space for them. <br> `5` - Full. The vehicle is considered full by most measures, but may still be allowing passengers to board. <br> `6` - Not accepting passengers. The vehicle can not accept passengers. <br><br> Conditionally Required: <br> - **Required** if `occupancy_type=0`, or if `occupancy_type` is empty or not provided. <br> - Forbidden otherwise. |
-| `occupancy_type` | Enum | Optional | Describes the type of occupancy. Valid options are: <br><br> `0` or empty - Seating and standing. <br> `1` - Riders in a wheelchair. <br> `2` - Bikes. <br> `3` - Cars. <br><br> Multiple `occupancy_type` can be defined for the same `occupancy_id`. <br><br> If this field is not provided, it is assumed the occupancy profile refers to the seating and standing occupancy.  |
-
-### occupancy_patterns.txt
-
-File: **Optional**
-
-The file describes patterns of mean occupancy per date and/or per child vehicle. 
-
-| Field Name | Type | Required | Description |
-| ----- | ----- | ----- | ----- |
-| `occupancy_pattern_id` | ID | **Required** | Identifies an occupancy pattern. |
-| `occupancy_id` | ID referencing `occupancies.occupancy_id` | **Required** | Identifies the occupancy profile for the `occupancy_pattern_id`. <br><br> Multiple `occupancy_id`s can share the same `occupancy_pattern_id`. |
-| `service_id` | ID referencing `calendar.service_id` or `calendar_dates.service_id` | Optional | Identifies the date(s) that the occupancy pattern applies. |
-| `parent_id` | ID referencing `vehicle_couplings.parent_id` | **Conditionally Required** | Identifies the parent vehicle from which the `child_sequence` refers to. <br><br> Conditionally Required: <br> - **Required** if `child_sequence` is defined. <br> - Forbidden otherwise. | 
-| `child_sequence` | Non-negative Integer referencing `vehicle_couplings.child_sequence` | **Conditionally Required** | Identifies the child vehicle for which the `occupancy_pattern_id` is being described. <br><br> Many `child_sequence`s may be defined for the same `occupancy_pattern_id`. <br><br> Conditionally Required: <br> - **Required** if `parent_id` is defined. <br> - Forbidden otherwise. |
-
-### vehicle_couplings.txt
-
-File: **Optional** 
-
-The file describes the arrangement of child vehicles in composed parent vehicles.
-
-| Field Name | Type | Required | Description |
-| ----- | ----- | ----- | ----- |
-| `parent_id` | ID | **Required** | Identifies the parent vehicle. |
-| `child_sequence` | Non-negative Integer | **Required** | Defines the location of the child vehicle in respect to the other child vehicles composing the parent vehicle. The order number must increase along the parent vehicle, from its head to its tail. <hr> _Example: a train composed of 7 carriages can have the following order numbers: <br> (←Head) 1, 2, 3, 4, 5, 6, 7 (Tail) <br> (←Head) 4, 10, 105, 206, 333, 806, 1028 (Tail)_ |
+| `trip_id` | ID referencing `stop_times.trip_id` | **Required** |  Identifies a `trip_id` for which an occupancy level is described. |
+| `stop_sequence` | ID referencing `stop_times.stop_sequence` | **Conditionally Required** | Identifies a `stop_sequence` along `occupancies.trip_id` for which an occupancy level is described.<br><br>Defined values in `occupancies.stop_sequence` will apply to subsequent `stop_times.stop_sequence` that are not defined in `occupancies.stop_sequence`, for the same `trip_id`.<br><br>Conditionally Required: <br>- **Forbidden** if `occupancies.trip_id` is empty. |
+| `occupancy_status` | Enum | **Required** | Indicates the nominal degree of in-vehicle occupancy. This field refers to the GTFS Realtime [`OccupancyStatus`](http://gtfs.org/reference/realtime/v2/#enum-occupancystatus) enums. Valid options are:<br><br> `0` - **Empty**. The vehicle is considered empty by most measures, and has few or no passengers onboard, but is still accepting passengers. <br> `1` - **Many seats available**. The vehicle has a large percentage of seats available. What percentage of free seats out of the total seats available is to be considered large enough to fall into this category is determined at the discretion of the producer. <br> `2` - **Few seats available**. The vehicle has a small percentage of seats available. What percentage of free seats out of the total seats available is to be considered small enough to fall into this category is determined at the discretion of the producer. <br> `3` - **Standing room only**. The vehicle can currently accommodate only standing passengers. <br> `4` - **Crushed standing room only**. The vehicle can currently accommodate only standing passengers and has limited space for them. <br> `5` - **Full**. The vehicle is considered full by most measures, but may still be allowing passengers to board. <br> `6` - **Not accepting passengers**. The vehicle can not accept passengers. |
+| `occupancy_percentage` | Integer | Optional | Indicates in-vehicle occupancy as a percentage.<br><br> Valid percentage values are greater than or equal to `0`. The value `100` should represent the maximum occupancy the vehicle was designed for, and current operating regulations allow. It is possible that the value goes over `100` if the occupancy is greater than what the vehicle was designed for.<br><br> The degree of precision should be low enough such that you cannot track where a single rider is boarding or alighting.<br><br> A value of `-1` indicates that the vehicle is full and likely not accepting riders. |
+| `monday` | Enum | **Required** | Indicates whether an occupancy level is valid for all Mondays in the date range specified by `occupancies.start_date` and `occupancies.end_date`. Valid options are: <br><br> `1` - The occupancy level applies for all Mondays in the date range.<br>`0` - The occupancy level does not apply for all Mondays in the date range. |
+| `tuesday` | Enum| **Required** | Functions in the same way as `occupancies.monday` except applies to Tuesdays. |
+| `wednesday` | Enum| **Required** | Functions in the same way as `occupancies.monday` except applies to Wednesdays. |
+| `thursday` | Enum| **Required** | Functions in the same way as `occupancies.monday` except applies to Thursdays. |
+| `friday` | Enum| **Required** | Functions in the same way as `occupancies.monday` except applies to Fridays. |
+| `saturday` | Enum| **Required** | Functions in the same way as `occupancies.monday` except applies to Saturdays. |
+| `sunday` | Enum| **Required** | Functions in the same way as `occupancies.monday` except applies to Sundays. |
+| `start_date` | Date | **Required** | Start date of the date interval that the occupancy level is valid. |
+| `end_date` | Date | **Required** | End date of the date interval that the occupancy level is valid. |
+| `data_source` | Enum | **Required** | Indicates the source of the data that were used to populate `occupancies.occupancy_status` or `occupancies.occupancy_percentage`.<br><br> If necessary, further methodological details can be communicated directly between data producers and data consumers. Valid options are:<br><br>`0` - Historical average.<br>`1` - Modeled predictions. | 
 
 ### translations.txt
 
