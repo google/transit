@@ -8,9 +8,10 @@ This document defines the format and structure of the files that comprise a GTFS
 
 1.  [Term Definitions](#term-definitions)
 2.  [Field Types](#field-types)
-3.  [Dataset Files](#dataset-files)
-4.  [File Requirements](#file-requirements)
-5.  [Field Definitions](#field-definitions)
+3.  [Field Signs](#field-signs)
+4.  [Dataset Files](#dataset-files)
+5.  [File Requirements](#file-requirements)
+6.  [Field Definitions](#field-definitions)
     -   [agency.txt](#agencytxt)
     -   [stops.txt](#stopstxt)
     -   [routes.txt](#routestxt)
