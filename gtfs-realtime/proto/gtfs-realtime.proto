@@ -431,7 +431,7 @@ message VehiclePosition {
   // Consumers should represent OccupancyStatus values as the nominal status indicated 
   // and intended by the producer. Likewise, producers must use OccupancyStatus values that
   // correspond to actual vehicle occupancy states, and must not interally map OccupancyStatus 
-  // values to interpretted percentages. For describing passenger occupancy levels on a linear 
+  // values to interpreted percentages. For describing passenger occupancy levels on a linear 
   // scale, see `VehiclePosition.occupancy_percentage`.
   // This field is still experimental, and subject to change. It may be formally adopted in the future.
   enum OccupancyStatus {
