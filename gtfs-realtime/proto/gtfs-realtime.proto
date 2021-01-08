@@ -425,8 +425,15 @@ message VehiclePosition {
   }
   optional CongestionLevel congestion_level = 6;
 
-  // The nominal status of passenger occupancy for the vehicle or carriage. This field is still
-  // experimental, and subject to change. It may be formally adopted in the future.
+  // The nominal status of passenger occupancy for the vehicle or carriage.
+  // Individual producers may not publish all OccupancyStatus values. Therefore, consumers
+  // must not assume that the OccupancyStatus values follow a universal linear scale.
+  // Consumers should represent OccupancyStatus values as the nominal status indicated 
+  // and intended by the producer. Likewise, producers must use OccupancyStatus values that
+  // correspond to actual vehicle occupancy states, and must not interally map OccupancyStatus 
+  // values to interpretted percentages. For describing passenger occupancy levels on a linear 
+  // scale, see `VehiclePosition.occupancy_percentage`.
+  // This field is still experimental, and subject to change. It may be formally adopted in the future.
   enum OccupancyStatus {
     // The vehicle or carriage is considered empty by most measures, and has few or no
     // passengers onboard, but is still accepting passengers.
