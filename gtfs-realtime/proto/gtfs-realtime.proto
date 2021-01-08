@@ -427,7 +427,7 @@ message VehiclePosition {
 
   // The nominal status of passenger occupancy for the vehicle or carriage.
   // Individual producers may not publish all OccupancyStatus values. Therefore, consumers
-  // must not assume that the OccupancyStatus values follow a universal linear scale.
+  // must not assume that the OccupancyStatus values follow a linear scale.
   // Consumers should represent OccupancyStatus values as the nominal status indicated 
   // and intended by the producer. Likewise, producers must use OccupancyStatus values that
   // correspond to actual vehicle occupancy states, and must not interally map OccupancyStatus 
