@@ -275,11 +275,11 @@ Congestion level that is affecting this vehicle.
 
 ## _enum OccupancyStatus_
 
-The nominal status of passenger occupancy for the vehicle or carriage.
+The nominal state of passenger occupancy for the vehicle or carriage.
 
-Individual producers may not publish all OccupancyStatus values. Therefore, consumers must not assume that the OccupancyStatus values follow a linear scale. Consumers should represent OccupancyStatus values as the nominal status indicated and intended by the producer. Likewise, producers must use OccupancyStatus values that correspond to actual vehicle occupancy states, and must not interally map OccupancyStatus values to interpreted percentages.
+Individual producers may not publish all OccupancyStatus values. Therefore, consumers must not assume that the OccupancyStatus values follow a linear scale. Consumers should represent OccupancyStatus values as the nominal state indicated and intended by the producer. Likewise, producers must use OccupancyStatus values that correspond to actual vehicle occupancy states.
 
-For describing passenger occupancy levels on a linear scale, see `VehiclePosition.occupancy_percentage`.
+For describing passenger occupancy levels on a linear scale, see `occupancy_percentage`.
 
 **Caution:** this field is still **experimental**, and subject to change. It may be formally adopted in the future.
 
