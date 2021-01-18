@@ -425,10 +425,10 @@ message VehiclePosition {
   }
   optional CongestionLevel congestion_level = 6;
 
-  // The nominal state of passenger occupancy for the vehicle or carriage.
+  // The state of passenger occupancy for the vehicle or carriage.
   // Individual producers may not publish all OccupancyStatus values. Therefore, consumers
   // must not assume that the OccupancyStatus values follow a linear scale.
-  // Consumers should represent OccupancyStatus values as the nominal state indicated 
+  // Consumers should represent OccupancyStatus values as the state indicated 
   // and intended by the producer. Likewise, producers must use OccupancyStatus values that
   // correspond to actual vehicle occupancy states.
   // For describing passenger occupancy levels on a linear scale, see `occupancy_percentage`.
@@ -438,14 +438,14 @@ message VehiclePosition {
     // passengers onboard, but is still accepting passengers.
     EMPTY = 0;
 
-    // The vehicle or carriage has a large allocation of seats available.
-    // The allocation of free seats out of the total seats available to be
+    // The vehicle or carriage has a large number of seats available.
+    // The amount of free seats out of the total seats available to be
     // considered large enough to fall into this category is determined at the
     // discretion of the producer.
     MANY_SEATS_AVAILABLE = 1;
 
-    // The vehicle or carriage has a relatively small allocation of seats available.
-    // The allocation of free seats out of the total seats available to be
+    // The vehicle or carriage has a relatively small number of seats available.
+    // The amount of free seats out of the total seats available to be
     // considered small enough to fall into this category is determined at the
     // discretion of the feed producer.
     FEW_SEATS_AVAILABLE = 2;
