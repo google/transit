@@ -244,7 +244,7 @@ Realtime positioning information for a given vehicle.
 | **current_status** | [VehicleStopStatus](#enum-vehiclestopstatus) | Optional | One | The exact status of the vehicle with respect to the current stop. Ignored if current_stop_sequence is missing. |
 | **timestamp** | [uint64](https://developers.google.com/protocol-buffers/docs/proto#scalar) | Optional | One | Moment at which the vehicle's position was measured. In POSIX time (i.e., number of seconds since January 1st 1970 00:00:00 UTC). |
 | **congestion_level** | [CongestionLevel](#enum-congestionlevel) | Optional | One |
-| **occupancy_status** | [OccupancyStatus](#enum-occupancystatus) | _Optional_ | One | The nominal status of passenger occupancy for the vehicle or carriage. If multi_carriage_details is populated with per-carriage OccupancyStatus, then this field should describe the entire vehicle with all carriages accepting passengers considered.<br><br>**Caution:** this field is still **experimental**, and subject to change. It may be formally adopted in the future.|
+| **occupancy_status** | [OccupancyStatus](#enum-occupancystatus) | _Optional_ | One | The state of passenger occupancy for the vehicle or carriage. If multi_carriage_details is populated with per-carriage OccupancyStatus, then this field should describe the entire vehicle with all carriages accepting passengers considered.<br><br>**Caution:** this field is still **experimental**, and subject to change. It may be formally adopted in the future.|
 | **occupancy_percentage** | [uint32](https://developers.google.com/protocol-buffers/docs/proto#scalar) | Optional | One | A percentage value indicating the degree of passenger occupancy in the vehicle. The value 100 should represent the total maximum occupancy the vehicle was designed for, including both seating and standing capacity, and current operating regulations allow. The value may exceed 100 if there are more passengers than the maximum designed capacity. The precision of occupancy_percentage should be low enough that individual passengers cannot be tracked boarding or alighting the vehicle. If multi_carriage_details is populated with per-carriage occupancy_percentage, then this field should describe the entire vehicle with all carriages accepting passengers considered.<br><br>**Caution:** this field is still **experimental**, and subject to change. It may be formally adopted in the future. |
 | **multi_carriage_details** | [CarriageDetails](#message-CarriageDetails) | Optional | Many | Details of the multiple carriages of this given vehicle. The first occurrence represents the first carriage of the vehicle, **given the current direction of travel**. The number of occurrences of the multi_carriage_details field represents the number of carriages of the vehicle. It also includes non boardable carriages, like engines, maintenance carriages, etc… as they provide valuable information to passengers about where to stand on a platform.<br><br>**Caution:** this field is still **experimental**, and subject to change. It may be formally adopted in the future. |
 
@@ -275,9 +275,9 @@ Congestion level that is affecting this vehicle.
 
 ## _enum OccupancyStatus_
 
-The nominal state of passenger occupancy for the vehicle or carriage.
+The state of passenger occupancy for the vehicle or carriage.
 
-Individual producers may not publish all OccupancyStatus values. Therefore, consumers must not assume that the OccupancyStatus values follow a linear scale. Consumers should represent OccupancyStatus values as the nominal state indicated and intended by the producer. Likewise, producers must use OccupancyStatus values that correspond to actual vehicle occupancy states.
+Individual producers may not publish all OccupancyStatus values. Therefore, consumers must not assume that the OccupancyStatus values follow a linear scale. Consumers should represent OccupancyStatus values as the state indicated and intended by the producer. Likewise, producers must use OccupancyStatus values that correspond to actual vehicle occupancy states.
 
 For describing passenger occupancy levels on a linear scale, see `occupancy_percentage`.
 
@@ -288,8 +288,8 @@ For describing passenger occupancy levels on a linear scale, see `occupancy_perc
 | _**Value**_ | _**Comment**_ |
 |-------------|---------------|
 | _**EMPTY**_ | _The vehicle is considered empty by most measures, and has few or no passengers onboard, but is still accepting passengers._ |
-| _**MANY_SEATS_AVAILABLE**_ | _The vehicle or carriage has a large allocation of seats available. The allocation of free seats out of the total seats available to be considered large enough to fall into this category is determined at the discretion of the producer._ |
-| _**FEW_SEATS_AVAILABLE**_ | _The vehicle or carriage has a small allocation of seats available. The allocation of free seats out of the total seats available to be considered small enough to fall into this category is determined at the discretion of the producer._ |
+| _**MANY_SEATS_AVAILABLE**_ | _The vehicle or carriage has a large number of seats available. The amount of free seats out of the total seats available to be considered large enough to fall into this category is determined at the discretion of the producer._ |
+| _**FEW_SEATS_AVAILABLE**_ | _The vehicle or carriage has a small number of seats available. The amount of free seats out of the total seats available to be considered small enough to fall into this category is determined at the discretion of the producer._ |
 | _**STANDING_ROOM_ONLY**_ | _The vehicle or carriage can currently accommodate only standing passengers._ |
 | _**CRUSHED_STANDING_ROOM_ONLY**_ | _The vehicle or carriage can currently accommodate only standing passengers and has limited space for them._ |
 | _**FULL**_ | _The vehicle is considered full by most measures, but may still be allowing passengers to board._ |
