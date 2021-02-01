@@ -425,21 +425,27 @@ message VehiclePosition {
   }
   optional CongestionLevel congestion_level = 6;
 
-  // The degree of passenger occupancy of the vehicle or carriage. This field is still
-  // experimental, and subject to change. It may be formally adopted in the future.
+  // The state of passenger occupancy for the vehicle or carriage.
+  // Individual producers may not publish all OccupancyStatus values. Therefore, consumers
+  // must not assume that the OccupancyStatus values follow a linear scale.
+  // Consumers should represent OccupancyStatus values as the state indicated 
+  // and intended by the producer. Likewise, producers must use OccupancyStatus values that
+  // correspond to actual vehicle occupancy states.
+  // For describing passenger occupancy levels on a linear scale, see `occupancy_percentage`.
+  // This field is still experimental, and subject to change. It may be formally adopted in the future.
   enum OccupancyStatus {
     // The vehicle or carriage is considered empty by most measures, and has few or no
     // passengers onboard, but is still accepting passengers.
     EMPTY = 0;
 
-    // The vehicle or carriage has a relatively large percentage of seats available.
-    // What percentage of free seats out of the total seats available is to be
+    // The vehicle or carriage has a large number of seats available.
+    // The amount of free seats out of the total seats available to be
     // considered large enough to fall into this category is determined at the
     // discretion of the producer.
     MANY_SEATS_AVAILABLE = 1;
 
-    // The vehicle or carriage has a relatively small percentage of seats available.
-    // What percentage of free seats out of the total seats available is to be
+    // The vehicle or carriage has a relatively small number of seats available.
+    // The amount of free seats out of the total seats available to be
     // considered small enough to fall into this category is determined at the
     // discretion of the feed producer.
     FEW_SEATS_AVAILABLE = 2;
@@ -470,12 +476,12 @@ message VehiclePosition {
   // then this field should describe the entire vehicle with all carriages accepting passengers considered.
   optional OccupancyStatus occupancy_status = 9;
 
-  // A percentage value representing the degree of passenger occupancy of the vehicle.
+  // A percentage value indicating the degree of passenger occupancy in the vehicle.
   // The values are represented as an integer without decimals. 0 means 0% and 100 means 100%.
   // The value 100 should represent the total maximum occupancy the vehicle was designed for,
   // including both seated and standing capacity, and current operating regulations allow.
-  // It is possible that the value goes over 100 if there are currently more passengers than what the vehicle was designed for.
-  // The precision of occupancy_percentage should be low enough that you can't track a single person boarding and alighting for privacy reasons.
+  // The value may exceed 100 if there are more passengers than the maximum designed capacity.
+  // The precision of occupancy_percentage should be low enough that individual passengers cannot be tracked boarding or alighting the vehicle.
   // If multi_carriage_status is populated with per-carriage occupancy_percentage, 
   // then this field should describe the entire vehicle with all carriages accepting passengers considered.
   // This field is still experimental, and subject to change. It may be formally adopted in the future.
