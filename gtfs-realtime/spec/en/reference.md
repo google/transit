@@ -314,7 +314,7 @@ To describe the in-vehicle occupancy state, see [OccupancyStatus](#enum-occupanc
 | _**NOT_CROWDED**_ | _The vehicle or carriage is not considered crowded by most measures, having few or no passengers onboard._ |
 | _**SOME_CROWDING**_ | _The vehicle or carriage has some crowding by most measures, having some passengers onboard._ |
 | _**CROWDED**_ | _The vehicle or carriage is considered crowded by most measures, having many passengers onboard and limited space._ |
-| _**NO_DATA_AVAILABLE**_ | The vehicle of carriage does not have any crowd level data available at that time. |
+| _**NO_DATA_AVAILABLE**_ | _The vehicle of carriage does not have any crowd level data available at that time._ |
 
 ## _message_ CarriageDetails
 
