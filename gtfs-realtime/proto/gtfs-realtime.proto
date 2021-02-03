@@ -476,6 +476,24 @@ message VehiclePosition {
   // then this field should describe the entire vehicle with all carriages accepting passengers considered.
   optional OccupancyStatus occupancy_status = 9;
 
+  // The passenger crowd level for the vehicle or carriage.
+  // This field is still experimental, and subject to change. It may be formally adopted in the future.
+  // If multi_carriage_details is populated with per-carriage CrowdLevel,
+  // then this field should describe the entire vehicle with all carriages accepting passengers considered.
+  enum CrowdLevel {
+    // The vehicle of carriage does not have any crowd level data available at that time.
+    NO_DATA_AVAILABLE = 0;
+
+    // The vehicle or carriage is not considered crowded by most measures, having few or no passengers onboard.
+    NOT_CROWDED = 1;
+
+    // The vehicle or carriage has some crowding by most measures, having some passengers onboard.
+    SOME_CROWDING = 2;
+
+    // The vehicle or carriage is considered crowded by most measures, having many passengers onboard and limited space.
+    CROWDED = 3;
+  }
+
   // A percentage value indicating the degree of passenger occupancy in the vehicle.
   // The values are represented as an integer without decimals. 0 means 0% and 100 means 100%.
   // The value 100 should represent the total maximum occupancy the vehicle was designed for,
@@ -503,11 +521,15 @@ message VehiclePosition {
     // This message/field is still experimental, and subject to change. It may be formally adopted in the future.
     optional OccupancyStatus occupancy_status = 3 [default = NO_DATA_AVAILABLE];
 
+    // The passenger crowd level for this given carriage, in this vehicle.
+    // This message/field is still experimental, and subject to change. It may be formally adopted in the future.
+    optional CrowdLevel crowd_level = 4 [default = NO_DATA_AVAILABLE];
+
     // Occupancy percentage for this given carriage, in this vehicle.
     // Follows the same rules as "VehiclePosition.occupancy_percentage"
     // -1 in case data is not available for this given carriage (as protobuf defaults to 0 otherwise)
     // This message/field is still experimental, and subject to change. It may be formally adopted in the future.
-    optional int32 occupancy_percentage = 4 [default = -1];
+    optional int32 occupancy_percentage = 5 [default = -1];
 
     // Identifies the order of this carriage with respect to the other
     // carriages in the vehicle's list of CarriageDetails.
@@ -520,7 +542,7 @@ message VehiclePosition {
     // Carriages without data must be represented with a valid carriage_sequence number and the fields 
     // without data should be omitted (alternately, those fields could also be included and set to the "no data" values).
     // This message/field is still experimental, and subject to change. It may be formally adopted in the future.
-    optional uint32 carriage_sequence = 5;
+    optional uint32 carriage_sequence = 6;
 
     // The extensions namespace allows 3rd-party developers to extend the
     // GTFS Realtime Specification in order to add and evaluate new features and

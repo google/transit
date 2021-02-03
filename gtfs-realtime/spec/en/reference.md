@@ -59,6 +59,7 @@ Fields labeled as **experimental** are subject to change and not yet formally ad
             *   [VehicleStopStatus](#enum-vehiclestopstatus)
             *   [CongestionLevel](#enum-congestionlevel)
             *   [OccupancyStatus](#enum-occupancystatus)
+            *   [CrowdLevel](#enum-crowdlevel)
             *   [CarriageDetails](#message-carriagedetails)
         *   [Alert](#message-alert)
             *   [TimeRange](#message-timerange)
@@ -244,7 +245,8 @@ Realtime positioning information for a given vehicle.
 | **current_status** | [VehicleStopStatus](#enum-vehiclestopstatus) | Optional | One | The exact status of the vehicle with respect to the current stop. Ignored if current_stop_sequence is missing. |
 | **timestamp** | [uint64](https://developers.google.com/protocol-buffers/docs/proto#scalar) | Optional | One | Moment at which the vehicle's position was measured. In POSIX time (i.e., number of seconds since January 1st 1970 00:00:00 UTC). |
 | **congestion_level** | [CongestionLevel](#enum-congestionlevel) | Optional | One |
-| **occupancy_status** | [OccupancyStatus](#enum-occupancystatus) | _Optional_ | One | The state of passenger occupancy for the vehicle or carriage. If multi_carriage_details is populated with per-carriage OccupancyStatus, then this field should describe the entire vehicle with all carriages accepting passengers considered.<br><br>**Caution:** this field is still **experimental**, and subject to change. It may be formally adopted in the future.|
+| **occupancy_status** | [OccupancyStatus](#enum-occupancystatus) | Optional | One | The state of passenger occupancy for the vehicle or carriage. If multi_carriage_details is populated with per-carriage OccupancyStatus, then this field should describe the entire vehicle with all carriages accepting passengers considered.<br><br>**Caution:** this field is still **experimental**, and subject to change. It may be formally adopted in the future.|
+| **crowd_level** | [CrowdLevel](#enum-crowdlevel) | Optional | One | The passenger crowd level for the vehicle or carriage. If multi_carriage_details is populated with per-carriage CrowdLevel, then this field should describe the entire vehicle with all carriages accepting passengers considered.<br><br>**Caution:** this field is still **experimental**, and subject to change. It may be formally adopted in the future.|
 | **occupancy_percentage** | [uint32](https://developers.google.com/protocol-buffers/docs/proto#scalar) | Optional | One | A percentage value indicating the degree of passenger occupancy in the vehicle. The value 100 should represent the total maximum occupancy the vehicle was designed for, including both seating and standing capacity, and current operating regulations allow. The value may exceed 100 if there are more passengers than the maximum designed capacity. The precision of occupancy_percentage should be low enough that individual passengers cannot be tracked boarding or alighting the vehicle. If multi_carriage_details is populated with per-carriage occupancy_percentage, then this field should describe the entire vehicle with all carriages accepting passengers considered.<br><br>**Caution:** this field is still **experimental**, and subject to change. It may be formally adopted in the future. |
 | **multi_carriage_details** | [CarriageDetails](#message-CarriageDetails) | Optional | Many | Details of the multiple carriages of this given vehicle. The first occurrence represents the first carriage of the vehicle, **given the current direction of travel**. The number of occurrences of the multi_carriage_details field represents the number of carriages of the vehicle. It also includes non boardable carriages, like engines, maintenance carriages, etc… as they provide valuable information to passengers about where to stand on a platform.<br><br>**Caution:** this field is still **experimental**, and subject to change. It may be formally adopted in the future. |
 
@@ -273,13 +275,15 @@ Congestion level that is affecting this vehicle.
 | **CONGESTION** |
 | **SEVERE_CONGESTION** |
 
-## _enum OccupancyStatus_
+## _enum_ OccupancyStatus
 
 The state of passenger occupancy for the vehicle or carriage.
 
 Individual producers may not publish all OccupancyStatus values. Therefore, consumers must not assume that the OccupancyStatus values follow a linear scale. Consumers should represent OccupancyStatus values as the state indicated and intended by the producer. Likewise, producers must use OccupancyStatus values that correspond to actual vehicle occupancy states.
 
-For describing passenger occupancy levels on a linear scale, see `occupancy_percentage`.
+To describe passenger crowd levels on an ordinal scale, see [CrowdLevel](#enum-crowdlevel).
+
+To describe passenger occupancy levels on a linear scale, see `occupancy_percentage`. 
 
 **Caution:** this field is still **experimental**, and subject to change. It may be formally adopted in the future.
 
@@ -297,6 +301,20 @@ For describing passenger occupancy levels on a linear scale, see `occupancy_perc
 | _**NO_DATA_AVAILABLE**_ | _The vehicle or carriage doesn't have any occupancy data available at that time._ |
 | _**NOT_BOARDABLE**_ | _The vehicle or carriage is not boardable and never accepts passengers. Useful for special vehicles or carriages (engine, maintenance carriage, etc…)._ |
 
+## _enum_ CrowdLevel
+
+The passenger crowd level for the vehicle or carriage. CrowdLevel enum values must be interpreted on an ordinal scale in increasing order from _**NOT_CROWDED**_ to _**CROWDED**_. 
+
+To describe the in-vehicle occupancy state, see [OccupancyStatus](#enum-occupancystatus).
+
+**Caution:** this field is still **experimental**, and subject to change. It may be formally adopted in the future.
+
+| _**Value**_ | _**Comment**_ |
+|-------------|---------------|
+| _**NOT_CROWDED**_ | _The vehicle or carriage is not considered crowded by most measures, having few or no passengers onboard._ |
+| _**SOME_CROWDING**_ | _The vehicle or carriage has some crowding by most measures, having some passengers onboard._ |
+| _**CROWDED**_ | _The vehicle or carriage is considered crowded by most measures, having many passengers onboard and limited space._ |
+| _**NO_DATA_AVAILABLE**_ | The vehicle of carriage does not have any crowd level data available at that time. |
 
 ## _message_ CarriageDetails
 
@@ -311,6 +329,7 @@ Carriage specific details, used for vehicles composed of several carriages.
 | **id** | [string](https://developers.google.com/protocol-buffers/docs/proto#scalar) | Optional | One | Identification of the carriage. Should be unique per vehicle. <br><br>**Caution:** this field is still **experimental**, and subject to change. It may be formally adopted in the future. |
 | **label** | [string](https://developers.google.com/protocol-buffers/docs/proto#scalar) | Optional | One | User visible label that may be shown to the passenger to help identify the carriage. Example: "7712", "Car ABC-32", etc... <br>**Caution:** this field is still **experimental**, and subject to change. It may be formally adopted in the future. |
 | **occupancy_status** | [OccupancyStatus](#enum-occupancystatus) | Optional | One | Occupancy status for this given carriage, in this vehicle. Default is set to `NO_DATA_AVAILABLE`.<br><br>**Caution:** this field is still **experimental**, and subject to change. It may be formally adopted in the future.|
+| **crowd_level** | [CrowdLevel](#enum-crowdlevel) | Optional | One | The passenger crowd level for this given carriage, in this vehicle.<br><br>**Caution:** this field is still **experimental**, and subject to change. It may be formally adopted in the future. |
 | **occupancy_percentage** | [int32](https://developers.google.com/protocol-buffers/docs/proto#scalar) | Optional | One | Occupancy percentage for this given carriage, in this vehicle. Follows the same rules as "VehiclePosition.occupancy_percentage". Use -1 in case data is not available for this given carriage.<br><br>**Caution:** this field is still **experimental**, and subject to change. It may be formally adopted in the future. |
 | **carriage_sequence** | [uint32](https://developers.google.com/protocol-buffers/docs/proto#scalar) | Required | One | Identifies the order of this carriage with respect to the other carriages in the vehicle's list of CarriageStatus. The first carriage in the direction of travel must have a value of 1. The second value corresponds to the second carriage in the direction of travel and must have a value of 2, and so forth. For example, the first carriage in the direction of travel has a value of 1. If the second carriage in the direction of travel has a value of 3, consumers will discard data for all carriages (i.e., the multi_carriage_details field). Carriages without data must be represented with a valid carriage_sequence number and the fields without data should be omitted (alternately, those fields could also be included and set to the "no data" values). <br><br>**Caution:** this field is still **experimental**, and subject to change. It may be formally adopted in the future. |
 
