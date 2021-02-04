@@ -283,6 +283,8 @@ Individual producers may not publish all OccupancyStatus values. Therefore, cons
 
 To describe passenger crowd levels on an ordinal scale, see [CrowdLevel](#enum-crowdlevel).
 
+Both OccupancyStatus and CrowdLevel may be used side-by-side, but must respectively indicate true conditions. For example, a vehicle may have _**FEW_SEATS_AVAILABLE**_ and _**SOME_CROWDING**_, have _**STANDING_ROOM_ONLY**_ and be _**CROWDED**_, or is _**NOT_ACCEPTING_PASSENGERS**_ and is _**CROWDED**_.
+
 To describe passenger occupancy levels on a linear scale, see `occupancy_percentage`. 
 
 **Caution:** this field is still **experimental**, and subject to change. It may be formally adopted in the future.
@@ -303,18 +305,20 @@ To describe passenger occupancy levels on a linear scale, see `occupancy_percent
 
 ## _enum_ CrowdLevel
 
-The passenger crowd level for the vehicle or carriage. CrowdLevel enum values must be interpreted on an ordinal scale in increasing order from _**NOT_CROWDED**_ to _**CROWDED**_. 
+The passenger crowd level for the vehicle or carriage. CrowdLevel enum values must be interpreted on an ordinal scale in increasing order from _**NOT_CROWDED**_ to _**CROWDED**_. In other words, producers must represent the lowest crowdedness level with _**NOT_CROWDED**_, the medium crowdedness level with _**SOME_CROWDING**_, and the highest crowdedness level with _**CROWDED**_. 
 
-To describe the in-vehicle occupancy state, see [OccupancyStatus](#enum-occupancystatus).
+To describe in-vehicle occupancy states, see [OccupancyStatus](#enum-occupancystatus). 
+
+Both OccupancyStatus and CrowdLevel may be used side-by-side, but must respectively indicate true conditions. For example, a vehicle may have _**FEW_SEATS_AVAILABLE**_ and _**SOME_CROWDING**_, have _**STANDING_ROOM_ONLY**_ and be _**CROWDED**_, or is _**NOT_ACCEPTING_PASSENGERS**_ and is _**CROWDED**_.
 
 **Caution:** this field is still **experimental**, and subject to change. It may be formally adopted in the future.
 
 | _**Value**_ | _**Comment**_ |
 |-------------|---------------|
-| _**NOT_CROWDED**_ | _The vehicle or carriage is not considered crowded by most measures, having few or no passengers onboard._ |
-| _**SOME_CROWDING**_ | _The vehicle or carriage has some crowding by most measures, having some passengers onboard._ |
-| _**CROWDED**_ | _The vehicle or carriage is considered crowded by most measures, having many passengers onboard and limited space._ |
-| _**NO_DATA_AVAILABLE**_ | _The vehicle of carriage does not have any crowd level data available at that time._ |
+| _**NOT_CROWDED**_ | _The vehicle or carriage is not considered crowded by most measures, having few or no passengers onboard, or as otherwise defined by current operating regulations._ |
+| _**SOME_CROWDING**_ | _The vehicle or carriage has some crowding by most measures, having some passengers onboard, or as otherwise defined by current operating regulations._ |
+| _**CROWDED**_ | _The vehicle or carriage is considered crowded by most measures, having many passengers onboard and limited space, or as otherwise defined be current operating regulations._ |
+| _**NO_DATA_AVAILABLE**_ | _The vehicle or carriage does not have any crowd level data available at that time._ |
 
 ## _message_ CarriageDetails
 
