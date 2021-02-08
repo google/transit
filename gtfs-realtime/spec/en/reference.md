@@ -51,6 +51,7 @@ Fields labeled as **experimental** are subject to change and not yet formally ad
                 *   [ScheduleRelationship](#enum-schedulerelationship)
                 *   [StopTimeProperties](#message-stoptimeproperties)
             *   [TripProperties](#message-tripproperties)
+            *   [StopOccupancy](#message-stopoccupancy)
         *   [VehiclePosition](#message-vehicleposition)
             *   [TripDescriptor](#message-tripdescriptor)
                 *   [ScheduleRelationship](#enum-schedulerelationship-1)
@@ -153,6 +154,7 @@ Note that the update can describe a trip that has already completed.To this end,
 | **timestamp** | [uint64](https://developers.google.com/protocol-buffers/docs/proto#scalar) | Optional | One | Moment at which the vehicle's real-time progress was measured. In POSIX time (i.e., the number of seconds since January 1st 1970 00:00:00 UTC). |
 | **delay** | [int32](https://developers.google.com/protocol-buffers/docs/proto#scalar) | Optional | One | The current schedule deviation for the trip. Delay should only be specified when the prediction is given relative to some existing schedule in GTFS.<br>Delay (in seconds) can be positive (meaning that the vehicle is late) or negative (meaning that the vehicle is ahead of schedule). Delay of 0 means that the vehicle is exactly on time.<br>Delay information in StopTimeUpdates take precedent of trip-level delay information, such that trip-level delay is only propagated until the next stop along the trip with a StopTimeUpdate delay value specified.<br>Feed providers are strongly encouraged to provide a TripUpdate.timestamp value indicating when the delay value was last updated, in order to evaluate the freshness of the data.<br><br>**Caution:** this field is still **experimental**, and subject to change. It may be formally adopted in the future.|
 | **trip_properties** | [TripProperties](#message-tripproperties) | Optional | One | Provides the updated properties for the trip. <br><br>**Caution:** this message is still **experimental**, and subject to change. It may be formally adopted in the future. |
+| **stop_occupancy** | [StopOccupancy](#message-stopoccupancy) | Optional | Many | Expected OccupancyStatus for the trip immediately after departure from a stop (both future, i.e., predictions, and in some cases, past ones, i.e., those that already happened). The stop_occupancies must be sorted by stop_sequence, and apply for all the following stops of the trip up to the next specified stop_occupancy. <br><br>**Caution:** this message is still **experimental**, and subject to change. It may be formally adopted in the future.|
 
 ## _message_ StopTimeEvent
 
@@ -227,6 +229,21 @@ Defines updated properties of the trip
 | **trip_id** | [string](https://developers.google.com/protocol-buffers/docs/proto#scalar) | Conditionally required | One |  Defines the identifier of a new trip that is a duplicate of an existing trip defined in (CSV) GTFS trips.txt but will start at a different service date and/or time (defined using `TripProperties.start_date` and `TripProperties.start_time`). See definition of `trips.trip_id` in (CSV) GTFS. Its value must be different than the ones used in the (CSV) GTFS. This field is required if `schedule_relationship` is `DUPLICATED`, otherwise this field must not be populated and will be ignored by consumers. <br><br>**Caution:** this field is still **experimental**, and subject to change. It may be formally adopted in the future. |
 | **start_date** | [string](https://developers.google.com/protocol-buffers/docs/proto#scalar) | Conditionally required | One | Service date on which the duplicated trip will be run. Must be provided in YYYYMMDD format. This field is required if `schedule_relationship` is `DUPLICATED`, otherwise this field must not be populated and will be ignored by consumers. <br><br>**Caution:** this field is still **experimental**, and subject to change. It may be formally adopted in the future. |
 | **start_time** | [string](https://developers.google.com/protocol-buffers/docs/proto#scalar) | Conditionally required | One | Defines the departure start time of the trip when it’s duplicated. See definition of `stop_times.departure_time` in (CSV) GTFS. Scheduled arrival and departure times for the duplicated trip are calculated based on the offset between the original trip `departure_time` and this field. For example, if a GTFS trip has stop A with a `departure_time` of `10:00:00` and stop B with `departure_time` of `10:01:00`, and this field is populated with the value of `10:30:00`, stop B on the duplicated trip will have a scheduled `departure_time` of `10:31:00`. Real-time prediction `delay` values are applied to this calculated schedule time to determine the predicted time. For example, if a departure `delay` of `30` is provided for stop B, then the predicted departure time is `10:31:30`. Real-time prediction `time` values do not have any offset applied to them and indicate the predicted time as provided.  For example, if a departure `time` representing 10:31:30 is provided for stop B, then the predicted departure time is `10:31:30`.This field is required if `schedule_relationship` is `DUPLICATED`, otherwise this field must not be populated and will be ignored by consumers. <br><br>**Caution:** this field is still **experimental**, and subject to change. It may be formally adopted in the future. |
+
+## _message_ StopOccupancy
+
+Realtime occupancy immediately after departure from a given stop on a trip.
+
+Occupancies can be supplied for both past and future events. The producer is allowed, although not required, to drop past events.
+The occupancy is linked to a specific stop either through stop_sequence or stop_id, so one of these fields must necessarily be set.  If the same stop_id is visited more than once in a trip, then stop_sequence should be provided in all StopOccupancies for that stop_id on that trip.
+
+#### Fields
+
+| _**Field Name**_ | _**Type**_ | _**Required**_ | _**Cardinality**_ | _**Description**_ |
+|------------------|------------|----------------|-------------------|-------------------|
+| **stop_sequence** | [uint32](https://developers.google.com/protocol-buffers/docs/proto#scalar) | Conditionally required | One | Must be the same as in stop_times.txt in the corresponding GTFS feed.  Either stop_sequence or stop_id must be provided within a StopOccupancy - both fields cannot be empty.  stop_sequence is required for trips that visit the same stop_id more than once (e.g., a loop) to disambiguate which stop the prediction is for. If `StopTimeProperties.assigned_stop_id` is populated, then `stop_sequence` must be populated. |
+| **stop_id** | [string](https://developers.google.com/protocol-buffers/docs/proto#scalar) | Conditionally required | One | Must be the same as in stops.txt in the corresponding GTFS feed. Either stop_sequence or stop_id must be provided within a StopOccupancy - both fields cannot be empty. If `StopTimeProperties.assigned_stop_id` is populated, it is preferred to omit `stop_id` and use only `stop_sequence`. If `StopTimeProperties.assigned_stop_id` and `stop_id` are populated, `stop_id` must match `assigned_stop_id`. |
+| **occupancy_status** | [OccupancyStatus](#enum-occupancystatus) | Required | One | The state of passenger occupancy for the vehicle immediately after departure from the given stop. |
 
 ## _message_ VehiclePosition
 
