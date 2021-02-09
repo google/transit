@@ -378,7 +378,7 @@ message TripUpdate {
     optional string stop_id = 2;
 
     // Expected occupancy after departure from the given stop.
-    optional OccupancyStatus occupancy_status = 3;
+    optional VehiclePosition.OccupancyStatus occupancy_status = 3;
   }
 
   optional StopOccupancy stop_occupancy = 7;
