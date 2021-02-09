@@ -273,9 +273,6 @@ message TripUpdate {
     // NOTE: This field is still experimental, and subject to change. It may be formally adopted in the future.
     optional StopTimeProperties stop_time_properties = 6;
 
-    // Expected occupancy after departure from the given stop.
-    optional OccupancyStatus occupancy_status = 7;
-
     // The extensions namespace allows 3rd-party developers to extend the
     // GTFS Realtime Specification in order to add and evaluate new features
     // and modifications to the spec.
@@ -367,6 +364,24 @@ message TripUpdate {
     extensions 9000 to 9999;
   }
   optional TripProperties trip_properties = 6;
+  
+  // Realtime occupancy immediately after departure for a given stop on a
+  // trip. Occupancies can be supplied for both past and future events.
+  // The producer is allowed, although not required, to drop past events.
+  message StopOccupancy {
+    // The update is linked to a specific stop either through stop_sequence or
+    // stop_id, so one of the fields below must necessarily be set.
+
+    // Must be the same as in stop_times.txt in the corresponding GTFS feed.
+    optional uint32 stop_sequence = 1;
+    // Must be the same as in stops.txt in the corresponding GTFS feed.
+    optional string stop_id = 2;
+
+    // Expected occupancy after departure from the given stop.
+    optional OccupancyStatus occupancy_status = 3;
+  }
+
+  optional StopOccupancy stop_occupancy = 7;
 
   // The extensions namespace allows 3rd-party developers to extend the
   // GTFS Realtime Specification in order to add and evaluate new features and
