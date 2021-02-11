@@ -493,7 +493,7 @@ message VehiclePosition {
   // then this field should describe the entire vehicle with all carriages accepting passengers considered.
   enum CrowdLevel {
     // The vehicle or carriage does not have any crowd level data available at that time.
-    NO_DATA_AVAILABLE = 0;
+    NO_DATA = 0;
 
     // The vehicle or carriage is not considered crowded by most measures, having few or no passengers onboard.
     NOT_CROWDED = 1;
@@ -543,7 +543,7 @@ message VehiclePosition {
 
     // The passenger crowd level for this given carriage, in this vehicle.
     // This message/field is still experimental, and subject to change. It may be formally adopted in the future.
-    optional CrowdLevel crowd_level = 6 [default = NO_DATA_AVAILABLE];
+    optional CrowdLevel crowd_level = 6 [default = NO_DATA];
 
     // The extensions namespace allows 3rd-party developers to extend the
     // GTFS Realtime Specification in order to add and evaluate new features and

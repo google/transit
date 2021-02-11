@@ -318,7 +318,7 @@ Both OccupancyStatus and CrowdLevel may be used side-by-side, but must respectiv
 | _**NOT_CROWDED**_ | _The vehicle or carriage is not considered crowded by most measures, having few or no passengers onboard, or as otherwise defined by current operating regulations._ |
 | _**SOME_CROWDING**_ | _The vehicle or carriage has some crowding by most measures, having some passengers onboard, or as otherwise defined by current operating regulations._ |
 | _**CROWDED**_ | _The vehicle or carriage is considered crowded by most measures, having many passengers onboard and limited space, or as otherwise defined be current operating regulations._ |
-| _**NO_DATA_AVAILABLE**_ | _The vehicle or carriage does not have any crowd level data available at that time._ |
+| _**NO_DATA**_ | _The vehicle or carriage does not have any crowd level data available at that time._ |
 
 ## _message_ CarriageDetails
 
