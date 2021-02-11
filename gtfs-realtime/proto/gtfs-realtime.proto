@@ -486,25 +486,6 @@ message VehiclePosition {
   // then this field should describe the entire vehicle with all carriages accepting passengers considered.
   // This field is still experimental, and subject to change. It may be formally adopted in the future.
   optional uint32 occupancy_percentage = 10;
-  
-  // The passenger crowd level for the vehicle or carriage.
-  // This field is still experimental, and subject to change. It may be formally adopted in the future.
-  // If multi_carriage_details is populated with per-carriage CrowdLevel,
-  // then this field should describe the entire vehicle with all carriages accepting passengers considered.
-  enum CrowdLevel {
-    // The vehicle or carriage does not have any crowd level data available at that time.
-    NO_DATA = 0;
-
-    // The vehicle or carriage is not considered crowded by most measures, having few or no passengers onboard.
-    NOT_CROWDED = 1;
-
-    // The vehicle or carriage has some crowding by most measures, having some passengers onboard.
-    SOME_CROWDING = 2;
-
-    // The vehicle or carriage is considered crowded by most measures, having many passengers onboard and limited space.
-    CROWDED = 3;
-  }
-  optional CrowdLevel crowd_level = 11;
 
   // Carriage specific details, used for vehicles composed of several carriages
   // This message/field is still experimental, and subject to change. It may be formally adopted in the future.
@@ -564,6 +545,25 @@ message VehiclePosition {
   // information to passengers about where to stand on a platform.
   // This message/field is still experimental, and subject to change. It may be formally adopted in the future.
   repeated CarriageDetails multi_carriage_details = 11;
+
+  // The passenger crowd level for the vehicle or carriage.
+  // This field is still experimental, and subject to change. It may be formally adopted in the future.
+  // If multi_carriage_details is populated with per-carriage CrowdLevel,
+  // then this field should describe the entire vehicle with all carriages accepting passengers considered.
+  enum CrowdLevel {
+    // The vehicle or carriage does not have any crowd level data available at that time.
+    NO_DATA = 0;
+
+    // The vehicle or carriage is not considered crowded by most measures, having few or no passengers onboard.
+    NOT_CROWDED = 1;
+
+    // The vehicle or carriage has some crowding by most measures, having some passengers onboard.
+    SOME_CROWDING = 2;
+
+    // The vehicle or carriage is considered crowded by most measures, having many passengers onboard and limited space.
+    CROWDED = 3;
+  }
+  optional CrowdLevel crowd_level = 12;
 
   // The extensions namespace allows 3rd-party developers to extend the
   // GTFS Realtime Specification in order to add and evaluate new features and
