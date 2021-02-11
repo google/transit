@@ -464,7 +464,7 @@ message VehiclePosition {
     // The vehicle or carriage is not accepting passengers, but usually accepts passengers for boarding.
     NOT_ACCEPTING_PASSENGERS = 6;
 
-    // The vehicle or carriage doesn't have any occupancy data available at that time.
+    // The vehicle or carriage does not have any occupancy data available at this time.
     NO_DATA_AVAILABLE = 7;
 
     // The vehicle or carriage is not boardable and never accepts passengers.
@@ -551,7 +551,7 @@ message VehiclePosition {
   // If multi_carriage_details is populated with per-carriage CrowdLevel,
   // then this field should describe the entire vehicle with all carriages accepting passengers considered.
   enum CrowdLevel {
-    // The vehicle or carriage does not have any crowd level data available at that time.
+    // The vehicle or carriage does not have any crowd level data available at this time.
     NO_DATA = 0;
 
     // The vehicle or carriage is not considered crowded by most measures, having few or no passengers onboard.
@@ -563,7 +563,7 @@ message VehiclePosition {
     // The vehicle or carriage is considered crowded by most measures, having many passengers onboard and limited space.
     CROWDED = 3;
   }
-  optional CrowdLevel crowd_level = 12;
+  optional CrowdLevel crowd_level = 12 [default = NO_DATA];
 
   // The extensions namespace allows 3rd-party developers to extend the
   // GTFS Realtime Specification in order to add and evaluate new features and
