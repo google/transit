@@ -210,7 +210,13 @@ message TripUpdate {
     optional StopTimeEvent arrival = 2;
     optional StopTimeEvent departure = 3;
 
-    // The relation between this StopTime and the static schedule.
+    // Expected occupancy after departure from the given stop.
+    // Should be provided only for future stops.
+    // In order to provide departure_occupancy_status without either arrival or
+    // departure StopTimeEvents, ScheduleRelationship should be set to NO_DATA. 
+    optional VehiclePosition.OccupancyStatus departure_occupancy_status = 7;
+    
+    // The relation between the StopTimeEvents and the static schedule.
     enum ScheduleRelationship {
       // The vehicle is proceeding in accordance with its static schedule of
       // stops, although not necessarily according to the times of the schedule.
@@ -224,10 +230,11 @@ message TripUpdate {
       // Arrival and departure are optional.
       SKIPPED = 1;
 
-      // No data is given for this stop. The main intention for this value is to
-      // give the predictions only for part of a trip, i.e., if the last update
-      // for a trip has a NO_DATA specifier, then StopTimes for the rest of the
-      // stops in the trip are considered to be unspecified as well.
+      // No StopTimeEvents are given for this stop.
+      // The main intention for this value is to give time predictions only for
+      // part of a trip, i.e., if the last update for a trip has a NO_DATA
+      // specifier, then StopTimeEvents for the rest of the stops in the trip
+      // are considered to be unspecified as well.
       // Neither arrival nor departure should be supplied.
       NO_DATA = 2;
 
@@ -364,24 +371,6 @@ message TripUpdate {
     extensions 9000 to 9999;
   }
   optional TripProperties trip_properties = 6;
-  
-  // Realtime occupancy immediately after departure for a given stop on a
-  // trip. Occupancies can be supplied for both past and future events.
-  // The producer is allowed, although not required, to drop past events.
-  message StopOccupancy {
-    // The update is linked to a specific stop either through stop_sequence or
-    // stop_id, so one of the fields below must necessarily be set.
-
-    // Must be the same as in stop_times.txt in the corresponding GTFS feed.
-    optional uint32 stop_sequence = 1;
-    // Must be the same as in stops.txt in the corresponding GTFS feed.
-    optional string stop_id = 2;
-
-    // Expected occupancy after departure from the given stop.
-    optional VehiclePosition.OccupancyStatus occupancy_status = 3;
-  }
-
-  optional StopOccupancy stop_occupancy = 7;
 
   // The extensions namespace allows 3rd-party developers to extend the
   // GTFS Realtime Specification in order to add and evaluate new features and
