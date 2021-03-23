@@ -303,7 +303,9 @@ message TripUpdate {
   // - stop_sequences 10,... have unknown delay.
   repeated StopTimeUpdate stop_time_update = 2;
 
-  // Moment at which the vehicle's real-time progress was measured. In POSIX
+  // The most recent moment at which the vehicle's real-time progress was measured
+  // to estimate StopTimes in the future. When StopTimes in the past are provided,
+  // arrival/departure times may be earlier than this value. In POSIX
   // time (i.e., the number of seconds since January 1st 1970 00:00:00 UTC).
   optional uint64 timestamp = 4;
 
