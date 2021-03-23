@@ -260,6 +260,27 @@ message TripUpdate {
       // NOTE: This field is still experimental, and subject to change. It may be formally adopted in the future.
       optional string assigned_stop_id = 1;
 
+      // Indicates pickup method.
+      optional PickupType pickup_type = 2 [default = REGULAR_PICKUP];
+      // Indicates drop off method.
+      optional DropOffType drop_off_type = 3 [default = REGULAR_DROP_OFF];
+
+      // Valid options for pickup_type:
+      enum PickupType {
+        REGULAR_PICKUP = 0;
+        NO_PICKUP = 1;
+        MUST_PHONE_AGENCY_PICKUP = 2;
+        MUST_ASK_DRIVER_PICKUP = 3;
+      }
+
+      // Valid options for drop_off_type:
+      enum DropOffType {
+        REGULAR_DROP_OFF = 0;
+        NO_DROP_OFF = 1;
+        MUST_PHONE_AGENCY_DROP_OFF = 2;
+        MUST_ASK_DRIVER_DROP_OFF = 3;
+      }
+
       // The extensions namespace allows 3rd-party developers to extend the
       // GTFS Realtime Specification in order to add and evaluate new features
       // and modifications to the spec.
