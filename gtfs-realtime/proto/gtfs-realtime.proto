@@ -103,6 +103,7 @@ message FeedEntity {
   optional TripUpdate trip_update = 3;
   optional VehiclePosition vehicle = 4;
   optional Alert alert = 5;
+  optional Shape shape = 6;
 
   // The extensions namespace allows 3rd-party developers to extend the
   // GTFS Realtime Specification in order to add and evaluate new features and
@@ -327,7 +328,8 @@ message TripUpdate {
   // formally adopted in the future.
   optional int32 delay = 5;
 
-  // Defines updated properties of the trip
+  // Defines updated properties of the trip, such as a new shape_id when there is a detour. Or defines the
+  // trip_id, start_date, and start_time of a DUPLICATED trip. 
   // NOTE: This message is still experimental, and subject to change. It may be formally adopted in the future.
   message TripProperties {
     // Defines the identifier of a new trip that is a duplicate of an existing trip defined in (CSV) GTFS trips.txt
@@ -354,6 +356,13 @@ message TripUpdate {
     // populated and will be ignored by consumers.
     // NOTE: This field is still experimental, and subject to change. It may be formally adopted in the future.
     optional string start_time = 3;
+    // Specifies the new shape of the vehicle travel path when the trip shape differs from the shape specified in
+    // (CSV) GTFS. See definition of trips.shape_id in (CSV) GTFS. This can refer to a shape defined in the
+    // (CSV) GTFS in shapes.txt or a Shape the (protobuf) real-time feed. The order of stops (stop sequences) for this
+    // trip must remain the same as (CSV) GTFS. Stops that are a part of the original trip but will no longer be made,
+    // such as when a detour occurs, should be marked as schedule_relationship=SKIPPED. 
+    // NOTE: This field is still experimental, and subject to change. It may be formally adopted in the future.
+  optional string shape_id = 4;
 
     // The extensions namespace allows 3rd-party developers to extend the
     // GTFS Realtime Specification in order to add and evaluate new features
@@ -874,6 +883,61 @@ message TranslatedString {
   }
   // At least one translation must be provided.
   repeated Translation translation = 1;
+
+  // The extensions namespace allows 3rd-party developers to extend the
+  // GTFS Realtime Specification in order to add and evaluate new features and
+  // modifications to the spec.
+  extensions 1000 to 1999;
+
+  // The following extension IDs are reserved for private use by any organization.
+  extensions 9000 to 9999;
+}
+
+
+// Describes the physical path that a vehicle takes when it's not part of the (CSV) GTFS,
+// such as for a detour. Shapes belong to Trips, and consist of a sequence of shape points.
+// Tracing the points in order provides the path of the vehicle.  Shapes do not need to intercept
+// the location of Stops exactly, but all Stops on a trip should lie within a small distance of
+// the shape for that trip, i.e. close to straight line segments connecting the shape points
+// NOTE: This message is still experimental, and subject to change. It may be formally adopted in the future.
+message Shape {
+  // Identifier of the shape. Must be different than any shape_id defined in the (CSV) GTFS.
+  // NOTE: This field is still experimental, and subject to change. It may be formally adopted in the future.
+  required string shape_id = 1;
+
+  // Points in the shape. A shape must contain at least two shape points. ShapePoints must be ordered by shape_pt_sequence.
+  // NOTE: This field is still experimental, and subject to change. It may be formally adopted in the future.
+  repeated ShapePoint shape_point = 2;
+
+  // The extensions namespace allows 3rd-party developers to extend the
+  // GTFS Realtime Specification in order to add and evaluate new features and
+  // modifications to the spec.
+  extensions 1000 to 1999;
+
+  // The following extension IDs are reserved for private use by any organization.
+  extensions 9000 to 9999;
+}
+
+// A shape for a trip that has been updated.
+// NOTE: This message is still experimental, and subject to change. It may be formally adopted in the future.
+message ShapePoint {
+  // Latitude of a shape point. See definition of shapes.shape_pt_lat in (CSV) GTFS.
+  // NOTE: This field is still experimental, and subject to change. It may be formally adopted in the future.
+  required float shape_pt_lat = 1;
+
+  // Longitude of a shape point. See definition of shapes.shape_pt_lon in (CSV) GTFS.
+  // NOTE: This field is still experimental, and subject to change. It may be formally adopted in the future.
+  required float shape_pt_lon = 2;
+
+  // Actual distance traveled along the shape from the first shape point to the point specified in this record.
+  // See definition of shapes.shape_dist_traveled in (CSV) GTFS.
+  // NOTE: This field is still experimental, and subject to change. It may be formally adopted in the future.
+  optional float shape_dist_traveled = 3;
+
+  // Sequence in which the shape points connect to form the shape. Values must increase along the trip but do not need to be consecutive.
+  // See definition of shapes.shape_pt_sequence in (CSV) GTFS.
+  // NOTE: This field is still experimental, and subject to change. It may be formally adopted in the future.
+  required uint32 shape_pt_sequence = 4;
 
   // The extensions namespace allows 3rd-party developers to extend the
   // GTFS Realtime Specification in order to add and evaluate new features and
