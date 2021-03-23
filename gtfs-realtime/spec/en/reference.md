@@ -213,6 +213,38 @@ Realtime update for certain properties defined within GTFS stop_times.txt.
 | _**Field Name**_ | _**Type**_ | _**Required**_ | _**Cardinality**_ | _**Description**_ |
 |------------------|------------|----------------|-------------------|-------------------|
 | **assigned_stop_id** | [string](https://developers.google.com/protocol-buffers/docs/proto#scalar) | Optional | One | Supports real-time stop assignments. Refers to a `stop_id` defined in the GTFS `stops.txt`. <br> The new `assigned_stop_id` should not result in a significantly different trip experience for the end user than the `stop_id` defined in GTFS `stop_times.txt`. In other words, the end user should not view this new `stop_id` as an "unusual change" if the new stop was presented within an app without any additional context. For example, this field is intended to be used for platform assignments by using a `stop_id` that belongs to the same station as the stop originally defined in GTFS `stop_times.txt`. <br> To assign a stop without providing any real-time arrival or departure predictions, populate this field and set `StopTimeUpdate.schedule_relationship = NO_DATA`. <br> If this field is populated, `StopTimeUpdate.stop_sequence` must be populated and `StopTimeUpdate.stop_id` should not be populated. Stop assignments should be reflected in other GTFS-realtime fields as well (e.g., `VehiclePosition.stop_id`). <br><br>**Caution:** this field is still **experimental**, and subject to change. It may be formally adopted in the future. |
+| **pickup_type** | [PickupType](#enum-pickuptype) | Optional | One | See definition of stop_times.pickup_type in (CSV) GTFS. Default is REGULAR_PICKUP. <br><br>**Caution:** this field is still **experimental**, and subject to change. It may be formally adopted in the future. |
+| **drop_off_type** | [DropOffType](#enum-dropofftype) | Optional | One | See definition of stop_times.drop_off_type in (CSV) GTFS. Default is REGULAR_DROP_OFF. <br><br>**Caution:** this field is still **experimental**, and subject to change. It may be formally adopted in the future. |
+
+## _enum_ PickupType
+
+Indicates the pickup method for an updated stop time. Default is REGULAR_PICKUP.
+
+**Caution:** this field is still **experimental**, and subject to change. It may be formally adopted in the future.
+
+#### Values
+
+| _**Value**_ | _**Comment**_ |
+|-------------|---------------|
+| **REGULAR_PICKUP** | See definition of stop_times.pickup_type=0 in (CSV) GTFS. |
+| **NO_PICKUP** | See definition of stop_times.pickup_type=1 in (CSV) GTFS.  |
+| **MUST_PHONE_AGENCY_PICKUP** | See definition of stop_times.pickup_type=2 in (CSV) GTFS. |
+| **MUST_ASK_DRIVER_PICKUP** | See definition of stop_times.pickup_type=3 in (CSV) GTFS. |
+
+## _enum_ DropOffType
+
+Indicates the drop off method for an updated stop time. Default is REGULAR_DROP_OFF.
+
+**Caution:** this field is still **experimental**, and subject to change. It may be formally adopted in the future.
+
+#### Values
+
+| _**Value**_ | _**Comment**_ |
+|-------------|---------------|
+| **REGULAR_DROP_OFF** | See definition of stop_times.drop_off_type=0 in (CSV) GTFS. |
+| **NO_DROP_OFF** | See definition of stop_times.drop_off_type=1 in (CSV) GTFS.  |
+| **MUST_PHONE_AGENCY_DROP_OFF** | See definition of stop_times.drop_off_type=2 in (CSV) GTFS. |
+| **MUST_ASK_DRIVER_DROP_OFF** | See definition of stop_times.drop_off_type=3 in (CSV) GTFS. |
 
 ## _message_ TripProperties
 
