@@ -54,7 +54,8 @@ message FeedMessage {
 // Metadata about a feed, included in feed messages.
 message FeedHeader {
   // Version of the feed specification.
-  // The current version is 2.0.  Valid versions are "2.0", "1.0".
+  // The current version is 2.0. Valid versions are "3.0", "2.0", "1.0".
+  // NOTE: Version 3.0 is still experimental, and subject to change. It may be formally adopted in the future. 
   required string gtfs_realtime_version = 1;
 
   // Determines whether the current fetch is incremental.  Currently,
