@@ -30,7 +30,7 @@ This document defines the format and structure of the files that comprise a GTFS
 
 ## Document Conventions
 
-###Term Definitions
+### Term Definitions
 
 This section defines terms that are used throughout this document.
 
@@ -164,7 +164,7 @@ File: **Required**
 |  `route_id` | ID | **Required** | Identifies a route. |
 |  `agency_id` | ID referencing `agency.agency_id` | **Conditionally Required** | Agency for the specified route.<br><br>Conditionally Required:<br>- **Required** if multiple agencies are defined in [agency.txt](#agency). <br>- Optional otherwise.   |
 |  `route_short_name` | Text | **Conditionally Required** | Short name of a route. Often a short, abstract identifier (e.g., "32", "100X", "Green") that riders use to identify a route. Both `route_short_name` and `route_long_name` may be defined.<br><br>Conditionally Required:<br>- **Required** if `routes.route_long_name` is empty.<br>- Optional otherwise. |
-|  `route_long_name` | Text | **Conditionally Required** | Full name of a route. This name is generally more descriptive than the `route_short_name` and often includes the route's destination or stop. Both `route_short_name` and `route_long_name` may be defined.<br><br>Conditionally Required:<br><br>- **Required** if `routes.route_short_name` is empty.<br>- Optional otherwise. |
+|  `route_long_name` | Text | **Conditionally Required** | Full name of a route. This name is generally more descriptive than the `route_short_name` and often includes the route's destination or stop. Both `route_short_name` and `route_long_name` may be defined.<br><br>Conditionally Required:<br>- **Required** if `routes.route_short_name` is empty.<br>- Optional otherwise. |
 |  `route_desc` | Text | Optional | Description of a route that provides useful, quality information. Do not simply duplicate the name of the route. <hr> _Example: "A" trains operate between Inwood-207 St, Manhattan and Far Rockaway-Mott Avenue, Queens at all times. Also from about 6AM until about midnight, additional "A" trains operate between Inwood-207 St and Lefferts Boulevard (trains typically alternate between Lefferts Blvd and Far Rockaway)._ |
 |  `route_type` | Enum | **Required** | Indicates the type of transportation used on a route. Valid options are: <br><br>`0` - Tram, Streetcar, Light rail. Any light rail or street level system within a metropolitan area.<br>`1` - Subway, Metro. Any underground rail system within a metropolitan area.<br>`2` - Rail. Used for intercity or long-distance travel.<br>`3` - Bus. Used for short- and long-distance bus routes.<br>`4` - Ferry. Used for short- and long-distance boat service.<br>`5` - Cable tram. Used for street-level rail cars where the cable runs beneath the vehicle (e.g., cable car in San Francisco).<br>`6` - Aerial lift, suspended cable car (e.g., gondola lift, aerial tramway). Cable transport where cabins, cars, gondolas or open chairs are suspended by means of one or more cables.<br>`7` - Funicular. Any rail system designed for steep inclines.<br>`11` - Trolleybus. Electric buses that draw power from overhead wires using poles.<br>`12` - Monorail. Railway in which the track consists of a single rail or a beam. |
 |  `route_url` | URL | Optional | URL of a web page about the particular route. Should be different from the `agency.agency_url` value. |
