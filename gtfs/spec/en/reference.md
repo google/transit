@@ -93,7 +93,7 @@ This specification defines the following files:
 |  [frequencies.txt](#frequenciestxt)  | Optional | Headway (time between trips) for headway-based service or a compressed representation of fixed-schedule service. |
 |  [transfers.txt](#transferstxt)  | Optional | Rules for making connections at transfer points between routes. |
 |  [pathways.txt](#pathwaystxt)  | Optional | Pathways linking together locations within stations. |
-|  [levels.txt](#levelstxt)  | Optional | Levels within stations. |
+|  [levels.txt](#levelstxt)  | **Conditionally Required** | Levels within stations.<br><br>Conditionally Required:<br>- **Required** when describing pathways with elevators (`pathway_mode=5`).<br>- Optional otherwise. |
 |  [translations.txt](#translationstxt)  | Optional | Translations of customer-facing dataset values. |
 |  [feed_info.txt](#feed_infotxt)  | Optional | Dataset metadata, including publisher, version, and expiration information. |
 |  [attributions.txt](#attributionstxt)  | Optional | Dataset attributions. |
@@ -368,7 +368,7 @@ To go from the entrance (which is a node represented as a location with location
 
 ### levels.txt
 
-File: **Optional**
+File: **Conditionally Required**
 
 Describe the different levels of a station. Is mostly useful when used in conjunction with `pathways.txt`, and is required for elevator (`pathway_mode=5`) to ask the user to take the elevator to the “Mezzanine” or the “Platform” level.
 
