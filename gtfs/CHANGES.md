@@ -24,9 +24,8 @@ The official specification, reference and documentation are written in English. 
   	- Votes against shall be motivated, and ideally provide actionable feedback.
   	- If the vote has failed, then the advocate may choose to continue work on the proposal, or to abandon the proposal.
     Either decision of the advocate must be announced in the mailing list.
-  	- If the advocate continues the work on proposal then a new vote can be called for at any point in time but no later than 30 calendar days after the end of the previous vote.
-  	- If a vote was not called within 30 calendar days from the original proposal or 30 calendar days since end of the previous vote, then the proposal is abandoned.
-1. If the proposal is abandoned, the corresponding pull request is closed.
+  	- If the advocate continues the work on proposal then a new vote can be called for at any point in time.
+1. Any pull request remaining inactive for 30 calendar days will be closed. When a pull request is closed, the corresponding proposal is considered abandoned. The advocate may reopen the pull request at any time if they wish to continue or maintain the conversation.
 1. If the proposal is accepted:
   	- Google is committed to merging the voted upon version of the pull request (provided that the contributors have signed the [CLA](../CONTRIBUTING.md)), and performing the pull request within 5 business days.
   	- Translations must not be included into the original pull request.
