@@ -51,9 +51,9 @@ Presence conditions applicable to fields and files:
 
 ### Field Types
 
-- **Color** - A color encoded as a six-digit hexadecimal number. Refer to [https://htmlcolorcodes.com](https://htmlcolorcodes.com) to generate a valid value (the leading "#" is not included). <br> *Example: `FFFFFF` for white, `000000` for black or `0039A6` for the A,C,E lines in NYMTA.*
+- **Color** - A color encoded as a six-digit hexadecimal number. Refer to [https://htmlcolorcodes.com](https://htmlcolorcodes.com) to generate a valid value (the leading "#" must not be included). <br> *Example: `FFFFFF` for white, `000000` for black or `0039A6` for the A,C,E lines in NYMTA.*
 - **Currency code** - An ISO 4217 alphabetical currency code. For the list of current currency, refer to [https://en.wikipedia.org/wiki/ISO_4217#Active\_codes](https://en.wikipedia.org/wiki/ISO_4217#Active_codes). <br> *Example: `CAD` for Canadian dollars, `EUR` for euros or `JPY` for Japanese yen.*
-- **Date** - Service day in the YYYYMMDD format. Since time within a service day can be above 24:00:00, a service day often contains information for the subsequent day(s). <br> *Example: `20180913` for September 13th, 2018.*
+- **Date** - Service day in the YYYYMMDD format. Since time within a service day can be above 24:00:00, a service day may contains information for the subsequent day(s). <br> *Example: `20180913` for September 13th, 2018.*
 - **Email** - An email address. <br> *Example: `example@example.com`*
 - **Enum** - An option from a set of predefined constants defined in the "Description" column. <br> *Example: The `route_type` field contains a `0` for tram, a `1` for subway...*
 - **ID** - An ID field value is an internal ID, not intended to be shown to riders, and is a sequence of any UTF-8 characters. Using only printable ASCII characters is recommended. IDs defined in one .txt file are often referenced in another .txt file. <br> *Example: The `stop_id` field in [stops.txt](#stopstxt) is a ID. The `stop_id` field in [stop_times.txt](#stop_timestxt) is an ID referencing `stops.stop_id`.*
