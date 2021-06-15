@@ -259,7 +259,7 @@ The [calendar_dates.txt](#calendar_datestxt) table explicitly activates or disab
 |  ------ | ------ | ------ | ------ |
 |  `service_id` | ID referencing `calendar.service_id` or ID | **Required** | Identifies a set of dates when a service exception occurs for one or more routes. Each (`service_id`, `date`) pair may only appear once in [calendar_dates.txt](#calendar_datestxt) if using [calendar.txt](#calendartxt) and [calendar_dates.txt](#calendar_datestxt) in conjunction. If a `service_id` value appears in both [calendar.txt](#calendartxt) and [calendar_dates.txt](#calendar_datestxt), the information in [calendar_dates.txt](#calendardatestxt) modifies the service information specified in [calendar.txt](#calendartxt). |
 |  `date` | Date | **Required** | Date when service exception occurs. |
-|  `exception_type` | Enum | **Required** | Indicates whether service is available on the date specified in the date field. Valid options are:<br><br> `1` - Service has been added for the specified date.<br>`2` - Service has been removed for the specified date.<hr>*Example: Suppose a route has one set of trips available on holidays and another set of trips available on all other days. One `service_id` corresponds to the regular service schedule and another `service_id` corresponds to the holiday schedule. For a particular holiday, the [calendar_dates.txt](#calendar_datestxt) file can be used to add the holiday to the holiday `service_id` and to remove the holiday from the regular `service_id` schedule.* |
+|  `exception_type` | Enum | **Required** | Indicates whether service is available on the date specified in the date field. Valid options are:<br><br> `1` - Service has been added for the specified date.<br>`2` - Service has been removed for the specified date.<hr>*Example: Suppose a route has one set of trips available on holidays and another set of trips available on all other days. One `service_id` corresponds to the regular service schedule and another `service_id` corresponds to the holiday schedule. For a particular holiday, the [calendar_dates.txt](#calendar_datestxt) file may be used to add the holiday to the holiday `service_id` and to remove the holiday from the regular `service_id` schedule.* |
 
 ### fare_attributes.txt
 
@@ -401,7 +401,7 @@ In regions that have multiple official languages, transit agencies/operators typ
 
 File: **Optional** (**Required** if `translations.txt` is provided)
 
-The file contains information about the dataset itself, rather than the services that the dataset describes. Note that, in some cases, the publisher of the dataset may be a different entity than any of the agencies.
+The file contains information about the dataset itself, rather than the services that the dataset describes. Note that, in some cases, the publisher of the dataset can be a different entity than any of the agencies.
 
 |  Field Name | Type | Presence | Description |
 |  ------ | ------ | ------ | ------ |
