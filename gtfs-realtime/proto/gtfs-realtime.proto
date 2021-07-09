@@ -904,40 +904,17 @@ message Shape {
   // Identifier of the shape. Must be different than any shape_id defined in the (CSV) GTFS.
   // NOTE: This field is still experimental, and subject to change. It may be formally adopted in the future.
   required string shape_id = 1;
-
-  // Points in the shape. A shape must contain at least two shape points. ShapePoints must be ordered by shape_pt_sequence.
+  
+  // Encoded polyline representation of the shape. This polyline must contain at least two points.
+  // The distance between points can be optionally specified, like in (CSV) GTFS, through dist_traveled
+  // For more information about encoded polylines, see https://developers.google.com/maps/documentation/utilities/polylinealgorithm
   // NOTE: This field is still experimental, and subject to change. It may be formally adopted in the future.
-  repeated ShapePoint shape_point = 2;
-
-  // The extensions namespace allows 3rd-party developers to extend the
-  // GTFS Realtime Specification in order to add and evaluate new features and
-  // modifications to the spec.
-  extensions 1000 to 1999;
-
-  // The following extension IDs are reserved for private use by any organization.
-  extensions 9000 to 9999;
-}
-
-// A shape for a trip that has been updated.
-// NOTE: This message is still experimental, and subject to change. It may be formally adopted in the future.
-message ShapePoint {
-  // Latitude of a shape point. See definition of shapes.shape_pt_lat in (CSV) GTFS.
-  // NOTE: This field is still experimental, and subject to change. It may be formally adopted in the future.
-  required float shape_pt_lat = 1;
-
-  // Longitude of a shape point. See definition of shapes.shape_pt_lon in (CSV) GTFS.
-  // NOTE: This field is still experimental, and subject to change. It may be formally adopted in the future.
-  required float shape_pt_lon = 2;
-
-  // Actual distance traveled along the shape from the first shape point to the point specified in this record.
+  required string encoded_polyline = 2;
+  
+  // Optional list of actual cumulative distances traveled along the shape to each point in encoded_polyline
   // See definition of shapes.shape_dist_traveled in (CSV) GTFS.
   // NOTE: This field is still experimental, and subject to change. It may be formally adopted in the future.
-  optional float shape_dist_traveled = 3;
-
-  // Sequence in which the shape points connect to form the shape. Values must increase along the trip but do not need to be consecutive.
-  // See definition of shapes.shape_pt_sequence in (CSV) GTFS.
-  // NOTE: This field is still experimental, and subject to change. It may be formally adopted in the future.
-  required uint32 shape_pt_sequence = 4;
+  repeated float dist_traveled = 3;
 
   // The extensions namespace allows 3rd-party developers to extend the
   // GTFS Realtime Specification in order to add and evaluate new features and
