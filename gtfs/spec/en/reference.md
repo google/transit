@@ -295,6 +295,8 @@ Primary ID (`fare_id`)
 
 File: **Optional**
 
+Primary ID (`*`)
+
 The [fare_rules.txt](#farerulestxt) table specifies how fares in [fare_attributes.txt](#fare_attributestxt) apply to an itinerary. Most fare structures use some combination of the following rules:
 
 * Fare depends on origin or destination stations.
@@ -331,7 +333,7 @@ Shapes describe the path that a vehicle travels along a route alignment, and are
 
 File: **Optional**
 
-Primary ID (`trip_id`)
+Primary ID (`trip_id`, `start_time`, `end_time`)
 
 [Frequencies.txt](#frequenciestxt) represents trips that operate on regular headways (time between trips). This file can be used to represent two different types of service.
 
@@ -351,6 +353,8 @@ Primary ID (`trip_id`)
 
 File: **Optional**
 
+Primary ID (`from_stop_id`, `to_stop_id`)
+
 When calculating an itinerary, GTFS-consuming applications interpolate transfers based on allowable time and stop proximity. [Transfers.txt](#transferstxt) specifies additional rules and overrides for selected transfers.
 
 |  Field Name | Type | Presence | Description |
@@ -363,6 +367,8 @@ When calculating an itinerary, GTFS-consuming applications interpolate transfers
 ### pathways.txt
 
 File: **Optional**
+
+Primary ID (`pathway_id`, `from_stop_id`, `to_stop_id`)
 
 Files [pathways.txt](#pathwaystxt) and [levels.txt](levelstxt) use a graph representation to describe subway or train stations, with nodes representing locations and edges representing pathways.
 
@@ -407,6 +413,8 @@ Describes levels in a station. Useful in conjunction with `pathways.txt`, and is
 
 File: **Optional**
 
+Primary ID (`*`)
+
 In regions that have multiple official languages, transit agencies/operators typically have language-specific names and web pages. In order to best serve riders in those regions, it is useful for the dataset to include these language-dependent values.
 
 |  Field Name | Type | Presence | Description |
@@ -423,7 +431,9 @@ In regions that have multiple official languages, transit agencies/operators typ
 
 File: **Optional** (**Required** if `translations.txt` is provided)
 
-The file contains information about the dataset itself, rather than the services that the dataset describes. Note that, in some cases, the publisher of the dataset is a different entity than any of the agencies.
+Primary ID (none)
+
+The file contains a single row of information about the dataset itself, rather than the services that the dataset describes. Note that, in some cases, the publisher of the dataset is a different entity than any of the agencies.
 
 |  Field Name | Type | Presence | Description |
 |  ------ | ------ | ------ | ------ |
