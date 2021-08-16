@@ -906,15 +906,9 @@ message Shape {
   required string shape_id = 1;
   
   // Encoded polyline representation of the shape. This polyline must contain at least two points.
-  // The distance between points can be optionally specified, like in (CSV) GTFS, through dist_traveled
   // For more information about encoded polylines, see https://developers.google.com/maps/documentation/utilities/polylinealgorithm
   // NOTE: This field is still experimental, and subject to change. It may be formally adopted in the future.
   required string encoded_polyline = 2;
-  
-  // Optional list of actual cumulative distances traveled along the shape to each point in encoded_polyline
-  // See definition of shapes.shape_dist_traveled in (CSV) GTFS.
-  // NOTE: This field is still experimental, and subject to change. It may be formally adopted in the future.
-  repeated float dist_traveled = 3;
 
   // The extensions namespace allows 3rd-party developers to extend the
   // GTFS Realtime Specification in order to add and evaluate new features and
