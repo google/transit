@@ -510,7 +510,7 @@ A localized string mapped to a language.
 
 ## _message_ Shape
 
-Describes the physical path that a vehicle takes when it's not part of the (CSV) GTFS, such as for a detour. Shapes belong to Trips, and consist of a sequence of shape points. Tracing the points in order provides the path of the vehicle.  Shapes do not need to intercept the location of Stops exactly, but all Stops on a trip should lie within a small distance of the shape for that trip, i.e. close to straight line segments connecting the shape points
+Describes the physical path that a vehicle takes when the shape is not part of the (CSV) GTFS, such as for an ad-hoc detour. Shapes belong to Trips and consist of an encoded polyline for more efficient transmission.  Shapes do not need to intercept the location of Stops exactly, but all Stops on a trip should lie within a small distance of the shape for that trip, i.e. close to straight line segments connecting the shape points
 
 **Caution:** this message is still **experimental**, and subject to change. It may be formally adopted in the future.<br>.
 
@@ -519,20 +519,4 @@ Describes the physical path that a vehicle takes when it's not part of the (CSV)
 | _**Field Name**_ | _**Type**_ | _**Required**_ | _**Cardinality**_ | _**Description**_ |
 |------------------|------------|----------------|-------------------|-------------------|
 | **shape_id** | [string](https://developers.google.com/protocol-buffers/docs/proto#scalar) | Required | One |  Identifier of the shape. Must be different than any `shape_id` defined in the (CSV) GTFS. <br>**Caution:** this field is still **experimental**, and subject to change. It may be formally adopted in the future. |
-| **shape_point** | [ShapePoint](#message-shapepoint) | Required | Many | Points in the shape. A shape must contain at least two shape points. ShapePoints must be ordered by shape_pt_sequence. <br>**Caution:** this field is still **experimental**, and subject to change. It may be formally adopted in the future. |
-
-## _message_ ShapePoint
-
-A shape for a trip that has been updated.
-
-**Caution:** this message is still **experimental**, and subject to change. It may be formally adopted in the future.<br>.
-
-#### Fields
-
-| _**Field Name**_ | _**Type**_ | _**Required**_ | _**Cardinality**_ | _**Description**_ |
-|------------------|------------|----------------|-------------------|-------------------|
-| **shape_pt_lat** | [float](https://developers.google.com/protocol-buffers/docs/proto#scalar) | Required | One | Latitude of a shape point. See definition of `shapes.shape_pt_lat` in (CSV) GTFS. <br>**Caution:** this field is still **experimental**, and subject to change. It may be formally adopted in the future. |
-| **shape_pt_lon** | [float](https://developers.google.com/protocol-buffers/docs/proto#scalar) | Required | One | Longitude of a shape point. See definition of `shapes.shape_pt_lon` in (CSV) GTFS. <br>**Caution:** this field is still **experimental**, and subject to change. It may be formally adopted in the future. |
- | **shape_dist_traveled** | [float](https://developers.google.com/protocol-buffers/docs/proto#scalar) | Conditionally required | One | See definition of `shapes.shape_dist_traveled` in (CSV) GTFS. <br>**Caution:** this field is still **experimental**, and subject to change. It may be formally adopted in the future. |
- | **shape_pt_sequence** | [int32](https://developers.google.com/protocol-buffers/docs/proto#scalar) | Required | One | See definition of `shapes.shape_pt_sequence` in (CSV) GTFS.
- <br>**Caution:** this field is still **experimental**, and subject to change. It may be formally adopted in the future. |
+| **encoded_polyline** | [string](https://developers.google.com/protocol-buffers/docs/proto#scalar) | Required | One | Encoded polyline representation of the shape. This polyline must contain at least two points. <br>**Caution:** this field is still **experimental**, and subject to change. It may be formally adopted in the future. |
