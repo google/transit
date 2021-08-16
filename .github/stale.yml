@@ -1,10 +1,11 @@
 # Configuration for probot-stale - https://github.com/probot/stale
-pulls:
-  daysUntilStale: 30
-  daysUntilClose: 7
-  exemptLabels: []
-  markComment: >
-    This pull request has been automatically marked as stale because it has not had
-    recent activity. It will be closed if no further activity occurs. Thank you
-    for your contributions.
-  closeComment: This pull request has been closed due to inactivity. Pull requests can always be reopened after they have been closed.
+daysUntilStale: 30
+daysUntilClose: 7
+staleLabel: stale
+markComment: >
+  This pull request has been automatically marked as stale because it has not had
+  recent activity. It will be closed if no further activity occurs. Thank you
+  for your contributions.
+closeComment: >
+  This pull request has been closed due to inactivity. Pull requests can always be reopened after they have been closed. See the Specification Amendment Process.
+only: pulls
