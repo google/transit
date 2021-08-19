@@ -356,13 +356,15 @@ message TripUpdate {
     // populated and will be ignored by consumers.
     // NOTE: This field is still experimental, and subject to change. It may be formally adopted in the future.
     optional string start_time = 3;
-    // Specifies the new shape of the vehicle travel path when the trip shape differs from the shape specified in
-    // (CSV) GTFS. See definition of trips.shape_id in (CSV) GTFS. This can refer to a shape defined in the
-    // (CSV) GTFS in shapes.txt or a Shape the (protobuf) real-time feed. The order of stops (stop sequences) for this
-    // trip must remain the same as (CSV) GTFS. Stops that are a part of the original trip but will no longer be made,
-    // such as when a detour occurs, should be marked as schedule_relationship=SKIPPED. 
-    // NOTE: This field is still experimental, and subject to change. It may be formally adopted in the future.
-  optional string shape_id = 4;
+    // Specifies the shape of the vehicle travel path when the trip shape differs from the shape specified in
+    // (CSV) GTFS or to specify it in real-time when it's not provided by (CSV) GTFS, such as a vehicle that takes differing
+    // paths based on rider demand. See definition of trips.shape_id in (CSV) GTFS. If a shape is neither defined in (CSV) GTFS
+    // nor in real-time, the shape is considered unknown. This field can refer to a shape defined in the (CSV) GTFS in shapes.txt
+    // or a Shape in the (protobuf) real-time feed. The order of stops (stop sequences) for this trip must remain the same as
+    // (CSV) GTFS. Stops that are a part of the original trip but will no longer be made, such as when a detour occurs, should
+    // be marked as schedule_relationship=SKIPPED.
+    // NOTE: This field is still experimental, and subject to change. It may be formally adopted in the future. 
+    optional string shape_id = 4;
 
     // The extensions namespace allows 3rd-party developers to extend the
     // GTFS Realtime Specification in order to add and evaluate new features
