@@ -1,8 +1,6 @@
 A GTFS Realtime feed lets transit agencies provide consumers with realtime information about disruptions to their service (stations closed, lines not operating, important delays, etc.) location of their vehicles, and expected arrival times.
 
-Version 3.0 of the feed specification is discussed and documented on this site. The current version is 2.0. Valid versions are "3.0", "2.0", "1.0".
-
-Note: Version 3.0 is still experimental, and subject to change. It may be formally adopted in the future. 
+Version 2.0 of the feed specification is discussed and documented on this site. Valid versions are "2.0", "1.0".
 
 ### Term Definitions
 
@@ -94,7 +92,7 @@ Metadata about a feed, included in feed messages.
 
 | _**Field Name**_ | _**Type**_ | _**Required**_ | _**Cardinality**_ | _**Description**_ |
 |------------------|------------|----------------|-------------------|-------------------|
-| **gtfs_realtime_version** | [string](https://developers.google.com/protocol-buffers/docs/proto#scalar) | Required | One | Version of the feed specification. The current version is 2.0. Valid versions are "3.0", "2.0", "1.0". <br><br>**Caution:** Version 3.0 is still **experimental**, and subject to change. It may be formally adopted in the future. |
+| **gtfs_realtime_version** | [string](https://developers.google.com/protocol-buffers/docs/proto#scalar) | Required | One | Version of the feed specification. The current version is 2.0. |
 | **incrementality** | [Incrementality](#enum-incrementality) | Required | One |
 | **timestamp** | [uint64](https://developers.google.com/protocol-buffers/docs/proto#scalar) | Required | One | This timestamp identifies the moment when the content of this feed has been created (in server time). In POSIX time (i.e., number of seconds since January 1st 1970 00:00:00 UTC). To avoid time skew between systems producing and consuming realtime information it is strongly advised to derive timestamp from a time server. It is completely acceptable to use Stratum 3 or even lower strata servers since time differences up to a couple of seconds are tolerable. |
 
