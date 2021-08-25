@@ -34,7 +34,7 @@ entity {
 }
 ~~~
 
-It is suggested that you notify existing consumers (e.g., via a developer mailing list) that the use of `SKIPPED` for partial service at a stop is being deprecated in favor of more nuanced information by a set deadline and that consumers should start consuming the `MODIFIED` enumeration as well as `pickup_type` and `drop_off_type`. You should also provide a link to this migration guide. After the deadline passes, you can stop using `SKIPPED` entities for scenarios where `pickup_type` or `drop_off_typ` are included and start using `MODIFIED` instead.
+It is suggested that you notify existing consumers (e.g., via a developer mailing list) that the use of `SKIPPED` for partial service at a stop is being deprecated in favor of more nuanced information by a set deadline and that consumers should start consuming the `MODIFIED` enumeration as well as `pickup_type` and `drop_off_type`. You should also provide a link to this migration guide. After the deadline passes, you can stop using `SKIPPED` entities for scenarios where `pickup_type` or `drop_off_type` are included and start using `MODIFIED` instead.
 
 #### Consumers 
 `pickup_type` and `drop_off_type` set in `StopTimeProperties` takes precedence over `schedule_relationship=SKIPPED`, meaning that real-time arrival information should still be used to inform passengers rather being ignored, perhaps with additional instructions or notification on how to board/alight, similar to what may happen with those fields being specified in `stop_times.txt`.
