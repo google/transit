@@ -103,6 +103,8 @@ message FeedEntity {
   optional TripUpdate trip_update = 3;
   optional VehiclePosition vehicle = 4;
   optional Alert alert = 5;
+
+  // NOTE: This field is still experimental, and subject to change. It may be formally adopted in the future.
   optional Shape shape = 6;
 
   // The extensions namespace allows 3rd-party developers to extend the
@@ -904,13 +906,17 @@ message TranslatedString {
 // NOTE: This message is still experimental, and subject to change. It may be formally adopted in the future.
 message Shape {
   // Identifier of the shape. Must be different than any shape_id defined in the (CSV) GTFS.
+  // This field is required as per reference.md, but needs to be specified here optional because "Required is Forever"
+  // See https://developers.google.com/protocol-buffers/docs/proto#specifying_field_rules
   // NOTE: This field is still experimental, and subject to change. It may be formally adopted in the future.
-  required string shape_id = 1;
+  optional string shape_id = 1;
   
   // Encoded polyline representation of the shape. This polyline must contain at least two points.
   // For more information about encoded polylines, see https://developers.google.com/maps/documentation/utilities/polylinealgorithm
+  // This field is required as per reference.md, but needs to be specified here optional because "Required is Forever"
+  // See https://developers.google.com/protocol-buffers/docs/proto#specifying_field_rules
   // NOTE: This field is still experimental, and subject to change. It may be formally adopted in the future.
-  required string encoded_polyline = 2;
+  optional string encoded_polyline = 2;
 
   // The extensions namespace allows 3rd-party developers to extend the
   // GTFS Realtime Specification in order to add and evaluate new features and

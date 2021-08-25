@@ -123,7 +123,7 @@ A definition (or update) of an entity in the transit feed. If the entity is not 
 | **trip_update** | [TripUpdate](#message-tripupdate) | Conditionally required | One | Data about the realtime departure delays of a trip.  At least one of the fields trip_update, vehicle, alert, or shape must be provided - all these fields cannot be empty. |
 | **vehicle** | [VehiclePosition](#message-vehicleposition) | Conditionally required | One | Data about the realtime position of a vehicle. At least one of the fields trip_update, vehicle, alert, or shape must be provided - all these fields cannot be empty. |
 | **alert** | [Alert](#message-alert) | Conditionally required | One | Data about the realtime alert. At least one of the fields trip_update, vehicle, alert, or shape must be provided - all these fields cannot be empty. |
-| **shape** | [Shape](#message-shape) | Conditionally required | One | Data about the realtime added shapes, such as for a detour. At least one of the fields trip_update, vehicle, alert, or shape must be provided - all these fields cannot be empty. |
+| **shape** | [Shape](#message-shape) | Conditionally required | One | Data about the realtime added shapes, such as for a detour. At least one of the fields trip_update, vehicle, alert, or shape must be provided - all these fields cannot be empty. <br><br>**Caution:** this field is still **experimental**, and subject to change. It may be formally adopted in the future. |
 
 
 ## _message_ TripUpdate
@@ -518,5 +518,5 @@ Describes the physical path that a vehicle takes when the shape is not part of t
 
 | _**Field Name**_ | _**Type**_ | _**Required**_ | _**Cardinality**_ | _**Description**_ |
 |------------------|------------|----------------|-------------------|-------------------|
-| **shape_id** | [string](https://developers.google.com/protocol-buffers/docs/proto#scalar) | Required | One |  Identifier of the shape. Must be different than any `shape_id` defined in the (CSV) GTFS. <br>**Caution:** this field is still **experimental**, and subject to change. It may be formally adopted in the future. |
-| **encoded_polyline** | [string](https://developers.google.com/protocol-buffers/docs/proto#scalar) | Required | One | Encoded polyline representation of the shape. This polyline must contain at least two points. For more information about encoded polylines, see https://developers.google.com/maps/documentation/utilities/polylinealgorithm <br>**Caution:** this field is still **experimental**, and subject to change. It may be formally adopted in the future. |
+| **shape_id** | [string](https://developers.google.com/protocol-buffers/docs/proto#scalar) | Required | One |  Identifier of the shape. Must be different than any `shape_id` defined in the (CSV) GTFS. <br><br>**Caution:** this field is still **experimental**, and subject to change. It may be formally adopted in the future. |
+| **encoded_polyline** | [string](https://developers.google.com/protocol-buffers/docs/proto#scalar) | Required | One | Encoded polyline representation of the shape. This polyline must contain at least two points. For more information about encoded polylines, see https://developers.google.com/maps/documentation/utilities/polylinealgorithm <br><br>**Caution:** this field is still **experimental**, and subject to change. It may be formally adopted in the future. |
