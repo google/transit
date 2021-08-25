@@ -239,10 +239,12 @@ message TripUpdate {
       // formally adopted in the future.
       UNSCHEDULED = 3;
 
-        // The vehicle's relationship with the static schedule differs in a way that impacts the rider experience,
-        // such as a vehicle not picking up passengers because a vehicle is "drop-off only" to catch up back to
-        // schedule when it's running late. StopTimeProperties must included to specify how the relationship
-        // has been modified.
+      // A schedule-based vehicle's StopTimeProperties differs from the static schedule in a way that impacts
+      // the rider experience, such as a vehicle not picking up passengers because a vehicle is "drop-off only"
+      // to catch up back to schedule when it's running late. StopTimeProperties must included to specify how
+      // the relationship has been modified.
+      // NOTE: This field is still experimental, and subject to change. It may be
+      // formally adopted in the future.
       MODIFIED = 4; 
     }
     optional ScheduleRelationship schedule_relationship = 5
