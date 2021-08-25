@@ -201,6 +201,7 @@ The relation between this StopTime and the static schedule.
 | **SKIPPED** | The stop is skipped, i.e., the vehicle will not stop at this stop. Arrival and departure are optional. When set `SKIPPED` is not propagated to subsequent stops in the same trip (i.e., the vehicle will stop at subsequent stops in the trip unless those stops also have a `stop_time_update` with `schedule_relationship: SKIPPED`). Delay from a previous stop in the trip *does* propagate over the `SKIPPED` stop. In other words, if a `stop_time_update` with an `arrival` or `departure` prediction is not set for a stop after the `SKIPPED` stop, the prediction upstream of the `SKIPPED` stop will be propagated to the stop after the `SKIPPED` stop and subsequent stops in the trip until a `stop_time_update` for a subsequent stop is provided.  |
 | **NO_DATA** | No data is given for this stop. It indicates that there is no realtime information available. When set NO_DATA is propagated through subsequent stops so this is the recommended way of specifying from which stop you do not have realtime information. When NO_DATA is set neither arrival nor departure should be supplied. |
 | **UNSCHEDULED** | The vehicle is operating a frequency-based trip (GTFS frequencies.txt with exact_times = 0). This value should not be used for trips that are not defined in GTFS frequencies.txt, or trips in GTFS frequencies.txt with exact_times = 1. Trips containing `stop_time_updates` with `schedule_relationship: UNSCHEDULED` must also set the TripDescriptor `schedule_relationship: UNSCHEDULED` <br><br>**Caution:** this field is still **experimental**, and subject to change. It may be formally adopted in the future.
+| **MODIFIED** | The vehicle's relationship with the static schedule differs in a way that impacts the rider experience, such as a vehicle not picking up passengers because a vehicle is "drop-off only" to catch up back to schedule when it's running late. StopTimeProperties must included to specify how the relationship has been modified. <br><br>**Caution:** this field is still **experimental**, and subject to change. It may be formally adopted in the future.
 
 ## _message_ StopTimeProperties
 
@@ -213,12 +214,13 @@ Realtime update for certain properties defined within GTFS stop_times.txt.
 | _**Field Name**_ | _**Type**_ | _**Required**_ | _**Cardinality**_ | _**Description**_ |
 |------------------|------------|----------------|-------------------|-------------------|
 | **assigned_stop_id** | [string](https://developers.google.com/protocol-buffers/docs/proto#scalar) | Optional | One | Supports real-time stop assignments. Refers to a `stop_id` defined in the GTFS `stops.txt`. <br> The new `assigned_stop_id` should not result in a significantly different trip experience for the end user than the `stop_id` defined in GTFS `stop_times.txt`. In other words, the end user should not view this new `stop_id` as an "unusual change" if the new stop was presented within an app without any additional context. For example, this field is intended to be used for platform assignments by using a `stop_id` that belongs to the same station as the stop originally defined in GTFS `stop_times.txt`. <br> To assign a stop without providing any real-time arrival or departure predictions, populate this field and set `StopTimeUpdate.schedule_relationship = NO_DATA`. <br> If this field is populated, `StopTimeUpdate.stop_sequence` must be populated and `StopTimeUpdate.stop_id` should not be populated. Stop assignments should be reflected in other GTFS-realtime fields as well (e.g., `VehiclePosition.stop_id`). <br><br>**Caution:** this field is still **experimental**, and subject to change. It may be formally adopted in the future. |
-| **pickup_type** | [PickupType](#enum-pickuptype) | Optional | One | See definition of stop_times.pickup_type in (CSV) GTFS. Default is REGULAR_PICKUP. <br><br>**Caution:** this field is still **experimental**, and subject to change. It may be formally adopted in the future. |
-| **drop_off_type** | [DropOffType](#enum-dropofftype) | Optional | One | See definition of stop_times.drop_off_type in (CSV) GTFS. Default is REGULAR_DROP_OFF. <br><br>**Caution:** this field is still **experimental**, and subject to change. It may be formally adopted in the future. |
+| **pickup_type** | [PickupType](#enum-pickuptype) | Optional | One | Supports real-time changes to pickup_type when it differs from what's specified in (CSV) GTFS in `stop_times.txt`. See definition of `stop_times.pickup_type` in (CSV) GTFS. If `pickup_type` is specified, `StopTimeUpdate.schedule_relationship` should be `MODIFIED`. <br><br>**Caution:** this field is still **experimental**, and subject to change. It may be formally adopted in the future. |
+| **drop_off_type** | [DropOffType](#enum-dropofftype) | Optional | One | Supports real-time changes to drop_off_type when it differs from what's specified in (CSV) GTFS in `stop_times.txt`. See definition of `stop_times.drop_off_type` in (CSV) GTFS. If drop_off_type is specified, `StopTimeUpdate.schedule_relationship` should be `MODIFIED`.
+ <br><br>**Caution:** this field is still **experimental**, and subject to change. It may be formally adopted in the future. |
 
 ## _enum_ PickupType
 
-Indicates the pickup method for an updated stop time. Default is REGULAR_PICKUP.
+Indicates the pickup method for an updated stop time when it differs from what's specified in (CSV) GTFS in stop_times.txt By default, if pickup_type is neither specified in real-time or in (CSV) GTFS, it is considered REGULAR_PICKUP.
 
 **Caution:** this field is still **experimental**, and subject to change. It may be formally adopted in the future.
 
@@ -233,7 +235,7 @@ Indicates the pickup method for an updated stop time. Default is REGULAR_PICKUP.
 
 ## _enum_ DropOffType
 
-Indicates the drop off method for an updated stop time. Default is REGULAR_DROP_OFF.
+Indicates the drop off method for an updated stop time when it differs from what's specified in (CSV) GTFS in stop_times.txt. By default, if drop_off_type is neither specified in real-time or in (CSV) GTFS, it is considered REGULAR_DROP_OFF.
 
 **Caution:** this field is still **experimental**, and subject to change. It may be formally adopted in the future.
 

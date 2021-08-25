@@ -238,6 +238,12 @@ message TripUpdate {
       // NOTE: This field is still experimental, and subject to change. It may be
       // formally adopted in the future.
       UNSCHEDULED = 3;
+
+        // The vehicle's relationship with the static schedule differs in a way that impacts the rider experience,
+        // such as a vehicle not picking up passengers because a vehicle is "drop-off only" to catch up back to
+        // schedule when it's running late. StopTimeProperties must included to specify how the relationship
+        // has been modified.
+      MODIFIED = 4; 
     }
     optional ScheduleRelationship schedule_relationship = 5
         [default = SCHEDULED];
@@ -260,15 +266,21 @@ message TripUpdate {
       // NOTE: This field is still experimental, and subject to change. It may be formally adopted in the future.
       optional string assigned_stop_id = 1;
 
-      // See definition of stop_times.pickup_type in (CSV) GTFS. Default is REGULAR_PICKUP.
+      // Supports real-time changes to pickup_type when it differs from what's specified in (CSV) GTFS
+      // in stop_times.txt. See definition of stop_times.pickup_type in (CSV) GTFS. 
+      // If pickup_type is specified, StopTimeUpdate.schedule_relationship should be MODIFIED.
       // NOTE: This field is still experimental, and subject to change. It may be formally adopted in the future.
-      optional PickupType pickup_type = 2 [default = REGULAR_PICKUP];
+      optional PickupType pickup_type = 2;
 
-      // See definition of stop_times.drop_off_type in (CSV) GTFS. Default is REGULAR_DROP_OFF.
+      // Supports real-time changes to drop_off_type when it differs from what's specified in (CSV) GTFS
+      // in stop_times.txt. See definition of stop_times.drop_off_type in (CSV) GTFS.
+      // If drop_off_type is specified, StopTimeUpdate.schedule_relationship should be MODIFIED.
       // NOTE: This field is still experimental, and subject to change. It may be formally adopted in the future.
-      optional DropOffType drop_off_type = 3 [default = REGULAR_DROP_OFF];
+      optional DropOffType drop_off_type = 3;
 
-      // Indicates the pickup method for an updated stop time. Default is REGULAR_PICKUP.
+      // Indicates the pickup method for an updated stop time when it differs from what's specified in (CSV) GTFS
+      // in stop_times.txt. By default, if pickup_type is neither specified in real-time or in (CSV) GTFS, it is
+      // considered REGULAR_PICKUP.
       // NOTE: This field is still experimental, and subject to change. It may be formally adopted in the future.
       enum PickupType {
         // See definition of stop_times.pickup_type=0 in (CSV) GTFS.
@@ -284,7 +296,9 @@ message TripUpdate {
         MUST_ASK_DRIVER_PICKUP = 3;
       }
 
-      // Indicates the drop off method for an updated stop time. Default is REGULAR_DROP_OFF.
+      // Indicates the drop off method for an updated stop time when it differs from what's specified in (CSV) GTFS
+      // in stop_times.txt. By default, if drop_off_type is neither specified in real-time or in (CSV) GTFS, it is
+      // considered REGULAR_DROP_OFF.
       // NOTE: This field is still experimental, and subject to change. It may be formally adopted in the future.
       enum DropOffType {
         // See definition of stop_times.drop_off_type=0 in (CSV) GTFS.
