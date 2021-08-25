@@ -222,7 +222,10 @@ message TripUpdate {
 
       // The stop is skipped, i.e., the vehicle will not stop at this stop.
       // Arrival and departure are optional.
-      SKIPPED = 1;
+      // NOTE: This field is being deprecated. Users should use `MODIFIED` along with
+      // pickup_type=NO_PICKUP and drop_off_type=NO_DROP_OFF instead for when a
+      // vehicle will not serve a regularly scheduled stop
+      SKIPPED = 1 [deprecated=true];
 
       // No data is given for this stop. The main intention for this value is to
       // give the predictions only for part of a trip, i.e., if the last update
