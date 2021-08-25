@@ -268,13 +268,13 @@ message TripUpdate {
 
       // Supports real-time changes to pickup_type when it differs from what's specified in (CSV) GTFS
       // in stop_times.txt. See definition of stop_times.pickup_type in (CSV) GTFS. 
-      // If pickup_type is specified, StopTimeUpdate.schedule_relationship should be MODIFIED.
+      // If pickup_type is specified, StopTimeUpdate.schedule_relationship must be MODIFIED for schedule-based service.
       // NOTE: This field is still experimental, and subject to change. It may be formally adopted in the future.
       optional PickupType pickup_type = 2;
 
       // Supports real-time changes to drop_off_type when it differs from what's specified in (CSV) GTFS
       // in stop_times.txt. See definition of stop_times.drop_off_type in (CSV) GTFS.
-      // If drop_off_type is specified, StopTimeUpdate.schedule_relationship should be MODIFIED.
+      // If drop_off_type is specified, StopTimeUpdate.schedule_relationship must be MODIFIED for scheduled-based service.
       // NOTE: This field is still experimental, and subject to change. It may be formally adopted in the future.
       optional DropOffType drop_off_type = 3;
 
