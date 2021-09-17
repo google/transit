@@ -24,9 +24,8 @@ The official specification, reference and documentation are written in English. 
   	- Votes against shall be motivated, and ideally provide actionable feedback.
   	- If the vote has failed, then the advocate may choose to continue work on the proposal, or to abandon the proposal.
     Either decision of the advocate must be announced in the mailing list.
-  	- If the advocate continues the work on proposal then a new vote can be called for at any point in time but no later than 30 calendar days after the end of the previous vote.
-  	- If a vote was not called within 30 calendar days from the original proposal or 30 calendar days since end of the previous vote, then the proposal is abandoned.
-1. If the proposal is abandoned, the corresponding pull request is closed.
+  	- If the advocate continues the work on proposal then a new vote can be called for at any point in time.
+1. Any pull request remaining inactive for 30 calendar days will be closed. When a pull request is closed, the corresponding proposal is considered abandoned. The advocate may reopen the pull request at any time if they wish to continue or maintain the conversation.
 1. If the proposal is accepted:
   	- Google is committed to merging the voted upon version of the pull request (provided that the contributors have signed the [CLA](../CONTRIBUTING.md)), and performing the pull request within 5 business days.
   	- Translations must not be included into the original pull request.
@@ -50,14 +49,22 @@ Every new feature adds complexity to the creation and reading of feeds. Therefor
 
 ### Revision History
 
-#### May 28, 2020
+#### January 4, 2021
 
-* Updated major GTFS changes under "Revision History" in `CHANGES.md`. Last revised in January 2019 with some historical entries missing.
+* Clarified description of `stop_times.stop_id`. See [discussion](https://github.com/google/transit/pull/258).
+* Defined positive and non-zero field signs. See [discussion](https://github.com/google/transit/pull/251).
+
+#### October 2, 2020
+
+* Changed field type of `frequencies.headway_secs` from non-negative to positive integer. See [discussion](https://github.com/google/transit/pull/249).
+
+#### May 25, 2020
+
+* Defined `pathways.txt`, `levels.txt` and `attributions.txt` as translatable tables. Added recommendations for translating multilingual `signposted_as` values. See [discussion](https://github.com/google/transit/pull/220).
 
 #### May 13, 2020
 
-* Added `continuous_pickup` and `continuous_drop_off` to `routes.txt` and `stop_times.txt`.  See [discussion](https://github.com/google/transit/pull/208).
-* Changed `shape_id` from "Optional" to "Conditionally required". See [discussion](https://github.com/google/transit/pull/208).
+* Added `continuous_pickup` and `continuous_drop_off` to `routes.txt` and `stop_times.txt`. Changed `shape_id` from "Optional" to "Conditionally required". See [discussion](https://github.com/google/transit/pull/208).
 
 #### March 24, 2020
 
@@ -99,7 +106,7 @@ Every new feature adds complexity to the creation and reading of feeds. Therefor
 
 #### March 27, 2019
 
-* Added `pathways.txt` and `levels.txt` to GTFS-static. See [discussion](https://github.com/google/transit/pull/143).
+* Added `pathways.txt` and `levels.txt`. See [discussion](https://github.com/google/transit/pull/143).
 
 #### February 6, 2019
 
@@ -107,11 +114,14 @@ Every new feature adds complexity to the creation and reading of feeds. Therefor
 
 #### October 2, 2018
 
-* Factorized field types for conciseness.  See [discussion](https://github.com/google/transit/pull/104).
+* Factorized field types. See [discussion](https://github.com/google/transit/pull/104).
+
+#### September 14, 2018
+
+* Added "Conditionally required" concept. See [discussion](https://github.com/google/transit/pull/100).
 
 #### September 4, 2018
 
-* Added "Conditionally required" concept. See [discussion](https://github.com/google/transit/pull/100).
 * Unified the definitions of `agency_lang` and `feed_lang`. See [discussion](https://github.com/google/transit/pull/98).
 
 #### August 27, 2018

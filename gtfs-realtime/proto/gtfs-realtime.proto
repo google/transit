@@ -104,6 +104,9 @@ message FeedEntity {
   optional VehiclePosition vehicle = 4;
   optional Alert alert = 5;
 
+  // NOTE: This field is still experimental, and subject to change. It may be formally adopted in the future.
+  optional Shape shape = 6;
+
   // The extensions namespace allows 3rd-party developers to extend the
   // GTFS Realtime Specification in order to add and evaluate new features and
   // modifications to the spec.
@@ -210,7 +213,13 @@ message TripUpdate {
     optional StopTimeEvent arrival = 2;
     optional StopTimeEvent departure = 3;
 
-    // The relation between this StopTime and the static schedule.
+    // Expected occupancy after departure from the given stop.
+    // Should be provided only for future stops.
+    // In order to provide departure_occupancy_status without either arrival or
+    // departure StopTimeEvents, ScheduleRelationship should be set to NO_DATA. 
+    optional VehiclePosition.OccupancyStatus departure_occupancy_status = 7;
+    
+    // The relation between the StopTimeEvents and the static schedule.
     enum ScheduleRelationship {
       // The vehicle is proceeding in accordance with its static schedule of
       // stops, although not necessarily according to the times of the schedule.
@@ -224,10 +233,11 @@ message TripUpdate {
       // Arrival and departure are optional.
       SKIPPED = 1;
 
-      // No data is given for this stop. The main intention for this value is to
-      // give the predictions only for part of a trip, i.e., if the last update
-      // for a trip has a NO_DATA specifier, then StopTimes for the rest of the
-      // stops in the trip are considered to be unspecified as well.
+      // No StopTimeEvents are given for this stop.
+      // The main intention for this value is to give time predictions only for
+      // part of a trip, i.e., if the last update for a trip has a NO_DATA
+      // specifier, then StopTimeEvents for the rest of the stops in the trip
+      // are considered to be unspecified as well.
       // Neither arrival nor departure should be supplied.
       NO_DATA = 2;
 
@@ -241,6 +251,37 @@ message TripUpdate {
     }
     optional ScheduleRelationship schedule_relationship = 5
         [default = SCHEDULED];
+
+    // Provides the updated values for the stop time.
+    // NOTE: This message is still experimental, and subject to change. It may be formally adopted in the future.
+    message StopTimeProperties {
+      // Supports real-time stop assignments. Refers to a stop_id defined in the GTFS stops.txt.
+      // The new assigned_stop_id should not result in a significantly different trip experience for the end user than
+      // the stop_id defined in GTFS stop_times.txt. In other words, the end user should not view this new stop_id as an
+      // "unusual change" if the new stop was presented within an app without any additional context.
+      // For example, this field is intended to be used for platform assignments by using a stop_id that belongs to the
+      // same station as the stop originally defined in GTFS stop_times.txt.
+      // To assign a stop without providing any real-time arrival or departure predictions, populate this field and set
+      // StopTimeUpdate.schedule_relationship = NO_DATA.
+      // If this field is populated, it is preferred to omit `StopTimeUpdate.stop_id` and use only `StopTimeUpdate.stop_sequence`. If
+      // `StopTimeProperties.assigned_stop_id` and `StopTimeUpdate.stop_id` are populated, `StopTimeUpdate.stop_id` must match `assigned_stop_id`.
+      // Platform assignments should be reflected in other GTFS-realtime fields as well
+      // (e.g., `VehiclePosition.stop_id`).
+      // NOTE: This field is still experimental, and subject to change. It may be formally adopted in the future.
+      optional string assigned_stop_id = 1;
+
+      // The extensions namespace allows 3rd-party developers to extend the
+      // GTFS Realtime Specification in order to add and evaluate new features
+      // and modifications to the spec.
+      extensions 1000 to 1999;
+
+      // The following extension IDs are reserved for private use by any organization.
+      extensions 9000 to 9999;
+    }
+
+    // Realtime updates for certain properties defined within GTFS stop_times.txt
+    // NOTE: This field is still experimental, and subject to change. It may be formally adopted in the future.
+    optional StopTimeProperties stop_time_properties = 6;
 
     // The extensions namespace allows 3rd-party developers to extend the
     // GTFS Realtime Specification in order to add and evaluate new features
@@ -272,7 +313,9 @@ message TripUpdate {
   // - stop_sequences 10,... have unknown delay.
   repeated StopTimeUpdate stop_time_update = 2;
 
-  // Moment at which the vehicle's real-time progress was measured. In POSIX
+  // The most recent moment at which the vehicle's real-time progress was measured
+  // to estimate StopTimes in the future. When StopTimes in the past are provided,
+  // arrival/departure times may be earlier than this value. In POSIX
   // time (i.e., the number of seconds since January 1st 1970 00:00:00 UTC).
   optional uint64 timestamp = 4;
 
@@ -296,7 +339,8 @@ message TripUpdate {
   // formally adopted in the future.
   optional int32 delay = 5;
 
-  // Defines updated properties of the trip
+  // Defines updated properties of the trip, such as a new shape_id when there is a detour. Or defines the
+  // trip_id, start_date, and start_time of a DUPLICATED trip. 
   // NOTE: This message is still experimental, and subject to change. It may be formally adopted in the future.
   message TripProperties {
     // Defines the identifier of a new trip that is a duplicate of an existing trip defined in (CSV) GTFS trips.txt
@@ -323,6 +367,23 @@ message TripUpdate {
     // populated and will be ignored by consumers.
     // NOTE: This field is still experimental, and subject to change. It may be formally adopted in the future.
     optional string start_time = 3;
+    // Specifies the shape of the vehicle travel path when the trip shape differs from the shape specified in
+    // (CSV) GTFS or to specify it in real-time when it's not provided by (CSV) GTFS, such as a vehicle that takes differing
+    // paths based on rider demand. See definition of trips.shape_id in (CSV) GTFS. If a shape is neither defined in (CSV) GTFS
+    // nor in real-time, the shape is considered unknown. This field can refer to a shape defined in the (CSV) GTFS in shapes.txt
+    // or a Shape in the (protobuf) real-time feed. The order of stops (stop sequences) for this trip must remain the same as
+    // (CSV) GTFS. Stops that are a part of the original trip but will no longer be made, such as when a detour occurs, should
+    // be marked as schedule_relationship=SKIPPED.
+    // NOTE: This field is still experimental, and subject to change. It may be formally adopted in the future. 
+    optional string shape_id = 4;
+
+    // The extensions namespace allows 3rd-party developers to extend the
+    // GTFS Realtime Specification in order to add and evaluate new features
+    // and modifications to the spec.
+    extensions 1000 to 1999;
+
+    // The following extension IDs are reserved for private use by any organization.
+    extensions 9000 to 9999;
   }
   optional TripProperties trip_properties = 6;
 
@@ -386,51 +447,122 @@ message VehiclePosition {
   }
   optional CongestionLevel congestion_level = 6;
 
-  // The degree of passenger occupancy of the vehicle. This field is still
-  // experimental, and subject to change. It may be formally adopted in the
-  // future.
+  // The state of passenger occupancy for the vehicle or carriage.
+  // Individual producers may not publish all OccupancyStatus values. Therefore, consumers
+  // must not assume that the OccupancyStatus values follow a linear scale.
+  // Consumers should represent OccupancyStatus values as the state indicated 
+  // and intended by the producer. Likewise, producers must use OccupancyStatus values that
+  // correspond to actual vehicle occupancy states.
+  // For describing passenger occupancy levels on a linear scale, see `occupancy_percentage`.
+  // This field is still experimental, and subject to change. It may be formally adopted in the future.
   enum OccupancyStatus {
-    // The vehicle is considered empty by most measures, and has few or no
+    // The vehicle or carriage is considered empty by most measures, and has few or no
     // passengers onboard, but is still accepting passengers.
     EMPTY = 0;
 
-    // The vehicle has a relatively large percentage of seats available.
-    // What percentage of free seats out of the total seats available is to be
+    // The vehicle or carriage has a large number of seats available.
+    // The amount of free seats out of the total seats available to be
     // considered large enough to fall into this category is determined at the
     // discretion of the producer.
     MANY_SEATS_AVAILABLE = 1;
 
-    // The vehicle has a relatively small percentage of seats available.
-    // What percentage of free seats out of the total seats available is to be
+    // The vehicle or carriage has a relatively small number of seats available.
+    // The amount of free seats out of the total seats available to be
     // considered small enough to fall into this category is determined at the
     // discretion of the feed producer.
     FEW_SEATS_AVAILABLE = 2;
 
-    // The vehicle can currently accommodate only standing passengers.
+    // The vehicle or carriage can currently accommodate only standing passengers.
     STANDING_ROOM_ONLY = 3;
 
-    // The vehicle can currently accommodate only standing passengers
+    // The vehicle or carriage can currently accommodate only standing passengers
     // and has limited space for them.
     CRUSHED_STANDING_ROOM_ONLY = 4;
 
-    // The vehicle is considered full by most measures, but may still be
+    // The vehicle or carriage is considered full by most measures, but may still be
     // allowing passengers to board.
     FULL = 5;
 
-    // The vehicle is not accepting additional passengers.
+    // The vehicle or carriage is not accepting passengers, but usually accepts passengers for boarding.
     NOT_ACCEPTING_PASSENGERS = 6;
 
+    // The vehicle or carriage doesn't have any occupancy data available at that time.
+    NO_DATA_AVAILABLE = 7;
+
+    // The vehicle or carriage is not boardable and never accepts passengers.
+    // Useful for special vehicles or carriages (engine, maintenance carriage, etc…).
+    NOT_BOARDABLE = 8;
+
   }
+  // If multi_carriage_status is populated with per-carriage OccupancyStatus,
+  // then this field should describe the entire vehicle with all carriages accepting passengers considered.
   optional OccupancyStatus occupancy_status = 9;
 
-  // A percentage value representing the degree of passenger occupancy of the vehicle.
+  // A percentage value indicating the degree of passenger occupancy in the vehicle.
   // The values are represented as an integer without decimals. 0 means 0% and 100 means 100%.
   // The value 100 should represent the total maximum occupancy the vehicle was designed for,
   // including both seated and standing capacity, and current operating regulations allow.
-  // It is possible that the value goes over 100 if there are currently more passengers than what the vehicle was designed for.
-  // The precision of occupancy_percentage should be low enough that you can't track a single person boarding and alighting for privacy reasons.
+  // The value may exceed 100 if there are more passengers than the maximum designed capacity.
+  // The precision of occupancy_percentage should be low enough that individual passengers cannot be tracked boarding or alighting the vehicle.
+  // If multi_carriage_status is populated with per-carriage occupancy_percentage, 
+  // then this field should describe the entire vehicle with all carriages accepting passengers considered.
   // This field is still experimental, and subject to change. It may be formally adopted in the future.
   optional uint32 occupancy_percentage = 10;
+
+  // Carriage specific details, used for vehicles composed of several carriages
+  // This message/field is still experimental, and subject to change. It may be formally adopted in the future.
+  message CarriageDetails {
+
+    // Identification of the carriage. Should be unique per vehicle.
+    optional string id = 1;
+
+    // User visible label that may be shown to the passenger to help identify
+    // the carriage. Example: "7712", "Car ABC-32", etc...
+    // This message/field is still experimental, and subject to change. It may be formally adopted in the future.
+    optional string label = 2;
+
+    // Occupancy status for this given carriage, in this vehicle
+    // This message/field is still experimental, and subject to change. It may be formally adopted in the future.
+    optional OccupancyStatus occupancy_status = 3 [default = NO_DATA_AVAILABLE];
+
+    // Occupancy percentage for this given carriage, in this vehicle.
+    // Follows the same rules as "VehiclePosition.occupancy_percentage"
+    // -1 in case data is not available for this given carriage (as protobuf defaults to 0 otherwise)
+    // This message/field is still experimental, and subject to change. It may be formally adopted in the future.
+    optional int32 occupancy_percentage = 4 [default = -1];
+
+    // Identifies the order of this carriage with respect to the other
+    // carriages in the vehicle's list of CarriageDetails.
+    // The first carriage in the direction of travel must have a value of 1.
+    // The second value corresponds to the second carriage in the direction
+    // of travel and must have a value of 2, and so forth.
+    // For example, the first carriage in the direction of travel has a value of 1.
+    // If the second carriage in the direction of travel has a value of 3,
+    // consumers will discard data for all carriages (i.e., the multi_carriage_details field).
+    // Carriages without data must be represented with a valid carriage_sequence number and the fields 
+    // without data should be omitted (alternately, those fields could also be included and set to the "no data" values).
+    // This message/field is still experimental, and subject to change. It may be formally adopted in the future.
+    optional uint32 carriage_sequence = 5;
+
+    // The extensions namespace allows 3rd-party developers to extend the
+    // GTFS Realtime Specification in order to add and evaluate new features and
+    // modifications to the spec.
+    extensions 1000 to 1999;
+
+    // The following extension IDs are reserved for private use by any organization.
+    extensions 9000 to 9999;
+  }
+
+  // Details of the multiple carriages of this given vehicle.
+  // The first occurrence represents the first carriage of the vehicle, 
+  // given the current direction of travel. 
+  // The number of occurrences of the multi_carriage_details 
+  // field represents the number of carriages of the vehicle.
+  // It also includes non boardable carriages, 
+  // like engines, maintenance carriages, etc… as they provide valuable 
+  // information to passengers about where to stand on a platform.
+  // This message/field is still experimental, and subject to change. It may be formally adopted in the future.
+  repeated CarriageDetails multi_carriage_details = 11;
 
   // The extensions namespace allows 3rd-party developers to extend the
   // GTFS Realtime Specification in order to add and evaluate new features and
@@ -676,7 +808,6 @@ message TripDescriptor {
     // NOTE: This field is still experimental, and subject to change. It may be formally adopted in the future.
     DUPLICATED = 6;
   }
-  // NOTE: This field is still experimental, and subject to change. It may be formally adopted in the future.
   optional ScheduleRelationship schedule_relationship = 4;
 
   // The extensions namespace allows 3rd-party developers to extend the
@@ -765,6 +896,36 @@ message TranslatedString {
   }
   // At least one translation must be provided.
   repeated Translation translation = 1;
+
+  // The extensions namespace allows 3rd-party developers to extend the
+  // GTFS Realtime Specification in order to add and evaluate new features and
+  // modifications to the spec.
+  extensions 1000 to 1999;
+
+  // The following extension IDs are reserved for private use by any organization.
+  extensions 9000 to 9999;
+}
+
+
+// Describes the physical path that a vehicle takes when it's not part of the (CSV) GTFS,
+// such as for a detour. Shapes belong to Trips, and consist of a sequence of shape points.
+// Tracing the points in order provides the path of the vehicle.  Shapes do not need to intercept
+// the location of Stops exactly, but all Stops on a trip should lie within a small distance of
+// the shape for that trip, i.e. close to straight line segments connecting the shape points
+// NOTE: This message is still experimental, and subject to change. It may be formally adopted in the future.
+message Shape {
+  // Identifier of the shape. Must be different than any shape_id defined in the (CSV) GTFS.
+  // This field is required as per reference.md, but needs to be specified here optional because "Required is Forever"
+  // See https://developers.google.com/protocol-buffers/docs/proto#specifying_field_rules
+  // NOTE: This field is still experimental, and subject to change. It may be formally adopted in the future.
+  optional string shape_id = 1;
+  
+  // Encoded polyline representation of the shape. This polyline must contain at least two points.
+  // For more information about encoded polylines, see https://developers.google.com/maps/documentation/utilities/polylinealgorithm
+  // This field is required as per reference.md, but needs to be specified here optional because "Required is Forever"
+  // See https://developers.google.com/protocol-buffers/docs/proto#specifying_field_rules
+  // NOTE: This field is still experimental, and subject to change. It may be formally adopted in the future.
+  optional string encoded_polyline = 2;
 
   // The extensions namespace allows 3rd-party developers to extend the
   // GTFS Realtime Specification in order to add and evaluate new features and
