@@ -334,6 +334,16 @@ File: **Optional**
 
 When calculating an itinerary, GTFS-consuming applications interpolate transfers based on allowable time and stop proximity. [Transfers.txt](#transferstxt) specifies additional rules and overrides for selected transfers.
 
+Fields `from_trip_id`, `to_trip_id`, `from_route_id` and `to_route_id` allow higher orders of specificity for transfer rules. Along with `from_stop_id` and `to_stop_id`, the ranking of specificity is as follows:
+1. Both `trip_id`s defined: `from_trip_id` and `to_trip_id`.
+2. One `trip_id` and `route_id` set defined: (`from_trip_id` and `to_route_id`) or (`from_route_id` and `to_trip_id`).
+3. One `trip_id` defined: `from_trip_id` or `to_trip_id`.
+4. Both `route_id`s defined: `from_route_id` and `to_route_id`.
+5. One `route_id` defined: `from_route_id` or `to_route_id`.
+6. Only `from_stop_id` and `to_stop_id` defined: no route or trip related fields set.
+
+For a given ordered pair of arriving trip and departing trip, the transfer with the greatest specificity that applies between these two trips is chosen. For any pair of trips, there should not be two transfers with equally maximal specificity that could apply.
+
 |  Field Name | Type | Presence | Description |
 |  ------ | ------ | ------ | ------ |
 |  `from_stop_id` | ID referencing `stops.stop_id` | **Required** | Identifies a stop or station where a connection between routes begins. If this field refers to a station, the transfer rule applies to all its child stops. |
