@@ -48,6 +48,7 @@ Presence conditions applicable to fields and files:
 * **Required** - The field or file must be included in the dataset and contain a valid value for each record.
 * **Optional** - The field or file may be omitted from the dataset.
 * **Conditionally Required** - The field or file must be included under conditions outlined in the field or file description.
+* **Conditionally Forbidden** - The field or file is forbidden under certain conditions that are outlined in the field or file description. Otherwise, the field or file is optional.
 
 ### Field Types
 
@@ -337,10 +338,10 @@ When calculating an itinerary, GTFS-consuming applications interpolate transfers
 |  ------ | ------ | ------ | ------ |
 |  `from_stop_id` | ID referencing `stops.stop_id` | **Required** | Identifies a stop or station where a connection between routes begins. If this field refers to a station, the transfer rule applies to all its child stops. |
 |  `to_stop_id` | ID referencing `stops.stop_id` | **Required** | Identifies a stop or station where a connection between routes ends. If this field refers to a station, the transfer rule applies to all child stops. |
-| `from_route_id`  | ID referencing `routes.route_id` | Optional | Identifies a route where a connection begins.<br><br>If `from_route_id` is defined, the transfer will apply to the arriving trip on the route for the given `from_stop_id`. |
-| `to_route_id`  | ID referencing `routes.route_id` | Optional | Identifies a route where a connection ends.<br><br>If `to_route_id` is defined, the transfer will apply to the departing trip on the route for the given `to_stop_id`. |
-| `from_trip_id`  | ID referencing `trips.trip_id` | Optional | Identifies a trip where a connection between routes begins.<br><br>If `from_trip_id` is defined, the transfer will apply to the arriving trip for the given `from_stop_id`. |
-| `to_trip_id`  | ID referencing `trips.trip_id` | Optional | Identifies a trip where a connection between routes ends.<br><br>If `to_trip_id` is defined, the transfer will apply to the departing trip for the given `to_stop_id`. |
+| `from_route_id`  | ID referencing `routes.route_id` | **Conditionally Forbidden** | Identifies a route where a connection begins.<br><br>If `from_route_id` is defined, the transfer will apply to the arriving trip on the route for the given `from_stop_id`.<br><br>Conditionally Forbidden:<br>- **Forbidden** if `from_trip_id` is defined.<br>- Optional otherwise. |
+| `to_route_id`  | ID referencing `routes.route_id` | **Conditionally Forbidden** | Identifies a route where a connection ends.<br><br>If `to_route_id` is defined, the transfer will apply to the departing trip on the route for the given `to_stop_id`.<br><br>Conditionally Forbidden:<br>- **Forbidden** if `to_trip_id` is defined.<br>- Optional otherwise. |
+| `from_trip_id`  | ID referencing `trips.trip_id` | **Conditionally Forbidden** | Identifies a trip where a connection between routes begins.<br><br>If `from_trip_id` is defined, the transfer will apply to the arriving trip for the given `from_stop_id`.<br><br>Conditionally Forbidden:<br>- **Forbidden** if `from_route_id` is defined.<br>- Optional otherwise. |
+| `to_trip_id`  | ID referencing `trips.trip_id` | **Conditionally Forbidden** | Identifies a trip where a connection between routes ends.<br><br>If `to_trip_id` is defined, the transfer will apply to the departing trip for the given `to_stop_id`.<br><br>Conditionally Forbidden:<br>- **Forbidden** if `to_route_id` is defined.<br>- Optional otherwise. |
 |  `transfer_type` | Enum | **Required** | Indicates the type of connection for the specified (`from_stop_id`, `to_stop_id`) pair. Valid options are:<br><br> `0` or empty - Recommended transfer point between routes.<br>`1` - Timed transfer point between two routes. The departing vehicle is expected to wait for the arriving one and leave sufficient time for a rider to transfer between routes.<br>`2` - Transfer requires a minimum amount of time between arrival and departure to ensure a connection. The time required to transfer is specified by `min_transfer_time`.<br>`3` - Transfers are not possible between routes at the location. |
 |  `min_transfer_time` | Non-negative integer | Optional | Amount of time, in seconds, that must be available to permit a transfer between routes at the specified stops. The `min_transfer_time` should be sufficient to permit a typical rider to move between the two stops, including buffer time to allow for schedule variance on each route. |
 
