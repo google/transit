@@ -406,6 +406,7 @@ Methods for occupancy forecasting used to populated `occupancies.txt` are not st
 | `sunday` | Enum| **Required** | Functions in the same way as `occupancies.monday` except applies to Sundays. |
 | `start_date` | Date | **Required** | Start date of the date interval that the occupancy level is valid.<br><br>To define single dates, `start_date` and `end_date` may be the same. |
 | `end_date` | Date | **Required** | End date of the date interval that the occupancy level is valid.<br><br>To define single dates, `start_date` and `end_date` may be the same. |
+| `start_time` | Time | **Conditionally Required** | First stop departure time for a given vehicle on a trip using `frequencies.txt`.<br><br>Must be some multiple (including zero) of `frequencies.headway_secs` plus `frequencies.start_time` for the corresponding time period.<br><br>Conditionally Required:<br>- **Required** for trips using `frequencies.txt`.<br>- **Forbidden** otherwise. |
 
 ### translations.txt
 
