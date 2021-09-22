@@ -388,9 +388,9 @@ File: **Optional**
 
 Usual or expected in-vehicle occupancy levels.
 
-For describing historical average occupancies at least 4 weeks of occupancy data should be averaged across each unique day of the week, valid for up to 2 weeks thereafter in `occupancies.txt`.
+Methods for occupancy forecasting used to populated `occupancies.txt` are not strictly specified. Beyond the guidelines given below, it is the responsibility of data producers to ensure that the data provided are meaningful.
 
-Methods for occupancy forecasting used to populated `occupancies.txt` are not strictly specified. Beyond the guidelines given above, it is the responsibility of data producers to ensure that the data provided are meaningful. 
+For describing historical average occupancies, it is recommended that at least 4 weeks of occupancy data be averaged across each unique day of the week, and valid for up to 2 weeks thereafter in `occupancies.txt`.
 
 | Field Name | Type | Required | Description |
 | ----- | ----- | ----- | ----- |
