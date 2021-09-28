@@ -228,9 +228,21 @@ message TripUpdate {
 
       // The stop is skipped, i.e., the vehicle will not stop at this stop.
       // Arrival and departure are optional.
-      // NOTE: This field is being deprecated. Users should use `MODIFIED` along with
-      // pickup_type=NO_PICKUP and drop_off_type=NO_DROP_OFF instead for when a
-      // vehicle will not serve a regularly scheduled stop
+      // NOTE: This field is experimentally deprecated and users should consider using the
+      // experimental `MODIFIED` enum instead, which is intended to replace `SKIPPED` in favor of
+      // enabling more real-life scenarios to be represented, such as a vehicle that's running
+      // late being "drop-off only" to try and catch up back to schedule. In the future, it may be 
+      // decided to completely remove `SKIPPED`, such as by using `reserved` instead, should
+      // `MODIFIED` be officially adopted as the replacement. If `MODIFIED` is later deprecated,
+      // `SKIPPED` should be un-deprecated in order to re-signal that it's the primary mechanism
+      // for communicating that a vehicle will not serve a particular stop.
+      // In this interim period, users may continue to use this value for compatability.
+      // However, as per migration-modified.md, feed producers may choose to fully migrate
+      // to use the more detailed `pickup_type` and `drop_off_type`, with proper
+      // notification to feed consumers. To represent the same scenario, users
+      // should use `MODIFIED` along with pickup_type=NO_PICKUP and
+      // drop_off_type=NO_DROP_OFF instead for when a vehicle will not serve
+      // a regularly scheduled stop. 
       SKIPPED = 1 [deprecated=true];
 
       // No StopTimeEvents are given for this stop.
@@ -280,13 +292,17 @@ message TripUpdate {
 
       // Supports real-time changes to pickup_type when it differs from what's specified in (CSV) GTFS
       // in stop_times.txt. See definition of stop_times.pickup_type in (CSV) GTFS. 
-      // If pickup_type is specified, StopTimeUpdate.schedule_relationship must be MODIFIED for schedule-based service.
+      // If pickup_type is specified, StopTimeUpdate.schedule_relationship must be MODIFIED for schedule-based service
+      // unless pickup_type=NO_PICKUP and drop_off_type=NO_DROP_OFF. Then, as per migration-modified.md,
+      // StopTimeUpdate.schedule_relationship may be SKIPPED in an interim period for compatability reasons. 
       // NOTE: This field is still experimental, and subject to change. It may be formally adopted in the future.
       optional PickupType pickup_type = 2;
 
       // Supports real-time changes to drop_off_type when it differs from what's specified in (CSV) GTFS
       // in stop_times.txt. See definition of stop_times.drop_off_type in (CSV) GTFS.
-      // If drop_off_type is specified, StopTimeUpdate.schedule_relationship must be MODIFIED for scheduled-based service.
+      // If drop_off_type is specified, StopTimeUpdate.schedule_relationship must be MODIFIED for scheduled-based service
+      // unless drop_off_type=NO_DROP_OFF and pickup_type=NO_PICKUP. Then, as per migration-modified.md,
+      // StopTimeUpdate.schedule_relationship may be SKIPPED in an interim period for compatability reasons. 
       // NOTE: This field is still experimental, and subject to change. It may be formally adopted in the future.
       optional DropOffType drop_off_type = 3;
 
