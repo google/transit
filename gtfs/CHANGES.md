@@ -49,6 +49,18 @@ Every new feature adds complexity to the creation and reading of feeds. Therefor
 
 ### Revision History
 
+#### September 15, 2021
+
+* Allowed fare gates (pathway_mode=6) to be bidirectional. See [discussion](https://github.com/google/transit/pull/276).
+
+#### September 13, 2021
+
+* Updated `stop_name` best practices. See [discussion](https://github.com/google/transit/pull/282).
+
+#### August 27, 2021
+
+* Updated GTFS Schedule to [RFC 2119](https://datatracker.ietf.org/doc/html/rfc2119). See [discussion](https://github.com/google/transit/pull/277).
+
 #### January 4, 2021
 
 * Clarified description of `stop_times.stop_id`. See [discussion](https://github.com/google/transit/pull/258).
