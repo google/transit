@@ -295,6 +295,8 @@ message TripUpdate {
       // If pickup_type is specified, StopTimeUpdate.schedule_relationship must be MODIFIED for schedule-based service
       // unless pickup_type=NO_PICKUP and drop_off_type=NO_DROP_OFF. Then, as per migration-modified.md,
       // StopTimeUpdate.schedule_relationship may be SKIPPED in an interim period for compatability reasons. 
+      // For the same reason, when a stop is not fully skipped, StopTimeUpdate.schedule_relationship may be 
+      // SCHEDULED in an interim period.
       // NOTE: This field is still experimental, and subject to change. It may be formally adopted in the future.
       optional PickupType pickup_type = 2;
 
@@ -303,6 +305,8 @@ message TripUpdate {
       // If drop_off_type is specified, StopTimeUpdate.schedule_relationship must be MODIFIED for scheduled-based service
       // unless drop_off_type=NO_DROP_OFF and pickup_type=NO_PICKUP. Then, as per migration-modified.md,
       // StopTimeUpdate.schedule_relationship may be SKIPPED in an interim period for compatability reasons. 
+      // For the same reason, when a stop is not fully skipped, StopTimeUpdate.schedule_relationship may be 
+      // SCHEDULED in an interim period.
       // NOTE: This field is still experimental, and subject to change. It may be formally adopted in the future.
       optional DropOffType drop_off_type = 3;
 
