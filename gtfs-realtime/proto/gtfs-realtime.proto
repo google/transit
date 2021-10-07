@@ -243,7 +243,7 @@ message TripUpdate {
       // should use `MODIFIED` along with pickup_type=NO_PICKUP and
       // drop_off_type=NO_DROP_OFF instead for when a vehicle will not serve
       // a regularly scheduled stop. 
-      SKIPPED = 1 [deprecated=true];
+      SKIPPED = 1;
 
       // No StopTimeEvents are given for this stop.
       // The main intention for this value is to give time predictions only for
