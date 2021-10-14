@@ -20,6 +20,7 @@ This document defines the format and structure of the files that comprise a GTFS
     -   [fare\_attributes.txt](#fare_attributestxt)
     -   [fare\_rules.txt](#fare_rulestxt)
     -   [fare\_leg\_rules.txt](#farelegrulestxt)
+    -   [areas.txt](areastxt)
     -   [shapes.txt](#shapestxt)
     -   [frequencies.txt](#frequenciestxt)
     -   [transfers.txt](#transferstxt)
@@ -95,6 +96,7 @@ This specification defines the following files:
 |  [fare_attributes.txt](#fare_attributestxt)  | **Conditionally Forbidden** | Fare information for a transit agency's routes.<br><br>Conditionally Forbidden:<br>- **Forbidden** if [fare_leg_rules.txt](farelegrulestxt) is defined.<br>- Optional otherwise. |
 |  [fare_rules.txt](#fare_rulestxt)  | **Conditionally Forbidden** | Rules to apply fares for itineraries.<br><br>Conditionally Forbidden:<br>- **Forbidden** if [fare_leg_rules.txt](farelegrulestxt) is defined.<br>- Optional otherwise. |
 |  [fare_leg_rules.txt](#farelegrulestxt)  | **Conditionally Forbidden** | Fare rules for individual legs of travel.<br><br>File fare_leg_rules.txt provides a more detailed method for modeling fare structures. As such, the use of fare_leg_rules.txt is entirely seperate from files fare_attributes.txt and fare_rules.txt. <br><br>Conditionally Forbidden:<br>- **Forbidden** if [fare_rules.txt](farerulestxt) or [fare_attributes.txt](fareattributestxt) are defined.<br>- Optional otherwise. |
+|  [areas.txt](areastxt) | Optional | Area grouping of locations. |
 |  [shapes.txt](#shapestxt)  | Optional | Rules for mapping vehicle travel paths, sometimes referred to as route alignments. |
 |  [frequencies.txt](#frequenciestxt)  | Optional | Headway (time between trips) for headway-based service or a compressed representation of fixed-schedule service. |
 |  [transfers.txt](#transferstxt)  | Optional | Rules for making connections at transfer points between routes. |
@@ -160,6 +162,7 @@ File: **Required**
 |  `wheelchair_boarding` | Enum | Optional | Indicates whether wheelchair boardings are possible from the location. Valid options are: <br><br>For parentless stops:<br>`0` or empty - No accessibility information for the stop.<br>`1` - Some vehicles at this stop can be boarded by a rider in a wheelchair.<br>`2` - Wheelchair boarding is not possible at this stop. <br><br>For child stops: <br>`0` or empty - Stop will inherit its `wheelchair_boarding` behavior from the parent station, if specified in the parent.<br>`1` - There exists some accessible path from outside the station to the specific stop/platform.<br>`2` - There exists no accessible path from outside the station to the specific stop/platform.<br><br> For station entrances/exits: <br>`0` or empty - Station entrance will inherit its `wheelchair_boarding` behavior from the parent station, if specified for the parent.<br>`1` - Station entrance is wheelchair accessible.<br>`2` - No accessible path from station entrance to stops/platforms. |
 |  `level_id` | ID referencing `levels.level_id` | Optional | Level of the location. The same level may be used by multiple unlinked stations.|
 |  `platform_code` | Text | Optional | Platform identifier for a platform stop (a stop belonging to a station). This should be just the platform identifier (eg. "G" or "3"). Words like “platform” or "track" (or the feed’s language-specific equivalent) should not be included. This allows feed consumers to more easily internationalize and localize the platform identifier into other languages. |
+| `area_id` | ID referencing `areas.area_id` | Optional | Identifies an area grouping of locations. Multiple rows in `stops.txt` may have the same `area_id`. |
 
 ### routes.txt
 
@@ -312,13 +315,26 @@ Fares in `fare_leg_rules.txt` are queried by filtering fields until a fare cost 
 
 It is recommended that consumers filter `fare_leg_rules.txt` by the fields that define the characteristics of travel as outputted from trip planning software. This would give the immediate capability to display the cost of a leg from within a trip planner. The fields in `fare_leg_rules.txt` that define characteristics of travel are:
 - `fare_leg_rules.network_id`
-
+- `fare_leg_rules.from_area_id`
+- `fare_leg_rules.to_area_id`
+- `fare_leg_rules.is_symmetrical`
 
 |  Field Name | Type | Presence | Description |
 |  ------ | ------ | ------ | ------ |
 | `network_id` | ID referencing `routes.network_id` | Optional | Identifies a route network that applies for the fare leg rule.<br><br>If there are no matching `fare_leg_rules.network_id` values to the `network_id` being filtered, empty `fare_leg_rules.network_id` will be matched by default. |
+| `from_area_id` | ID referencing `areas.area_id` | Optional | Identifies a departure area.<br><br>If there are no matching `fare_leg_rules.from_area_id` values to the `area_id` being filtered, empty `fare_leg_rules.from_area_id` will be matched by default. |
+| `to_area_id` | ID referencing `areas.area_id` | Optional | Identifies an arrival area.<br><br>If there are no matching `fare_leg_rules.to_area_id` values to the `area_id` being filtered, empty `fare_leg_rules.from_area_id` will be matched by default. |
+| `is_symmetrical` | Enum | **Conditionally Required** | Indicates whether the fare leg rule may be applied for `fare_leg_rules.from_area_id` to `fare_leg_rules.to_area_id` as well as for `fare_leg_rules.to_area_id` to `fare_leg_rules.from_area_id`.<br><br>Valid options are:<br>`0` - Not symmetrical.<br>`1` - Symmetrical.<br><br>Conditionally Required:<br><br>- **Required** if either `fare_leg_rules.from_area_id` or `fare_leg_rules.to_area_id` are defined.<br>- **Forbidden** otherwise. |
 | `amount` | Non-negative currency amount | Optional | The cost of the fare for the leg. |
 | `currency` | Currency code | **Conditionally Required** | The currency of the fare for the leg.<br><br>Conditionally Required:<br>- **Required** if `fare_leg_rules.amount` is defined.<br>- **Forbidden** otherwise. |
+
+## areas.txt
+
+File: **Optional**
+
+|  Field Name | Type | Presence | Description |
+|  ------ | ------ | ------ | ------ |
+| `area_id` | ID | **Required** | Identifies an area. |
 
 ### shapes.txt
 
