@@ -19,8 +19,8 @@ This document defines the format and structure of the files that comprise a GTFS
     -   [calendar\_dates.txt](#calendar_datestxt)
     -   [fare\_attributes.txt](#fare_attributestxt)
     -   [fare\_rules.txt](#fare_rulestxt)
-    -   [fare\_leg\_rules.txt](#farelegrulestxt)
-    -   [fare\_transfer\_rules.txt](#faretransferrulestxt)
+    -   [fare\_leg\_rules.txt](#fare_leg_rulestxt)
+    -   [fare\_transfer\_rules.txt](#fare_transfer_rulestxt)
     -   [areas.txt](areastxt)
     -   [shapes.txt](#shapestxt)
     -   [frequencies.txt](#frequenciestxt)
@@ -94,10 +94,10 @@ This specification defines the following files:
 |  [stop_times.txt](#stop_timestxt)  | **Required** | Times that a vehicle arrives at and departs from stops for each trip. |
 |  [calendar.txt](#calendartxt)  | **Conditionally Required** | Service dates specified using a weekly schedule with start and end dates. <br><br>Conditionally Required:<br> - **Required** unless all dates of service are defined in [calendar_dates.txt](#calendar_datestxt).<br> - Optional otherwise. |
 |  [calendar_dates.txt](#calendar_datestxt)  | **Conditionally Required** | Exceptions for the services defined in the [calendar.txt](#calendartxt). <br><br>Conditionally Required:<br> - **Required** if [calendar.txt](#calendartxt) is omitted. In which case [calendar_dates.txt](#calendar_datestxt) must contain all dates of service. <br> - Optional otherwise. |
-|  [fare_attributes.txt](#fare_attributestxt)  | **Conditionally Forbidden** | Fare information for a transit agency's routes.<br><br>Conditionally Forbidden:<br>- **Forbidden** if [fare_leg_rules.txt](farelegrulestxt) is defined.<br>- Optional otherwise. |
-|  [fare_rules.txt](#fare_rulestxt)  | **Conditionally Forbidden** | Rules to apply fares for itineraries.<br><br>Conditionally Forbidden:<br>- **Forbidden** if [fare_leg_rules.txt](farelegrulestxt) is defined.<br>- Optional otherwise. |
-|  [fare_leg_rules.txt](#farelegrulestxt)  | **Conditionally Forbidden** | Fare rules for individual legs of travel.<br><br>File fare_leg_rules.txt provides a more detailed method for modeling fare structures. As such, the use of fare_leg_rules.txt is entirely seperate from files fare_attributes.txt and fare_rules.txt. <br><br>Conditionally Forbidden:<br>- **Forbidden** if [fare_rules.txt](farerulestxt) or [fare_attributes.txt](fareattributestxt) are defined.<br>- Optional otherwise. |
-|  [fare_transfer_rules.txt](#faretransferrulestxt)  | **Conditionally Forbidden** | Fare rules for transfers between legs of travel.<br><br>Along with fare_leg_rules.txt, file fare_transfer_rules.txt provides a more detailed method for modeling fare structures. As such, the use of fare_transfer_rules.txt is entirely seperate from files fare_attributes.txt and fare_rules.txt. <br><br>Conditionally Forbidden:<br>- **Forbidden** if [fare_rules.txt](farerulestxt) or [fare_attributes.txt](fareattributestxt) are defined.<br>- Optional otherwise. |
+|  [fare_attributes.txt](#fare_attributestxt)  | **Conditionally Forbidden** | Fare information for a transit agency's routes.<br><br>Conditionally Forbidden:<br>- **Forbidden** if [fare_leg_rules.txt](fare_leg_rulestxt) is defined.<br>- Optional otherwise. |
+|  [fare_rules.txt](#fare_rulestxt)  | **Conditionally Forbidden** | Rules to apply fares for itineraries.<br><br>Conditionally Forbidden:<br>- **Forbidden** if [fare_leg_rules.txt](fare_leg_rulestxt) is defined.<br>- Optional otherwise. |
+|  [fare_leg_rules.txt](#fare_leg_rulestxt)  | **Conditionally Forbidden** | Fare rules for individual legs of travel.<br><br>File fare_leg_rules.txt provides a more detailed method for modeling fare structures. As such, the use of fare_leg_rules.txt is entirely seperate from files fare_attributes.txt and fare_rules.txt. <br><br>Conditionally Forbidden:<br>- **Forbidden** if [fare_rules.txt](fare_rulestxt) or [fare_attributes.txt](fare_attributestxt) are defined.<br>- Optional otherwise. |
+|  [fare_transfer_rules.txt](#fare_transfer_rulestxt)  | **Conditionally Forbidden** | Fare rules for transfers between legs of travel.<br><br>Along with fare_leg_rules.txt, file fare_transfer_rules.txt provides a more detailed method for modeling fare structures. As such, the use of fare_transfer_rules.txt is entirely seperate from files fare_attributes.txt and fare_rules.txt. <br><br>Conditionally Forbidden:<br>- **Forbidden** if [fare_rules.txt](fare_rulestxt) or [fare_attributes.txt](fare_attributestxt) are defined.<br>- Optional otherwise. |
 |  [areas.txt](areastxt) | Optional | Area grouping of locations. |
 |  [shapes.txt](#shapestxt)  | Optional | Rules for mapping vehicle travel paths, sometimes referred to as route alignments. |
 |  [frequencies.txt](#frequenciestxt)  | Optional | Headway (time between trips) for headway-based service or a compressed representation of fixed-schedule service. |
