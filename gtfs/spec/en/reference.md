@@ -179,6 +179,7 @@ File: **Required**
 |  `route_sort_order` | Non-negative integer | Optional | Orders the routes in a way which is ideal for presentation to customers. Routes with smaller `route_sort_order` values should be displayed first. |
 |  `continuous_pickup` | Enum | Optional | Indicates that the rider can board the transit vehicle at any point along the vehicle’s travel path as described by `shapes.txt`, on every trip of the route. Valid options are: <br><br>`0` - Continuous stopping pickup. <br>`1` or empty - No continuous stopping pickup. <br>`2` - Must phone agency to arrange continuous stopping pickup. <br>`3` - Must coordinate with driver to arrange continuous stopping pickup.  <br><br>Values for `routes.continuous_pickup` may be overridden by defining values in `stop_times.continuous_pickup` for specific `stop_time`s along the route. |
 |  `continuous_drop_off` | Enum | Optional | Indicates that the rider can alight from the transit vehicle at any point along the vehicle’s travel path as described by `shapes.txt`, on every trip of the route. Valid options are: <br><br>`0` - Continuous stopping drop off. <br>`1` or empty - No continuous stopping drop off. <br>`2` - Must phone agency to arrange continuous stopping drop off. <br>`3` - Must coordinate with driver to arrange continuous stopping drop off. <br><br>Values for `routes.continuous_drop_off` may be overridden by defining values in `stop_times.continuous_drop_off` for specific `stop_time`s along the route. |
+| `network_id` | ID | Optional | Identifies a group of routes. Multiple rows in `routes.txt` may have the same `network_id`.| 
 
 ### trips.txt
 
@@ -305,10 +306,17 @@ File: **Conditionally Forbidden**
 
 Fare rules for individual legs of travel. 
 
-File fare_leg_rules.txt provides a more detailed method for modeling fare structures. As such, the use of fare_leg_rules.txt is entirely seperate from files fare_attributes.txt and fare_rules.txt.
+File `fare_leg_rules.txt` provides a more detailed method for modeling fare structures. As such, the use of `fare_leg_rules.txt` is entirely seperate from files `fare_attributes.txt` and `fare_rules.txt`.
+
+Fares in `fare_leg_rules.txt` are queried by filtering fields until a fare cost matches the characteristics of the leg. Undefined values in the fields that are filtered will be matched by default to empty values for that field. For example, a rider taking a route with `network_id=network1` that is not defined as a network in `fare_leg_rules.network_id` will be matched to entries with empty `fare_leg_rules.network_id`. 
+
+It is recommended that consumers filter `fare_leg_rules.txt` by the fields that define the characteristics of travel as outputted from trip planning software. This would give the immediate capability to display the cost of a leg from within a trip planner. The fields in `fare_leg_rules.txt` that define characteristics of travel are:
+- `fare_leg_rules.network_id`
+
 
 |  Field Name | Type | Presence | Description |
 |  ------ | ------ | ------ | ------ |
+| `network_id` | ID referencing `routes.network_id` | Optional | Identifies a route network that applies for the fare leg rule.<br><br>If there are no matching `fare_leg_rules.network_id` values to the `network_id` being filtered, empty `fare_leg_rules.network_id` will be matched by default. |
 | `amount` | Non-negative currency amount | Optional | The cost of the fare for the leg. |
 | `currency` | Currency code | **Conditionally Required** | The currency of the fare for the leg.<br><br>Conditionally Required:<br>- **Required** if `fare_leg_rules.amount` is defined.<br>- **Forbidden** otherwise. |
 
