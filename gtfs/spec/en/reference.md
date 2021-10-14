@@ -19,6 +19,7 @@ This document defines the format and structure of the files that comprise a GTFS
     -   [calendar\_dates.txt](#calendar_datestxt)
     -   [fare\_attributes.txt](#fare_attributestxt)
     -   [fare\_rules.txt](#fare_rulestxt)
+    -   [fare\_leg\_rules.txt](#farelegrulestxt)
     -   [shapes.txt](#shapestxt)
     -   [frequencies.txt](#frequenciestxt)
     -   [transfers.txt](#transferstxt)
@@ -48,11 +49,13 @@ Presence conditions applicable to fields and files:
 * **Required** - The field or file must be included in the dataset and contain a valid value for each record.
 * **Optional** - The field or file may be omitted from the dataset.
 * **Conditionally Required** - The field or file must be included under conditions outlined in the field or file description.
+* **Conditionally Forbidden** - The field or file must not be included under conditions outlined in the field or file description.
 
 ### Field Types
 
 - **Color** - A color encoded as a six-digit hexadecimal number. Refer to [https://htmlcolorcodes.com](https://htmlcolorcodes.com) to generate a valid value (the leading "#" must not be included). <br> *Example: `FFFFFF` for white, `000000` for black or `0039A6` for the A,C,E lines in NYMTA.*
 - **Currency code** - An ISO 4217 alphabetical currency code. For the list of current currency, refer to [https://en.wikipedia.org/wiki/ISO_4217#Active\_codes](https://en.wikipedia.org/wiki/ISO_4217#Active_codes). <br> *Example: `CAD` for Canadian dollars, `EUR` for euros or `JPY` for Japanese yen.*
+- **Currency amount** - A decimal value indicating a currency amount. The number of decimal places is specified by [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217#Active_codes) for the accompanying Currency code. All financial calculations should be processed as decimal, currency, or another equivalent type suitable for financial calculations depending on the programming language used to consume data. Processing currency amounts as float is discouraged due to gains or losses of money during calculations.
 - **Date** - Service day in the YYYYMMDD format. Since time within a service day may be above 24:00:00, a service day may contain information for the subsequent day(s). <br> *Example: `20180913` for September 13th, 2018.*
 - **Email** - An email address. <br> *Example: `example@example.com`*
 - **Enum** - An option from a set of predefined constants defined in the "Description" column. <br> *Example: The `route_type` field contains a `0` for tram, a `1` for subway...*
@@ -89,8 +92,9 @@ This specification defines the following files:
 |  [stop_times.txt](#stop_timestxt)  | **Required** | Times that a vehicle arrives at and departs from stops for each trip. |
 |  [calendar.txt](#calendartxt)  | **Conditionally Required** | Service dates specified using a weekly schedule with start and end dates. <br><br>Conditionally Required:<br> - **Required** unless all dates of service are defined in [calendar_dates.txt](#calendar_datestxt).<br> - Optional otherwise. |
 |  [calendar_dates.txt](#calendar_datestxt)  | **Conditionally Required** | Exceptions for the services defined in the [calendar.txt](#calendartxt). <br><br>Conditionally Required:<br> - **Required** if [calendar.txt](#calendartxt) is omitted. In which case [calendar_dates.txt](#calendar_datestxt) must contain all dates of service. <br> - Optional otherwise. |
-|  [fare_attributes.txt](#fare_attributestxt)  | Optional | Fare information for a transit agency's routes. |
-|  [fare_rules.txt](#fare_rulestxt)  | Optional | Rules to apply fares for itineraries. |
+|  [fare_attributes.txt](#fare_attributestxt)  | **Conditionally Forbidden** | Fare information for a transit agency's routes.<br><br>Conditionally Forbidden:<br>- **Forbidden** if [fare_leg_rules.txt](farelegrulestxt) is defined.<br>- Optional otherwise. |
+|  [fare_rules.txt](#fare_rulestxt)  | **Conditionally Forbidden** | Rules to apply fares for itineraries.<br><br>Conditionally Forbidden:<br>- **Forbidden** if [fare_leg_rules.txt](farelegrulestxt) is defined.<br>- Optional otherwise. |
+|  [fare_leg_rules.txt](#farelegrulestxt)  | **Conditionally Forbidden** | Fare rules for individual legs of travel.<br><br>File fare_leg_rules.txt provides a more detailed method for modeling fare structures. As such, the use of fare_leg_rules.txt is entirely seperate from files fare_attributes.txt and fare_rules.txt. <br><br>Conditionally Forbidden:<br>- **Forbidden** if [fare_rules.txt](farerulestxt) or [fare_attributes.txt](fareattributestxt) are defined.<br>- Optional otherwise. |
 |  [shapes.txt](#shapestxt)  | Optional | Rules for mapping vehicle travel paths, sometimes referred to as route alignments. |
 |  [frequencies.txt](#frequenciestxt)  | Optional | Headway (time between trips) for headway-based service or a compressed representation of fixed-schedule service. |
 |  [transfers.txt](#transferstxt)  | Optional | Rules for making connections at transfer points between routes. |
@@ -263,7 +267,7 @@ The [calendar_dates.txt](#calendar_datestxt) table explicitly activates or disab
 
 ### fare_attributes.txt
 
-File: **Optional**
+File: **Conditionally Forbidden**
 
 |  Field Name | Type | Presence | Description |
 |  ------ | ------ | ------ | ------ |
@@ -277,7 +281,7 @@ File: **Optional**
 
 ### fare_rules.txt
 
-File: **Optional**
+File: **Conditionally Forbidden**
 
 The [fare_rules.txt](#farerulestxt) table specifies how fares in [fare_attributes.txt](#fare_attributestxt) apply to an itinerary. Most fare structures use some combination of the following rules:
 
@@ -294,6 +298,19 @@ For examples that demonstrate how to specify a fare structure with [fare_rules.t
 |  `origin_id` | ID referencing `stops.zone_id` | Optional | Identifies an origin zone. If a fare class has multiple origin zones, create a record in [fare_rules.txt](#fare_rules.txt) for each `origin_id`.<hr>*Example: If fare class "b" is valid for all travel originating from either zone "2" or zone "8", the [fare_rules.txt](#fare_rules.txt) file would contain these records for the fare class:* <br> `fare_id,...,origin_id` <br> `b,...,2`  <br> `b,...,8` |
 |  `destination_id` | ID referencing `stops.zone_id` | Optional | Identifies a destination zone. If a fare class has multiple destination zones, create a record in [fare_rules.txt](#fare_rules.txt) for each `destination_id`.<hr>*Example: The `origin_id` and `destination_id` fields could be used together to specify that fare class "b" is valid for travel between zones 3 and 4, and for travel between zones 3 and 5, the [fare_rules.txt](#fare_rules.txt) file would contain these records for the fare class:* <br>`fare_id,...,origin_id,destination_id` <br>`b,...,3,4`<br> `b,...,3,5` |
 |  `contains_id` | ID referencing `stops.zone_id` | Optional | Identifies the zones that a rider will enter while using a given fare class. Used in some systems to calculate correct fare class. <hr>*Example: If fare class "c" is associated with all travel on the GRT route that passes through zones 5, 6, and 7 the [fare_rules.txt](#fare_rules.txt) would contain these records:* <br> `fare_id,route_id,...,contains_id` <br>  `c,GRT,...,5` <br>`c,GRT,...,6` <br>`c,GRT,...,7` <br> *Because all `contains_id` zones must be matched for the fare to apply, an itinerary that passes through zones 5 and 6 but not zone 7 would not have fare class "c". For more detail, see [https://code.google.com/p/googletransitdatafeed/wiki/FareExamples](https://code.google.com/p/googletransitdatafeed/wiki/FareExamples) in the GoogleTransitDataFeed project wiki.* |
+
+## fare_leg_rules.txt
+
+File: **Conditionally Forbidden**
+
+Fare rules for individual legs of travel. 
+
+File fare_leg_rules.txt provides a more detailed method for modeling fare structures. As such, the use of fare_leg_rules.txt is entirely seperate from files fare_attributes.txt and fare_rules.txt.
+
+|  Field Name | Type | Presence | Description |
+|  ------ | ------ | ------ | ------ |
+| `amount` | Non-negative currency amount | Optional | The cost of the fare for the leg. |
+| `currency` | Currency code | **Conditionally Required** | The currency of the fare for the leg.<br><br>Conditionally Required:<br>- **Required** if `fare_leg_rules.amount` is defined.<br>- **Forbidden** otherwise. |
 
 ### shapes.txt
 
