@@ -365,7 +365,7 @@ File: **Optional**
 
 |  Field Name | Type | Presence | Description |
 |  ------ | ------ | ------ | ------ |
-| `area_id` | ID | **Required** | Identifies an area. |
+| `area_id` | ID | **Required** | Identifies an area. Must be unique in `areas.txt`. |
 
 ### shapes.txt
 
