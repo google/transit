@@ -24,9 +24,8 @@ The official specification, reference and documentation are written in English. 
   	- Votes against shall be motivated, and ideally provide actionable feedback.
   	- If the vote has failed, then the advocate may choose to continue work on the proposal, or to abandon the proposal.
     Either decision of the advocate must be announced in the mailing list.
-  	- If the advocate continues the work on proposal then a new vote can be called for at any point in time but no later than 30 calendar days after the end of the previous vote.
-  	- If a vote was not called within 30 calendar days from the original proposal or 30 calendar days since end of the previous vote, then the proposal is abandoned.
-1. If the proposal is abandoned, the corresponding pull request is closed.
+  	- If the advocate continues the work on proposal then a new vote can be called for at any point in time.
+1. Any pull request remaining inactive for 30 calendar days will be closed. When a pull request is closed, the corresponding proposal is considered abandoned. The advocate may reopen the pull request at any time if they wish to continue or maintain the conversation.
 1. If the proposal is accepted:
   	- Google is committed to merging the voted upon version of the pull request (provided that the contributors have signed the [CLA](../CONTRIBUTING.md)), and performing the pull request within 5 business days.
   	- Translations must not be included into the original pull request.
@@ -49,6 +48,18 @@ When adding features to the specification, we want to avoid making changes that 
 Every new feature adds complexity to the creation and reading of feeds. Therefore, we want to take care to only add features that we know to be useful. Ideally, any proposal will have been tested by generating data for a real transit system that uses the new feature and writing software to read and display it. Note that the GTFS readily allows for extensions to the format through the addition of extra columns and files that are ignored by the official parsers & validators, so proposals can be easily prototyped and tested on existing feeds.
 
 ### Revision History
+
+#### September 15, 2021
+
+* Allowed fare gates (pathway_mode=6) to be bidirectional. See [discussion](https://github.com/google/transit/pull/276).
+
+#### September 13, 2021
+
+* Updated `stop_name` best practices. See [discussion](https://github.com/google/transit/pull/282).
+
+#### August 27, 2021
+
+* Updated GTFS Schedule to [RFC 2119](https://datatracker.ietf.org/doc/html/rfc2119). See [discussion](https://github.com/google/transit/pull/277).
 
 #### January 4, 2021
 
