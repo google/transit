@@ -333,7 +333,7 @@ An alert, indicating some sort of incident in the public transit network.
 | **tts_header_text** | [TranslatedString](#message-translatedstring) | Optional | One | Text containing the alert's header to be used for text-to-speech implementations. This field is the text-to-speech version of header_text. It should contain the same information as header_text but formatted such that it can read as text-to-speech (for example, abbreviations removed, numbers spelled out, etc.) |
 | **tts_description_text** | [TranslatedString](#message-translatedstring) | Optional | One | Text containing a description for the alert to be used for text-to-speech implementations. This field is the text-to-speech version of description_text. It should contain the same information as description_text but formatted such that it can be read as text-to-speech (for example, abbreviations removed, numbers spelled out, etc.) |
 | **severity_level** | [SeverityLevel](#enum-severitylevel) | Optional | One | Severity of the alert. |
-| **image_url** | [TranslatedString](#message-translatedstring) | Optional | Many | URL linking to an image to be displayed along the alert text. Used to explain visually the alert effect of a detour, station closure, etc. The image should enhance the understanding of the alert and must not be the only location of essential information.  The image linked need to be PNG or JPG of less than 500kB. <br><br>**Caution:** this field is still **experimental**, and subject to change. It may be formally adopted in the future. |
+| **image** | [TranslatedString](#message-translatedimage) | Optional | Many | List of TranslatedImage to be displayed along the alert text. Used to explain visually the alert effect of a detour, station closure, etc. The image should enhance the understanding of the alert and must not be the only location of essential information. The following types of images are discouraged : image containing mainly text, marketing or branded images that add no additional information. <br><br>**Caution:** this field is still **experimental**, and subject to change. It may be formally adopted in the future. |
 
 ## _enum_ Cause
 
@@ -505,4 +505,27 @@ A localized string mapped to a language.
 | _**Field Name**_ | _**Type**_ | _**Required**_ | _**Cardinality**_ | _**Description**_ |
 |------------------|------------|----------------|-------------------|-------------------|
 | **text** | [string](https://developers.google.com/protocol-buffers/docs/proto#scalar) | Required | One | A UTF-8 string containing the message. |
+| **language** | [string](https://developers.google.com/protocol-buffers/docs/proto#scalar) | Conditionally required | One | BCP-47 language code. Can be omitted if the language is unknown or if no internationalization is done at all for the feed. At most one translation is allowed to have an unspecified language tag - if there is more than one translation, the language must be provided. |
+
+## _message_ TranslatedImage
+
+An internationalized message containing per-language versions of a snippet of text or a URL. One of the strings from a message will be picked up. The resolution proceeds as follows: If the UI language matches the language code of a translation, the first matching translation is picked. If a default UI language (e.g., English) matches the language code of a translation, the first matching translation is picked. If some translation has an unspecified language code, that translation is picked.
+
+#### Fields
+
+| _**Field Name**_ | _**Type**_ | _**Required**_ | _**Cardinality**_ | _**Description**_ |
+|------------------|------------|----------------|-------------------|-------------------|
+| **localized_image** | [LocalizedImage](#message-localizedimage) | Required | Many | At least one localized image must be provided. |
+
+## _message_ LocalizedImage
+
+A localized image url mapped to a language.
+
+#### Fields
+
+| _**Field Name**_ | _**Type**_ | _**Required**_ | _**Cardinality**_ | _**Description**_ |
+|------------------|------------|----------------|-------------------|-------------------|
+| **url** | [string](https://developers.google.com/protocol-buffers/docs/proto#scalar) | Required | One | String containing a fully qualified URL linking to an image. The image linked needs to be less than 500kB. |
+| **alternative_text** | [string](https://developers.google.com/protocol-buffers/docs/proto#scalar) | Optional | One | Text describing the appearance of the linked image if the image can't be displayed or the user can't see the image for accessiblity reasons |
+| **media_type** | [string](https://developers.google.com/protocol-buffers/docs/proto#scalar) | Required | One | IANA media type as to specify the type of image to be displayed. The type must start with "image/" |
 | **language** | [string](https://developers.google.com/protocol-buffers/docs/proto#scalar) | Conditionally required | One | BCP-47 language code. Can be omitted if the language is unknown or if no internationalization is done at all for the feed. At most one translation is allowed to have an unspecified language tag - if there is more than one translation, the language must be provided. |
