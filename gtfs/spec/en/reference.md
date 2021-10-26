@@ -24,6 +24,7 @@ This document defines the format and structure of the files that comprise a GTFS
     -   [transfers.txt](#transferstxt)
     -   [pathways.txt](#pathwaystxt)
     -   [levels.txt](#levelstxt)
+    -   [occupancies.txt](#occupanciestxt)
     -   [translations.txt](#translationstxt)
     -   [feed\_info.txt](#feed_infotxt)
     -   [attributions.txt](#attributionstxt)
@@ -101,6 +102,7 @@ This specification defines the following files:
 |  [transfers.txt](#transferstxt)  | Optional | Rules for making connections at transfer points between routes. |
 |  [pathways.txt](#pathwaystxt)  | Optional | Pathways linking together locations within stations. |
 |  [levels.txt](#levelstxt)  | **Conditionally Required** | Levels within stations.<br><br>Conditionally Required:<br>- **Required** when describing pathways with elevators (`pathway_mode=5`).<br>- Optional otherwise. |
+| [occupancies.txt](#occupanciestxt) | Optional | Expected or usual in-vehicle occupancy levels.|
 |  [translations.txt](#translationstxt)  | Optional | Translations of customer-facing dataset values. |
 |  [feed_info.txt](#feed_infotxt)  | Optional | Dataset metadata, including publisher, version, and expiration information. |
 |  [attributions.txt](#attributionstxt)  | Optional | Dataset attributions. |
@@ -427,6 +429,31 @@ Describes levels in a station. Useful in conjunction with `pathways.txt`, and is
 |  `level_index` | Float | **Required** | Numeric index of the level that indicates its relative position. <br><br>Ground level should have index `0`, with levels above ground indicated by positive indices and levels below ground by negative indices.|
 |  `level_name` | Text | Optional | Name of the level as seen by the rider inside the building or station.<hr>_Example: Take the elevator to "Mezzanine" or "Platform" or "-1"._|
 
+### occupancies.txt
+
+File: **Optional**
+
+Usual or expected in-vehicle occupancy levels.
+
+Methods for occupancy forecasting used to populated `occupancies.txt` are not strictly specified. Beyond the guidelines given below, it is the responsibility of data producers to ensure that the data provided are meaningful.
+
+For describing historical average occupancies, it is recommended that at least 4 weeks of occupancy data be averaged across each unique day of the week, and valid for up to 2 weeks thereafter in `occupancies.txt`.
+
+| Field Name | Type | Required | Description |
+| ----- | ----- | ----- | ----- |
+| `trip_id` | ID referencing `stop_times.trip_id` | **Required** |  Identifies a `trip_id` for which an occupancy level is described. |
+| `stop_sequence` | ID referencing `stop_times.stop_sequence` | Optional | Identifies a `stop_sequence` along `occupancies.trip_id` for which an occupancy level is described.<br><br>Defined values in `occupancies.stop_sequence` will apply to subsequent `stop_times.stop_sequence` that are not defined in `occupancies.stop_sequence` for the same `trip_id`. |
+| `occupancy_status` | Enum | **Required** | Indicates the state of in-vehicle  occupancy. This field refers to the GTFS Realtime [`OccupancyStatus`](http://gtfs.org/reference/realtime/v2/#enum-occupancystatus) enums. Valid options are:<br><br> `0` - **Empty**. The vehicle is considered empty by most measures, and has few or no passengers onboard, but is still accepting passengers. <br> `1` - **Many seats available**. The vehicle has a large percentage of seats available. What percentage of free seats out of the total seats available is to be considered large enough to fall into this category is determined at the discretion of the producer. <br> `2` - **Few seats available**. The vehicle has a small percentage of seats available. What percentage of free seats out of the total seats available is to be considered small enough to fall into this category is determined at the discretion of the producer. <br> `3` - **Standing room only**. The vehicle can currently accommodate only standing passengers. <br> `4` - **Crushed standing room only**. The vehicle can currently accommodate only standing passengers and has limited space for them. <br> `5` - **Full**. The vehicle is considered full by most measures, but may still be allowing passengers to board. <br> `6` - **Not accepting passengers**. The vehicle can not accept passengers. |
+| `monday` | Enum | **Required** | Indicates whether an occupancy level is valid for all Mondays in the date range specified by `occupancies.start_date` and `occupancies.end_date`. Valid options are: <br><br> `1` - The occupancy level applies for all Mondays in the date range.<br>`0` or empty - The occupancy level does not apply for all Mondays in the date range. |
+| `tuesday` | Enum| **Required** | Functions in the same way as `occupancies.monday` except applies to Tuesdays. |
+| `wednesday` | Enum| **Required** | Functions in the same way as `occupancies.monday` except applies to Wednesdays. |
+| `thursday` | Enum| **Required** | Functions in the same way as `occupancies.monday` except applies to Thursdays. |
+| `friday` | Enum| **Required** | Functions in the same way as `occupancies.monday` except applies to Fridays. |
+| `saturday` | Enum| **Required** | Functions in the same way as `occupancies.monday` except applies to Saturdays. |
+| `sunday` | Enum| **Required** | Functions in the same way as `occupancies.monday` except applies to Sundays. |
+| `start_date` | Date | **Required** | Start date of the date interval that the occupancy level is valid.<br><br>To define single dates, `start_date` and `end_date` may be the same. |
+| `end_date` | Date | **Required** | End date of the date interval that the occupancy level is valid.<br><br>To define single dates, `start_date` and `end_date` may be the same. |
+| `start_time` | Time | **Conditionally Required** | First stop departure time for a given vehicle on a trip using `frequencies.txt`.<br><br>Must be some multiple (including zero) of `frequencies.headway_secs` plus `frequencies.start_time` for the corresponding time period.<br><br>Conditionally Required:<br>- **Required** for trips using `frequencies.txt`.<br>- **Forbidden** otherwise. |
 
 ### translations.txt
 
