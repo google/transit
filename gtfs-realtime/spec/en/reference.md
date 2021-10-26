@@ -510,7 +510,7 @@ A localized string mapped to a language.
 
 ## _message_ TranslatedImage
 
-An internationalized message containing per-language versions of a snippet of text or a URL. One of the strings from a message will be picked up. The resolution proceeds as follows: If the UI language matches the language code of a translation, the first matching translation is picked. If a default UI language (e.g., English) matches the language code of a translation, the first matching translation is picked. If some translation has an unspecified language code, that translation is picked.
+An internationalized message containing per-language versions of an image. One of the images from a message will be picked up. The resolution proceeds as follows: If the UI language matches the language code of a translation, the first matching translation is picked. If a default UI language (e.g., English) matches the language code of a translation, the first matching translation is picked. If some translation has an unspecified language code, that translation is picked.
 
 **Caution:** this message is still **experimental**, and subject to change. It may be formally adopted in the future.
 
