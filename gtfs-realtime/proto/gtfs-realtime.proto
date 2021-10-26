@@ -928,8 +928,8 @@ message TranslatedImage {
     // The image linked needs to be less than 500kB. 
     required string url = 1;
 
-    // Text describing the appearance of the linked image if the image can't be displayed 
-    // Or the user can't see the image for accessiblity reasons
+    // A UTF-8 string describing the appearance of the linked image (e.g., in case the image can't be displayed
+    // or the user can't see the image for accessibility reasons). See the HTML spec for alt image text - https://html.spec.whatwg.org/#alt.
     optional string alternative_text = 2;
 
     // IANA media type as to specify the type of image to be displayed. 
