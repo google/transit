@@ -522,7 +522,7 @@ An internationalized message containing per-language versions of a snippet of te
 
 ## _message_ LocalizedImage
 
-A localized image url mapped to a language.
+A localized image URL mapped to a language.
 
 | _**Field Name**_ | _**Type**_ | _**Required**_ | _**Cardinality**_ | _**Description**_ |
 |------------------|------------|----------------|-------------------|-------------------|
