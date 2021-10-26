@@ -913,7 +913,7 @@ message TranslatedString {
 
 // An internationalized image containing per-language versions of a URL linking to an image
 // along meta information
-// One of the image from a message will be picked up. The resolution proceeds
+// Only one of the images from a message will be retained by consumers. The resolution proceeds
 // as follows:
 // 1. If the UI language matches the language code of a translation,
 //    the first matching translation is picked.
