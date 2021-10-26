@@ -363,6 +363,8 @@ To process the cost of a multi-leg journey:
 
 File: **Optional**
 
+Defines area identifiers for grouping locations in [stops.txt](#stopstxt).
+
 |  Field Name | Type | Presence | Description |
 |  ------ | ------ | ------ | ------ |
 | `area_id` | ID | **Required** | Identifies an area. Must be unique in `areas.txt`. |
