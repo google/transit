@@ -952,6 +952,14 @@ message TranslatedImage {
   }
   // At least one localized image must be provided.
   repeated LocalizedImage localized_image = 1;
+
+  // The extensions namespace allows 3rd-party developers to extend the
+  // GTFS Realtime Specification in order to add and evaluate new features and
+  // modifications to the spec.
+  extensions 1000 to 1999;
+
+  // The following extension IDs are reserved for private use by any organization.
+  extensions 9000 to 9999;
 }
 
 // Describes the physical path that a vehicle takes when it's not part of the (CSV) GTFS,
