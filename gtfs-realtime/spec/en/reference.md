@@ -531,7 +531,6 @@ A localized image URL mapped to a language.
 | **media_type** | [string](https://developers.google.com/protocol-buffers/docs/proto#scalar) | Required | One | IANA media type as to specify the type of image to be displayed. The type must start with "image/" |
 | **language** | [string](https://developers.google.com/protocol-buffers/docs/proto#scalar) | Conditionally required | One | BCP-47 language code. Can be omitted if the language is unknown or if no internationalization is done at all for the feed. At most one translation is allowed to have an unspecified language tag - if there is more than one translation, the language must be provided. |
 
-
 ## _message_ Shape
 
 Describes the physical path that a vehicle takes when the shape is not part of the (CSV) GTFS, such as for an ad-hoc detour. Shapes belong to Trips and consist of an encoded polyline for more efficient transmission.  Shapes do not need to intercept the location of Stops exactly, but all Stops on a trip should lie within a small distance of the shape for that trip, i.e. close to straight line segments connecting the shape points
