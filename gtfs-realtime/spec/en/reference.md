@@ -536,7 +536,9 @@ A localized image URL mapped to a language.
 
 Describes the physical path that a vehicle takes when the shape is not part of the (CSV) GTFS, such as for an ad-hoc detour. Shapes belong to Trips and consist of an encoded polyline for more efficient transmission.  Shapes do not need to intercept the location of Stops exactly, but all Stops on a trip should lie within a small distance of the shape for that trip, i.e. close to straight line segments connecting the shape points
 
-**Caution:** this message is still **experimental**, and subject to change. It may be formally adopted in the future.
+**Caution:** this message is still **experimental**, and subject to change. It may be formally adopted in the future.<br>.
+
+#### Fields
 
 | _**Field Name**_ | _**Type**_ | _**Required**_ | _**Cardinality**_ | _**Description**_ |
 |------------------|------------|----------------|-------------------|-------------------|
