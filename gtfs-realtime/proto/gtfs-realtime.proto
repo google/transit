@@ -926,6 +926,7 @@ message TranslatedImage {
   message LocalizedImage {
     // String containing a fully qualified URL linking to an image
     // The image linked needs to be less than 2MB. 
+    // If an image changes in a significant enough way that an update is required on the consumer side, the producer must update the URL to a new one.
     required string url = 1;
 
     // A UTF-8 string describing the appearance of the linked image (e.g., in case the image can't be displayed

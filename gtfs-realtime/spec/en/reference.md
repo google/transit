@@ -526,7 +526,7 @@ A localized image URL mapped to a language.
 
 | _**Field Name**_ | _**Type**_ | _**Required**_ | _**Cardinality**_ | _**Description**_ |
 |------------------|------------|----------------|-------------------|-------------------|
-| **url** | [string](https://developers.google.com/protocol-buffers/docs/proto#scalar) | Required | One | String containing a fully qualified URL linking to an image. The image linked needs to be less than 500kB. |
+| **url** | [string](https://developers.google.com/protocol-buffers/docs/proto#scalar) | Required | One | String containing a fully qualified URL linking to an image. The image linked needs to be less than 2MB. If an image changes in a significant enough way that an update is required on the consumer side, the producer must update the URL to a new one. |
 | **alternative_text** | [string](https://developers.google.com/protocol-buffers/docs/proto#scalar) | Optional | One | Text describing the appearance of the linked image if the image can't be displayed or the user can't see the image for accessiblity reasons |
 | **media_type** | [string](https://developers.google.com/protocol-buffers/docs/proto#scalar) | Required | One | IANA media type as to specify the type of image to be displayed. The type must start with "image/" |
 | **language** | [string](https://developers.google.com/protocol-buffers/docs/proto#scalar) | Conditionally required | One | BCP-47 language code. Can be omitted if the language is unknown or if no internationalization is done at all for the feed. At most one translation is allowed to have an unspecified language tag - if there is more than one translation, the language must be provided. |
