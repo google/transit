@@ -652,6 +652,10 @@ message Alert {
   // NOTE: This field is still experimental, and subject to change. It may be formally adopted in the future.
   repeated TranslatedImage image = 15; 
 
+  // Text describing the appearance of the linked image in the `image` field (e.g., in case the image can't be displayed
+  // or the user can't see the image for accessibility reasons). See the HTML spec for alt image text - https://html.spec.whatwg.org/#alt.
+  optional TranslatedString image_alternative_text = 16;
+
   // The extensions namespace allows 3rd-party developers to extend the
   // GTFS Realtime Specification in order to add and evaluate new features
   // and modifications to the spec.
@@ -929,18 +933,14 @@ message TranslatedImage {
     // If an image changes in a significant enough way that an update is required on the consumer side, the producer must update the URL to a new one.
     required string url = 1;
 
-    // A UTF-8 string describing the appearance of the linked image (e.g., in case the image can't be displayed
-    // or the user can't see the image for accessibility reasons). See the HTML spec for alt image text - https://html.spec.whatwg.org/#alt.
-    optional string alternative_text = 2;
-
     // IANA media type as to specify the type of image to be displayed. 
     // The type must start with "image/"
-    required string media_type = 3;
+    required string media_type = 2;
 
     // BCP-47 language code. Can be omitted if the language is unknown or if
     // no i18n is done at all for the feed. At most one translation is
     // allowed to have an unspecified language tag.
-    optional string language = 4;
+    optional string language = 3;
 
 
     // The extensions namespace allows 3rd-party developers to extend the

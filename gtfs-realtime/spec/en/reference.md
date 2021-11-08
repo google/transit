@@ -337,6 +337,8 @@ An alert, indicating some sort of incident in the public transit network.
 | **tts_description_text** | [TranslatedString](#message-translatedstring) | Optional | One | Text containing a description for the alert to be used for text-to-speech implementations. This field is the text-to-speech version of description_text. It should contain the same information as description_text but formatted such that it can be read as text-to-speech (for example, abbreviations removed, numbers spelled out, etc.) |
 | **severity_level** | [SeverityLevel](#enum-severitylevel) | Optional | One | Severity of the alert. |
 | **image** | [TranslatedImage](#message-translatedimage) | Optional | Many | List of TranslatedImage to be displayed along the alert text. Used to explain visually the alert effect of a detour, station closure, etc. The image should enhance the understanding of the alert and must not be the only location of essential information. The following types of images are discouraged : image containing mainly text, marketing or branded images that add no additional information. <br><br>**Caution:** this field is still **experimental**, and subject to change. It may be formally adopted in the future. |
+| **image_alternative_text** | [TranslatedString](#message-translatedstring) | Optional | One | Text describing the appearance of the linked image in the `image` field (e.g., in case the image can't be displayed or the user can't see the image for accessibility reasons). See the HTML [spec for alt image text](https://html.spec.whatwg.org/#alt). |
+
 
 ## _enum_ Cause
 
@@ -527,7 +529,6 @@ A localized image URL mapped to a language.
 | _**Field Name**_ | _**Type**_ | _**Required**_ | _**Cardinality**_ | _**Description**_ |
 |------------------|------------|----------------|-------------------|-------------------|
 | **url** | [string](https://developers.google.com/protocol-buffers/docs/proto#scalar) | Required | One | String containing a fully qualified URL linking to an image. The image linked must less than 2MB. If an image changes in a significant enough way that an update is required on the consumer side, the producer must update the URL to a new one. |
-| **alternative_text** | [string](https://developers.google.com/protocol-buffers/docs/proto#scalar) | Optional | One | Text describing the appearance of the linked image if the image can't be displayed or the user can't see the image for accessiblity reasons |
 | **media_type** | [string](https://developers.google.com/protocol-buffers/docs/proto#scalar) | Required | One | IANA media type as to specify the type of image to be displayed. The type must start with "image/" |
 | **language** | [string](https://developers.google.com/protocol-buffers/docs/proto#scalar) | Conditionally required | One | BCP-47 language code. Can be omitted if the language is unknown or if no internationalization is done at all for the feed. At most one translation is allowed to have an unspecified language tag - if there is more than one translation, the language must be provided. |
 
