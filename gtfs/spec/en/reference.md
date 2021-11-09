@@ -95,7 +95,7 @@ This specification defines the following files:
 |  [calendar.txt](#calendartxt)  | **Conditionally Required** | Service dates specified using a weekly schedule with start and end dates. <br><br>Conditionally Required:<br> - **Required** unless all dates of service are defined in [calendar_dates.txt](#calendar_datestxt).<br> - Optional otherwise. |
 |  [calendar_dates.txt](#calendar_datestxt)  | **Conditionally Required** | Exceptions for the services defined in the [calendar.txt](#calendartxt). <br><br>Conditionally Required:<br> - **Required** if [calendar.txt](#calendartxt) is omitted. In which case [calendar_dates.txt](#calendar_datestxt) must contain all dates of service. <br> - Optional otherwise. |
 |  [fare_attributes.txt](#fare_attributestxt)  | Optional | Fare information for a transit agency's routes. |
-|  [fare_rules.txt](#fare_rulestxt)  | Optional | Rules to apply fares for itineraries. |
+|  [fare_rules.txt](#fare_rulestxt)  | **Conditionally Required** | Rules to apply fares for itineraries.<br><br>Conditionally Required:<br>- **Required** if [fare_attributes.txt](#fare_attributestxt) is defined.<br>- **Forbidden** otherwise. |
 |  [fare_leg_rules.txt](#fare_leg_rulestxt)  | Optional | Fare rules for individual legs of travel.<br><br>File fare_leg_rules.txt provides a more detailed method for modeling fare structures. As such, the use of fare_leg_rules.txt is entirely seperate from files fare_attributes.txt and fare_rules.txt. |
 |  [fare_transfer_rules.txt](#fare_transfer_rulestxt)  | Optional | Fare rules for transfers between legs of travel.<br><br>Along with fare_leg_rules.txt, file fare_transfer_rules.txt provides a more detailed method for modeling fare structures. As such, the use of fare_transfer_rules.txt is entirely seperate from files fare_attributes.txt and fare_rules.txt. |
 |  [areas.txt](areastxt) | Optional | Area grouping of locations. |
@@ -289,7 +289,7 @@ There are two modelling options for describing fares. GTFS-Fares V1 is the legac
 
 ### fare_rules.txt
 
-File: **Optional**
+File: **Conditionally Required**
 
 The [fare_rules.txt](#farerulestxt) table specifies how fares in [fare_attributes.txt](#fare_attributestxt) apply to an itinerary. Most fare structures use some combination of the following rules:
 
