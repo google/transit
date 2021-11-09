@@ -275,6 +275,8 @@ The [calendar_dates.txt](#calendar_datestxt) table explicitly activates or disab
 
 File: **Optional**
 
+There are two modelling options for describing fares. GTFS-Fares V1 is the legacy option for describing minimal fare information. GTFS-Fares V2 is an updated method that allows for a more detailed account of an agency's fare structure. Both are allowed to be present in a dataset, but only one method should be used by a data consumer for a given dataset. It is recommended that GTFS-Fares V2 takes precedence over GTFS-Fares V1. <br><br>GTFS-Fares V1: <br>-`fare_attributes.txt`<br>-`fare_rules.txt`<br><br>GTFS-Fares V2: <br>-`fare_leg_rules.txt`<br>-`fare_transfer_rules.txt`
+
 |  Field Name | Type | Presence | Description |
 |  ------ | ------ | ------ | ------ |
 |  `fare_id` | ID | **Required** | Identifies a fare class. |
@@ -311,7 +313,7 @@ File: **Optional**
 
 Fare rules for individual legs of travel. 
 
-File `fare_leg_rules.txt` provides a more detailed method for modeling fare structures. As such, the use of `fare_leg_rules.txt` is entirely seperate from files `fare_attributes.txt` and `fare_rules.txt`.
+There are two modelling options for describing fares. GTFS-Fares V1 is the legacy option for describing minimal fare information. GTFS-Fares V2 is an updated method that allows for a more detailed account of an agency's fare structure. Both are allowed to be present in a dataset, but only one method should be used by a data consumer for a given dataset. It is recommended that GTFS-Fares V2 takes precedence over GTFS-Fares V1. <br><br>GTFS-Fares V1: <br>-`fare_attributes.txt`<br>-`fare_rules.txt`<br><br>GTFS-Fares V2: <br>-`fare_leg_rules.txt`<br>-`fare_transfer_rules.txt`
 
 Fares in `fare_leg_rules.txt` are queried by filtering fields until a fare cost matches the characteristics of the leg. Undefined values in the fields that are filtered will be matched by default to empty values for that field. For example, a rider taking a route with `network_id=network1` that is not defined as a network in `fare_leg_rules.network_id` will be matched to entries with empty `fare_leg_rules.network_id`. 
 
