@@ -929,9 +929,10 @@ message TranslatedString {
 // NOTE: This field is still experimental, and subject to change. It may be formally adopted in the future.
 message TranslatedImage {
   message LocalizedImage {
-    // String containing a fully qualified URL linking to an image
+    // String containing an URL linking to an image
     // The image linked must be less than 2MB. 
     // If an image changes in a significant enough way that an update is required on the consumer side, the producer must update the URL to a new one.
+    // The URL should be a fully qualified URL that includes http:// or https://, and any special characters in the URL must be correctly escaped. See the following http://www.w3.org/Addressing/URL/4_URI_Recommentations.html for a description of how to create fully qualified URL values.
     required string url = 1;
 
     // IANA media type as to specify the type of image to be displayed. 
