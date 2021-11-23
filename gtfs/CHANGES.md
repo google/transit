@@ -19,12 +19,12 @@ The official specification, reference and documentation are written in English. 
   	- Anyone is allowed to vote yes/no in a form of comment to the pull request, and votes can be changed until the end of the voting period.
     If a voter changes her vote, it is recommended to do it by updating the original vote comment by striking through the vote and writing the new vote.
   	- Votes before the start of the voting period are not considered.
-	- Opening and closing of votes must be announced on the GTFS Changes mailing list.
+	- Opening and closing of votes must be announced on the [GTFS Changes mailing list](https://groups.google.com/forum/#!forum/gtfs-changes).
 1. The proposal is accepted if there is a unanimous consensus yes with at least 3 votes.
   	- The proposer's vote does not count towards the 3 vote total. For example, if Proposer X creates a pull request and votes yes, and User Y and Z vote yes, this is counted as 2 total yes votes.
   	- Votes against shall be motivated, and ideally provide actionable feedback.
   	- If the vote has failed, then the advocate may choose to continue work on the proposal, or to abandon the proposal.
-    Either decision of the advocate must be announced in the mailing list.
+    Either decision of the advocate must be announced in the [GTFS Changes mailing list](https://groups.google.com/forum/#!forum/gtfs-changes).
   	- If the advocate continues the work on proposal then a new vote can be called for at any point in time.
 1. Any pull request remaining inactive for 30 calendar days will be closed. When a pull request is closed, the corresponding proposal is considered abandoned. The advocate may reopen the pull request at any time if they wish to continue or maintain the conversation.
 1. If the proposal is accepted:
