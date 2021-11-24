@@ -1,0 +1,25 @@
+name: 'Close stale issues and PRs'
+on:
+  schedule:
+    - cron: '0 0 * * *'
+
+permissions:
+  issues: write
+  pull-requests: write
+
+jobs:
+  stale:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/stale@v4
+        with:
+          stale-issue-message: 'This issue has been automatically marked as stale because it has not had recent activity. It will be closed if no further activity occurs. Thank you for your contributions.'
+          close-issue-message: 'This issue has been closed due to inactivity. Issues can always be reopened after they have been closed.'
+          stale-issue-label: 'stale'
+          days-before-issue-stale: 365
+          days-before-issue-close: 14
+          stale-pr-message: 'This pull request has been automatically marked as stale because it has not had recent activity. It will be closed if no further activity occurs. Thank you for your contributions.'
+          close-pr-message: 'This pull request has been closed due to inactivity. Pull requests can always be reopened after they have been closed. See the Specification Amendment Process.'
+          stale-pr-label: 'stale'
+          days-before-pr-stale: 23
+          days-before-pr-close: 7
