@@ -98,8 +98,8 @@ This specification defines the following files:
 |  [calendar_dates.txt](#calendar_datestxt)  | **Conditionally Required** | Exceptions for the services defined in the [calendar.txt](#calendartxt). <br><br>Conditionally Required:<br> - **Required** if [calendar.txt](#calendartxt) is omitted. In which case [calendar_dates.txt](#calendar_datestxt) must contain all dates of service. <br> - Optional otherwise. |
 |  [fare_attributes.txt](#fare_attributestxt)  | Optional | Fare information for a transit agency's routes. |
 |  [fare_rules.txt](#fare_rulestxt)  | **Conditionally Required** | Rules to apply fares for itineraries.<br><br>Conditionally Required:<br>- **Required** if [fare_attributes.txt](#fare_attributestxt) is defined.<br>- **Forbidden** otherwise. |
-|  [fare_leg_rules.txt](#fare_leg_rulestxt)  | Optional | Fare rules for individual legs of travel.<br><br>File fare_leg_rules.txt provides a more detailed method for modeling fare structures. As such, the use of fare_leg_rules.txt is entirely seperate from files fare_attributes.txt and fare_rules.txt. |
-|  [fare_transfer_rules.txt](#fare_transfer_rulestxt)  | Optional | Fare rules for transfers between legs of travel.<br><br>Along with fare_leg_rules.txt, file fare_transfer_rules.txt provides a more detailed method for modeling fare structures. As such, the use of fare_transfer_rules.txt is entirely seperate from files fare_attributes.txt and fare_rules.txt. |
+|  [fare_leg_rules.txt](#fare_leg_rulestxt)  | Optional | Fare rules for individual legs of travel.<br><br>File [fare_leg_rules.txt](#fare_leg_rulestxt) provides a more detailed method for modeling fare structures. As such, the use of [fare_leg_rules.txt](#fare_leg_rulestxt) is entirely seperate from files [fare_attributes.txt](#fare_attributestxt) and [fare_rules.txt](#fare_rulestxt). |
+|  [fare_transfer_rules.txt](#fare_transfer_rulestxt)  | Optional | Fare rules for transfers between legs of travel.<br><br>Along with [fare_leg_rules.txt](#fare_leg_rulestxt), file [fare_transfer_rules.txt](#fare_transfer_rulestxt) provides a more detailed method for modeling fare structures. As such, the use of [fare_transfer_rules.txt](#fare_transfer_rulestxt) is entirely seperate from files [fare_attributes.txt](#fare_attributestxt) and [fare_rules.txt](#fare_rulestxt). |
 |  [areas.txt](areastxt) | Optional | Area grouping of locations. |
 |  [shapes.txt](#shapestxt)  | Optional | Rules for mapping vehicle travel paths, sometimes referred to as route alignments. |
 |  [frequencies.txt](#frequenciestxt)  | Optional | Headway (time between trips) for headway-based service or a compressed representation of fixed-schedule service. |
@@ -166,7 +166,7 @@ File: **Required**
 |  `wheelchair_boarding` | Enum | Optional | Indicates whether wheelchair boardings are possible from the location. Valid options are: <br><br>For parentless stops:<br>`0` or empty - No accessibility information for the stop.<br>`1` - Some vehicles at this stop can be boarded by a rider in a wheelchair.<br>`2` - Wheelchair boarding is not possible at this stop. <br><br>For child stops: <br>`0` or empty - Stop will inherit its `wheelchair_boarding` behavior from the parent station, if specified in the parent.<br>`1` - There exists some accessible path from outside the station to the specific stop/platform.<br>`2` - There exists no accessible path from outside the station to the specific stop/platform.<br><br> For station entrances/exits: <br>`0` or empty - Station entrance will inherit its `wheelchair_boarding` behavior from the parent station, if specified for the parent.<br>`1` - Station entrance is wheelchair accessible.<br>`2` - No accessible path from station entrance to stops/platforms. |
 |  `level_id` | ID referencing `levels.level_id` | Optional | Level of the location. The same level may be used by multiple unlinked stations.|
 |  `platform_code` | Text | Optional | Platform identifier for a platform stop (a stop belonging to a station). This should be just the platform identifier (eg. "G" or "3"). Words like “platform” or "track" (or the feed’s language-specific equivalent) should not be included. This allows feed consumers to more easily internationalize and localize the platform identifier into other languages. |
-| `area_id` | ID referencing `areas.area_id` | Optional | Identifies an area grouping of locations. Multiple rows in `stops.txt` may have the same `area_id`. |
+| `area_id` | ID referencing `areas.area_id` | Optional | Identifies an area grouping of locations. Multiple rows in [stops.txt](#stopstxt) may have the same `area_id`. |
 
 ### routes.txt
 
@@ -186,7 +186,7 @@ File: **Required**
 |  `route_sort_order` | Non-negative integer | Optional | Orders the routes in a way which is ideal for presentation to customers. Routes with smaller `route_sort_order` values should be displayed first. |
 |  `continuous_pickup` | Enum | Optional | Indicates that the rider can board the transit vehicle at any point along the vehicle’s travel path as described by `shapes.txt`, on every trip of the route. Valid options are: <br><br>`0` - Continuous stopping pickup. <br>`1` or empty - No continuous stopping pickup. <br>`2` - Must phone agency to arrange continuous stopping pickup. <br>`3` - Must coordinate with driver to arrange continuous stopping pickup.  <br><br>Values for `routes.continuous_pickup` may be overridden by defining values in `stop_times.continuous_pickup` for specific `stop_time`s along the route. |
 |  `continuous_drop_off` | Enum | Optional | Indicates that the rider can alight from the transit vehicle at any point along the vehicle’s travel path as described by `shapes.txt`, on every trip of the route. Valid options are: <br><br>`0` - Continuous stopping drop off. <br>`1` or empty - No continuous stopping drop off. <br>`2` - Must phone agency to arrange continuous stopping drop off. <br>`3` - Must coordinate with driver to arrange continuous stopping drop off. <br><br>Values for `routes.continuous_drop_off` may be overridden by defining values in `stop_times.continuous_drop_off` for specific `stop_time`s along the route. |
-| `network_id` | ID | Optional | Identifies a group of routes. Multiple rows in `routes.txt` may have the same `network_id`.| 
+| `network_id` | ID | Optional | Identifies a group of routes. Multiple rows in [routes.txt](#routestxt) may have the same `network_id`.| 
 
 ### trips.txt
 
@@ -277,7 +277,7 @@ The [calendar_dates.txt](#calendar_datestxt) table explicitly activates or disab
 
 File: **Optional**
 
-There are two modelling options for describing fares. GTFS-Fares V1 is the legacy option for describing minimal fare information. GTFS-Fares V2 is an updated method that allows for a more detailed account of an agency's fare structure. Both are allowed to be present in a dataset, but only one method should be used by a data consumer for a given dataset. It is recommended that GTFS-Fares V2 takes precedence over GTFS-Fares V1. <br><br>GTFS-Fares V1: <br>-`fare_attributes.txt`<br>-`fare_rules.txt`<br><br>GTFS-Fares V2: <br>-`fare_leg_rules.txt`<br>-`fare_transfer_rules.txt`
+There are two modelling options for describing fares. GTFS-Fares V1 is the legacy option for describing minimal fare information. GTFS-Fares V2 is an updated method that allows for a more detailed account of an agency's fare structure. Both are allowed to be present in a dataset, but only one method should be used by a data consumer for a given dataset. It is recommended that GTFS-Fares V2 takes precedence over GTFS-Fares V1. <br><br>GTFS-Fares V1: <br>- [fare_attributes.txt](#fare_attributestxt)<br>- [fare_rules.txt](#fare_rulestxt)<br><br>GTFS-Fares V2: <br>- [fare_leg_rules.txt](#fare_leg_rulestxt)<br>- [fare_transfer_rules.txt](#fare_transfer_rulestxt)
 
 |  Field Name | Type | Presence | Description |
 |  ------ | ------ | ------ | ------ |
@@ -315,9 +315,9 @@ File: **Optional**
 
 Fare rules for individual legs of travel. 
 
-Fares in `fare_leg_rules.txt` are queried by filtering fields until a fare cost matches the characteristics of the leg. Undefined values in the fields that are filtered will be matched by default to empty values for that field. For example, a rider taking a route with `network_id=network1` that is not defined as a network in `fare_leg_rules.network_id` will be matched to entries with empty `fare_leg_rules.network_id`. 
+Fares in [fare_leg_rules.txt](#fare_leg_rulestxt) are queried by filtering fields until a fare cost matches the characteristics of the leg. Undefined values in the fields that are filtered will be matched by default to empty values for that field. For example, a rider taking a route with `network_id=network1` that is not defined as a network in `fare_leg_rules.network_id` will be matched to entries with empty `fare_leg_rules.network_id`. 
 
-It is recommended that consumers filter `fare_leg_rules.txt` by the fields that define the characteristics of travel as outputted from trip planning software. This would give the immediate capability to display the cost of a leg from within a trip planner. The fields in `fare_leg_rules.txt` that define characteristics of travel are:
+It is recommended that consumers filter [fare_leg_rules.txt](#fare_leg_rulestxt) by the fields that define the characteristics of travel as outputted from trip planning software. This would give the immediate capability to display the cost of a leg from within a trip planner. The fields in [fare_leg_rules.txt](#fare_leg_rulestxt) that define characteristics of travel are:
 - `fare_leg_rules.network_id`
 - `fare_leg_rules.from_area_id`
 - `fare_leg_rules.to_area_id`
@@ -325,7 +325,7 @@ It is recommended that consumers filter `fare_leg_rules.txt` by the fields that 
 
 |  Field Name | Type | Presence | Description |
 |  ------ | ------ | ------ | ------ |
-| `leg_group_id` | ID | Optional | Identifies a group of entries in `fare_leg_rules.txt`.<br><br> Used to describe fare transfer rules between `fare_transfer_rules.from_leg_group_id` and `fare_transfer_rules.to_leg_group_id`.<br><br>Multiple entries in `fare_leg_rules.txt` may belong to the same `fare_leg_rules.leg_group_id`.<br><br>The same entry in `fare_leg_rules.txt` (not including `fare_leg_rules.leg_group_id`) must not belong to multiple `fare_leg_rules.leg_group_id`.|
+| `leg_group_id` | ID | Optional | Identifies a group of entries in [fare_leg_rules.txt](#fare_leg_rulestxt).<br><br> Used to describe fare transfer rules between `fare_transfer_rules.from_leg_group_id` and `fare_transfer_rules.to_leg_group_id`.<br><br>Multiple entries in [fare_leg_rules.txt](#fare_leg_rulestxt) may belong to the same `fare_leg_rules.leg_group_id`.<br><br>The same entry in [fare_leg_rules.txt](#fare_leg_rulestxt) (not including `fare_leg_rules.leg_group_id`) must not belong to multiple `fare_leg_rules.leg_group_id`.|
 | `network_id` | ID referencing `routes.network_id` | Optional | Identifies a route network that applies for the fare leg rule.<br><br>If there are no matching `fare_leg_rules.network_id` values to the `network_id` being filtered, empty `fare_leg_rules.network_id` will be matched by default. |
 | `from_area_id` | ID referencing `areas.area_id` | Optional | Identifies a departure area.<br><br>If there are no matching `fare_leg_rules.from_area_id` values to the `area_id` being filtered, empty `fare_leg_rules.from_area_id` will be matched by default. |
 | `to_area_id` | ID referencing `areas.area_id` | Optional | Identifies an arrival area.<br><br>If there are no matching `fare_leg_rules.to_area_id` values to the `area_id` being filtered, empty `fare_leg_rules.from_area_id` will be matched by default. |
@@ -337,16 +337,16 @@ It is recommended that consumers filter `fare_leg_rules.txt` by the fields that 
 
 File: **Optional**
 
-Fare rules for transfers between legs of travel defined in `fare_leg_rules.txt`.
+Fare rules for transfers between legs of travel defined in [fare_leg_rules.txt](#fare_leg_rulestxt).
 
-Transfer costs in `fare_transfer_rules.txt` are queried by filtering fields until a transfer cost matches the characteristics of the transfer. Undefined values in the fields that are filtered will be matched by default to empty values for that field.
+Transfer costs in [fare_transfer_rules.txt](#fare_transfer_rulestxt) are queried by filtering fields until a transfer cost matches the characteristics of the transfer. Undefined values in the fields that are filtered will be matched by default to empty values for that field.
 
-It is recommended that consumers filter `fare_transfer_rules.txt` by the fields that define the characteristics of the transfer as outputted from trip planning software using `fare_leg_rules.txt`. The fields in `fare_transfer_rules.txt` that define characteristics of the transfer are:
+It is recommended that consumers filter [fare_transfer_rules.txt](#fare_transfer_rulestxt) by the fields that define the characteristics of the transfer as outputted from trip planning software using [fare_leg_rules.txt](#fare_leg_rulestxt). The fields in [fare_transfer_rules.txt](#fare_transfer_rulestxt) that define characteristics of the transfer are:
 - `fare_transfer_rules.from_leg_group_id`
 - `fare_transfer_rules.to_leg_group_id`
 
 To process the cost of a multi-leg journey:
-1. Determine the applicable fares defined in `fare_leg_rules.txt` for all individual legs of travel.
+1. Determine the applicable fares defined in [fare_leg_rules.txt](#fare_leg_rulestxt) for all individual legs of travel.
 2. Process the actual cost of the journey based on the leg-to-leg transfers defined in `fare_transfer_rules.from_leg_group_id`, `fare_transfer_rules.to_leg_group_id`, and `fare_transfer_rules.fare_transfer_type`.
 
 |  Field Name | Type | Presence | Description |
@@ -369,7 +369,7 @@ Defines area identifiers for grouping locations in [stops.txt](#stopstxt).
 
 |  Field Name | Type | Presence | Description |
 |  ------ | ------ | ------ | ------ |
-| `area_id` | ID | **Required** | Identifies an area. Must be unique in `areas.txt`. |
+| `area_id` | ID | **Required** | Identifies an area. Must be unique in [areas.txt](#areastxt). |
 
 ### shapes.txt
 
