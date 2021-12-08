@@ -315,8 +315,6 @@ File: **Optional**
 
 Fare rules for individual legs of travel. 
 
-There are two modelling options for describing fares. GTFS-Fares V1 is the legacy option for describing minimal fare information. GTFS-Fares V2 is an updated method that allows for a more detailed account of an agency's fare structure. Both are allowed to be present in a dataset, but only one method should be used by a data consumer for a given dataset. It is recommended that GTFS-Fares V2 takes precedence over GTFS-Fares V1. <br><br>GTFS-Fares V1: <br>-`fare_attributes.txt`<br>-`fare_rules.txt`<br><br>GTFS-Fares V2: <br>-`fare_leg_rules.txt`<br>-`fare_transfer_rules.txt`
-
 Fares in `fare_leg_rules.txt` are queried by filtering fields until a fare cost matches the characteristics of the leg. Undefined values in the fields that are filtered will be matched by default to empty values for that field. For example, a rider taking a route with `network_id=network1` that is not defined as a network in `fare_leg_rules.network_id` will be matched to entries with empty `fare_leg_rules.network_id`. 
 
 It is recommended that consumers filter `fare_leg_rules.txt` by the fields that define the characteristics of travel as outputted from trip planning software. This would give the immediate capability to display the cost of a leg from within a trip planner. The fields in `fare_leg_rules.txt` that define characteristics of travel are:
