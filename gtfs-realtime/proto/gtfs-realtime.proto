@@ -647,6 +647,16 @@ message Alert {
 
   optional SeverityLevel severity_level = 14 [default = UNKNOWN_SEVERITY];
 
+  // TranslatedImage to be displayed along the alert text. Used to explain visually the alert effect of a detour, station closure, etc. The image must enhance the understanding of the alert. Any essential information communicated within the image must also be contained in the alert text.
+  // The following types of images are discouraged : image containing mainly text, marketing or branded images that add no additional information. 
+  // NOTE: This field is still experimental, and subject to change. It may be formally adopted in the future.
+  optional TranslatedImage image = 15; 
+
+  // Text describing the appearance of the linked image in the `image` field (e.g., in case the image can't be displayed
+  // or the user can't see the image for accessibility reasons). See the HTML spec for alt image text - https://html.spec.whatwg.org/#alt.
+  // NOTE: This field is still experimental, and subject to change. It may be formally adopted in the future.
+  optional TranslatedString image_alternative_text = 16;
+
   // The extensions namespace allows 3rd-party developers to extend the
   // GTFS Realtime Specification in order to add and evaluate new features
   // and modifications to the spec.
@@ -906,6 +916,54 @@ message TranslatedString {
   extensions 9000 to 9999;
 }
 
+// An internationalized image containing per-language versions of a URL linking to an image
+// along with meta information
+// Only one of the images from a message will be retained by consumers. The resolution proceeds
+// as follows:
+// 1. If the UI language matches the language code of a translation,
+//    the first matching translation is picked.
+// 2. If a default UI language (e.g., English) matches the language code of a
+//    translation, the first matching translation is picked.
+// 3. If some translation has an unspecified language code, that translation is
+//    picked.
+// NOTE: This field is still experimental, and subject to change. It may be formally adopted in the future.
+message TranslatedImage {
+  message LocalizedImage {
+    // String containing an URL linking to an image
+    // The image linked must be less than 2MB. 
+    // If an image changes in a significant enough way that an update is required on the consumer side, the producer must update the URL to a new one.
+    // The URL should be a fully qualified URL that includes http:// or https://, and any special characters in the URL must be correctly escaped. See the following http://www.w3.org/Addressing/URL/4_URI_Recommentations.html for a description of how to create fully qualified URL values.
+    required string url = 1;
+
+    // IANA media type as to specify the type of image to be displayed. 
+    // The type must start with "image/"
+    required string media_type = 2;
+
+    // BCP-47 language code. Can be omitted if the language is unknown or if
+    // no i18n is done at all for the feed. At most one translation is
+    // allowed to have an unspecified language tag.
+    optional string language = 3;
+
+
+    // The extensions namespace allows 3rd-party developers to extend the
+    // GTFS Realtime Specification in order to add and evaluate new features and
+    // modifications to the spec.
+    extensions 1000 to 1999;
+
+    // The following extension IDs are reserved for private use by any organization.
+    extensions 9000 to 9999;
+  }
+  // At least one localized image must be provided.
+  repeated LocalizedImage localized_image = 1;
+
+  // The extensions namespace allows 3rd-party developers to extend the
+  // GTFS Realtime Specification in order to add and evaluate new features and
+  // modifications to the spec.
+  extensions 1000 to 1999;
+
+  // The following extension IDs are reserved for private use by any organization.
+  extensions 9000 to 9999;
+}
 
 // Describes the physical path that a vehicle takes when it's not part of the (CSV) GTFS,
 // such as for a detour. Shapes belong to Trips, and consist of a sequence of shape points.

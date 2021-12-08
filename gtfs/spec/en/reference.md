@@ -1,6 +1,6 @@
 ## General Transit Feed Specification Reference
 
-**Revised January 4, 2021. See [Revision History](../../CHANGES.md) for more details.**
+**Revised September 15, 2021. See [Revision History](../../CHANGES.md) for more details.**
 
 This document defines the format and structure of the files that comprise a GTFS dataset.
 
@@ -63,7 +63,7 @@ Presence conditions applicable to fields and files:
 - **Date** - Service day in the YYYYMMDD format. Since time within a service day may be above 24:00:00, a service day may contain information for the subsequent day(s). <br> *Example: `20180913` for September 13th, 2018.*
 - **Email** - An email address. <br> *Example: `example@example.com`*
 - **Enum** - An option from a set of predefined constants defined in the "Description" column. <br> *Example: The `route_type` field contains a `0` for tram, a `1` for subway...*
-- **ID** - An ID field value is an internal ID, not intended to be shown to riders, and is a sequence of any UTF-8 characters. Using only printable ASCII characters is recommended. IDs defined in one .txt file are often referenced in another .txt file. <br> *Example: The `stop_id` field in [stops.txt](#stopstxt) is a ID. The `stop_id` field in [stop_times.txt](#stop_timestxt) is an ID referencing `stops.stop_id`.*
+- **ID** - An ID field value is an internal ID, not intended to be shown to riders, and is a sequence of any UTF-8 characters. Using only printable ASCII characters is recommended. An ID is labeled "unique ID" when it must be unique within a file. IDs defined in one .txt file are often referenced in another .txt file. IDs that reference an ID in another table are labeled "foreign ID".<br> *Example: The `stop_id` field in [stops.txt](#stopstxt) is a "unique ID". The `parent_station` field in [stops.txt](#stopstxt) is a "foreign ID referencing `stops.stop_id`".*
 - **Language code** - An IETF BCP 47 language code. For an introduction to IETF BCP 47, refer to [http://www.rfc-editor.org/rfc/bcp/bcp47.txt](http://www.rfc-editor.org/rfc/bcp/bcp47.txt) and [http://www.w3.org/International/articles/language-tags/](http://www.w3.org/International/articles/language-tags/). <br> *Example: `en` for English, `en-US` for American English or `de` for German.*
 - **Latitude** - WGS84 latitude in decimal degrees. The value must be greater than or equal to -90.0 and less than or equal to 90.0. *<br> Example: `41.890169` for the Colosseum in Rome.*
 - **Longitude** - WGS84 longitude in decimal degrees. The value must be greater than or equal to -180.0 and less than or equal to 180.0. <br> *Example: `12.492269` for the Colosseum in Rome.*
@@ -82,6 +82,11 @@ Signs applicable to Float or Integer field types:
 * **Positive** - Greater than 0.
 
 _Example: **Non-negative float** - A floating point number greater than or equal to 0._
+
+### Dataset Attributes
+The **primary key** of a dataset is the field or combination of fields that uniquely identify a row. `Primary key (*)` is used when all provided fields for a file are used to uniquely identify a row. `Primary key (none)` means that the file allows only one row. 
+
+_Example: the `trip_id` and `stop_sequence` fields make the primary key of [stop_times.txt](#stop_timestxt)._
 
 ## Dataset Files
 
@@ -134,9 +139,11 @@ The following example demonstrates how a field value would appear in a comma-del
 
 File: **Required**
 
+Primary key (`agency_id`)
+
 |  Field Name | Type | Presence | Description |
 |  ------ | ------ | ------ | ------ |
-|  `agency_id` | ID | **Conditionally Required** | Identifies a transit brand which is often synonymous with a transit agency. Note that in some cases, such as when a single agency operates multiple separate services, agencies and brands are distinct. This document uses the term "agency" in place of "brand". A dataset may contain data from multiple agencies. <br><br>Conditionally Required:<br>- **Required** when the dataset contains data for multiple transit agencies. <br>- Optional otherwise. |
+|  `agency_id` | Unique ID | **Conditionally Required** | Identifies a transit brand which is often synonymous with a transit agency. Note that in some cases, such as when a single agency operates multiple separate services, agencies and brands are distinct. This document uses the term "agency" in place of "brand". A dataset may contain data from multiple agencies. <br><br>Conditionally Required:<br>- **Required** when the dataset contains data for multiple transit agencies. <br>- Optional otherwise. |
 |  `agency_name` | Text | **Required** | Full name of the transit agency. |
 |  `agency_url` | URL | **Required** | URL of the transit agency. |
 |  `agency_timezone` | Timezone | **Required** | Timezone where the transit agency is located. If multiple agencies are specified in the dataset, each must have the same `agency_timezone`. |
@@ -149,9 +156,11 @@ File: **Required**
 
 File: **Required**
 
+Primary key (`stop_id`)
+
 |  Field Name | Type | Presence | Description |
 |  ------ | ------ | ------ | ------ |
-|  `stop_id` | ID | **Required** | Identifies a location: stop/platform, station, entrance/exit, generic node or boarding area (see `location_type`). <br><br>Multiple routes may use the same `stop_id`. |
+|  `stop_id` | Unique ID | **Required** | Identifies a location: stop/platform, station, entrance/exit, generic node or boarding area (see `location_type`). <br><br>Multiple routes may use the same `stop_id`. |
 |  `stop_code` | Text | Optional | Short text or a number that identifies the location for riders. These codes are often used in phone-based transit information systems or printed on signage to make it easier for riders to get information for a particular location. The `stop_code` may be the same as `stop_id` if it is public facing. This field should be left empty for locations without a code presented to riders. |
 |  `stop_name` | Text | **Conditionally Required** | Name of the location. The `stop_name` should match the agency's rider-facing name for the location as printed on a timetable, published online, or represented on signage. For translations into other languages, use `translations.txt`.<br><br>When the location is a boarding area (`location_type=4`), the `stop_name` should contains the name of the boarding area as displayed by the agency. It could be just one letter (like on some European intercity railway stations), or text like “Wheelchair boarding area” (NYC’s Subway) or “Head of short trains” (Paris’ RER).<br><br>Conditionally Required:<br>- **Required** for locations which are stops (`location_type=0`), stations (`location_type=1`) or entrances/exits (`location_type=2`).<br>- Optional for locations which are generic nodes (`location_type=3`) or boarding areas (`location_type=4`).|
 |  `tts_stop_name` | Text | Optional | Readable version of the `stop_name`. See "Text-to-speech field" in the [Term Definitions](#term-definitions) for more. |
@@ -161,10 +170,10 @@ File: **Required**
 |  `zone_id` | ID | **Conditionally Required** | Identifies the fare zone for a stop. If this record represents a station or station entrance, the `zone_id` is ignored.<br><br>Conditionally Required:<br>- **Required** if providing fare information using [fare_rules.txt](#fare_rulestxt) <br>- Optional otherwise.|
 |  `stop_url` | URL | Optional | URL of a web page about the location. This should be different from the `agency.agency_url` and the `routes.route_url` field values. |
 |  `location_type` | Enum | Optional | Location type. Valid options are:<br><br>`0` (or blank) - **Stop** (or **Platform**). A location where passengers board or disembark from a transit vehicle. Is called a platform when defined within a `parent_station`.<br>`1` - **Station**. A physical structure or area that contains one or more platform.<br>`2` - **Entrance/Exit**. A location where passengers can enter or exit a station from the street. If an entrance/exit belongs to multiple stations, it may be linked by pathways to both, but the data provider must pick one of them as parent.<br>`3` - **Generic Node**. A location within a station, not matching any other `location_type`, that may be used to link together pathways define in pathways.txt.<br>`4` - **Boarding Area**. A specific location on a platform, where passengers can board and/or alight vehicles.|
-|  `parent_station` | ID referencing `stops.stop_id` | **Conditionally Required** | Defines hierarchy between the different locations defined in `stops.txt`. It contains the ID of the parent location, as followed:<br><br>- **Stop/platform** (`location_type=0`): the `parent_station` field contains the ID of a station.<br>- **Station** (`location_type=1`): this field must be empty.<br>- **Entrance/exit** (`location_type=2`) or **generic node** (`location_type=3`): the `parent_station` field contains the ID of a station (`location_type=1`)<br>- **Boarding Area** (`location_type=4`): the `parent_station` field contains ID of a platform.<br><br>Conditionally Required:<br>- **Required** for locations which are entrances (`location_type=2`), generic nodes (`location_type=3`) or boarding areas (`location_type=4`).<br>- Optional for stops/platforms (`location_type=0`).<br>- Forbidden for stations (`location_type=1`).|
+|  `parent_station` | Foreign ID referencing `stops.stop_id` | **Conditionally Required** | Defines hierarchy between the different locations defined in `stops.txt`. It contains the ID of the parent location, as followed:<br><br>- **Stop/platform** (`location_type=0`): the `parent_station` field contains the ID of a station.<br>- **Station** (`location_type=1`): this field must be empty.<br>- **Entrance/exit** (`location_type=2`) or **generic node** (`location_type=3`): the `parent_station` field contains the ID of a station (`location_type=1`)<br>- **Boarding Area** (`location_type=4`): the `parent_station` field contains ID of a platform.<br><br>Conditionally Required:<br>- **Required** for locations which are entrances (`location_type=2`), generic nodes (`location_type=3`) or boarding areas (`location_type=4`).<br>- Optional for stops/platforms (`location_type=0`).<br>- Forbidden for stations (`location_type=1`).|
 |  `stop_timezone` | Timezone | Optional | Timezone of the location. If the location has a parent station, it inherits the parent station’s timezone instead of applying its own. Stations and parentless stops with empty `stop_timezone` inherit the timezone specified by `agency.agency_timezone`. If `stop_timezone` values are provided, the times in [stop_times.txt](#stop_timetxt) should be entered as the time since midnight in the timezone specified by `agency.agency_timezone`. This ensures that the time values in a trip always increase over the course of a trip, regardless of which timezones the trip crosses. |
 |  `wheelchair_boarding` | Enum | Optional | Indicates whether wheelchair boardings are possible from the location. Valid options are: <br><br>For parentless stops:<br>`0` or empty - No accessibility information for the stop.<br>`1` - Some vehicles at this stop can be boarded by a rider in a wheelchair.<br>`2` - Wheelchair boarding is not possible at this stop. <br><br>For child stops: <br>`0` or empty - Stop will inherit its `wheelchair_boarding` behavior from the parent station, if specified in the parent.<br>`1` - There exists some accessible path from outside the station to the specific stop/platform.<br>`2` - There exists no accessible path from outside the station to the specific stop/platform.<br><br> For station entrances/exits: <br>`0` or empty - Station entrance will inherit its `wheelchair_boarding` behavior from the parent station, if specified for the parent.<br>`1` - Station entrance is wheelchair accessible.<br>`2` - No accessible path from station entrance to stops/platforms. |
-|  `level_id` | ID referencing `levels.level_id` | Optional | Level of the location. The same level may be used by multiple unlinked stations.|
+|  `level_id` | Foreign ID referencing `levels.level_id` | Optional | Level of the location. The same level may be used by multiple unlinked stations.|
 |  `platform_code` | Text | Optional | Platform identifier for a platform stop (a stop belonging to a station). This should be just the platform identifier (eg. "G" or "3"). Words like “platform” or "track" (or the feed’s language-specific equivalent) should not be included. This allows feed consumers to more easily internationalize and localize the platform identifier into other languages. |
 | `area_id` | ID referencing `areas.area_id` | Optional | Identifies an area grouping of locations. Multiple rows in [stops.txt](#stopstxt) may have the same `area_id`. |
 
@@ -172,10 +181,12 @@ File: **Required**
 
 File: **Required**
 
+Primary key (`route_id`)
+
 |  Field Name | Type | Presence | Description |
 |  ------ | ------ | ------ | ------ |
-|  `route_id` | ID | **Required** | Identifies a route. |
-|  `agency_id` | ID referencing `agency.agency_id` | **Conditionally Required** | Agency for the specified route.<br><br>Conditionally Required:<br>- **Required** if multiple agencies are defined in [agency.txt](#agency). <br>- Optional otherwise.   |
+|  `route_id` | Unique ID | **Required** | Identifies a route. |
+|  `agency_id` | Foreign ID referencing `agency.agency_id` | **Conditionally Required** | Agency for the specified route.<br><br>Conditionally Required:<br>- **Required** if multiple agencies are defined in [agency.txt](#agency). <br>- Optional otherwise.   |
 |  `route_short_name` | Text | **Conditionally Required** | Short name of a route. Often a short, abstract identifier (e.g., "32", "100X", "Green") that riders use to identify a route. Both `route_short_name` and `route_long_name` may be defined.<br><br>Conditionally Required:<br>- **Required** if `routes.route_long_name` is empty.<br>- Optional otherwise. |
 |  `route_long_name` | Text | **Conditionally Required** | Full name of a route. This name is generally more descriptive than the `route_short_name` and often includes the route's destination or stop. Both `route_short_name` and `route_long_name` may be defined.<br><br>Conditionally Required:<br>- **Required** if `routes.route_short_name` is empty.<br>- Optional otherwise. |
 |  `route_desc` | Text | Optional | Description of a route that provides useful, quality information. Should not be a duplicate of `route_short_name` or `route_long_name`. <hr> _Example: "A" trains operate between Inwood-207 St, Manhattan and Far Rockaway-Mott Avenue, Queens at all times. Also from about 6AM until about midnight, additional "A" trains operate between Inwood-207 St and Lefferts Boulevard (trains typically alternate between Lefferts Blvd and Far Rockaway)._ |
@@ -192,16 +203,18 @@ File: **Required**
 
 File: **Required**
 
+Primary key (`trip_id`)
+
 |  Field Name | Type | Presence | Description |
 |  ------ | ------ | ------ | ------ |
-|  `route_id` | ID referencing `routes.route_id` | **Required** | Identifies a route. |
-|  `service_id` | ID referencing `calendar.service_id` or `calendar_dates.service_id` | **Required** | Identifies a set of dates when service is available for one or more routes. |
-|  `trip_id` | ID | **Required** | Identifies a trip. |
+|  `route_id` | Foreign ID referencing `routes.route_id` | **Required** | Identifies a route. |
+|  `service_id` | Foreign ID referencing `calendar.service_id` or `calendar_dates.service_id` | **Required** | Identifies a set of dates when service is available for one or more routes. |
+|  `trip_id` | Unique ID | **Required** | Identifies a trip. |
 |  `trip_headsign` | Text | Optional | Text that appears on signage identifying the trip's destination to riders. Should be used to distinguish between different patterns of service on the same route.<br><br> If the headsign changes during a trip, values for `trip_headsign` may be overridden by defining values in `stop_times.stop_headsign` for specific `stop_time`s along the trip. |
 |  `trip_short_name` | Text | Optional | Public facing text used to identify the trip to riders, for instance, to identify train numbers for commuter rail trips. If riders do not commonly rely on trip names, `trip_short_name` should be empty. A `trip_short_name` value, if provided, should uniquely identify a trip within a service day; it should not be used for destination names or limited/express designations. |
 |  `direction_id` | Enum | Optional | Indicates the direction of travel for a trip. This field should not be used in routing; it provides a way to separate trips by direction when publishing time tables. Valid options are: <br><br>`0` - Travel in one direction (e.g. outbound travel).<br>`1` - Travel in the opposite direction (e.g. inbound travel).<hr>*Example: The `trip_headsign` and `direction_id` fields may be used together to assign a name to travel in each direction for a set of trips. A [trips.txt](#tripstxt) file could contain these records for use in time tables:* <br> `trip_id,...,trip_headsign,direction_id` <br> `1234,...,Airport,0` <br> `1505,...,Downtown,1` |
 |  `block_id` | ID | Optional | Identifies the block to which the trip belongs. A block consists of a single trip or many sequential trips made using the same vehicle, defined by shared service days and `block_id`. A `block_id` may have trips with different service days, making distinct blocks. See the [example below](#example-blocks-and-service-day) |
-|  `shape_id` | ID referencing `shapes.shape_id` | **Conditionally Required** | Identifies a geospatial shape describing the vehicle travel path for a trip. <br><br>Conditionally Required: <br>- **Required** if the trip has a continuous pickup or drop-off behavior defined either in `routes.txt` or in `stop_times.txt`. <br>- Optional otherwise. |
+|  `shape_id` | Foreign ID referencing `shapes.shape_id` | **Conditionally Required** | Identifies a geospatial shape describing the vehicle travel path for a trip. <br><br>Conditionally Required: <br>- **Required** if the trip has a continuous pickup or drop-off behavior defined either in `routes.txt` or in `stop_times.txt`. <br>- Optional otherwise. |
 |  `wheelchair_accessible` | Enum | Optional | Indicates wheelchair accessibility. Valid options are:<br><br>`0` or empty - No accessibility information for the trip.<br>`1` - Vehicle being used on this particular trip can accommodate at least one rider in a wheelchair.<br>`2` - No riders in wheelchairs can be accommodated on this trip. |
 |  `bikes_allowed` | Enum | Optional | Indicates whether bikes are allowed. Valid options are:<br><br>`0` or empty - No bike information for the trip.<br>`1` - Vehicle being used on this particular trip can accommodate at least one bicycle.<br>`2` - No bicycles are allowed on this trip. |
 
@@ -226,12 +239,14 @@ Notes on above table:
 
 File: **Required**
 
+Primary key (`trip_id`, `stop_sequence`)
+
 |  Field Name | Type | Presence | Description |
 |  ------ | ------ | ------ | ------ |
-|  `trip_id` | ID referencing `trips.trip_id` | **Required** | Identifies a trip.  |
+|  `trip_id` | Foreign ID referencing `trips.trip_id` | **Required** | Identifies a trip.  |
 |  `arrival_time` | Time | **Conditionally Required** | Arrival time at the stop (defined by `stop_times.stop_id`) for a specific trip (defined by `stop_times.trip_id`). <br><br>If there are not separate times for arrival and departure at a stop, `arrival_time` and `departure_time` should be the same. <br><br>For times occurring after midnight on the service day, enter the time as a value greater than 24:00:00 in HH:MM:SS local time for the day on which the trip schedule begins.<br><br> If exact arrival and departure times (`timepoint=1` or empty) are not available, estimated or interpolated arrival and departure times (`timepoint=0`) should be provided.<br><br>Conditionally Required:<br>- **Required** for the first and last stop in a trip (defined by `stop_times.stop_sequence`). <br>- **Required** for `timepoint=1`.<br>- Optional otherwise.|
 |  `departure_time` | Time | **Conditionally Required** | Departure time from the stop (defined by `stop_times.stop_id`) for a specific trip (defined by `stop_times.trip_id`).<br><br>If there are not separate times for arrival and departure at a stop, `arrival_time` and `departure_time` should be the same. <br><br>For times occurring after midnight on the service day, enter the time as a value greater than 24:00:00 in HH:MM:SS local time for the day on which the trip schedule begins.<br><br> If exact arrival and departure times (`timepoint=1` or empty) are not available, estimated or interpolated arrival and departure times (`timepoint=0`) should be provided.<br><br>Conditionally Required:<br>- **Required** for `timepoint=1`.<br>- Optional otherwise.| |
-|  `stop_id` | ID referencing `stops.stop_id` | **Required** | Identifies the serviced stop. All stops serviced during a trip must have a record in [stop_times.txt](#stop_timestxt). Referenced locations must be stops/platforms, i.e. their `stops.location_type` value must be `0` or empty. A stop may be serviced multiple times in the same trip, and multiple trips and routes may service the same stop. |
+|  `stop_id` | Foreign ID referencing `stops.stop_id` | **Required** | Identifies the serviced stop. All stops serviced during a trip must have a record in [stop_times.txt](#stop_timestxt). Referenced locations must be stops/platforms, i.e. their `stops.location_type` value must be `0` or empty. A stop may be serviced multiple times in the same trip, and multiple trips and routes may service the same stop. |
 |  `stop_sequence` | Non-negative integer | **Required** | Order of stops for a particular trip. The values must increase along the trip but do not need to be consecutive.<hr>*Example: The first location on the trip could have a `stop_sequence`=`1`, the second location on the trip could have a `stop_sequence`=`23`, the third location could have a `stop_sequence`=`40`, and so on.* |
 |  `stop_headsign` | Text | Optional | Text that appears on signage identifying the trip's destination to riders. This field overrides the default `trips.trip_headsign` when the headsign changes between stops. If the headsign is displayed for an entire trip, `trips.trip_headsign` should be used instead. <br><br>  A `stop_headsign` value specified for one `stop_time` does not apply to subsequent `stop_time`s in the same trip. If you want to override the `trip_headsign` for multiple `stop_time`s in the same trip, the `stop_headsign` value must be repeated in each `stop_time` row. |
 |  `pickup_type` | Enum | Optional | Indicates pickup method. Valid options are:<br><br>`0` or empty - Regularly scheduled pickup. <br>`1` - No pickup available.<br>`2` - Must phone agency to arrange pickup.<br>`3` - Must coordinate with driver to arrange pickup. |
@@ -245,9 +260,11 @@ File: **Required**
 
 File: **Conditionally Required**
 
+Primary key (`service_id`)
+
 |  Field Name | Type | Presence | Description |
 |  ------ | ------ | ------ |------ |
-|  `service_id` | ID | **Required** | Identifies a set of dates when service is available for one or more routes. Each `service_id` value must be unique in a [calendar.txt](#calendartxt) file. |
+|  `service_id` | Unique ID | **Required** | Identifies a set of dates when service is available for one or more routes. Each `service_id` value must be unique in a [calendar.txt](#calendartxt) file. |
 |  `monday` | Enum | **Required** | Indicates whether the service operates on all Mondays in the date range specified by the `start_date` and `end_date` fields. Note that exceptions for particular dates may be listed in [calendar_dates.txt](#calendar_datestxt). Valid options are:<br><br>`1` - Service is available for all Mondays in the date range.<br>`0` - Service is not available for Mondays in the date range. |
 |  `tuesday` | Enum | **Required** | Functions in the same way as `monday` except applies to Tuesdays |
 |  `wednesday` | Enum | **Required** | Functions in the same way as `monday` except applies to Wednesdays  |
@@ -262,14 +279,16 @@ File: **Conditionally Required**
 
 File: **Conditionally Required**
 
+Primary key (`service_id`, `date`)
+
 The [calendar_dates.txt](#calendar_datestxt) table explicitly activates or disables service by date. It may be used in two ways.
 
-* Recommended: Use [calendar_dates.txt](#calendar_datestxt) in conjunction with [calendar.txt](#calendartxt) to define exceptions to the default service patterns defined in [calendar.txt](#calendartxt). If service is generally regular, with a few changes on explicit dates (for instance, to accommodate special event services, or a school schedule), this is a good approach. In this case `calendar_dates.service_id` is an ID referencing `calendar.service_id`.
+* Recommended: Use [calendar_dates.txt](#calendar_datestxt) in conjunction with [calendar.txt](#calendartxt) to define exceptions to the default service patterns defined in [calendar.txt](#calendartxt). If service is generally regular, with a few changes on explicit dates (for instance, to accommodate special event services, or a school schedule), this is a good approach. In this case `calendar_dates.service_id` is a foreign ID referencing `calendar.service_id`.
 * Alternate: Omit [calendar.txt](#calendartxt), and specify each date of service in [calendar_dates.txt](#calendardatestxt). This allows for considerable service variation and accommodates service without normal weekly schedules. In this case `service_id` is an ID.
 
 |  Field Name | Type | Presence | Description |
 |  ------ | ------ | ------ | ------ |
-|  `service_id` | ID referencing `calendar.service_id` or ID | **Required** | Identifies a set of dates when a service exception occurs for one or more routes. Each (`service_id`, `date`) pair may only appear once in [calendar_dates.txt](#calendar_datestxt) if using [calendar.txt](#calendartxt) and [calendar_dates.txt](#calendar_datestxt) in conjunction. If a `service_id` value appears in both [calendar.txt](#calendartxt) and [calendar_dates.txt](#calendar_datestxt), the information in [calendar_dates.txt](#calendardatestxt) modifies the service information specified in [calendar.txt](#calendartxt). |
+|  `service_id` | Foreign ID referencing `calendar.service_id` or ID | **Required** | Identifies a set of dates when a service exception occurs for one or more routes. Each (`service_id`, `date`) pair may only appear once in [calendar_dates.txt](#calendar_datestxt) if using [calendar.txt](#calendartxt) and [calendar_dates.txt](#calendar_datestxt) in conjunction. If a `service_id` value appears in both [calendar.txt](#calendartxt) and [calendar_dates.txt](#calendar_datestxt), the information in [calendar_dates.txt](#calendardatestxt) modifies the service information specified in [calendar.txt](#calendartxt). |
 |  `date` | Date | **Required** | Date when service exception occurs. |
 |  `exception_type` | Enum | **Required** | Indicates whether service is available on the date specified in the date field. Valid options are:<br><br> `1` - Service has been added for the specified date.<br>`2` - Service has been removed for the specified date.<hr>*Example: Suppose a route has one set of trips available on holidays and another set of trips available on all other days. One `service_id` could correspond to the regular service schedule and another `service_id` could correspond to the holiday schedule. For a particular holiday, the [calendar_dates.txt](#calendar_datestxt) file could be used to add the holiday to the holiday `service_id` and to remove the holiday from the regular `service_id` schedule.* |
 
@@ -277,21 +296,25 @@ The [calendar_dates.txt](#calendar_datestxt) table explicitly activates or disab
 
 File: **Optional**
 
+Primary key (`fare_id`)
+
 There are two modelling options for describing fares. GTFS-Fares V1 is the legacy option for describing minimal fare information. GTFS-Fares V2 is an updated method that allows for a more detailed account of an agency's fare structure. Both are allowed to be present in a dataset, but only one method should be used by a data consumer for a given dataset. It is recommended that GTFS-Fares V2 takes precedence over GTFS-Fares V1. <br><br>GTFS-Fares V1: <br>- [fare_attributes.txt](#fare_attributestxt)<br>- [fare_rules.txt](#fare_rulestxt)<br><br>GTFS-Fares V2: <br>- [fare_leg_rules.txt](#fare_leg_rulestxt)<br>- [fare_transfer_rules.txt](#fare_transfer_rulestxt)
 
 |  Field Name | Type | Presence | Description |
 |  ------ | ------ | ------ | ------ |
-|  `fare_id` | ID | **Required** | Identifies a fare class. |
+|  `fare_id` | Unique ID | **Required** | Identifies a fare class. |
 |  `price` | Non-negative float | **Required** | Fare price, in the unit specified by `currency_type`. |
 |  `currency_type` | Currency code | **Required** | Currency used to pay the fare. |
 |  `payment_method` | Enum | **Required** | Indicates when the fare must be paid. Valid options are:<br><br>`0` - Fare is paid on board.<br>`1` - Fare must be paid before boarding. |
 |  `transfers` | Enum | **Required** | Indicates the number of transfers permitted on this fare. Valid options are:<br><br>`0` - No transfers permitted on this fare.<br>`1` - Riders may transfer once.<br>`2` - Riders may transfer twice.<br>empty - Unlimited transfers are permitted. |
-|  `agency_id` | ID referencing `agency.agency_id` | **Conditionally Required** | Identifies the relevant agency for a fare. <br><br>Conditionally Required:<br>- **Required** if multiple agencies are defined in `agency.txt`.<br>- Optional otherwise. |
+|  `agency_id` | Foreign ID referencing `agency.agency_id` | **Conditionally Required** | Identifies the relevant agency for a fare. <br><br>Conditionally Required:<br>- **Required** if multiple agencies are defined in `agency.txt`.<br>- Optional otherwise. |
 |  `transfer_duration` | Non-negative integer | Optional | Length of time in seconds before a transfer expires. When `transfers`=`0` this field may be used to indicate how long a ticket is valid for or it may be left empty. |
 
 ### fare_rules.txt
 
 File: **Conditionally Required**
+
+Primary key (`*`)
 
 The [fare_rules.txt](#farerulestxt) table specifies how fares in [fare_attributes.txt](#fare_attributestxt) apply to an itinerary. Most fare structures use some combination of the following rules:
 
@@ -303,11 +326,11 @@ For examples that demonstrate how to specify a fare structure with [fare_rules.t
 
 |  Field Name | Type | Presence | Description |
 |  ------ | ------ | ------ | ------ |
-|  `fare_id` | ID referencing `fare_attributes.fare_id`  | **Required** | Identifies a fare class. |
-|  `route_id` | ID referencing `routes.route_id` | Optional | Identifies a route associated with the fare class. If several routes with the same fare attributes exist, create a record in [fare_rules.txt](#fare_rules.txt) for each route.<hr>*Example: If fare class "b" is valid on route "TSW" and "TSE", the [fare_rules.txt](#fare_rules.txt) file would contain these records for the fare class:* <br> ` fare_id,route_id`<br>`b,TSW` <br> `b,TSE`|
-|  `origin_id` | ID referencing `stops.zone_id` | Optional | Identifies an origin zone. If a fare class has multiple origin zones, create a record in [fare_rules.txt](#fare_rules.txt) for each `origin_id`.<hr>*Example: If fare class "b" is valid for all travel originating from either zone "2" or zone "8", the [fare_rules.txt](#fare_rules.txt) file would contain these records for the fare class:* <br> `fare_id,...,origin_id` <br> `b,...,2`  <br> `b,...,8` |
-|  `destination_id` | ID referencing `stops.zone_id` | Optional | Identifies a destination zone. If a fare class has multiple destination zones, create a record in [fare_rules.txt](#fare_rules.txt) for each `destination_id`.<hr>*Example: The `origin_id` and `destination_id` fields could be used together to specify that fare class "b" is valid for travel between zones 3 and 4, and for travel between zones 3 and 5, the [fare_rules.txt](#fare_rules.txt) file would contain these records for the fare class:* <br>`fare_id,...,origin_id,destination_id` <br>`b,...,3,4`<br> `b,...,3,5` |
-|  `contains_id` | ID referencing `stops.zone_id` | Optional | Identifies the zones that a rider will enter while using a given fare class. Used in some systems to calculate correct fare class. <hr>*Example: If fare class "c" is associated with all travel on the GRT route that passes through zones 5, 6, and 7 the [fare_rules.txt](#fare_rules.txt) would contain these records:* <br> `fare_id,route_id,...,contains_id` <br>  `c,GRT,...,5` <br>`c,GRT,...,6` <br>`c,GRT,...,7` <br> *Because all `contains_id` zones must be matched for the fare to apply, an itinerary that passes through zones 5 and 6 but not zone 7 would not have fare class "c". For more detail, see [https://code.google.com/p/googletransitdatafeed/wiki/FareExamples](https://code.google.com/p/googletransitdatafeed/wiki/FareExamples) in the GoogleTransitDataFeed project wiki.* |
+|  `fare_id` | Foreign ID referencing `fare_attributes.fare_id`  | **Required** | Identifies a fare class. |
+|  `route_id` | Foreign ID referencing `routes.route_id` | Optional | Identifies a route associated with the fare class. If several routes with the same fare attributes exist, create a record in [fare_rules.txt](#fare_rules.txt) for each route.<hr>*Example: If fare class "b" is valid on route "TSW" and "TSE", the [fare_rules.txt](#fare_rules.txt) file would contain these records for the fare class:* <br> ` fare_id,route_id`<br>`b,TSW` <br> `b,TSE`|
+|  `origin_id` | Foreign ID referencing `stops.zone_id` | Optional | Identifies an origin zone. If a fare class has multiple origin zones, create a record in [fare_rules.txt](#fare_rules.txt) for each `origin_id`.<hr>*Example: If fare class "b" is valid for all travel originating from either zone "2" or zone "8", the [fare_rules.txt](#fare_rules.txt) file would contain these records for the fare class:* <br> `fare_id,...,origin_id` <br> `b,...,2`  <br> `b,...,8` |
+|  `destination_id` | Foreign ID referencing `stops.zone_id` | Optional | Identifies a destination zone. If a fare class has multiple destination zones, create a record in [fare_rules.txt](#fare_rules.txt) for each `destination_id`.<hr>*Example: The `origin_id` and `destination_id` fields could be used together to specify that fare class "b" is valid for travel between zones 3 and 4, and for travel between zones 3 and 5, the [fare_rules.txt](#fare_rules.txt) file would contain these records for the fare class:* <br>`fare_id,...,origin_id,destination_id` <br>`b,...,3,4`<br> `b,...,3,5` |
+|  `contains_id` | Foreign ID referencing `stops.zone_id` | Optional | Identifies the zones that a rider will enter while using a given fare class. Used in some systems to calculate correct fare class. <hr>*Example: If fare class "c" is associated with all travel on the GRT route that passes through zones 5, 6, and 7 the [fare_rules.txt](#fare_rules.txt) would contain these records:* <br> `fare_id,route_id,...,contains_id` <br>  `c,GRT,...,5` <br>`c,GRT,...,6` <br>`c,GRT,...,7` <br> *Because all `contains_id` zones must be matched for the fare to apply, an itinerary that passes through zones 5 and 6 but not zone 7 would not have fare class "c". For more detail, see [https://code.google.com/p/googletransitdatafeed/wiki/FareExamples](https://code.google.com/p/googletransitdatafeed/wiki/FareExamples) in the GoogleTransitDataFeed project wiki.* |
 
 ## fare_leg_rules.txt
 
@@ -375,6 +398,8 @@ Defines area identifiers for grouping locations in [stops.txt](#stopstxt).
 
 File: **Optional**
 
+Primary key (`shape_id`, `shape_pt_sequence`)
+
 Shapes describe the path that a vehicle travels along a route alignment, and are defined in the file shapes.txt. Shapes are associated with Trips, and consist of a sequence of points through which the vehicle passes in order. Shapes do not need to intercept the location of Stops exactly, but all Stops on a trip should lie within a small distance of the shape for that trip, i.e. close to straight line segments connecting the shape points.
 
 |  Field Name | Type | Presence | Description |
@@ -389,6 +414,8 @@ Shapes describe the path that a vehicle travels along a route alignment, and are
 
 File: **Optional**
 
+Primary key (`trip_id`, `start_time`)
+
 [Frequencies.txt](#frequenciestxt) represents trips that operate on regular headways (time between trips). This file may be used to represent two different types of service.
 
 * Frequency-based service (`exact_times`=`0`) in which service does not follow a fixed schedule throughout the day. Instead, operators attempt to strictly maintain predetermined headways for trips.
@@ -397,7 +424,7 @@ File: **Optional**
 
 |  Field Name | Type | Presence | Description |
 |  ------ | ------ | ------ | ------ |
-|  `trip_id` | ID referencing `trips.trip_id` | **Required** | Identifies a trip to which the specified headway of service applies. |
+|  `trip_id` | Foreign ID referencing `trips.trip_id` | **Required** | Identifies a trip to which the specified headway of service applies. |
 |  `start_time` | Time | **Required** | Time at which the first vehicle departs from the first stop of the trip with the specified headway. |
 |  `end_time` | Time | **Required** | Time at which service changes to a different headway (or ceases) at the first stop in the trip. |
 |  `headway_secs` | Positive integer | **Required** | Time, in seconds, between departures from the same stop (headway) for the trip, during the time interval specified by `start_time` and `end_time`. Multiple headways may be defined for the same trip, but must not overlap. New headways may start at the exact time the previous headway ends.  |
@@ -407,18 +434,36 @@ File: **Optional**
 
 File: **Optional**
 
+Primary key (`from_stop_id`, `to_stop_id`, `from_trip_id`, `to_trip_id`, `from_route_id`, `to_route_id`)
+
 When calculating an itinerary, GTFS-consuming applications interpolate transfers based on allowable time and stop proximity. [Transfers.txt](#transferstxt) specifies additional rules and overrides for selected transfers.
+
+Fields `from_trip_id`, `to_trip_id`, `from_route_id` and `to_route_id` allow higher orders of specificity for transfer rules. Along with `from_stop_id` and `to_stop_id`, the ranking of specificity is as follows:
+1. Both `trip_id`s defined: `from_trip_id` and `to_trip_id`.
+2. One `trip_id` and `route_id` set defined: (`from_trip_id` and `to_route_id`) or (`from_route_id` and `to_trip_id`).
+3. One `trip_id` defined: `from_trip_id` or `to_trip_id`.
+4. Both `route_id`s defined: `from_route_id` and `to_route_id`.
+5. One `route_id` defined: `from_route_id` or `to_route_id`.
+6. Only `from_stop_id` and `to_stop_id` defined: no route or trip related fields set.
+
+For a given ordered pair of arriving trip and departing trip, the transfer with the greatest specificity that applies between these two trips is chosen. For any pair of trips, there should not be two transfers with equally maximal specificity that could apply.
 
 |  Field Name | Type | Presence | Description |
 |  ------ | ------ | ------ | ------ |
-|  `from_stop_id` | ID referencing `stops.stop_id` | **Required** | Identifies a stop or station where a connection between routes begins. If this field refers to a station, the transfer rule applies to all its child stops. |
-|  `to_stop_id` | ID referencing `stops.stop_id` | **Required** | Identifies a stop or station where a connection between routes ends. If this field refers to a station, the transfer rule applies to all child stops. |
+|  `from_stop_id` | Foreign ID referencing `stops.stop_id` | **Required** | Identifies a stop or station where a connection between routes begins. If this field refers to a station, the transfer rule applies to all its child stops. |
+|  `to_stop_id` | Foreign ID referencing `stops.stop_id` | **Required** | Identifies a stop or station where a connection between routes ends. If this field refers to a station, the transfer rule applies to all child stops. |
+| `from_route_id`  | Foreign ID referencing `routes.route_id` | Optional | Identifies a route where a connection begins.<br><br>If `from_route_id` is defined, the transfer will apply to the arriving trip on the route for the given `from_stop_id`.<br><br>If both `from_trip_id` and `from_route_id` are defined, the `trip_id` must belong to the `route_id`, and `from_trip_id` will take precedence. |
+| `to_route_id`  | Foreign ID referencing `routes.route_id` | Optional | Identifies a route where a connection ends.<br><br>If `to_route_id` is defined, the transfer will apply to the departing trip on the route for the given `to_stop_id`.<br><br>If both `to_trip_id` and `to_route_id` are defined, the `trip_id` must belong to the `route_id`, and `to_trip_id` will take precedence. |
+| `from_trip_id`  | Foreign ID referencing `trips.trip_id` | Optional | Identifies a trip where a connection between routes begins.<br><br>If `from_trip_id` is defined, the transfer will apply to the arriving trip for the given `from_stop_id`.<br><br>If both `from_trip_id` and `from_route_id` are defined, the `trip_id` must belong to the `route_id`, and `from_trip_id` will take precedence. |
+| `to_trip_id`  | Foreign ID referencing `trips.trip_id` | Optional | Identifies a trip where a connection between routes ends.<br><br>If `to_trip_id` is defined, the transfer will apply to the departing trip for the given `to_stop_id`.<br><br>If both `to_trip_id` and `to_route_id` are defined, the `trip_id` must belong to the `route_id`, and `to_trip_id` will take precedence. |
 |  `transfer_type` | Enum | **Required** | Indicates the type of connection for the specified (`from_stop_id`, `to_stop_id`) pair. Valid options are:<br><br> `0` or empty - Recommended transfer point between routes.<br>`1` - Timed transfer point between two routes. The departing vehicle is expected to wait for the arriving one and leave sufficient time for a rider to transfer between routes.<br>`2` - Transfer requires a minimum amount of time between arrival and departure to ensure a connection. The time required to transfer is specified by `min_transfer_time`.<br>`3` - Transfers are not possible between routes at the location. |
 |  `min_transfer_time` | Non-negative integer | Optional | Amount of time, in seconds, that must be available to permit a transfer between routes at the specified stops. The `min_transfer_time` should be sufficient to permit a typical rider to move between the two stops, including buffer time to allow for schedule variance on each route. |
 
 ### pathways.txt
 
 File: **Optional**
+
+Primary key (`pathway_id`)
 
 Files [pathways.txt](#pathwaystxt) and [levels.txt](levelstxt) use a graph representation to describe subway or train stations, with nodes representing locations and edges representing pathways.
 
@@ -431,9 +476,9 @@ Pathways must be defined exhaustively in a station. If any pathways are defined,
 
 |  Field Name | Type | Presence | Description |
 |  ------ | ------ | ------ | ------ |
-|  `pathway_id` | ID | **Required** | Identifies a pathway. Used by systems as an internal identifier for the record. Must be unique in the dataset. <br><br> Different pathways may have the same values for `from_stop_id` and `to_stop_id`.<hr>_Example: When two escalators are side-by-side in opposite directions, or when a stair set and elevator go from the same place to the same place, different `pathway_id` may have the same `from_stop_id` and `to_stop_id` values._|
-|  `from_stop_id` | ID referencing `stops.stop_id` | **Required** | Location at which the pathway begins.<br><br>Must contain a `stop_id` that identifies a platform (`location_type=0` or empty), entrance/exit (`location_type=2`), generic node (`location_type=3`) or boarding area (`location_type=4`).<br><br> Values for `stop_id` that identify stations (`location_type=1`) are forbidden.|
-|  `to_stop_id` | ID referencing `stops.stop_id` | **Required** | Location at which the pathway ends.<br><br>Must contain a `stop_id` that identifies a platform (`location_type=0` or empty), entrance/exit (`location_type=2`), generic node (`location_type=3`) or boarding area (`location_type=4`).<br><br> Values for `stop_id` that identify stations (`location_type=1`) are forbidden.|
+|  `pathway_id` | Unique ID | **Required** | Identifies a pathway. Used by systems as an internal identifier for the record. Must be unique in the dataset. <br><br> Different pathways may have the same values for `from_stop_id` and `to_stop_id`.<hr>_Example: When two escalators are side-by-side in opposite directions, or when a stair set and elevator go from the same place to the same place, different `pathway_id` may have the same `from_stop_id` and `to_stop_id` values._|
+|  `from_stop_id` | Foreign ID referencing `stops.stop_id` | **Required** | Location at which the pathway begins.<br><br>Must contain a `stop_id` that identifies a platform (`location_type=0` or empty), entrance/exit (`location_type=2`), generic node (`location_type=3`) or boarding area (`location_type=4`).<br><br> Values for `stop_id` that identify stations (`location_type=1`) are forbidden.|
+|  `to_stop_id` | Foreign ID referencing `stops.stop_id` | **Required** | Location at which the pathway ends.<br><br>Must contain a `stop_id` that identifies a platform (`location_type=0` or empty), entrance/exit (`location_type=2`), generic node (`location_type=3`) or boarding area (`location_type=4`).<br><br> Values for `stop_id` that identify stations (`location_type=1`) are forbidden.|
 |  `pathway_mode` | Enum | **Required** | Type of pathway between the specified (`from_stop_id`, `to_stop_id`) pair. Valid options are: <br><br>`1` - Walkway. <br>`2` - Stairs. <br>`3` - Moving sidewalk/travelator. <br>`4` - Escalator. <br>`5` - Elevator. <br>`6` - Fare gate (or payment gate): A pathway that crosses into an area of the station where proof of payment is required to cross. Fare gates may separate paid areas of the station from unpaid ones, or separate different payment areas within the same station from each other. This information can be used to avoid routing passengers through stations using shortcuts that would require passengers to make unnecessary payments, like directing a passenger to walk through a subway platform to reach a busway. <br>`7`-  Exit gate: A pathway exiting a paid area into an unpaid area where proof of payment is not required to cross.|
 |  `is_bidirectional` | Enum | **Required** | Indicates the direction that the pathway can be taken:<br><br>`0` - Unidirectional pathway that can only be used from `from_stop_id` to `to_stop_id`.<br>`1` - Bidirectional pathway that can be used in both directions.<br><br>Exit gates (`pathway_mode=7`) must not be bidirectional.|
 | `length` | Non-negative float | Optional | Horizontal length in meters of the pathway from the origin location (defined in `from_stop_id`) to the destination location (defined in `to_stop_id`).<br><br>This field is recommended for walkways (`pathway_mode=1`), fare gates (`pathway_mode=6`) and exit gates (`pathway_mode=7`).|
@@ -448,11 +493,13 @@ Pathways must be defined exhaustively in a station. If any pathways are defined,
 
 File: **Conditionally Required**
 
+Primary key (`level_id`)
+
 Describes levels in a station. Useful in conjunction with `pathways.txt`, and is required for navigating pathways with elevators (`pathway_mode=5`).
 
 |  Field Name | Type | Presence | Description |
 |  ------ | ------ | ------ | ------ |
-|  `level_id` | ID | **Required** | Identifies a level in a station.|
+|  `level_id` | Unique ID | **Required** | Identifies a level in a station.|
 |  `level_index` | Float | **Required** | Numeric index of the level that indicates its relative position. <br><br>Ground level should have index `0`, with levels above ground indicated by positive indices and levels below ground by negative indices.|
 |  `level_name` | Text | Optional | Name of the level as seen by the rider inside the building or station.<hr>_Example: Take the elevator to "Mezzanine" or "Platform" or "-1"._|
 
@@ -460,6 +507,8 @@ Describes levels in a station. Useful in conjunction with `pathways.txt`, and is
 ### translations.txt
 
 File: **Optional**
+
+Primary key (`*`)
 
 In regions that have multiple official languages, transit agencies/operators typically have language-specific names and web pages. In order to best serve riders in those regions, it is useful for the dataset to include these language-dependent values.
 
@@ -469,13 +518,15 @@ In regions that have multiple official languages, transit agencies/operators typ
 |  `field_name` | Text | **Required** | Name of the field to be translated. Fields with type `Text` may be translated, fields with type `URL`, `Email` and `Phone number` may also be “translated” to provide resources in the correct language. Fields with other types should not be translated. |
 |  `language` | Language code | **Required** | Language of translation.<br><br>If the language is the same as in `feed_info.feed_lang`, the original value of the field will be assumed to be the default value to use in languages without specific translations (if `default_lang` doesn't specify otherwise).<hr>_Example: In Switzerland, a city in an officially bilingual canton is officially called “Biel/Bienne”, but would simply be called “Bienne” in French and “Biel” in German._ |
 |  `translation` | Text or URL or Email or Phone number | **Required** | Translated value. |
-|  `record_id` | ID | **Conditionally Required** | Defines the record that corresponds to the field to be translated. The value in `record_id` must be a main ID of the table, as defined below:<br><br>- `agency_id` for `agency.txt`<br>- `stop_id` for `stops.txt`;<br>- `route_id` for `routes.txt`;<br>- `trip_id` for `trips.txt`;<br>- `trip_id` for `stop_times.txt`;<br>- `pathway_id` for `pathways.txt`;<br>- `level_id` for `levels.txt`;<br>- `attribution_id` for `attribution.txt`.<br><br>Fields in tables not defined above should not be translated. However producers sometimes add extra fields that are outside the official specification and these unofficial fields may be translated. Below is the recommended way to use `record_id` for those tables:<br><br>- `service_id` for `calendar.txt`;<br>- `service_id` for `calendar_dates.txt`;<br>- `fare_id` for `fare_attributes.txt`;<br>- `fare_id` for `fare_rules.txt`;<br>- `shape_id` for `shapes.txt`;<br>- `trip_id` for `frequencies.txt`;<br>- `from_stop_id` for `transfers.txt`.<br><br>Conditionally Required:<br>- **Forbidden** if `table_name` is `feed_info`.<br>- **Forbidden** if `field_value` is defined.<br>- **Required** if `field_value` is empty. |
-|  `record_sub_id` | ID | **Conditionally Required** | Helps the record that contains the field to be translated when the table doesn’t have a unique ID. Therefore, the value in `record_sub_id` is the secondary ID of the table, as defined by the table below:<br><br>- None for `agency.txt`;<br>- None for `stops.txt`;<br>- None for `routes.txt`;<br>- None for `trips.txt`;<br>- `stop_sequence` for `stop_times.txt`;<br>- None for `pathways.txt`;<br>- None for `levels.txt`;<br>- None for `attributions.txt`.<br><br>Fields in tables not defined above should not be translated. However producers sometimes add extra fields that are outside the official specification and these unofficial fields may be translated. Below is the recommended way to use `record_sub_id` for those tables:<br><br>- None for `calendar.txt`;<br>- `date` for `calendar_dates.txt`;<br>- None for `fare_attributes.txt`;<br>- `route_id` for `fare_rules.txt`;<br>- None for `shapes.txt`;<br>- `start_time` for `frequencies.txt`;<br>- `to_stop_id` for `transfers.txt`.<br><br>Conditionally Required:<br>- **Forbidden** if `table_name` is `feed_info`.<br>- **Forbidden** if `field_value` is defined.<br>- **Required** if `table_name=stop_times` and `record_id` is defined. |
+|  `record_id` | Foreign ID | **Conditionally Required** | Defines the record that corresponds to the field to be translated. The value in `record_id` must be the first or only field of a table's primary key, as defined in the primary key attribute for each table and below:<br><br>- `agency_id` for `agency.txt`<br>- `stop_id` for `stops.txt`;<br>- `route_id` for `routes.txt`;<br>- `trip_id` for `trips.txt`;<br>- `trip_id` for `stop_times.txt`;<br>- `pathway_id` for `pathways.txt`;<br>- `level_id` for `levels.txt`;<br>- `attribution_id` for `attribution.txt`.<br><br>Fields in tables not defined above should not be translated. However producers sometimes add extra fields that are outside the official specification and these unofficial fields may be translated. Below is the recommended way to use `record_id` for those tables:<br><br>- `service_id` for `calendar.txt`;<br>- `service_id` for `calendar_dates.txt`;<br>- `fare_id` for `fare_attributes.txt`;<br>- `fare_id` for `fare_rules.txt`;<br>- `shape_id` for `shapes.txt`;<br>- `trip_id` for `frequencies.txt`;<br>- `from_stop_id` for `transfers.txt`.<br><br>Conditionally Required:<br>- **Forbidden** if `table_name` is `feed_info`.<br>- **Forbidden** if `field_value` is defined.<br>- **Required** if `field_value` is empty. |
+|  `record_sub_id` | Foreign ID | **Conditionally Required** | Helps the record that contains the field to be translated when the table doesn’t have a unique ID. Therefore, the value in `record_sub_id` is the secondary ID of the table, as defined by the table below:<br><br>- None for `agency.txt`;<br>- None for `stops.txt`;<br>- None for `routes.txt`;<br>- None for `trips.txt`;<br>- `stop_sequence` for `stop_times.txt`;<br>- None for `pathways.txt`;<br>- None for `levels.txt`;<br>- None for `attributions.txt`.<br><br>Fields in tables not defined above should not be translated. However producers sometimes add extra fields that are outside the official specification and these unofficial fields may be translated. Below is the recommended way to use `record_sub_id` for those tables:<br><br>- None for `calendar.txt`;<br>- `date` for `calendar_dates.txt`;<br>- None for `fare_attributes.txt`;<br>- `route_id` for `fare_rules.txt`;<br>- None for `shapes.txt`;<br>- `start_time` for `frequencies.txt`;<br>- `to_stop_id` for `transfers.txt`.<br><br>Conditionally Required:<br>- **Forbidden** if `table_name` is `feed_info`.<br>- **Forbidden** if `field_value` is defined.<br>- **Required** if `table_name=stop_times` and `record_id` is defined. |
 |  `field_value` | Text or URL or Email or Phone number | **Conditionally Required** | Instead of defining which record should be translated by using `record_id` and `record_sub_id`, this field can be used to define the value which should be translated. When used, the translation will be applied when the fields identified by `table_name` and `field_name` contains the exact same value defined in field_value.<br><br>The field must have **exactly** the value defined in `field_value`. If only a subset of the value matches `field_value`, the translation won’t be applied.<br><br>If two translation rules match the same record (one with `field_value`, and the other one with `record_id`), the rule with `record_id` takes precedence.<br><br>Conditionally Required:<br>- **Forbidden** if `table_name` is `feed_info`.<br>- **Forbidden** if `record_id` is defined.<br>- **Required** if `record_id` is empty. |
 
 ### feed_info.txt
 
 File: **Optional** (**Required** if `translations.txt` is provided)
+
+Primary key (none)
 
 The file contains information about the dataset itself, rather than the services that the dataset describes. In some cases, the publisher of the dataset is a different entity than any of the agencies.
 
@@ -495,14 +546,16 @@ The file contains information about the dataset itself, rather than the services
 
 File: **Optional**
 
+Primary key (`attribution_id`)
+
 The file defines the attributions applied to the dataset.
 
 |  Field Name | Type | Presence | Description |
 |  ------ | ------ | ------ | ------ |
-|  `attribution_id` | ID | Optional | Identifies an attribution for the dataset or a subset of it. This is mostly useful for translations. |
-|  `agency_id` | ID referencing `agency.agency_id` | Optional | Agency to which the attribution applies.<br><br>If one `agency_id`, `route_id`, or `trip_id` attribution is defined, the other ones must be empty. If none of them is specified, the attribution will apply to the whole dataset. |
-|  `route_id` |  ID referencing `routes.route_id`  | Optional | Functions in the same way as `agency_id` except the attribution applies to a route. Multiple attributions may apply to the same route. |
-|  `trip_id` |  ID referencing `trips.trip_id`  | Optional | Functions in the same way as `agency_id` except the attribution applies to a trip. Multiple attributions may apply to the same trip. |
+|  `attribution_id` | Unique ID | Optional | Identifies an attribution for the dataset or a subset of it. This is mostly useful for translations. |
+|  `agency_id` | Foreign ID referencing `agency.agency_id` | Optional | Agency to which the attribution applies.<br><br>If one `agency_id`, `route_id`, or `trip_id` attribution is defined, the other ones must be empty. If none of them is specified, the attribution will apply to the whole dataset. |
+|  `route_id` | Foreign ID referencing `routes.route_id`  | Optional | Functions in the same way as `agency_id` except the attribution applies to a route. Multiple attributions may apply to the same route. |
+|  `trip_id` | Foreign ID referencing `trips.trip_id`  | Optional | Functions in the same way as `agency_id` except the attribution applies to a trip. Multiple attributions may apply to the same trip. |
 |  `organization_name` | Text | **Required** | Name of the organization that the dataset is attributed to. |
 |  `is_producer` | Enum | Optional | The role of the organization is producer. Valid options are:<br><br>`0` or empty - Organization doesn’t have this role.<br>`1` - Organization does have this role.<br><br>At least one of the fields `is_producer`, `is_operator`, or `is_authority` should be set at `1`. |
 |  `is_operator` | Enum | Optional | Functions in the same way as `is_producer` except the role of the organization is operator. |
