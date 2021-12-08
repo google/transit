@@ -336,6 +336,8 @@ For examples that demonstrate how to specify a fare structure with [fare_rules.t
 
 File: **Optional**
 
+Primary key (`*`)
+
 Fare rules for individual legs of travel. 
 
 Fares in [fare_leg_rules.txt](#fare_leg_rulestxt) are queried by filtering fields until a fare cost matches the characteristics of the leg. Undefined values in the fields that are filtered will be matched by default to empty values for that field. For example, a rider taking a route with `network_id=network1` that is not defined as a network in `fare_leg_rules.network_id` will be matched to entries with empty `fare_leg_rules.network_id`. 
@@ -359,6 +361,8 @@ It is recommended that consumers filter [fare_leg_rules.txt](#fare_leg_rulestxt)
 ## fare_transfer_rules.txt
 
 File: **Optional**
+
+Primary key (`*`)
 
 Fare rules for transfers between legs of travel defined in [fare_leg_rules.txt](#fare_leg_rulestxt).
 
@@ -387,6 +391,8 @@ To process the cost of a multi-leg journey:
 ## areas.txt
 
 File: **Optional**
+
+Primary key (`area_id`)
 
 Defines area identifiers for grouping locations in [stops.txt](#stopstxt).
 
