@@ -298,6 +298,7 @@ File: **Optional**
 
 Primary key (`fare_id`)
 
+**Versions**<br>
 There are two modelling options for describing fares. GTFS-Fares V1 is the legacy option for describing minimal fare information. GTFS-Fares V2 is an updated method that allows for a more detailed account of an agency's fare structure. Both are allowed to be present in a dataset, but only one method should be used by a data consumer for a given dataset. It is recommended that GTFS-Fares V2 takes precedence over GTFS-Fares V1. <br><br>GTFS-Fares V1: <br>- [fare_attributes.txt](#fare_attributestxt)<br>- [fare_rules.txt](#fare_rulestxt)<br><br>GTFS-Fares V2: <br>- [fare_leg_rules.txt](#fare_leg_rulestxt)<br>- [fare_transfer_rules.txt](#fare_transfer_rulestxt)
 
 |  Field Name | Type | Presence | Description |
