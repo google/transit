@@ -175,7 +175,7 @@ Primary key (`stop_id`)
 |  `wheelchair_boarding` | Enum | Optional | Indicates whether wheelchair boardings are possible from the location. Valid options are: <br><br>For parentless stops:<br>`0` or empty - No accessibility information for the stop.<br>`1` - Some vehicles at this stop can be boarded by a rider in a wheelchair.<br>`2` - Wheelchair boarding is not possible at this stop. <br><br>For child stops: <br>`0` or empty - Stop will inherit its `wheelchair_boarding` behavior from the parent station, if specified in the parent.<br>`1` - There exists some accessible path from outside the station to the specific stop/platform.<br>`2` - There exists no accessible path from outside the station to the specific stop/platform.<br><br> For station entrances/exits: <br>`0` or empty - Station entrance will inherit its `wheelchair_boarding` behavior from the parent station, if specified for the parent.<br>`1` - Station entrance is wheelchair accessible.<br>`2` - No accessible path from station entrance to stops/platforms. |
 |  `level_id` | Foreign ID referencing `levels.level_id` | Optional | Level of the location. The same level may be used by multiple unlinked stations.|
 |  `platform_code` | Text | Optional | Platform identifier for a platform stop (a stop belonging to a station). This should be just the platform identifier (eg. "G" or "3"). Words like “platform” or "track" (or the feed’s language-specific equivalent) should not be included. This allows feed consumers to more easily internationalize and localize the platform identifier into other languages. |
-| `area_id` | ID referencing `areas.area_id` | Optional | Identifies an area grouping of locations. Multiple rows in [stops.txt](#stopstxt) may have the same `area_id`. |
+| `area_id` | Foreign ID referencing `areas.area_id` | Optional | Identifies an area grouping of locations. Multiple rows in [stops.txt](#stopstxt) may have the same `area_id`. |
 
 ### routes.txt
 
@@ -352,9 +352,9 @@ It is recommended that consumers filter [fare_leg_rules.txt](#fare_leg_rulestxt)
 |  Field Name | Type | Presence | Description |
 |  ------ | ------ | ------ | ------ |
 | `leg_group_id` | ID | Optional | Identifies a group of entries in [fare_leg_rules.txt](#fare_leg_rulestxt).<br><br> Used to describe fare transfer rules between `fare_transfer_rules.from_leg_group_id` and `fare_transfer_rules.to_leg_group_id`.<br><br>Multiple entries in [fare_leg_rules.txt](#fare_leg_rulestxt) may belong to the same `fare_leg_rules.leg_group_id`.<br><br>The same entry in [fare_leg_rules.txt](#fare_leg_rulestxt) (not including `fare_leg_rules.leg_group_id`) must not belong to multiple `fare_leg_rules.leg_group_id`.|
-| `network_id` | ID referencing `routes.network_id` | Optional | Identifies a route network that applies for the fare leg rule.<br><br>If there are no matching `fare_leg_rules.network_id` values to the `network_id` being filtered, empty `fare_leg_rules.network_id` will be matched by default. |
-| `from_area_id` | ID referencing `areas.area_id` | Optional | Identifies a departure area.<br><br>If there are no matching `fare_leg_rules.from_area_id` values to the `area_id` being filtered, empty `fare_leg_rules.from_area_id` will be matched by default. |
-| `to_area_id` | ID referencing `areas.area_id` | Optional | Identifies an arrival area.<br><br>If there are no matching `fare_leg_rules.to_area_id` values to the `area_id` being filtered, empty `fare_leg_rules.from_area_id` will be matched by default. |
+| `network_id` | Foreign ID referencing `routes.network_id` | Optional | Identifies a route network that applies for the fare leg rule.<br><br>If there are no matching `fare_leg_rules.network_id` values to the `network_id` being filtered, empty `fare_leg_rules.network_id` will be matched by default. |
+| `from_area_id` | Foreign ID referencing `areas.area_id` | Optional | Identifies a departure area.<br><br>If there are no matching `fare_leg_rules.from_area_id` values to the `area_id` being filtered, empty `fare_leg_rules.from_area_id` will be matched by default. |
+| `to_area_id` | Foreign ID referencing `areas.area_id` | Optional | Identifies an arrival area.<br><br>If there are no matching `fare_leg_rules.to_area_id` values to the `area_id` being filtered, empty `fare_leg_rules.from_area_id` will be matched by default. |
 | `is_symmetrical` | Enum | **Conditionally Required** | Indicates whether the fare leg rule may be applied for `fare_leg_rules.from_area_id` to `fare_leg_rules.to_area_id` as well as for `fare_leg_rules.to_area_id` to `fare_leg_rules.from_area_id`.<br><br>Valid options are:<br>`0` - Not symmetrical.<br>`1` - Symmetrical.<br><br>Conditionally Required:<br><br>- **Required** if either `fare_leg_rules.from_area_id` or `fare_leg_rules.to_area_id` are defined.<br>- **Forbidden** otherwise. |
 | `amount` | Non-negative currency amount | Optional | The cost of the fare for the leg. |
 | `currency` | Currency code | **Conditionally Required** | The currency of the fare for the leg.<br><br>Conditionally Required:<br>- **Required** if `fare_leg_rules.amount` is defined.<br>- **Forbidden** otherwise. |
@@ -379,8 +379,8 @@ To process the cost of a multi-leg journey:
 
 |  Field Name | Type | Presence | Description |
 |  ------ | ------ | ------ | ------ |
-| `from_leg_group_id` | ID referencing `fare_leg_rules.leg_group_id` | Optional | Identifies a group of pre-transfer fare leg rules.<br><br>If there are no matching `fare_transfer_rules.from_leg_group_id` values to the `leg_group_id` being filtered, empty `fare_transfer_rules.from_leg_group_id` will be matched by default. |
-| `to_leg_group_id` | ID referencing `fare_leg_rules.leg_group_id` | Optional | Identifies a group of post-transfer fare leg rules.<br><br>If there are no matching `fare_transfer_rules.to_leg_group_id` values to the `leg_group_id` being filtered, empty `fare_transfer_rules.to_leg_group_id` will be matched by default. |
+| `from_leg_group_id` | Foreign ID referencing `fare_leg_rules.leg_group_id` | Optional | Identifies a group of pre-transfer fare leg rules.<br><br>If there are no matching `fare_transfer_rules.from_leg_group_id` values to the `leg_group_id` being filtered, empty `fare_transfer_rules.from_leg_group_id` will be matched by default. |
+| `to_leg_group_id` | Foreign ID referencing `fare_leg_rules.leg_group_id` | Optional | Identifies a group of post-transfer fare leg rules.<br><br>If there are no matching `fare_transfer_rules.to_leg_group_id` values to the `leg_group_id` being filtered, empty `fare_transfer_rules.to_leg_group_id` will be matched by default. |
 | `is_symmetrical` | Enum | **Conditionally Required** | Indicates whether the fare transfer rule applies for transfers from `fare_transfer_rules.from_leg_group_id` to `fare_transfer_rules.to_leg_group_id` as well as from `fare_transfer_rules.to_leg_group_id` to `fare_transfer_rules.from_leg_group_id`.<br><br>Valid options are:<br>`0` - Not symmetrical.<br>`1` - Symmetrical. <br><br>Conditionally Required:<br>- **Required** if either `fare_leg_rules.from_leg_group_id` or `fare_leg_rules.to_leg_group_id` are defined.<br>- **Forbidden** otherwise.|
 | `spanning_limit` | Non-negative integer | **Conditionally Forbidden** | Defines how many consecutive legs the transfer rule may be applied to.<br><br>Valid options are:<br>`0` or empty - No limit.<br>`2` or more - Defines how many legs the transfer rule may span.<br><br>Conditionally Forbidden:<br>- **Forbidden** if `fare_transfer_rules.from_leg_group_id` does not equal `fare_transfer_rules.to_leg_group_id`.<br>- Optional if `fare_transfer_rules.from_leg_group_id` equals `fare_transfer_rules.to_leg_group_id`. |
 | `duration_limit` | Non-negative integer | Optional | Defines the duration limit of the transfer.<br><br>Must be expressed in integer increments of seconds.<br><br>If there is no duration limit, `fare_transfer_rules.duration_limit` must be empty. |
@@ -399,7 +399,7 @@ Defines area identifiers for grouping locations in [stops.txt](#stopstxt).
 
 |  Field Name | Type | Presence | Description |
 |  ------ | ------ | ------ | ------ |
-| `area_id` | ID | **Required** | Identifies an area. Must be unique in [areas.txt](#areastxt). |
+| `area_id` | Unique ID | **Required** | Identifies an area. Must be unique in [areas.txt](#areastxt). |
 
 ### shapes.txt
 
