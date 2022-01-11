@@ -77,7 +77,7 @@ Fields labeled as **experimental** are subject to change and not yet formally ad
 
 The contents of a feed message. Each message in the stream is obtained as a response to an appropriate HTTP GET request. A realtime feed is always defined with relation to an existing GTFS feed. All the entity ids are resolved with respect to the GTFS feed.
 
-#### Fields
+**Fields**
 
 | _**Field Name**_ | _**Type**_ | _**Required**_ | _**Cardinality**_ | _**Description**_ |
 |------------------|------------|----------------|-------------------|-------------------|
@@ -88,7 +88,7 @@ The contents of a feed message. Each message in the stream is obtained as a resp
 
 Metadata about a feed, included in feed messages.
 
-#### Fields
+**Fields**
 
 | _**Field Name**_ | _**Type**_ | _**Required**_ | _**Cardinality**_ | _**Description**_ |
 |------------------|------------|----------------|-------------------|-------------------|
@@ -103,7 +103,7 @@ Determines whether the current fetch is incremental.
 *   **FULL_DATASET**: this feed update will overwrite all preceding realtime information for the feed. Thus this update is expected to provide a full snapshot of all known realtime information.
 *   **DIFFERENTIAL**: currently, this mode is **unsupported** and behavior is **unspecified** for feeds that use this mode. There are discussions on the [GTFS Realtime mailing list](http://groups.google.com/group/gtfs-realtime) around fully specifying the behavior of DIFFERENTIAL mode and the documentation will be updated when those discussions are finalized.
 
-#### Values
+**Values**
 
 | _**Value**_ |
 |-------------|
@@ -114,7 +114,7 @@ Determines whether the current fetch is incremental.
 
 A definition (or update) of an entity in the transit feed. If the entity is not being deleted, exactly one of 'trip_update', 'vehicle', 'alert' and 'shape' fields should be populated.
 
-#### Fields
+**Fields**
 
 | _**Field Name**_ | _**Type**_ | _**Required**_ | _**Cardinality**_ | _**Description**_ |
 |------------------|------------|----------------|-------------------|-------------------|
@@ -145,7 +145,7 @@ If a vehicle is serving multiple trips within the same block (for more informati
 
 Note that the update can describe a trip that has already completed.To this end, it is enough to provide an update for the last stop of the trip. If the time of arrival at the last stop is in the past, the client will conclude that the whole trip is in the past (it is possible, although inconsequential, to also provide updates for preceding stops). This option is most relevant for a trip that has completed ahead of schedule, but according to the schedule, the trip is still proceeding at the current time. Removing the updates for this trip could make the client assume that the trip is still proceeding. Note that the feed provider is allowed, but not required, to purge past updates - this is one case where this would be practically useful.
 
-#### Fields
+**Fields**
 
 | _**Field Name**_ | _**Type**_ | _**Required**_ | _**Cardinality**_ | _**Description**_ |
 |------------------|------------|----------------|-------------------|-------------------|
@@ -165,7 +165,7 @@ Timing information for a single predicted event (either arrival or departure). T
 
 Uncertainty applies equally to both time and delay. The uncertainty roughly specifies the expected error in true delay (but note, we don't yet define its precise statistical meaning). It's possible for the uncertainty to be 0, for example for trains that are driven under computer timing control.
 
-#### Fields
+**Fields**
 
 | _**Field Name**_ | _**Type**_ | _**Required**_ | _**Cardinality**_ | _**Description**_ |
 |------------------|------------|----------------|-------------------|-------------------|
@@ -180,7 +180,7 @@ Realtime update for arrival and/or departure events for a given stop on a trip. 
 Updates can be supplied for both past and future events. The producer is allowed, although not required, to drop past events.
 The update is linked to a specific stop either through stop_sequence or stop_id, so one of these fields must necessarily be set.  If the same stop_id is visited more than once in a trip, then stop_sequence should be provided in all StopTimeUpdates for that stop_id on that trip.
 
-#### Fields
+**Fields**
 
 | _**Field Name**_ | _**Type**_ | _**Required**_ | _**Cardinality**_ | _**Description**_ |
 |------------------|------------|----------------|-------------------|-------------------|
@@ -196,7 +196,7 @@ The update is linked to a specific stop either through stop_sequence or stop_id,
 
 The relation between this StopTime and the static schedule.
 
-#### Values
+**Values**
 
 | _**Value**_ | _**Comment**_ |
 |-------------|---------------|
@@ -211,7 +211,7 @@ Realtime update for certain properties defined within GTFS stop_times.txt.
 
 **Caution:** this message is still **experimental**, and subject to change. It may be formally adopted in the future.<br> 
 
-#### Fields
+**Fields**
 
 | _**Field Name**_ | _**Type**_ | _**Required**_ | _**Cardinality**_ | _**Description**_ |
 |------------------|------------|----------------|-------------------|-------------------|
@@ -223,7 +223,7 @@ Defines updated properties of the trip
 
 **Caution:** this message is still **experimental**, and subject to change. It may be formally adopted in the future.<br>.
 
-#### Fields
+**Fields**
 
 | _**Field Name**_ | _**Type**_ | _**Required**_ | _**Cardinality**_ | _**Description**_ |
 |------------------|------------|----------------|-------------------|-------------------|
@@ -236,7 +236,7 @@ Defines updated properties of the trip
 
 Realtime positioning information for a given vehicle.
 
-#### Fields
+**Fields**
 
 | _**Field Name**_ | _**Type**_ | _**Required**_ | _**Cardinality**_ | _**Description**_ |
 |------------------|------------|----------------|-------------------|-------------------|
@@ -255,7 +255,7 @@ Realtime positioning information for a given vehicle.
 
 ## _enum_ VehicleStopStatus
 
-#### Values
+**Values**
 
 | _**Value**_ | _**Comment**_ |
 |-------------|---------------|
@@ -267,7 +267,7 @@ Realtime positioning information for a given vehicle.
 
 Congestion level that is affecting this vehicle.
 
-#### Values
+**Values**
 
 | _**Value**_ |
 |-------------|
@@ -287,7 +287,7 @@ For describing passenger occupancy levels on a linear scale, see `occupancy_perc
 
 **Caution:** this field is still **experimental**, and subject to change. It may be formally adopted in the future.
 
-#### _Values_
+***Values***
 
 | _**Value**_ | _**Comment**_ |
 |-------------|---------------|
@@ -308,7 +308,7 @@ Carriage specific details, used for vehicles composed of several carriages.
 
 **Caution:** this message is still **experimental**, and subject to change. It may be formally adopted in the future.
 
-#### Fields
+**Fields**
 
 | _**Field Name**_ | _**Type**_ | _**Required**_ | _**Cardinality**_ | _**Description**_ |
 |------------------|------------|----------------|-------------------|-------------------|
@@ -322,7 +322,7 @@ Carriage specific details, used for vehicles composed of several carriages.
 
 An alert, indicating some sort of incident in the public transit network.
 
-#### Fields
+**Fields**
 
 | _**Field Name**_ | _**Type**_ | _**Required**_ | _**Cardinality**_ | _**Description**_ |
 |------------------|------------|----------------|-------------------|-------------------|
@@ -344,7 +344,7 @@ An alert, indicating some sort of incident in the public transit network.
 
 Cause of this alert.
 
-#### Values
+**Values**
 
 | _**Value**_ |
 |-------------|
@@ -365,7 +365,7 @@ Cause of this alert.
 
 The effect of this problem on the affected entity.
 
-#### Values
+**Values**
 
 | _**Value**_ |
 |-------------|
@@ -387,7 +387,8 @@ The severity of the alert.
 
 **Caution:** this field is still **experimental**, and subject to change. It may be formally adopted in the future.
 
-#### Values
+**Values**
+
 | _**Value**_ |
 |-------------|
 | **UNKNOWN_SEVERITY** |
@@ -399,7 +400,7 @@ The severity of the alert.
 
 A time interval. The interval is considered active at time `t` if `t` is greater than or equal to the start time and less than the end time.
 
-#### Fields
+**Fields**
 
 | _**Field Name**_ | _**Type**_ | _**Required**_ | _**Cardinality**_ | _**Description**_ |
 |------------------|------------|----------------|-------------------|-------------------|
@@ -410,7 +411,7 @@ A time interval. The interval is considered active at time `t` if `t` is greater
 
 A geographic position of a vehicle.
 
-#### Fields
+**Fields**
 
 | _**Field Name**_ | _**Type**_ | _**Required**_ | _**Cardinality**_ | _**Description**_ |
 |------------------|------------|----------------|-------------------|-------------------|
@@ -437,7 +438,7 @@ Note that if the trip_id is not known, then station sequence ids in TripUpdate a
 
 TripDescriptor.route_id cannot be used within an Alert EntitySelector to specify a route-wide alert that affects all trips for a route - use EntitySelector.route_id instead.
 
-#### Fields
+**Fields**
 
 | _**Field Name**_ | _**Type**_ | _**Required**_ | _**Cardinality**_ | _**Description**_ |
 |------------------|------------|----------------|-------------------|-------------------|
@@ -452,7 +453,7 @@ TripDescriptor.route_id cannot be used within an Alert EntitySelector to specify
 
 The relation between this trip and the static schedule. If a trip is done in accordance with temporary schedule, not reflected in GTFS, then it shouldn't be marked as SCHEDULED, but marked as ADDED.
 
-#### Values
+**Values**
 
 | _**Value**_ | _**Comment**_ |
 |-------------|---------------|
@@ -466,7 +467,7 @@ The relation between this trip and the static schedule. If a trip is done in acc
 
 Identification information for the vehicle performing the trip.
 
-#### Fields
+**Fields**
 
 | _**Field Name**_ | _**Type**_ | _**Required**_ | _**Cardinality**_ | _**Description**_ |
 |------------------|------------|----------------|-------------------|-------------------|
@@ -480,7 +481,7 @@ A selector for an entity in a GTFS feed. The values of the fields should corresp
 
 At least one specifier must be given - all fields in an EntitySelector cannot be empty.
 
-#### Fields
+**Fields**
 
 | _**Field Name**_ | _**Type**_ | _**Required**_ | _**Cardinality**_ | _**Description**_ |
 |------------------|------------|----------------|-------------------|-------------------|
@@ -495,7 +496,7 @@ At least one specifier must be given - all fields in an EntitySelector cannot be
 
 An internationalized message containing per-language versions of a snippet of text or a URL. One of the strings from a message will be picked up. The resolution proceeds as follows: If the UI language matches the language code of a translation, the first matching translation is picked. If a default UI language (e.g., English) matches the language code of a translation, the first matching translation is picked. If some translation has an unspecified language code, that translation is picked.
 
-#### Fields
+**Fields**
 
 | _**Field Name**_ | _**Type**_ | _**Required**_ | _**Cardinality**_ | _**Description**_ |
 |------------------|------------|----------------|-------------------|-------------------|
@@ -516,7 +517,7 @@ An internationalized message containing per-language versions of an image. One o
 
 **Caution:** this message is still **experimental**, and subject to change. It may be formally adopted in the future.
 
-#### Fields
+**Fields**
 
 | _**Field Name**_ | _**Type**_ | _**Required**_ | _**Cardinality**_ | _**Description**_ |
 |------------------|------------|----------------|-------------------|-------------------|
@@ -538,7 +539,7 @@ Describes the physical path that a vehicle takes when the shape is not part of t
 
 **Caution:** this message is still **experimental**, and subject to change. It may be formally adopted in the future.<br>.
 
-#### Fields
+**Fields**
 
 | _**Field Name**_ | _**Type**_ | _**Required**_ | _**Cardinality**_ | _**Description**_ |
 |------------------|------------|----------------|-------------------|-------------------|
