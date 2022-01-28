@@ -111,7 +111,7 @@ The following requirements apply to the format and contents of the dataset files
 
 * All files must be saved as comma-delimited text.
 * The first line of each file must contain field names. Each subsection of the [Field Definitions](#field-definitions) section corresponds to one of the files in a GTFS dataset and lists the field names that may be used in that file.
-* All field names are case-sensitive.
+* All file and field names are case-sensitive.
 * Field values must not contain tabs, carriage returns or new lines.
 * Field values that contain quotation marks or commas must be enclosed within quotation marks. In addition, each quotation mark in the field value must be preceded with a quotation mark. This is consistent with the manner in which Microsoft Excel outputs comma-delimited (CSV) files. For more information on the CSV file format, see [http://tools.ietf.org/html/rfc4180](http://tools.ietf.org/html/rfc4180).
 The following example demonstrates how a field value would appear in a comma-delimited file:
