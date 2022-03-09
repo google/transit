@@ -746,14 +746,14 @@ message TripDescriptor {
   // direction of travel for trips this selector refers to.
   optional uint32 direction_id = 6;
 
-  // The initially scheduled start time of this trip instance.
+  // The start time of this trip instance.
   // When the trip_id corresponds to a non-frequency-based trip, this field
   // should either be omitted or be equal to the value in the GTFS feed. When
   // the trip_id correponds to a frequency-based trip, the start_time must be
   // specified for trip updates and vehicle positions. If the trip corresponds
   // to exact_times=1 GTFS record, then start_time must be some multiple
   // (including zero) of headway_secs later than frequencies.txt start_time for
-  // the corresponding time period. If the trip corresponds to exact_times=0,
+  // the corresponding time period. If the trip corresponds to exact_times=0 (schedule_relationship=UNSCHEDULED),
   // then its start_time may be arbitrary, and is initially expected to be the
   // first departure of the trip. Once established, the start_time of this
   // frequency-based trip should be considered immutable, even if the first
@@ -774,12 +774,11 @@ message TripDescriptor {
   // In YYYYMMDD format.
   optional string start_date = 3;
 
-  // The relation between this trip and the static schedule. If a trip is done
-  // in accordance with temporary schedule, not reflected in GTFS, then it
-  // shouldn't be marked as SCHEDULED, but likely as ADDED.
+  // The relation between this trip and the trip declared in static data.
   enum ScheduleRelationship {
     // Trip that is running in accordance with its GTFS schedule, or is close
-    // enough to the scheduled trip to be associated with it.
+    // enough to the scheduled trip to be associated with it.  This enumeration must NOT be used for any trip that is
+    // GTFS frequencies.txt exact_times=0 - for these trips use UNSCHEDULED.
     SCHEDULED = 0;
 
     // An extra trip that was added in addition to a running schedule, for
@@ -818,7 +817,7 @@ message TripDescriptor {
     // NOTE: This field is still experimental, and subject to change. It may be formally adopted in the future.
     DUPLICATED = 6;
   }
-  optional ScheduleRelationship schedule_relationship = 4;
+  optional ScheduleRelationship schedule_relationship = 4 [default = SCHEDULED];
 
   // The extensions namespace allows 3rd-party developers to extend the
   // GTFS Realtime Specification in order to add and evaluate new features and
