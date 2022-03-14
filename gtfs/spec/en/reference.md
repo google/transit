@@ -175,7 +175,7 @@ Primary key (`stop_id`)
 |  `wheelchair_boarding` | Enum | Optional | Indicates whether wheelchair boardings are possible from the location. Valid options are: <br><br>For parentless stops:<br>`0` or empty - No accessibility information for the stop.<br>`1` - Some vehicles at this stop can be boarded by a rider in a wheelchair.<br>`2` - Wheelchair boarding is not possible at this stop. <br><br>For child stops: <br>`0` or empty - Stop will inherit its `wheelchair_boarding` behavior from the parent station, if specified in the parent.<br>`1` - There exists some accessible path from outside the station to the specific stop/platform.<br>`2` - There exists no accessible path from outside the station to the specific stop/platform.<br><br> For station entrances/exits: <br>`0` or empty - Station entrance will inherit its `wheelchair_boarding` behavior from the parent station, if specified for the parent.<br>`1` - Station entrance is wheelchair accessible.<br>`2` - No accessible path from station entrance to stops/platforms. |
 |  `level_id` | Foreign ID referencing `levels.level_id` | Optional | Level of the location. The same level may be used by multiple unlinked stations.|
 |  `platform_code` | Text | Optional | Platform identifier for a platform stop (a stop belonging to a station). This should be just the platform identifier (eg. "G" or "3"). Words like “platform” or "track" (or the feed’s language-specific equivalent) should not be included. This allows feed consumers to more easily internationalize and localize the platform identifier into other languages. |
-| `area_id` | Foreign ID referencing `areas.area_id` | Optional | Identifies an area grouping of locations. Multiple rows in [stops.txt](#stopstxt) may have the same `area_id`. |
+
 
 ### routes.txt
 
@@ -395,11 +395,25 @@ File: **Optional**
 
 Primary key (`area_id`)
 
-Defines area identifiers for grouping locations in [stops.txt](#stopstxt).
+Defines area identifiers.
 
 |  Field Name | Type | Presence | Description |
 |  ------ | ------ | ------ | ------ |
 | `area_id` | Unique ID | **Required** | Identifies an area. Must be unique in [areas.txt](#areastxt). |
+| `area_name` | Text | **Optional** | The name of the area as displayed to the rider. |
+
+## stop_areas.txt
+
+File: **Optional**
+
+Primary key (`*`)
+
+Assigns stops from [stops.txt](#stopstxt) to areas.
+
+|  Field Name | Type | Presence | Description |
+|  ------ | ------ | ------ | ------ |
+| `area_id` | Foreign ID referencing `areas.area_id` | **Required** | Identifies an area to which one or multiple `stop_id`s belong. The same `stop_id` may be defined in many `area_id`s. |
+| `stop_id` | Foreign ID referencing `stops.stop_id` | **Required** | Identifies a stop. If a station (i.e. a stop with `stops.location_type=1`) is defined in this field, it is assumed that all of its platforms (i.e. all stops with `stops.location_type=0` that have this station defined as `stops.parent_station`) are part of the same area. This behavior can be overridden by assigning platforms to other areas. |
 
 ### shapes.txt
 
