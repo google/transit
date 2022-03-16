@@ -126,6 +126,24 @@ A_shp,37.64430,-122.41070,2,6.8310
 A_shp,37.65863,-122.30839,3,15.8765
 ```
 
+## frequencies.txt
+
+```
+trip_id,start_time,end_time,headway_secs
+AWE1,05:30:00,06:30:00,300
+AWE1,06:30:00,20:30:00,180
+AWE1,20:30:00,28:00:00,420
+```
+
+## transfers.txt
+
+```
+from_stop_id,to_stop_id,transfer_type,min_transfer_time
+S6,S7,2,300
+S7,S6,3,
+S23,S7,1,
+```
+
 ## pathways.txt
 
 ```
@@ -151,24 +169,6 @@ N4B3,N4,B3,2,1
 N4-B3,N4,B3,4,0
 B3-N4,B3,N4,4,0
 B3B4,B3,B4,2,1
-```
-
-## frequencies.txt
-
-```
-trip_id,start_time,end_time,headway_secs
-AWE1,05:30:00,06:30:00,300
-AWE1,06:30:00,20:30:00,180
-AWE1,20:30:00,28:00:00,420
-```
-
-## transfers.txt
-
-```
-from_stop_id,to_stop_id,transfer_type,min_transfer_time
-S6,S7,2,300
-S7,S6,3,
-S23,S7,1,
 ```
 
 ## levels.txt
