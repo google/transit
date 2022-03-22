@@ -19,6 +19,7 @@ This document defines the format and structure of the files that comprise a GTFS
     -   [calendar\_dates.txt](#calendar_datestxt)
     -   [fare\_attributes.txt](#fare_attributestxt)
     -   [fare\_rules.txt](#fare_rulestxt)
+    -   [fare\_products.txt](#fare_productsxt) 
     -   [fare\_leg\_rules.txt](#fare_leg_rulestxt)
     -   [fare\_transfer\_rules.txt](#fare_transfer_rulestxt)
     -   [areas.txt](#areastxt)
