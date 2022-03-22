@@ -354,7 +354,7 @@ To describe the different types of tickets or fares that can be purchased by rid
 
 File: **Optional**
 
-Primary key (`*`)
+Primary Key (`network_id, from_area_id, to_area_id, fare_product_id`)
 
 Fare rules for individual legs of travel. 
 
@@ -377,7 +377,7 @@ It is recommended that consumers filter [fare_leg_rules.txt](#fare_leg_rulestxt)
 
 File: **Optional**
 
-Primary key (`*`)
+Primary Key (`from_leg_group_id, to_leg_group_id, fare_product_id, transfer_count, duration_limit`)
 
 Fare rules for transfers between legs of travel defined in [fare_leg_rules.txt](#fare_leg_rulestxt).
 
