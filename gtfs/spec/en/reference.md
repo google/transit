@@ -334,6 +334,21 @@ For examples that demonstrate how to specify a fare structure with [fare_rules.t
 |  `destination_id` | Foreign ID referencing `stops.zone_id` | Optional | Identifies a destination zone. If a fare class has multiple destination zones, create a record in [fare_rules.txt](#fare_rules.txt) for each `destination_id`.<hr>*Example: The `origin_id` and `destination_id` fields could be used together to specify that fare class "b" is valid for travel between zones 3 and 4, and for travel between zones 3 and 5, the [fare_rules.txt](#fare_rules.txt) file would contain these records for the fare class:* <br>`fare_id,...,origin_id,destination_id` <br>`b,...,3,4`<br> `b,...,3,5` |
 |  `contains_id` | Foreign ID referencing `stops.zone_id` | Optional | Identifies the zones that a rider will enter while using a given fare class. Used in some systems to calculate correct fare class. <hr>*Example: If fare class "c" is associated with all travel on the GRT route that passes through zones 5, 6, and 7 the [fare_rules.txt](#fare_rules.txt) would contain these records:* <br> `fare_id,route_id,...,contains_id` <br>  `c,GRT,...,5` <br>`c,GRT,...,6` <br>`c,GRT,...,7` <br> *Because all `contains_id` zones must be matched for the fare to apply, an itinerary that passes through zones 5 and 6 but not zone 7 would not have fare class "c". For more detail, see [https://code.google.com/p/googletransitdatafeed/wiki/FareExamples](https://code.google.com/p/googletransitdatafeed/wiki/FareExamples) in the GoogleTransitDataFeed project wiki.* |
 
+## fare_products.txt
+
+File: **Optional**
+
+Primary Key (`fare_product_id`)
+
+To describe the different types of tickets or fares that can be purchased by riders.
+
+|  Field Name | Type | Presence | Description |
+|  ------ | ------ | ------ | ------ |
+| `fare_product_id` | Unique ID | Required | Identifies a fare product. |
+| `fare_product_name` | Text | Optional | The name of the fare product as displayed to riders. |
+| `amount` | Currency amount | Optional | The cost of the fare product. May be negative to represent transfer discounts. If empty, the cost of the transfer rule is 0. |
+| `currency` | Currency code | Conditionally Required | The currency of the cost of the fare product.<br><br>Conditionally Required:<br> - **Required** if `fare_products.amount` is defined.<br> - Forbidden otherwise. |
+
 ## fare_leg_rules.txt
 
 File: **Optional**
@@ -355,8 +370,7 @@ It is recommended that consumers filter [fare_leg_rules.txt](#fare_leg_rulestxt)
 | `network_id` | Foreign ID referencing `routes.network_id` | Optional | Identifies a route network that applies for the fare leg rule.<br><br>If there are no matching `fare_leg_rules.network_id` values to the `network_id` being filtered, empty `fare_leg_rules.network_id` will be matched by default. |
 | `from_area_id` | Foreign ID referencing `areas.area_id` | Optional | Identifies a departure area.<br><br>If there are no matching `fare_leg_rules.from_area_id` values to the `area_id` being filtered, empty `fare_leg_rules.from_area_id` will be matched by default. |
 | `to_area_id` | Foreign ID referencing `areas.area_id` | Optional | Identifies an arrival area.<br><br>If there are no matching `fare_leg_rules.to_area_id` values to the `area_id` being filtered, empty `fare_leg_rules.from_area_id` will be matched by default. |
-| `amount` | Non-negative currency amount | Optional | The cost of the fare for the leg. |
-| `currency` | Currency code | **Conditionally Required** | The currency of the fare for the leg.<br><br>Conditionally Required:<br>- **Required** if `fare_leg_rules.amount` is defined.<br>- **Forbidden** otherwise. |
+| `fare_product_id` | Foreign ID referencing `fare_products.fare_product_id` | Optional | The fare product required to travel the leg. |
 
 ## fare_transfer_rules.txt
 
@@ -386,8 +400,8 @@ Transfers are only possible between fare leg groups defined in `fare_transfer_ru
 | `duration_limit` | Non-negative integer | Optional | Defines the duration limit of the transfer.<br><br>Must be expressed in integer increments of seconds.<br><br>If there is no duration limit, `fare_transfer_rules.duration_limit` must be empty. |
 | `duration_limit_type` | Enum | **Conditionally Required** | Defines the relative start and end of `fare_transfer_rules.duration_limit`.<br><br>Valid options are:<br>`0` - Between the departure fare validation of the first leg and the arrival fare validation of the last leg.<br>`1` - Between the departure fare validation of the first leg and the departure fare validation of the last leg.<br>`2` - Between the arrival fare validation of the first leg and the departure fare validation of the last leg.<br>`3` - Between the arrival fare validation of the first leg and the arrival fare validation of the last leg.<br><br>Conditionally Required:<br>- **Required** if `fare_transfer_rules.duration_limit` is defined.<br>- **Forbidden** if `fare_transfer_rules.duration_limit` is empty. |
 | `fare_transfer_type` | Enum | **Required** | Indicates the cost processing method of transferring between legs in a journey: <br>![](https://user-images.githubusercontent.com/62957380/144116057-d5cf7ef0-1a67-4e65-922c-10140e410459.png) <br>Valid options are:<br>`0` - From-leg `fare_leg_rules.amount` plus `fare_transfer_rules.amount`; A + AB.<br>`1` - From-leg `fare_leg_rules.amount` plus `fare_transfer_rules.amount` plus to-leg `fare_leg_rules.amount`; A + AB + B.<br>`2` - `fare_transfer_rules.amount`; AB. <br><br>Cost processing interactions between multiple transfers in a journey:<br>![](https://user-images.githubusercontent.com/62957380/144116095-8a0aedae-5235-4782-a58f-e0b3644dd5f2.png)<br><table><thead><tr><th>`fare_transfer_type`</th><th>Processing A > B</th><th>Processing B > C</th></tr></thead><tbody><tr><td>`0`</td><td>A + AB</td><td>S + BC</td></tr><tr><td>`1`</td><td>A + AB +B</td><td>S + BC + C</td></tr><tr><td>`2`</td><td>AB</td><td>S + BC</td></tr></tbody></table>Where S indicates the total processed cost of the preceding leg(s) and transfer(s). |
-| `amount` | Currency amount | Optional | The cost of the transfer rule. May be negative to represent transfer discounts. If empty, the cost of the transfer rule is 0.|
-| `currency` | Currency code | **Conditionally Required** | The currency of the cost of the transfer rule.<br><br>Conditionally Required:<br>- **Required** if `fare_transfer_rules.amount` is defined.<br>- **Forbidden** otherwise. |
+| `fare_product_id` | Foreign ID referencing `fare_products.fare_product_id` | Optional | The fare product required to transfer between two fare legs. If empty, the cost of the transfer rule is 0.|
+
 
 ## areas.txt
 
