@@ -360,7 +360,7 @@ Primary Key (`network_id, from_area_id, to_area_id, fare_product_id`)
 
 Fare rules for individual legs of travel. 
 
-Fares in [fare_leg_rules.txt](#fare_leg_rulestxt) are queried by filtering fields until a fare cost matches the characteristics of the leg. Undefined values in the fields that are filtered will be matched by default to empty values for that field. For example, a rider taking a route with `network_id=network1` that is not defined as a network in `fare_leg_rules.network_id` will be matched to entries with empty `fare_leg_rules.network_id`. 
+Fares in [fare_leg_rules.txt](#fare_leg_rulestxt) are queried by filtering all the records in the file to find the best match with the leg to be traveled by the rider. Undefined values in the fields that are filtered will be matched by default to empty values for that field. For example, a rider taking a route with `network_id=network1` that is not defined as a network in `fare_leg_rules.network_id` will be matched to entries with empty `fare_leg_rules.network_id`. 
 
 It is recommended that consumers filter [fare_leg_rules.txt](#fare_leg_rulestxt) by the fields that define the characteristics of travel as outputted from trip planning software. This would give the immediate capability to display the cost of a leg from within a trip planner. The fields in [fare_leg_rules.txt](#fare_leg_rulestxt) that define characteristics of travel are:
 - `fare_leg_rules.network_id`
