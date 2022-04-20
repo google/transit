@@ -10,7 +10,7 @@ If a vehicle is serving multiple trips within the same block (for more informati
 
 ## Stop Time Updates
 
-A trip update consists of one or more updates to vehicle stop times, which are referred to as [StopTimeUpdates](reference.md#StopTimeUpdate). These can be supplied for past and future stop times. You are allowed, but not required, to drop past stop times.  Producers should not drop a past `StopTimeUpdate` if it refers to a stop with a scheduled arrival time in the future for the given trip (i.e. the vehicle has passed the stop ahead of schedule), as otherwise it will be concluded that there is no update for this stop.
+A trip update consists of one or more updates to vehicle stop times, which are referred to as [StopTimeUpdates](reference.md#message-stoptimeupdate). These can be supplied for past and future stop times. You are allowed, but not required, to drop past stop times.  Producers should not drop a past `StopTimeUpdate` if it refers to a stop with a scheduled arrival time in the future for the given trip (i.e. the vehicle has passed the stop ahead of schedule), as otherwise it will be concluded that there is no update for this stop.
 
 For example, if the following data appears in the GTFS-rt feed:
 
@@ -19,11 +19,11 @@ For example, if the following data appears in the GTFS-rt feed:
 
 ...the prediction for Stop 4 cannot be dropped from the feed until 10:21am, even if the bus actually passes the stop at 10:18am. If the `StopTimeUpdate` for Stop 4 was dropped from the feed at 10:18am or 10:19am, and the scheduled arrival time is 10:20am, then the consumer should assume that no real-time information exists for Stop 4 at that time, and schedule data from GTFS should be used.
 
-Each [StopTimeUpdate](reference.md#StopTimeUpdate) is linked to a stop. Ordinarily this can be done using either a GTFS stop_sequence or a GTFS stop_id. However, in the case you are providing an update for a trip without a GTFS trip_id, you must specify stop_id as stop_sequence has no value. The stop_id must still reference a stop_id in GTFS. If the same stop_id is visited more than once in a trip, then stop_sequence should be provided in all StopTimeUpdates for that stop_id on that trip.
+Each [StopTimeUpdate](reference.md#message-stoptimeupdate) is linked to a stop. Ordinarily this can be done using either a GTFS stop_sequence or a GTFS stop_id. However, in the case you are providing an update for a trip without a GTFS trip_id, you must specify stop_id as stop_sequence has no value. The stop_id must still reference a stop_id in GTFS. If the same stop_id is visited more than once in a trip, then stop_sequence should be provided in all StopTimeUpdates for that stop_id on that trip.
 
-The update can provide a exact timing for **arrival** and/or **departure** at a stop in [StopTimeUpdates](reference.md#StopTimeUpdate) using [StopTimeEvent](reference.md#StopTimeEvent). This should contain either an absolute **time** or a **delay** (i.e. an offset from the scheduled time in seconds). Delay can only be used in case the trip update refers to a scheduled GTFS trip, as opposed to a frequency-based trip. In this case, time should be equal to scheduled time + delay. You may also specify **uncertainty** of the prediction along with [StopTimeEvent](reference.md#StopTimeEvent), which is discussed in more detail in section [Uncertainty](#uncertainty) further down the page.
+The update can provide a exact timing for **arrival** and/or **departure** at a stop in [StopTimeUpdates](reference.md#message-stoptimeupdate) using [StopTimeEvent](reference.md#message-stoptimeevent). This should contain either an absolute **time** or a **delay** (i.e. an offset from the scheduled time in seconds). Delay can only be used in case the trip update refers to a scheduled GTFS trip, as opposed to a frequency-based trip. In this case, time should be equal to scheduled time + delay. You may also specify **uncertainty** of the prediction along with [StopTimeEvent](reference.md#message-stoptimeevent), which is discussed in more detail in section [Uncertainty](#uncertainty) further down the page.
 
-For each [StopTimeUpdate](reference.md#StopTimeUpdate), the default schedule relationship is **scheduled**. (Note that this is different from the schedule relationship for the trip). You may change this to **skipped** if the stop will not be stopped at, or **no data** if you only have realtime data for some of the trip.
+For each [StopTimeUpdate](reference.md#message-stoptimeupdate), the default schedule relationship is **scheduled**. (Note that this is different from the schedule relationship for the trip). You may change this to **skipped** if the stop will not be stopped at, or **no data** if you only have realtime data for some of the trip.
 
 **Updates should be sorted by stop_sequence** (or stop_ids in the order they occur in the trip).
 
@@ -31,11 +31,11 @@ If one or more stops are missing along the trip the `delay` from the update (or,
 
 **Example 1**
 
-For a trip with 20 stops, a [StopTimeUpdate](reference.md#StopTimeUpdate) with arrival delay and departure delay of 0 ([StopTimeEvents](reference.md#StopTimeEvent)) for stop_sequence of the current stop means that the trip is exactly on time.
+For a trip with 20 stops, a [StopTimeUpdate](reference.md#message-stoptimeupdate) with arrival delay and departure delay of 0 ([StopTimeEvents](reference.md#message-stoptimeevent)) for stop_sequence of the current stop means that the trip is exactly on time.
 
 **Example 2**
 
-For the same trip instance, three [StopTimeUpdates](reference.md#StopTimeUpdate) are provided:
+For the same trip instance, three [StopTimeUpdates](reference.md#message-stoptimeupdate) are provided:
 
 *   delay of 300 seconds for stop_sequence 3
 *   delay of 60 seconds for stop_sequence 8
@@ -100,6 +100,6 @@ where start_time is the scheduled start time as defined in the static schedule, 
 
 ## Uncertainty
 
-Uncertainty applies to both the time and the delay value of a [StopTimeUpdate](reference.md#StopTimeUpdate). The uncertainty roughly specifies the expected error in true delay as an integer in seconds (but note, the precise statistical meaning is not defined yet). It's possible for the uncertainty to be 0, for example for trains that are driven under computer timing control.
+Uncertainty applies to both the time and the delay value of a [StopTimeUpdate](reference.md#message-stoptimeupdate). The uncertainty roughly specifies the expected error in true delay as an integer in seconds (but note, the precise statistical meaning is not defined yet). It's possible for the uncertainty to be 0, for example for trains that are driven under computer timing control.
 
 As an example a long-distance bus that has an estimated delay of 15 minutes arriving to its next stop within a 4 minute window of error (that is +2 / -2 minutes) will have an Uncertainty value of 240.
