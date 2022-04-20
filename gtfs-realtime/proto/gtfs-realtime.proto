@@ -419,14 +419,14 @@ message VehiclePosition {
   optional string stop_id = 7;
 
   enum VehicleStopStatus {
-    // The vehicle is just about to arrive at the stop (on a stop
+    // The vehicle is just about to arrive at the referenced stop (on a stop
     // display, the vehicle symbol typically flashes).
     INCOMING_AT = 0;
 
-    // The vehicle is standing at the stop.
+    // The vehicle is standing at the referenced stop.
     STOPPED_AT = 1;
 
-    // The vehicle has departed and is in transit to the next stop.
+    // The vehicle has departed and is in transit to the referenced stop.
     IN_TRANSIT_TO = 2;
   }
   // The exact status of the vehicle with respect to the current stop.
