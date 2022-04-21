@@ -50,5 +50,4 @@ use data on current speed and odometer readings from the vehicle.
 
 Early versions of GTFS Realtime Specification required each feed to only contain
 single type of entities. An example tool to convert from merged to the
-feed-per-type schema is located at: 
-[https://github.com/bliksemlabs/gtfsrt-examples/blob/master/split_by_entitytype.py](https://github.com/bliksemlabs/gtfsrt-examples/blob/master/split_by_entitytype.py)
+feed-per-type schema is located in the Bliksem Labs [gtfsrt-examples](https://github.com/bliksemlabs/gtfsrt-examples/blob/master/split_by_entitytype.py) GitHub repository.
