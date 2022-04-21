@@ -6,13 +6,13 @@ You have the option to provide the following:
 *   Header text - a summary of the alert
 *   Description - a full description of the alert, which will always be shown alongside the header (so should not repeat this information).
 
-### Time Range
+## TimeRange
 
 The alert will be displayed where appropriate within the given time range. This range should cover the entire time that the alert is useful for the passenger to see.
 
 If no time is given, we will display the alert for as long as it is in the feed. If multiple ranges are given, we will display during all of them.
 
-### Entity Selector
+## EntitySelector
 
 Entity selector allows you specify exactly which parts of the network this alert affects, so that we can display only the most appropriate alerts to the user. You may include multiple entity selectors for alerts which affect multiple entities.
 
@@ -28,7 +28,7 @@ You may include more than one of the fields listed above in one `informed_entity
 
 If you would like to represent an alert that affects more than one entity (e.g. an alert for both route 1 and stop 5) , you should add multiple `informed_entity` to your `alert`, with each of them applying to the affected entity (e.g. one `informed_entity` that includes route 1 and another `informed_entity` that includes stop 5).
 
-### Cause
+## Cause
 
 What is the cause of this alert? You may specify one of the following:
 
@@ -45,7 +45,7 @@ What is the cause of this alert? You may specify one of the following:
 *   Police activity
 *   Medical emergency
 
-### Effect
+## Effect
 
 What effect does this problem have on the specified entity? You may specify one of the following:
 

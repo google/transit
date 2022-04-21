@@ -8,7 +8,7 @@ If a vehicle is serving multiple trips within the same block (for more informati
 * the feed should include a TripUpdate for the trip currently being served by the vehicle. Producers are encouraged to include TripUpdates for one or more trips after the current trip in this vehicle's block if the producer is confident in the quality of the predictions for these future trip(s). Including multiple TripUpdates for the same vehicle avoids prediction "pop-in" for riders as the vehicle transitions from one trip to another and also gives riders advance notice of delays that impact downstream trips (e.g., when the known delay exceeds planned layover times between trips).
 * the respective TripUpdate entities are not required to be added to the feed in the same order that they are scheduled in the block. For example, if there are trips with `trip_ids` 1, 2, and 3 that all belong to one block, and the vehicle travels trip 1, then trip 2, and then trip 3, the `trip_update` entities may appear in any order - for example, adding trip 2, then trip 1, and then trip 3 is allowed.
 
-## Stop Time Updates
+## StopTimeUpdate
 
 A trip update consists of one or more updates to vehicle stop times, which are referred to as [StopTimeUpdates](reference.md#message-stoptimeupdate). These can be supplied for past and future stop times. You are allowed, but not required, to drop past stop times.  Producers should not drop a past `StopTimeUpdate` if it refers to a stop with a scheduled arrival time in the future for the given trip (i.e. the vehicle has passed the stop ahead of schedule), as otherwise it will be concluded that there is no update for this stop.
 
@@ -48,9 +48,9 @@ This will be interpreted as:
 *   stop_sequences 8,9 have delay of 60 seconds.
 *   stop_sequences 10,..,20 have unknown delay.
 
-### Trip Descriptor
+## TripDescriptor
 
-The information provided by the trip descriptor depends on the schedule relationship of trip you are updating. There are a number of options for you to set:
+The information provided by the TripDescriptor depends on the schedule relationship of trip you are updating. There are a number of options for you to set:
 
 |_**Value**_|_**Comment**_|
 |-----------|-------------|
