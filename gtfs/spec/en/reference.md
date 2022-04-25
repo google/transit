@@ -196,8 +196,6 @@ Primary key (`route_id`)
 
 File: **Required**
 
-#### Example showing blocks and service day
-=======
 Primary key (`trip_id`)
 
 |  Field Name | Type | Presence | Description |
