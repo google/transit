@@ -6,30 +6,30 @@ The official specification, reference and documentation are written in English. 
 1. Create a git branch with update of all relevant parts of protocol definition, specification and documentation files (except for translations).
 1. Create pull request on https://github.com/google/transit. Pull request must contain an extended description of the patch. The creator of the pull request becomes the _advocate_.
 1. Once pull request is registered, it must be announced by its advocate in the [GTFS Changes mailing list](https://groups.google.com/forum/#!forum/gtfs-changes), including a link to the pull request. Once announced, the pull request is considered a proposal.  The pull request should also be edited to contain a link to the Google Groups announcement so they can easily be cross-referenced.
-  - Since the advocate is a contributor, they must sign the [Contributor License Agreement](../CONTRIBUTING.md) before pull request can be accepted.
+  	- Since the advocate is a contributor, they must sign the [Contributor License Agreement](../CONTRIBUTING.md) before pull request can be accepted.
 1. The discussion of the proposal follows. Pull request comments should be used as the sole discussion forum.
-  - The discussion lasts for as long as the advocate feels necessary, but must be at least 7 calendar days.
-  - The advocate is responsible for timely update of the proposal (i.e. pull request) based on the comments for which they agree to.
-  - At any point in time the advocate can claim proposal abandoned.
+  	- The discussion lasts for as long as the advocate feels necessary, but must be at least 7 calendar days.
+  	- The advocate is responsible for timely update of the proposal (i.e. pull request) based on the comments for which they agree to.
+  	- At any point in time the advocate can claim proposal abandoned.
 1. The advocate can call for a vote on a version of the proposal at any point in time following the initial 7-day interval required for discussion.
-  - Before calling for a vote, at least one GTFS producer and one GTFS consumer should implement the proposed change.  It is expected that the GTFS producer(s) include the change in a public-facing GTFS feed and provide a link to that data within the pull request comments, and that the GTFS consumer(s) provides a link in the pull request comments to an application that is utilizing the change in a non-trivial manner (i.e, it is supporting new or improved functionality).
+  	- Before calling for a vote, at least one GTFS producer and one GTFS consumer should implement the proposed change.  It is expected that the GTFS producer(s) include the change in a public-facing GTFS feed and provide a link to that data within the pull request comments, and that the GTFS consumer(s) provides a link in the pull request comments to an application that is utilizing the change in a non-trivial manner (i.e, it is supporting new or improved functionality).
 1. Vote lasts the minimum period sufficient to cover 7 full calendar days and 5 full Swiss business days. Vote ends at 23:59:59 UTC.
-  - The advocate should announce the specific end time at the start of the vote.
-  - During voting period only editorial changes to the proposal are allowed (typos, wording may change as long as it does not change the meaning).
-  - Anyone is allowed to vote yes/no in a form of comment to the pull request, and votes can be changed until the end of the voting period.
+  	- The advocate should announce the specific end time at the start of the vote.
+  	- During voting period only editorial changes to the proposal are allowed (typos, wording may change as long as it does not change the meaning).
+  	- Anyone is allowed to vote yes/no in a form of comment to the pull request, and votes can be changed until the end of the voting period.
     If a voter changes her vote, it is recommended to do it by updating the original vote comment by striking through the vote and writing the new vote.
-  - Votes before the start of the voting period are not considered.
+  	- Votes before the start of the voting period are not considered.
+	- Opening and closing of votes must be announced on the [GTFS Changes mailing list](https://groups.google.com/forum/#!forum/gtfs-changes).
 1. The proposal is accepted if there is a unanimous consensus yes with at least 3 votes.
-  - The proposer's vote does not count towards the 3 vote total. For example, if Proposer X creates a pull request and votes yes, and User Y and Z vote yes, this is counted as 2 total yes votes.
-  - Votes against shall be motivated, and ideally provide actionable feedback.
-  - If the vote has failed, then the advocate may choose to continue work on the proposal, or to abandon the proposal.
-    Either decision of the advocate must be announced in the mailing list.
-  - If the advocate continues the work on proposal then a new vote can be called for at any point in time but no later than 30 calendar days after the end of the previous vote.
-  - If a vote was not called within 30 calendar days from the original proposal or 30 calendar days since end of the previous vote, then the proposal is abandoned.
-1. If the proposal is abandoned, the corresponding pull request is closed.
+  	- The proposer's vote does not count towards the 3 vote total. For example, if Proposer X creates a pull request and votes yes, and User Y and Z vote yes, this is counted as 2 total yes votes.
+  	- Votes against shall be motivated, and ideally provide actionable feedback.
+  	- If the vote has failed, then the advocate may choose to continue work on the proposal, or to abandon the proposal.
+    Either decision of the advocate must be announced in the [GTFS Changes mailing list](https://groups.google.com/forum/#!forum/gtfs-changes).
+  	- If the advocate continues the work on proposal then a new vote can be called for at any point in time.
+1. Any pull request remaining inactive for 30 calendar days will be closed. When a pull request is closed, the corresponding proposal is considered abandoned. The advocate may reopen the pull request at any time if they wish to continue or maintain the conversation.
 1. If the proposal is accepted:
-  - Google is committed to merging the voted upon version of the pull request (provided that the contributors have signed the [CLA](../CONTRIBUTING.md)), and performing the pull request within 5 business days.
-  - Translations must not be included into the original pull request.
+  	- Google is committed to merging the voted upon version of the pull request (provided that the contributors have signed the [CLA](../CONTRIBUTING.md)), and performing the pull request within 5 business days.
+  	- Translations must not be included into the original pull request.
     Google is responsible for eventually updating relevant translations into supported languages, but pure translation pull requests from the community are welcome and will be accepted as soon as all editorial comments are addressed.
 1. The final result of the pull request (accepted or abandoned) should be announced on the same Google Groups thread where the pull request was originally announced.
 
@@ -50,9 +50,135 @@ Every new feature adds complexity to the creation and reading of feeds. Therefor
 
 ### Revision History
 
+#### September 15, 2021
+
+* Allowed fare gates (pathway_mode=6) to be bidirectional. See [discussion](https://github.com/google/transit/pull/276).
+
+#### September 13, 2021
+
+* Updated `stop_name` best practices. See [discussion](https://github.com/google/transit/pull/282).
+
+#### August 27, 2021
+
+* Updated GTFS Schedule to [RFC 2119](https://datatracker.ietf.org/doc/html/rfc2119). See [discussion](https://github.com/google/transit/pull/277).
+
+#### January 4, 2021
+
+* Clarified description of `stop_times.stop_id`. See [discussion](https://github.com/google/transit/pull/258).
+* Defined positive and non-zero field signs. See [discussion](https://github.com/google/transit/pull/251).
+
+#### October 2, 2020
+
+* Changed field type of `frequencies.headway_secs` from non-negative to positive integer. See [discussion](https://github.com/google/transit/pull/249).
+
+#### May 25, 2020
+
+* Defined `pathways.txt`, `levels.txt` and `attributions.txt` as translatable tables. Added recommendations for translating multilingual `signposted_as` values. See [discussion](https://github.com/google/transit/pull/220).
+
+#### May 13, 2020
+
+* Added `continuous_pickup` and `continuous_drop_off` to `routes.txt` and `stop_times.txt`. Changed `shape_id` from "Optional" to "Conditionally required". See [discussion](https://github.com/google/transit/pull/208).
+
+#### March 24, 2020
+
+* Defined text-to-speech field and added `tts_stop_name` to `stops.txt`. See [discussion](https://github.com/google/transit/pull/49).
+
+#### February 5, 2020
+
+* Added trolleybus and monorail `route_types`. See [discussion](https://github.com/google/transit/pull/174).
+
+#### January 9, 2020
+
+* Added `translations.txt`. See [discussion](https://github.com/google/transit/pull/180).
+
+#### December 26, 2019
+
+* Updated definitions for cable tram and aerial lift in `route_type`. See [discussion](https://github.com/google/transit/pull/186).
+
+#### December 20, 2019
+
+* Added `attributions.txt`. See [discussion](https://github.com/google/transit/pull/192).
+
+#### August 26, 2019
+
+* Specified that `stop_lat` and `stop_lon` be positioned where passengers wait to board the vehicle. See [discussion](https://github.com/google/transit/pull/179).
+
+#### July 9, 2019
+
+* Added arrival and departure time best practices. See [discussion](https://github.com/google/transit/pull/165).
+* Added headsign best practices. See [discussion](https://github.com/google/transit/pull/167).
+* Added `stop_id` best practices. See [discussion](https://github.com/google/transit/pull/169).
+
+#### June 25, 2019
+
+* Clarified relationship of shape points and stops. See [discussion](https://github.com/google/transit/pull/39).
+
+#### April 4, 2019
+
+* Added `platform_code` field in `stops.txt`. See [discussion](https://github.com/google/transit/pull/146).
+
+#### March 27, 2019
+
+* Added `pathways.txt` and `levels.txt`. See [discussion](https://github.com/google/transit/pull/143).
+
+#### February 6, 2019
+
+* Editorial and formatting changes for clarity.  See [discussion](https://github.com/google/transit/pull/120).
+
+#### October 2, 2018
+
+* Factorized field types. See [discussion](https://github.com/google/transit/pull/104).
+
+#### September 14, 2018
+
+* Added "Conditionally required" concept. See [discussion](https://github.com/google/transit/pull/100).
+
+#### September 4, 2018
+
+* Unified the definitions of `agency_lang` and `feed_lang`. See [discussion](https://github.com/google/transit/pull/98).
+
+#### August 27, 2018
+
+* Updated `CHANGES.md` and last revised date. See [discussion](https://github.com/google/transit/pull/99).
+
+#### August 22, 2018
+
+* Added `feed_contact_email` and `feed_contact_url` fields in the `feed_info.txt` file. See [discussion](https://github.com/google/transit/pull/31).
+
+#### December 11, 2017
+
+* Added `route_sort_order` to `routes.txt`. See [discussion](https://github.com/google/transit/pull/83).
+
+#### March 15, 2017
+
+* Clarified that a proposer's vote does not count towards total. See [discussion](https://github.com/google/transit/pull/50).
+* Specified that at before calling a vote, at least one GTFS producer and one GTFS consumer should implement the proposed change. See [discussion](https://github.com/google/transit/pull/46).
+
+#### February 7, 2017
+
+* Clarified relationship of `block_id` and `service_id`. See [discussion](https://github.com/google/transit/pull/44).
+* Clarified that frequency-based service begins at vehicle departure. See [discussion](https://github.com/google/transit/pull/42).
+* Clarified descriptions of `stop_id` and `stop_code`. See [discussion](https://github.com/google/transit/pull/40).
+
+#### December 11, 2017
+
+* Added `route_sort_order` field in the `routes.txt` file. See [discussion](https://github.com/google/transit/pull/83).
+
+#### November 27, 2016
+
+* Added station entrance as a `stops.location_type`. See [discussion](https://github.com/google/transit/pull/30).
+
+#### September 2, 2016
+
+* Updated documentation to add `agency_id` under `fare_attributes.txt`. See [discussion](https://github.com/google/transit/pull/27).
+
 #### March 16, 2016
 
 * Transition of GTFS documentation to Github at https://github.com/google/transit
+
+#### February 3, 2016
+
+* Added  `agency_email` to `agency.txt` proposal to spec: [discussion](https://groups.google.com/forum/?fromgroups#!topic/gtfs-changes/aezjQsriLYA)
 
 #### February 2, 2015
 

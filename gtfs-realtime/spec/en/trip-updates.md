@@ -4,9 +4,13 @@ Trip updates represent fluctuations in the timetable. We would expect to receive
 
 There should be **at most** one trip update for each scheduled trip. In case there is no trip update for a scheduled trip, it will be concluded that no realtime data is available for the trip. The data consumer should **not** assume that the trip is running on time.
 
+If a vehicle is serving multiple trips within the same block (for more information about trips and blocks, please refer to [GTFS trips.txt](https://github.com/google/transit/blob/master/gtfs/spec/en/reference.md#tripstxt)):
+* the feed should include a TripUpdate for the trip currently being served by the vehicle. Producers are encouraged to include TripUpdates for one or more trips after the current trip in this vehicle's block if the producer is confident in the quality of the predictions for these future trip(s). Including multiple TripUpdates for the same vehicle avoids prediction "pop-in" for riders as the vehicle transitions from one trip to another and also gives riders advance notice of delays that impact downstream trips (e.g., when the known delay exceeds planned layover times between trips).
+* the respective TripUpdate entities are not required to be added to the feed in the same order that they are scheduled in the block. For example, if there are trips with `trip_ids` 1, 2, and 3 that all belong to one block, and the vehicle travels trip 1, then trip 2, and then trip 3, the `trip_update` entities may appear in any order - for example, adding trip 2, then trip 1, and then trip 3 is allowed.
+
 ## Stop Time Updates
 
-A trip update consists of one or more updates to vehicle stop times, which are referred to as [StopTimeUpdates](reference.md#StopTimeUpdate). These can be supplied for past and future stop times. You are allowed, but not required, to drop past stop times.  Producers should not drop a past `StopTimeUpdate` if it refers to a stop with a scheduled arrival time in the future for the given trip (i.e. the vehicle has passed the stop ahead of schedule), as otherwise it will be concluded that there is no update for this stop.  
+A trip update consists of one or more updates to vehicle stop times, which are referred to as [StopTimeUpdates](reference.md#StopTimeUpdate). These can be supplied for past and future stop times. You are allowed, but not required, to drop past stop times.  Producers should not drop a past `StopTimeUpdate` if it refers to a stop with a scheduled arrival time in the future for the given trip (i.e. the vehicle has passed the stop ahead of schedule), as otherwise it will be concluded that there is no update for this stop.
 
 For example, if the following data appears in the GTFS-rt feed:
 
@@ -23,7 +27,7 @@ For each [StopTimeUpdate](reference.md#StopTimeUpdate), the default schedule rel
 
 **Updates should be sorted by stop_sequence** (or stop_ids in the order they occur in the trip).
 
-If one or more stops are missing along the trip the update is propagated to all subsequent stops. This means that updating a stop time for a certain stop will change all subsequent stops in the absence of any other information.
+If one or more stops are missing along the trip the `delay` from the update (or, if only `time` is provided in the update, a delay computed by comparing the `time` against the GTFS schedule time) is propagated to all subsequent stops. This means that updating a stop time for a certain stop will change all subsequent stops in the absence of any other information. Note that updates with a schedule relationship of `SKIPPED` will not stop delay propagation, but updates with schedule relationships of `SCHEDULED` (also the default value if schedule relationship is not provided) or `NO_DATA` will.
 
 **Example 1**
 
@@ -35,7 +39,7 @@ For the same trip instance, three [StopTimeUpdates](reference.md#StopTimeUpdate)
 
 *   delay of 300 seconds for stop_sequence 3
 *   delay of 60 seconds for stop_sequence 8
-*   delay of unspecified duration for stop_sequence 10
+*   [ScheduleRelationship](/gtfs-realtime/spec/en/reference.md/#enum-schedulerelationship) of `NO_DATA` for stop_sequence 10
 
 This will be interpreted as:
 
@@ -54,8 +58,9 @@ The information provided by the trip descriptor depends on the schedule relation
 | **Added** | This trip was not scheduled and has been added. For example, to cope with demand, or replace a broken down vehicle. |
 | **Unscheduled** | This trip is running and is never associated with a schedule. For example, if there is no schedule and the buses run on a shuttle service. |
 | **Canceled** | This trip was scheduled, but is now removed. |
+| **Duplicated** | This new trip is a copy of an existing trip in static GTFS except for the service start date and time. The new trip will run at the service date and time specified in TripProperties. |
 
-In most cases, you should provide the trip_id of the scheduled trip in GTFS that this update relates to. 
+In most cases, you should provide the trip_id of the scheduled trip in GTFS that this update relates to.
 
 #### Systems with repeated trip_ids
 
