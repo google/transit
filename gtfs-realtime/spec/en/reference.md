@@ -261,7 +261,7 @@ Realtime positioning information for a given vehicle.
 |-------------|---------------|
 | **INCOMING_AT** | The vehicle is just about to arrive at the referenced stop (on a stop display, the vehicle symbol typically flashes). |
 | **STOPPED_AT** | The vehicle is standing at the referenced stop. |
-| **IN_TRANSIT_TO** | The vehicle has departed and is in transit to the referenced stop. |
+| **IN_TRANSIT_TO** | The vehicle is in transit to the referenced stop. |
 
 ## _enum_ CongestionLevel
 

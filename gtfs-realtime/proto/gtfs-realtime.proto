@@ -426,7 +426,7 @@ message VehiclePosition {
     // The vehicle is standing at the referenced stop.
     STOPPED_AT = 1;
 
-    // The vehicle has departed and is in transit to the referenced stop.
+    // The vehicle is in transit to the referenced stop.
     IN_TRANSIT_TO = 2;
   }
   // The exact status of the vehicle with respect to the current stop.

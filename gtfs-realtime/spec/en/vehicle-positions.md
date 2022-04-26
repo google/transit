@@ -48,7 +48,7 @@ Vehicle stop status gives more meaning to the status of a vehicle in relation wi
 
 *   **Incoming at** - The vehicle is just about to arrive at the referenced stop (on a stop display, the vehicle symbol typically flashes).
 *   **Stopped at** - The vehicle is standing at the referenced stop.
-*   **In transit to** - The vehicle has departed and is in transit to the referenced stop. - **default**
+*   **In transit to** - The vehicle is in transit to the referenced stop. - **default**
 
 ## Vehicle Descriptor
 
