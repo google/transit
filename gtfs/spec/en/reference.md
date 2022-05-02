@@ -349,8 +349,8 @@ To describe the different types of tickets or fares that can be purchased by rid
 |  ------ | ------ | ------ | ------ |
 | `fare_product_id` | Unique ID | Required | Identifies a fare product. |
 | `fare_product_name` | Text | Optional | The name of the fare product as displayed to riders. |
-| `amount` | Currency amount | Optional | The cost of the fare product. May be negative to represent transfer discounts. If empty, the cost of the transfer rule is 0. |
-| `currency` | Currency code | Conditionally Required | The currency of the cost of the fare product.<br><br>Conditionally Required:<br> - **Required** if `fare_products.amount` is defined.<br> - Forbidden otherwise. |
+| `amount` | Currency amount | Required | The cost of the fare product. May be negative to represent transfer discounts. May be zero to represent a fare product that is free.|
+| `currency` | Currency code | Required | The currency of the cost of the fare product. |
 
 ## fare_leg_rules.txt
 
