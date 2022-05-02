@@ -395,19 +395,24 @@ File: **Optional**
 
 Primary Key (`from_leg_group_id, to_leg_group_id, fare_product_id, transfer_count, duration_limit`)
 
-Fare rules for transfers between legs of travel defined in [fare_leg_rules.txt](#fare_leg_rulestxt).
-
-Transfer costs in [fare_transfer_rules.txt](#fare_transfer_rulestxt) are queried by filtering fields until a transfer cost matches the characteristics of the transfer. Undefined values in the fields that are filtered will be matched by default to empty values for that field.
-
-It is recommended that consumers filter [fare_transfer_rules.txt](#fare_transfer_rulestxt) by the fields that define the characteristics of the transfer as outputted from trip planning software using [fare_leg_rules.txt](#fare_leg_rulestxt). The fields in [fare_transfer_rules.txt](#fare_transfer_rulestxt) that define characteristics of the transfer are:
-- `fare_transfer_rules.from_leg_group_id`
-- `fare_transfer_rules.to_leg_group_id`
+Fare rules for transfers between legs of travel defined in [`fare_leg_rules.txt`](#fare_leg_rulestxt).
 
 To process the cost of a multi-leg journey:
-1. Determine the applicable fares defined in [fare_leg_rules.txt](#fare_leg_rulestxt) for all individual legs of travel.
-2. Process the actual cost of the journey based on the leg-to-leg transfers defined in `fare_transfer_rules.from_leg_group_id`, `fare_transfer_rules.to_leg_group_id`, and `fare_transfer_rules.fare_transfer_type`.
 
-Transfers are only possible between fare leg groups defined in `fare_transfer_rules.from_leg_group_id` and `fare_transfer_rules.to_leg_group_id`. A new fare is required to travel between an undefined pair of leg groups.
+1. The applicable fare leg groups defined in `fare_leg_rules.txt` should be determined for all individual legs of travel based on the rider’s journey.
+2. The file `fare_transfer_rules.txt` must be filtered by the fields that define the characteristics of the transfer, these fields are:
+    - `fare_transfer_rules.from_leg_group_id`
+    - `fare_transfer_rules.to_leg_group_id`<br/>
+    <br/>
+
+3. If the transfer exactly matches a record in `fare_transfer_rules.txt` based on the characteristics of the transfer, then that record must be processed to determine the transfer cost.
+4. If no exact matches are found, then empty entries in `from_leg_group_id` or in `to_leg_group_id` must be checked to process the transfer cost:
+    - An empty entry in `fare_transfer_rules.from_leg_group_id` corresponds to all leg groups defined under `fare_leg_rules.leg_group_id` excluding the ones listed under `fare_transfer_rules.from_leg_group_id`
+    - An empty entry in `fare_transfer_rules.to_leg_group_id` corresponds to all leg groups defined under `fare_leg_rules.leg_group_id` excluding the ones listed under `fare_transfer_rules.to_leg_group_id`<br/>
+    <br/>
+5. If the transfer does not match any of the rules described above, then there is no transfer arrangement and the legs are considered separate.
+
+<br/>
 
 |  Field Name | Type | Presence | Description |
 |  ------ | ------ | ------ | ------ |
