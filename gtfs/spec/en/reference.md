@@ -49,6 +49,8 @@ This section defines terms that are used throughout this document.
 * **Text-to-speech field** - The field should contain the same information than its parent field (on which it falls back if it is empty). It is aimed to be read as text-to-speech, therefore, abbreviation should be either removed ("St" should be either read as "Street" or "Saint"; "Elizabeth I" should be "Elizabeth the first") or kept to be read as it ("JFK Airport" is said abbreviated).
 * **Leg** - Travel in which a rider boards and alights between a pair of subsequent locations along a trip.
 * **Journey** - Overall travel from origin to destination, including all legs and transfers in-between.
+* **Sub-journey** - Two or more legs that comprise a subset of a journey.
+* **Fare product** - Purchassable fare products that can be used to pay for or validate travel.
 
 ### Presence
 Presence conditions applicable to fields and files:
