@@ -341,7 +341,7 @@ For examples that demonstrate how to specify a fare structure with [fare_rules.t
 |  `destination_id` | Foreign ID referencing `stops.zone_id` | Optional | Identifies a destination zone. If a fare class has multiple destination zones, create a record in [fare_rules.txt](#fare_rules.txt) for each `destination_id`.<hr>*Example: The `origin_id` and `destination_id` fields could be used together to specify that fare class "b" is valid for travel between zones 3 and 4, and for travel between zones 3 and 5, the [fare_rules.txt](#fare_rules.txt) file would contain these records for the fare class:* <br>`fare_id,...,origin_id,destination_id` <br>`b,...,3,4`<br> `b,...,3,5` |
 |  `contains_id` | Foreign ID referencing `stops.zone_id` | Optional | Identifies the zones that a rider will enter while using a given fare class. Used in some systems to calculate correct fare class. <hr>*Example: If fare class "c" is associated with all travel on the GRT route that passes through zones 5, 6, and 7 the [fare_rules.txt](#fare_rules.txt) would contain these records:* <br> `fare_id,route_id,...,contains_id` <br>  `c,GRT,...,5` <br>`c,GRT,...,6` <br>`c,GRT,...,7` <br> *Because all `contains_id` zones must be matched for the fare to apply, an itinerary that passes through zones 5 and 6 but not zone 7 would not have fare class "c". For more detail, see [https://code.google.com/p/googletransitdatafeed/wiki/FareExamples](https://code.google.com/p/googletransitdatafeed/wiki/FareExamples) in the GoogleTransitDataFeed project wiki.* |
 
-## fare_products.txt
+### fare_products.txt
 
 File: **Optional**
 
@@ -356,7 +356,7 @@ To describe the different types of tickets or fares that can be purchased by rid
 | `amount` | Currency amount | **Required** | The cost of the fare product. May be negative to represent transfer discounts. May be zero to represent a fare product that is free.|
 | `currency` | Currency code | **Required** | The currency of the cost of the fare product. |
 
-## fare_leg_rules.txt
+### fare_leg_rules.txt
 
 File: **Optional**
 
@@ -393,7 +393,7 @@ To process the cost of a leg:
 | `to_area_id` | Foreign ID referencing `areas.area_id` | Optional | Identifies an arrival area.<br><br>If there are no matching `fare_leg_rules.to_area_id` values to the `area_id` being filtered, empty `fare_leg_rules.to_area_id` will be matched by default.<br><br> An empty entry in `fare_leg_rules.to_area_id` corresponds to all areas defined in `areas.area_id` excluding the ones listed under `fare_leg_rules.to_area_id` |
 | `fare_product_id` | Foreign ID referencing `fare_products.fare_product_id` | **Required** | The fare product required to travel the leg. |
 
-## fare_transfer_rules.txt
+### fare_transfer_rules.txt
 
 File: **Optional**
 
@@ -429,7 +429,7 @@ To process the cost of a multi-leg journey:
 | `fare_product_id` | Foreign ID referencing `fare_products.fare_product_id` | Optional | The fare product required to transfer between two fare legs. If empty, the cost of the transfer rule is 0.|
 
 
-## areas.txt
+### areas.txt
 
 File: **Optional**
 
@@ -442,7 +442,7 @@ Defines area identifiers.
 | `area_id` | Unique ID | **Required** | Identifies an area. Must be unique in [areas.txt](#areastxt). |
 | `area_name` | Text | **Optional** | The name of the area as displayed to the rider. |
 
-## stop_areas.txt
+### stop_areas.txt
 
 File: **Optional**
 
