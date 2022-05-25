@@ -3,9 +3,9 @@
 GTFS-realtime data is encoded and decoded using [Protocol Buffers](https://developers.google.com/protocol-buffers/), a compact binary representation designed for fast and efficient processing. How does one generate or parse this binary data? Read on for code samples to help you get started.
 
 ### Language Bindings
-To work with GTFS realtime data, a developer would typically use the [gtfs-realtime.proto](../proto) schema to generate classes in the programming language of their choice. These classes can then be used for constructing GTFS realtime data model objects and serializing them as binary data or, in the reverse direction, parsing binary data into data model objects.
+To work with GTFS realtime data, a developer would typically use the [gtfs-realtime.proto](../../../../proto/gtfs-realtime.proto) schema to generate classes in the programming language of their choice. These classes can then be used for constructing GTFS realtime data model objects and serializing them as binary data or, in the reverse direction, parsing binary data into data model objects.
 
-Because generating GTFS realtime data model classes from the [gtfs-realtime.proto](../proto)  schema is such a common task, but also one that sometimes causes confusion for first-time developers, we provide pre-generated GTFS realtime language bindings for a number of the most popular programming languages through the open-source [gtfs-realtime-bindings](https://github.com/google/gtfs-realtime-bindings) project.
+Because generating GTFS realtime data model classes from the [gtfs-realtime.proto](../../../../proto/gtfs-realtime.proto)  schema is such a common task, but also one that sometimes causes confusion for first-time developers, we provide pre-generated GTFS realtime language bindings for a number of the most popular programming languages through the open-source [gtfs-realtime-bindings](https://github.com/google/gtfs-realtime-bindings) project.
 
 Read on for language-specific details on parsing GTFS realtime data:
 
