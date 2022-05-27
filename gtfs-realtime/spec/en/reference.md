@@ -328,8 +328,10 @@ An alert, indicating some sort of incident in the public transit network.
 |------------------|------------|----------------|-------------------|-------------------|
 | **active_period** | [TimeRange](#message-timerange) | Optional | Many | Time when the alert should be shown to the user. If missing, the alert will be shown as long as it appears in the feed. If multiple ranges are given, the alert will be shown during all of them. |
 | **informed_entity** | [EntitySelector](#message-entityselector) | Required | Many | Entities whose users we should notify of this alert.  At least one informed_entity must be provided. |
-| **cause** | [Cause](#enum-cause) | Optional | One |
-| **effect** | [Effect](#enum-effect) | Optional | One |
+| **cause** | [Cause](#enum-cause) | Conditionally Required | One | If cause_detail is included, then Cause must also be included.
+| **cause_detail** | [TranslatedString](#message-translatedstring) | Optional | One | Description of the cause of the alert that allows for agency-specific language; more specific than the Cause. If cause_detail is included, then Cause must also be included. <br><br>**Caution:** this field is still **experimental**, and subject to change. It may be formally adopted in the future.
+| **effect** | [Effect](#enum-effect) | Conditionally Required | One | If effect_detail is included, then Effect must also be included.
+| **effect_detail** | [TranslatedString](#message-translatedstring) | Optional | One | Description of the effect of the alert that allows for agency-specific language; more specific than the Effect. If effect_detail is included, then Effect must also be included. <br><br>**Caution:** this field is still **experimental**, and subject to change. It may be formally adopted in the future.
 | **url** | [TranslatedString](#message-translatedstring) | Optional | One | The URL which provides additional information about the alert. |
 | **header_text** | [TranslatedString](#message-translatedstring) | Required | One | Header for the alert. This plain-text string will be highlighted, for example in boldface. |
 | **description_text** | [TranslatedString](#message-translatedstring) | Required | One | Description for the alert. This plain-text string will be formatted as the body of the alert (or shown on an explicit "expand" request by the user). The information in the description should add to the information of the header. |
