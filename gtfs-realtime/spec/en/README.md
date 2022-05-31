@@ -42,7 +42,7 @@ This text file is used to generate the necessary libraries in your choice of pro
 
 ## Getting Help
 
-To participate in discussions around GTFS Realtime and suggest changes and additions to the specification, join the [GTFS Realtime mailing list](http://groups.google.com/group/gtfs-realtime).
+To participate in discussions around GTFS Realtime and suggest changes and additions to the specification, join the [GTFS Realtime mailing list](http://groups.google.com/group/gtfs-realtime) and follow conversations on the [google/transit GitHub repository](https://github.com/google/transit).
 
 ## Google Maps and Live Transit Updates
 
