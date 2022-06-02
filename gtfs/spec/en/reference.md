@@ -595,6 +595,8 @@ Primary key (none)
 
 The file contains information about the dataset itself, rather than the services that the dataset describes. In some cases, the publisher of the dataset is a different entity than any of the agencies.
 
+If both referencing methods (`record_id`, `record_sub_id`) and `field_value` are used to translate the same value in 2 different rows, the translation provided with (`record_id`, `record_sub_id`) takes precedence.
+
 |  Field Name | Type | Presence | Description |
 |  ------ | ------ | ------ | ------ |
 |  `feed_publisher_name` | Text | **Required** | Full name of the organization that publishes the dataset. This may be the same as one of the `agency.agency_name` values. |
