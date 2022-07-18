@@ -389,7 +389,7 @@ The following applies to `transfer_type=4` and `=5`, which are used to link trip
 
 The trips linked together MUST be operated by the same vehicle. The vehicle MAY be coupled to, or uncoupled from, other vehicles.
 
-If both a linked trips transfer and a block_id are provided and they produce conflicting results, then the liked trips transfer shall be used.
+If both a linked trips transfer and a block_id are provided and they produce conflicting results, then the linked trips transfer shall be used.
 
 The last stop of `from_trip_id` SHOULD be geographically close to the first stop of `to_trip_id`, and the last arrival time of `from_trip_id` SHOULD be prior but close to the first departure time of `to_trip_id`. The last arrival time of `from_trip_id` MAY be later than the first departure time of `to_trip_id` in case the `to_trip_id` trip is occurring the subsequent service day. 
 
