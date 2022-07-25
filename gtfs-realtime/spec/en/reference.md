@@ -46,6 +46,7 @@ Fields labeled as **experimental** are subject to change and not yet formally ad
             *   [TripDescriptor](#message-tripdescriptor)
                 *   [ScheduleRelationship](#enum-schedulerelationship-1)
             *   [VehicleDescriptor](#message-vehicledescriptor)
+                *   [WheelchairAccessible](#enum-wheelchairaccessible)
             *   [StopTimeUpdate](#message-stoptimeupdate)
                 *   [StopTimeEvent](#message-stoptimeevent)
                 *   [ScheduleRelationship](#enum-schedulerelationship)
@@ -55,6 +56,7 @@ Fields labeled as **experimental** are subject to change and not yet formally ad
             *   [TripDescriptor](#message-tripdescriptor)
                 *   [ScheduleRelationship](#enum-schedulerelationship-1)
             *   [VehicleDescriptor](#message-vehicledescriptor)
+                *   [WheelchairAccessible](#enum-wheelchairaccessible)
             *   [Position](#message-position)
             *   [VehicleStopStatus](#enum-vehiclestopstatus)
             *   [CongestionLevel](#enum-congestionlevel)
@@ -474,6 +476,20 @@ Identification information for the vehicle performing the trip.
 | **id** | [string](https://developers.google.com/protocol-buffers/docs/proto#scalar) | Optional | One | Internal system identification of the vehicle. Should be **unique** per vehicle, and is used for tracking the vehicle as it proceeds through the system. This id should not be made visible to the end-user; for that purpose use the **label** field |
 | **label** | [string](https://developers.google.com/protocol-buffers/docs/proto#scalar) | Optional | One | User visible label, i.e., something that must be shown to the passenger to help identify the correct vehicle. |
 | **license_plate** | [string](https://developers.google.com/protocol-buffers/docs/proto#scalar) | Optional | One | The license plate of the vehicle. |
+| **wheelchair_accessible** | [WheelchairAccessible](#enum-wheelchairaccessible) | Optional | One | If provided, can overwrite the *wheelchair_accessible* value from the static GTFS. |
+
+## _enum_ WheelchairAccessible
+
+If a particuliar trip is accessible to wheelchair. When available, this value should overwrite the _wheelchair_accessible_ value from the static GTFS.
+
+#### Values
+
+| _**Value**_ | _**Comment**_ |
+|-------------|---------------|
+| **NO_VALUE** | The trip doesn't have information about wheelchair accessibility. This is the **default** behavior. If the static GTFS contains a _wheelchair_accessible_ value, it won't be overwritten. |
+| **UNKNOWN** | The trip has no accessibility value present. This value will overwrite the value from the GTFS.  |
+| **WHEELCHAIR_ACCESSIBLE** | The trip is wheelchair accessible. This value will overwrite the value from the GTFS. |
+| **WHEELCHAIR_INACCESSIBLE** | The trip is **not** wheelchair accessible. This value will overwrite the value from the GTFS. |
 
 ## _message_ EntitySelector
 
