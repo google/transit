@@ -583,7 +583,7 @@ message Alert {
   // Entities whose users we should notify of this alert.
   repeated EntitySelector informed_entity = 5;
 
-  // Cause of this alert.
+  // Cause of this alert. If cause_detail is included, then Cause must also be included.
   enum Cause {
     UNKNOWN_CAUSE = 1;
     OTHER_CAUSE = 2;        // Not machine-representable.
@@ -600,7 +600,7 @@ message Alert {
   }
   optional Cause cause = 6 [default = UNKNOWN_CAUSE];
 
-  // What is the effect of this problem on the affected entity.
+  // What is the effect of this problem on the affected entity. If effect_detail is included, then Effect must also be included.
   enum Effect {
     NO_SERVICE = 1;
     REDUCED_SERVICE = 2;
@@ -656,6 +656,15 @@ message Alert {
   // or the user can't see the image for accessibility reasons). See the HTML spec for alt image text - https://html.spec.whatwg.org/#alt.
   // NOTE: This field is still experimental, and subject to change. It may be formally adopted in the future.
   optional TranslatedString image_alternative_text = 16;
+  
+  
+  // Description of the cause of the alert that allows for agency-specific language; more specific than the Cause. If cause_detail is included, then Cause must also be included.
+  // NOTE: This field is still experimental, and subject to change. It may be formally adopted in the future.
+  optional TranslatedString cause_detail = 17;
+  
+  // Description of the effect of the alert that allows for agency-specific language; more specific than the Effect. If effect_detail is included, then Effect must also be included.
+  // NOTE: This field is still experimental, and subject to change. It may be formally adopted in the future.
+  optional TranslatedString effect_detail = 18;
 
   // The extensions namespace allows 3rd-party developers to extend the
   // GTFS Realtime Specification in order to add and evaluate new features
