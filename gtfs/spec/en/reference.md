@@ -221,7 +221,7 @@ Primary key (`trip_id`)
 |  `trip_headsign` | Text | Optional | Text that appears on signage identifying the trip's destination to riders. Should be used to distinguish between different patterns of service on the same route.<br><br> If the headsign changes during a trip, values for `trip_headsign` may be overridden by defining values in `stop_times.stop_headsign` for specific `stop_time`s along the trip. |
 |  `trip_short_name` | Text | Optional | Public facing text used to identify the trip to riders, for instance, to identify train numbers for commuter rail trips. If riders do not commonly rely on trip names, `trip_short_name` should be empty. A `trip_short_name` value, if provided, should uniquely identify a trip within a service day; it should not be used for destination names or limited/express designations. |
 |  `direction_id` | Enum | Optional | Indicates the direction of travel for a trip. This field should not be used in routing; it provides a way to separate trips by direction when publishing time tables. Valid options are: <br><br>`0` - Travel in one direction (e.g. outbound travel).<br>`1` - Travel in the opposite direction (e.g. inbound travel).<hr>*Example: The `trip_headsign` and `direction_id` fields may be used together to assign a name to travel in each direction for a set of trips. A [trips.txt](#tripstxt) file could contain these records for use in time tables:* <br> `trip_id,...,trip_headsign,direction_id` <br> `1234,...,Airport,0` <br> `1505,...,Downtown,1` |
-|  `block_id` | ID | Optional | Identifies the block to which the trip belongs. A block consists of a single trip or many sequential trips made using the same vehicle, defined by shared service days and `block_id`. A `block_id` may have trips with different service days, making distinct blocks. See the [example below](#example-blocks-and-service-day) |
+|  `block_id` | ID | Optional | Identifies the block to which the trip belongs. A block consists of a single trip or many sequential trips made using the same vehicle, defined by shared service days and `block_id`. A `block_id` may have trips with different service days, making distinct blocks. See the [example below](#example-blocks-and-service-day). To provide in-seat transfers information, [transfers](#transferstxt) of `transfer_type` `4` should be provided instead. |
 |  `shape_id` | Foreign ID referencing `shapes.shape_id` | **Conditionally Required** | Identifies a geospatial shape describing the vehicle travel path for a trip. <br><br>Conditionally Required: <br>- **Required** if the trip has a continuous pickup or drop-off behavior defined either in `routes.txt` or in `stop_times.txt`. <br>- Optional otherwise. |
 |  `wheelchair_accessible` | Enum | Optional | Indicates wheelchair accessibility. Valid options are:<br><br>`0` or empty - No accessibility information for the trip.<br>`1` - Vehicle being used on this particular trip can accommodate at least one rider in a wheelchair.<br>`2` - No riders in wheelchairs can be accommodated on this trip. |
 |  `bikes_allowed` | Enum | Optional | Indicates whether bikes are allowed. Valid options are:<br><br>`0` or empty - No bike information for the trip.<br>`1` - Vehicle being used on this particular trip can accommodate at least one bicycle.<br>`2` - No bicycles are allowed on this trip. |
@@ -514,14 +514,40 @@ For a given ordered pair of arriving trip and departing trip, the transfer with 
 
 |  Field Name | Type | Presence | Description |
 |  ------ | ------ | ------ | ------ |
-|  `from_stop_id` | Foreign ID referencing `stops.stop_id` | **Required** | Identifies a stop or station where a connection between routes begins. If this field refers to a station, the transfer rule applies to all its child stops. |
-|  `to_stop_id` | Foreign ID referencing `stops.stop_id` | **Required** | Identifies a stop or station where a connection between routes ends. If this field refers to a station, the transfer rule applies to all child stops. |
+|  `from_stop_id` | Foreign ID referencing `stops.stop_id` | **Conditionally Required** | Identifies a stop or station where a connection between routes begins. If this field refers to a station, the transfer rule applies to all its child stops. Refering to a station is forbiden for `transfer_types` 4 and 5. |
+|  `to_stop_id` | Foreign ID referencing `stops.stop_id` | **Conditionally Required** | Identifies a stop or station where a connection between routes ends. If this field refers to a station, the transfer rule applies to all child stops. Refering to a station is forbiden for `transfer_types` 4 and 5. |
 | `from_route_id`  | Foreign ID referencing `routes.route_id` | Optional | Identifies a route where a connection begins.<br><br>If `from_route_id` is defined, the transfer will apply to the arriving trip on the route for the given `from_stop_id`.<br><br>If both `from_trip_id` and `from_route_id` are defined, the `trip_id` must belong to the `route_id`, and `from_trip_id` will take precedence. |
 | `to_route_id`  | Foreign ID referencing `routes.route_id` | Optional | Identifies a route where a connection ends.<br><br>If `to_route_id` is defined, the transfer will apply to the departing trip on the route for the given `to_stop_id`.<br><br>If both `to_trip_id` and `to_route_id` are defined, the `trip_id` must belong to the `route_id`, and `to_trip_id` will take precedence. |
-| `from_trip_id`  | Foreign ID referencing `trips.trip_id` | Optional | Identifies a trip where a connection between routes begins.<br><br>If `from_trip_id` is defined, the transfer will apply to the arriving trip for the given `from_stop_id`.<br><br>If both `from_trip_id` and `from_route_id` are defined, the `trip_id` must belong to the `route_id`, and `from_trip_id` will take precedence. |
-| `to_trip_id`  | Foreign ID referencing `trips.trip_id` | Optional | Identifies a trip where a connection between routes ends.<br><br>If `to_trip_id` is defined, the transfer will apply to the departing trip for the given `to_stop_id`.<br><br>If both `to_trip_id` and `to_route_id` are defined, the `trip_id` must belong to the `route_id`, and `to_trip_id` will take precedence. |
-|  `transfer_type` | Enum | **Required** | Indicates the type of connection for the specified (`from_stop_id`, `to_stop_id`) pair. Valid options are:<br><br> `0` or empty - Recommended transfer point between routes.<br>`1` - Timed transfer point between two routes. The departing vehicle is expected to wait for the arriving one and leave sufficient time for a rider to transfer between routes.<br>`2` - Transfer requires a minimum amount of time between arrival and departure to ensure a connection. The time required to transfer is specified by `min_transfer_time`.<br>`3` - Transfers are not possible between routes at the location. |
+| `from_trip_id`  | Foreign ID referencing `trips.trip_id` | **Conditionally Required** | Identifies a trip where a connection between routes begins.<br><br>If `from_trip_id` is defined, the transfer will apply to the arriving trip for the given `from_stop_id`.<br><br>If both `from_trip_id` and `from_route_id` are defined, the `trip_id` must belong to the `route_id`, and `from_trip_id` will take precedence. REQUIRED if `transfer_type` is `4` or `5`. |
+| `to_trip_id`  | Foreign ID referencing `trips.trip_id` | **Conditionally Required** | Identifies a trip where a connection between routes ends.<br><br>If `to_trip_id` is defined, the transfer will apply to the departing trip for the given `to_stop_id`.<br><br>If both `to_trip_id` and `to_route_id` are defined, the `trip_id` must belong to the `route_id`, and `to_trip_id` will take precedence. REQUIRED if `transfer_type` is `4` or `5`. |
+|  `transfer_type` | Enum | **Required** | Indicates the type of connection for the specified (`from_stop_id`, `to_stop_id`) pair. Valid options are:<br><br> `0` or empty - Recommended transfer point between routes.<br>`1` - Timed transfer point between two routes. The departing vehicle is expected to wait for the arriving one and leave sufficient time for a rider to transfer between routes.<br>`2` - Transfer requires a minimum amount of time between arrival and departure to ensure a connection. The time required to transfer is specified by `min_transfer_time`.<br>`3` - Transfers are not possible between routes at the location.<br>`4` - Passengers can transfer from one trip to another by staying onboard the same vehicle (an "in-seat transfer"). More details about this type of transfer [below](#linked-trips).  <br>`5` - In-seat transfers are not allowed between sequential trips. The passenger must alight from the vehicle and re-board. More details about this type of transfer [below](#linked-trips). |
 |  `min_transfer_time` | Non-negative integer | Optional | Amount of time, in seconds, that must be available to permit a transfer between routes at the specified stops. The `min_transfer_time` should be sufficient to permit a typical rider to move between the two stops, including buffer time to allow for schedule variance on each route. |
+
+#### Linked trips
+
+The following applies to `transfer_type=4` and `=5`, which are used to link trips together, with or without in-seats transfers.
+
+The trips linked together MUST be operated by the same vehicle. The vehicle MAY be coupled to, or uncoupled from, other vehicles.
+
+If both a linked trips transfer and a block_id are provided and they produce conflicting results, then the linked trips transfer shall be used.
+
+The last stop of `from_trip_id` SHOULD be geographically close to the first stop of `to_trip_id`, and the last arrival time of `from_trip_id` SHOULD be prior but close to the first departure time of `to_trip_id`. The last arrival time of `from_trip_id` MAY be later than the first departure time of `to_trip_id` in case the `to_trip_id` trip is occurring the subsequent service day. 
+
+Trips MAY be linked 1-to-1 in the regular case, but MAY also be linked 1-to-n, n-to-1, or n-to-n to represent more complex trip continuations. For example, two train trips (trip A and trip B in the diagram below) can merge into a single train trip (trip C) after a vehicle coupling operation at a common station:
+
+- In a 1-to-n continuation, the `trips.service_id` for each `to_trip_id` MUST be identical.
+- In an n-to-1 continuation, the `trips.service_id` for each `from_trip_id` MUST be identical.
+- n-to-n continuations must respect both constraints.
+- Trips may be linked together as part of multiple distinct continuations, provided that the `trip.service_id` MUST NOT overlap on any day of service. 
+
+<pre>
+Trip A
+───────────────────\
+                    \    Trip C
+                     ─────────────
+Trip B              /
+───────────────────/
+</pre>
 
 ### pathways.txt
 
