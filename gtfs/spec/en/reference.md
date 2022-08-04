@@ -17,6 +17,7 @@ This document defines the format and structure of the files that comprise a GTFS
     -   [stop\_times.txt](#stop_timestxt)
     -   [calendar.txt](#calendartxt)
     -   [calendar\_dates.txt](#calendar_datestxt)
+    -   [timeframes.txt](#timeframestxt)    
     -   [fare\_attributes.txt](#fare_attributestxt)
     -   [fare\_rules.txt](#fare_rulestxt)
     -   [fare\_products.txt](#fare_productstxt) 
@@ -300,6 +301,18 @@ The [calendar_dates.txt](#calendar_datestxt) table explicitly activates or disab
 |  `date` | Date | **Required** | Date when service exception occurs. |
 |  `exception_type` | Enum | **Required** | Indicates whether service is available on the date specified in the date field. Valid options are:<br><br> `1` - Service has been added for the specified date.<br>`2` - Service has been removed for the specified date.<hr>*Example: Suppose a route has one set of trips available on holidays and another set of trips available on all other days. One `service_id` could correspond to the regular service schedule and another `service_id` could correspond to the holiday schedule. For a particular holiday, the [calendar_dates.txt](#calendar_datestxt) file could be used to add the holiday to the holiday `service_id` and to remove the holiday from the regular `service_id` schedule.* |
 
+### timeframes.txt
+
+File: **Optional**
+
+Primary key (`timeframe_id`, `start_time`, `end_time`)
+
+|  Field Name | Type | Presence | Description |
+|  ------ | ------ | ------ | ------ |
+|  `timeframe_id` | ID | **Required** | Identifies a timeframe or set of timeframes. |
+|  `start_time` | Time | **Required** |  Defines the beginning of a timeframe.  |
+|  `end_time` | Time | **Required** |  Defines the end of a timeframe.  |
+
 ### fare_attributes.txt
 
 File: **Optional**
@@ -362,7 +375,7 @@ To describe the different types of tickets or fares that can be purchased by rid
 
 File: **Optional**
 
-Primary Key (`network_id, from_area_id, to_area_id, fare_product_id`)
+Primary Key (`network_id, from_area_id, to_area_id, from_timeframe_id, to_timeframe_id, fare_product_id`)
 
 Fare rules for individual legs of travel.
 
@@ -373,14 +386,18 @@ To process the cost of a leg:
 1. The file `fare_leg_rules.txt` must be filtered by the fields that define the characteristics of travel, these fields are:
     - `fare_leg_rules.network_id`
     - `fare_leg_rules.from_area_id`
-    - `fare_leg_rules.to_area_id`<br/>
+    - `fare_leg_rules.to_area_id`
+    - `fare_leg_rules.from_timeframe_id`
+    - `fare_leg_rules.to_timeframe_id`<br/>
 <br/>
 
 2. If the leg exactly matches a record in `fare_leg_rules.txt` based on the characteristics of travel, that record must be processed to determine the cost of the leg.
-3. If no exact matches are found, then empty entries in `fare_leg_rules.network_id`, `fare_leg_rules.from_area_id`, and `fare_leg_rules.to_area_id` must be checked to process the cost of the leg:
+3. If no exact matches are found, then empty entries in `fare_leg_rules.network_id`, `fare_leg_rules.from_area_id`, `fare_leg_rules.to_area_id`, `fare_leg_rules.from_timeframe_id`, and `fare_leg_rules.to_timeframe_id` must be checked to process the cost of the leg:
     - An empty entry in `fare_leg_rules.network_id` corresponds to all networks defined in `routes.txt` excluding the ones listed under `fare_leg_rules.network_id`
     - An empty entry in `fare_leg_rules.from_area_id` corresponds to all areas defined in `areas.area_id` excluding the ones listed under `fare_leg_rules.from_area_id`
-    - An empty entry in `fare_leg_rules.to_area_id` corresponds to all areas defined in `areas.area_id` excluding the ones listed under `fare_leg_rules.to_area_id`<br/>
+    - An empty entry in `fare_leg_rules.to_area_id` corresponds to all areas defined in `areas.area_id` excluding the ones listed under `fare_leg_rules.to_area_id`
+    - An empty entry in `fare_leg_rules.from_timeframe_id` corresponds to all timeframes defined in `timeframes.timeframe_id` excluding the ones listed under `fare_leg_rules.from_timeframe_id`
+    - An empty entry in `fare_leg_rules.to_timeframe_id` corresponds to all timeframes defined in `timeframes.timeframe_id` excluding the ones listed under `fare_leg_rules.to_timeframe_id`<br/>
 <br/>
 
 4. If the leg does not match any of the rules described above, then the fare is unknown.
@@ -393,6 +410,8 @@ To process the cost of a leg:
 | `network_id` | Foreign ID referencing `routes.network_id` | Optional | Identifies a route network that applies for the fare leg rule.<br><br>If there are no matching `fare_leg_rules.network_id` values to the `network_id` being filtered, empty `fare_leg_rules.network_id` will be matched by default.<br><br> An empty entry in `fare_leg_rules.network_id` corresponds to all networks defined in `routes.txt` excluding the ones listed under `fare_leg_rules.network_id` |
 | `from_area_id` | Foreign ID referencing `areas.area_id` | Optional | Identifies a departure area.<br><br>If there are no matching `fare_leg_rules.from_area_id` values to the `area_id` being filtered, empty `fare_leg_rules.from_area_id` will be matched by default. <br><br>An empty entry in `fare_leg_rules.from_area_id` corresponds to all areas defined in `areas.area_id` excluding the ones listed under `fare_leg_rules.from_area_id` |
 | `to_area_id` | Foreign ID referencing `areas.area_id` | Optional | Identifies an arrival area.<br><br>If there are no matching `fare_leg_rules.to_area_id` values to the `area_id` being filtered, empty `fare_leg_rules.to_area_id` will be matched by default.<br><br> An empty entry in `fare_leg_rules.to_area_id` corresponds to all areas defined in `areas.area_id` excluding the ones listed under `fare_leg_rules.to_area_id` |
+|  `from_timeframe_id` | Foreign ID referencing `timeframes.timeframe_id` | Optional |  Defines a departure timeframe for the fare leg rule.<br><br>If there are no matching `fare_leg_rules.from_timeframe_id` values to the `timeframe_id` being filtered, empty `fare_leg_rules.from_timeframe_id` will be matched by default. <br><br>An empty entry in `fare_leg_rules.from_timeframe_id` corresponds to all timeframes defined in `timeframes.timeframe_id` excluding the ones listed under `fare_leg_rules.from_timeframe_id`  |
+|  `to_timeframe_id` | Foreign ID referencing `timeframes.timeframe_id` | Optional |  Defines an arrival timeframe for the fare leg rule.<br><br>If there are no matching `fare_leg_rules.to_timeframe_id` values to the `timeframe_id` being filtered, empty `fare_leg_rules.to_timeframe_id` will be matched by default. <br><br>An empty entry in `fare_leg_rules.to_timeframe_id` corresponds to all timeframes defined in `timeframes.timeframe_id` excluding the ones listed under `fare_leg_rules.to_timeframe_id`  |
 | `fare_product_id` | Foreign ID referencing `fare_products.fare_product_id` | **Required** | The fare product required to travel the leg. |
 
 ### fare_transfer_rules.txt
