@@ -19,6 +19,7 @@ This document defines the format and structure of the files that comprise a GTFS
     -   [calendar\_dates.txt](#calendar_datestxt)
     -   [fare\_attributes.txt](#fare_attributestxt)
     -   [fare\_rules.txt](#fare_rulestxt)
+    -   [fare\_containers.txt](#fare_containerstxt)         
     -   [fare\_products.txt](#fare_productstxt) 
     -   [fare\_leg\_rules.txt](#fare_leg_rulestxt)
     -   [fare\_transfer\_rules.txt](#fare_transfer_rulestxt)
@@ -343,6 +344,23 @@ For examples that demonstrate how to specify a fare structure with [fare_rules.t
 |  `destination_id` | Foreign ID referencing `stops.zone_id` | Optional | Identifies a destination zone. If a fare class has multiple destination zones, create a record in [fare_rules.txt](#fare_rules.txt) for each `destination_id`.<hr>*Example: The `origin_id` and `destination_id` fields could be used together to specify that fare class "b" is valid for travel between zones 3 and 4, and for travel between zones 3 and 5, the [fare_rules.txt](#fare_rules.txt) file would contain these records for the fare class:* <br>`fare_id,...,origin_id,destination_id` <br>`b,...,3,4`<br> `b,...,3,5` |
 |  `contains_id` | Foreign ID referencing `stops.zone_id` | Optional | Identifies the zones that a rider will enter while using a given fare class. Used in some systems to calculate correct fare class. <hr>*Example: If fare class "c" is associated with all travel on the GRT route that passes through zones 5, 6, and 7 the [fare_rules.txt](#fare_rules.txt) would contain these records:* <br> `fare_id,route_id,...,contains_id` <br>  `c,GRT,...,5` <br>`c,GRT,...,6` <br>`c,GRT,...,7` <br> *Because all `contains_id` zones must be matched for the fare to apply, an itinerary that passes through zones 5 and 6 but not zone 7 would not have fare class "c". For more detail, see [https://code.google.com/p/googletransitdatafeed/wiki/FareExamples](https://code.google.com/p/googletransitdatafeed/wiki/FareExamples) in the GoogleTransitDataFeed project wiki.* |
 
+### fare_containers.txt
+
+To describe fare containers, which are used to load fare products such as tickets, passes, and discounted fares.
+
+File: **Optional** 
+
+Primary Key (`fare_container_id`)
+
+|  Field Name | Type | Presence | Description |
+|  ------ | ------ | ------ | ------ |
+|  `fare_container_id` | Unique ID | **Required** | Identifies a fare container. |
+|  `fare_container_name` | Text | Optional | The name of the fare container as displayed to riders. |
+|  `amount` | Non-negative currency amount | Optional | The cost of the fare container. |
+|  `minimum_initial_purchase` | Non-negative currency amount | Optional | The cost of the minimum initial purchase required on the fare container. |
+|  `currency` | Currency code | **Conditionally Required** | The currency of `fare_containers.amount` or `fare_containers.minimum_initial_purchase`. <br/> Conditionally Required: <br/> - **Required** if `fare_containers.amount` or `fare_containers.minimum_initial_purchase` are defined. <br/> - **Forbidden** if `fare_containers.amount` and `fare_containers.minimum_initial_purchase` are empty. |
+
+
 ### fare_products.txt
 
 File: **Optional**
@@ -357,6 +375,8 @@ To describe the different types of tickets or fares that can be purchased by rid
 | `fare_product_name` | Text | Optional | The name of the fare product as displayed to riders. |
 | `amount` | Currency amount | **Required** | The cost of the fare product. May be negative to represent transfer discounts. May be zero to represent a fare product that is free.|
 | `currency` | Currency code | **Required** | The currency of the cost of the fare product. |
+|  `fare_container_id` | Foreign ID referencing `fare_containers.fare_container_id` | Optional |  Identifies the fare container that the fare product can be loaded on. If this field is left blank, the record corresponds to a fare product that is purchased outside of a fare container. |
+
 
 ### fare_leg_rules.txt
 
