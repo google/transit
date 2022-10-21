@@ -828,13 +828,11 @@ message TripDescriptor {
     DUPLICATED = 6;
 
 
-    // A trip that existed in the schedule but was removed and is not intended
-    // to be seen by users.
-    // DELETED should be used instead of CANCELED to indicate that a transit
-    // provider would like to entirely remove information about the
-    // corresponding trip from consuming applications, so the trip is not shown
-    // as cancelled to riders, e.g. a trip that is entirely being replaced
-    // by another trip.
+    // A trip that existed in the schedule but was removed and must not be shown to users.
+    // DELETED should be used instead of CANCELED to indicate that a transit provider would like to entirely remove
+    // information about the corresponding trip from consuming applications, so the trip is not shown as cancelled to
+    // riders, e.g. a trip that is entirely being replaced by another trip.
+    // NOTE: This field is still experimental, and subject to change. It may be formally adopted in the future.
     DELETED = 7;
   }
   optional ScheduleRelationship schedule_relationship = 4;
