@@ -366,7 +366,7 @@ Primary Key (`fare_container_id`)
 
 File: **Optional**
 
-Primary Key (`fare_product_id`)
+Primary Key (`fare_product_id`, `fare_container_id`)
 
 To describe the different types of tickets or fares that can be purchased by riders.
 
