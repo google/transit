@@ -832,6 +832,9 @@ message TripDescriptor {
     // DELETED should be used instead of CANCELED to indicate that a transit provider would like to entirely remove
     // information about the corresponding trip from consuming applications, so the trip is not shown as cancelled to
     // riders, e.g. a trip that is entirely being replaced by another trip.
+    // This designation becomes particularly important if several trips are cancelled and replaced with substitute service.
+    // If consumers were to show explicit information about the cancellations it would distract from the more important
+    // real-time predictions.
     // NOTE: This field is still experimental, and subject to change. It may be formally adopted in the future.
     DELETED = 7;
   }
