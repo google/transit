@@ -357,7 +357,8 @@ Primary Key (`fare_container_id`)
 |  ------ | ------ | ------ | ------ |
 |  `fare_container_id` | Unique ID | **Required** | Identifies a fare container. |
 |  `fare_container_name` | Text | Optional | The name of the fare container as displayed to riders. |
-|  `amount` | Non-negative currency amount | Optional | The cost to acquire the fare container. Does not include any amount that could be used as a fare.   |
+|  `fare_container_type` | Enum | Optional | The type of the fare container.<br>Valid options are:<br><br>`0` - Physical card.<br>`1` - Mobile app.<br>`2` - Both.|
+|  `amount` | Non-negative currency amount | Optional | The cost to acquire the fare container. Does not include any amount that could be used as a fare.|
 |  `minimum_initial_purchase` | Non-negative currency amount | Optional | The amount of the minimum fare purchase required when acquiring the container. |
 |  `currency` | Currency code | **Conditionally Required** | The currency of `fare_containers.amount` or `fare_containers.minimum_initial_purchase`. <br/> Conditionally Required: <br/> - **Required** if `fare_containers.amount` or `fare_containers.minimum_initial_purchase` are defined. <br/> - **Forbidden** if `fare_containers.amount` and `fare_containers.minimum_initial_purchase` are empty. |
 
