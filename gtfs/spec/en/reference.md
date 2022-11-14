@@ -312,7 +312,7 @@ Primary key (`timeframe_id`, `start_time`, `end_time`)
 |  ------ | ------ | ------ | ------ |
 |  `timeframe_id` | ID | **Required** | Identifies a timeframe or set of timeframes. |
 |  `start_time` | Time | **Required** |  Defines the beginning of a timeframe.  |
-|  `end_time` | Time | **Required** |  Defines the end of a timeframe.  |
+|  `end_time` | Time | **Optional** |  Defines the end of a timeframe. If empty, it is considered that the fare only depends on start time.|
 
 ### fare_attributes.txt
 
