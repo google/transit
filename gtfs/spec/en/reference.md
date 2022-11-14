@@ -310,9 +310,9 @@ Primary key (`timeframe_id`, `start_time`, `end_time`)
 
 |  Field Name | Type | Presence | Description |
 |  ------ | ------ | ------ | ------ |
-|  `timeframe_id` | ID | **Required** | Identifies a timeframe or set of timeframes. |
-|  `start_time` | Time | **Required** |  Defines the beginning of a timeframe.  |
-|  `end_time` | Time | **Optional** |  Defines the end of a timeframe. If empty, it is considered that the fare only depends on start time.|
+|  `timeframe_id` | ID | **Required** | Identifies a timeframe or set of timeframes. All records with the same `timeframe_id` must cover a 24h period. |
+|  `start_time` | Time | **Required** |  Start time for the interval. The start time is included in the interval. |
+|  `end_time` | Time | **Optional** |  Start time for the interval. The end time is included in the interval. If empty, it is considered that the fare only depends on start time.|
 
 ### fare_attributes.txt
 
