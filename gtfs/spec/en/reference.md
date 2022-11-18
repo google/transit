@@ -333,7 +333,7 @@ The [fare_rules.txt](#farerulestxt) table specifies how fares in [fare_attribute
 * Fare depends on which zones the itinerary passes through.
 * Fare depends on which route the itinerary uses.
 
-For examples that demonstrate how to specify a fare structure with [fare_rules.txt](#farerulestxt) and [fare_attributes.txt](#fareattributestxt), see [https://code.google.com/p/googletransitdatafeed/wiki/FareExamples](https://code.google.com/p/googletransitdatafeed/wiki/FareExamples) in the GoogleTransitDataFeed open source project wiki.
+For examples that demonstrate how to specify a fare structure with [fare_rules.txt](#farerulestxt) and [fare_attributes.txt](#fareattributestxt), see [FareExamples](https://web.archive.org/web/20111207224351/https://code.google.com/p/googletransitdatafeed/wiki/FareExamples) in the GoogleTransitDataFeed open source project wiki.
 
 |  Field Name | Type | Presence | Description |
 |  ------ | ------ | ------ | ------ |
