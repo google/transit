@@ -280,7 +280,7 @@ Primary key (`service_id`)
 |  `friday` | Enum | **Required** | Functions in the same way as `monday` except applies to Fridays  |
 |  `saturday` | Enum | **Required** | Functions in the same way as `monday` except applies to Saturdays. |
 |  `sunday` | Enum | **Required** | Functions in the same way as `monday` except applies to Sundays. |
-|  `start_date` | Date | **Required** | Start service day for the service interval.  |
+|  `start_date` | Date | **Required** | Start service day for the service interval. |
 |  `end_date` | Date | **Required** | End service day for the service interval. This service day is included in the interval. |
 
 ### calendar_dates.txt
