@@ -19,7 +19,7 @@ This document defines the format and structure of the files that comprise a GTFS
     -   [calendar\_dates.txt](#calendar_datestxt)
     -   [fare\_attributes.txt](#fare_attributestxt)
     -   [fare\_rules.txt](#fare_rulestxt)
-    -   [fare\_containers.txt](#fare_containerstxt)         
+    -   [fare\_payment\_types.txt](#fare_payment_typestxt)         
     -   [fare\_products.txt](#fare_productstxt) 
     -   [fare\_leg\_rules.txt](#fare_leg_rulestxt)
     -   [fare\_transfer\_rules.txt](#fare_transfer_rulestxt)
@@ -110,7 +110,7 @@ This specification defines the following files:
 |  [calendar_dates.txt](#calendar_datestxt)  | **Conditionally Required** | Exceptions for the services defined in the [calendar.txt](#calendartxt). <br><br>Conditionally Required:<br> - **Required** if [calendar.txt](#calendartxt) is omitted. In which case [calendar_dates.txt](#calendar_datestxt) must contain all dates of service. <br> - Optional otherwise. |
 |  [fare_attributes.txt](#fare_attributestxt)  | Optional | Fare information for a transit agency's routes. |
 |  [fare_rules.txt](#fare_rulestxt)  | **Conditionally Required** | Rules to apply fares for itineraries.<br><br>Conditionally Required:<br>- **Required** if [fare_attributes.txt](#fare_attributestxt) is defined.<br>- **Forbidden** otherwise. |
-|  [fare_containers.txt](#fare_containerstxt)  | Optional |To describe fare containers, which are used to load fare products such as tickets, passes, and discounted fares.<br><br>File [fare_containers.txt](fare_containerstxt) describes fare containers that are not represented in [fare_attributes.txt](#fare_attributestxt) and [fare_rules.txt](#fare_rulestxt). As such, the use of [fare_containers.txt](#fare_containerstxt) is entirely separate from files [fare_attributes.txt](#fare_attributestxt) and [fare_rules.txt](#fare_rulestxt). |
+|  [fare_payment_types.txt](#fare_payment_typestxt)  | Optional |To describe fare payment types associated with fare products. <br><br>File [fare_payment_types.txt](fare_payment_typestxt) describes fare payment types that are not represented in [fare_attributes.txt](#fare_attributestxt) and [fare_rules.txt](#fare_rulestxt). As such, the use of [fare_payment_types.txt](#fare_payment_typestxt) is entirely separate from files [fare_attributes.txt](#fare_attributestxt) and [fare_rules.txt](#fare_rulestxt). |
 |  [fare_products.txt](#fare_productstxt)  | Optional | To describe the different types of tickets or fares that can be purchased by riders.<br><br>File [fare_products.txt](fare_productstxt) describes fare products that are not represented in [fare_attributes.txt](#fare_attributestxt) and [fare_rules.txt](#fare_rulestxt). As such, the use of [fare_products.txt](#fare_productstxt) is entirely separate from files [fare_attributes.txt](#fare_attributestxt) and [fare_rules.txt](#fare_rulestxt). |
 |  [fare_leg_rules.txt](#fare_leg_rulestxt)  | Optional | Fare rules for individual legs of travel.<br><br>File [fare_leg_rules.txt](#fare_leg_rulestxt) provides a more detailed method for modeling fare structures. As such, the use of [fare_leg_rules.txt](#fare_leg_rulestxt) is entirely separate from files [fare_attributes.txt](#fare_attributestxt) and [fare_rules.txt](#fare_rulestxt). |
 |  [fare_transfer_rules.txt](#fare_transfer_rulestxt)  | Optional | Fare rules for transfers between legs of travel.<br><br>Along with [fare_leg_rules.txt](#fare_leg_rulestxt), file [fare_transfer_rules.txt](#fare_transfer_rulestxt) provides a more detailed method for modeling fare structures. As such, the use of [fare_transfer_rules.txt](#fare_transfer_rulestxt) is entirely separate from files [fare_attributes.txt](#fare_attributestxt) and [fare_rules.txt](#fare_rulestxt). |
@@ -309,7 +309,7 @@ File: **Optional**
 Primary key (`fare_id`)
 
 **Versions**<br>
-There are two modelling options for describing fares. GTFS-Fares V1 is the legacy option for describing minimal fare information. GTFS-Fares V2 is an updated method that allows for a more detailed account of an agency's fare structure. Both are allowed to be present in a dataset, but only one method should be used by a data consumer for a given dataset. It is recommended that GTFS-Fares V2 takes precedence over GTFS-Fares V1. <br><br>The files associated with GTFS-Fares V1 are: <br>- [fare_attributes.txt](#fare_attributestxt)<br>- [fare_rules.txt](#fare_rulestxt)<br><br>The files associated with GTFS-Fares V2 are: <br>- [fare_containers.txt](#fare_containerstxt)<br>- [fare_products.txt](#fare_productstxt)<br>- [fare_leg_rules.txt](#fare_leg_rulestxt)<br>- [fare_transfer_rules.txt](#fare_transfer_rulestxt)
+There are two modelling options for describing fares. GTFS-Fares V1 is the legacy option for describing minimal fare information. GTFS-Fares V2 is an updated method that allows for a more detailed account of an agency's fare structure. Both are allowed to be present in a dataset, but only one method should be used by a data consumer for a given dataset. It is recommended that GTFS-Fares V2 takes precedence over GTFS-Fares V1. <br><br>The files associated with GTFS-Fares V1 are: <br>- [fare_attributes.txt](#fare_attributestxt)<br>- [fare_rules.txt](#fare_rulestxt)<br><br>The files associated with GTFS-Fares V2 are: <br>- [fare_payment_types.txt](#fare_payment_typestxt)<br>- [fare_products.txt](#fare_productstxt)<br>- [fare_leg_rules.txt](#fare_leg_rulestxt)<br>- [fare_transfer_rules.txt](#fare_transfer_rulestxt)
 
 <br>
 
@@ -345,39 +345,35 @@ For examples that demonstrate how to specify a fare structure with [fare_rules.t
 |  `destination_id` | Foreign ID referencing `stops.zone_id` | Optional | Identifies a destination zone. If a fare class has multiple destination zones, create a record in [fare_rules.txt](#fare_rules.txt) for each `destination_id`.<hr>*Example: The `origin_id` and `destination_id` fields could be used together to specify that fare class "b" is valid for travel between zones 3 and 4, and for travel between zones 3 and 5, the [fare_rules.txt](#fare_rules.txt) file would contain these records for the fare class:* <br>`fare_id,...,origin_id,destination_id` <br>`b,...,3,4`<br> `b,...,3,5` |
 |  `contains_id` | Foreign ID referencing `stops.zone_id` | Optional | Identifies the zones that a rider will enter while using a given fare class. Used in some systems to calculate correct fare class. <hr>*Example: If fare class "c" is associated with all travel on the GRT route that passes through zones 5, 6, and 7 the [fare_rules.txt](#fare_rules.txt) would contain these records:* <br> `fare_id,route_id,...,contains_id` <br>  `c,GRT,...,5` <br>`c,GRT,...,6` <br>`c,GRT,...,7` <br> *Because all `contains_id` zones must be matched for the fare to apply, an itinerary that passes through zones 5 and 6 but not zone 7 would not have fare class "c". For more detail, see [https://code.google.com/p/googletransitdatafeed/wiki/FareExamples](https://code.google.com/p/googletransitdatafeed/wiki/FareExamples) in the GoogleTransitDataFeed project wiki.* |
 
-### fare_containers.txt
+### fare_payment_types.txt
 
-To describe fare containers, which are used to load fare products such as tickets, passes, and discounted fares.
+To describe fare payment types to be associated with fare products. 
 
 File: **Optional** 
 
-Primary Key (`fare_container_id`)
+Primary Key (`fare_payment_type_group_id`)
 
 |  Field Name | Type | Presence | Description |
 |  ------ | ------ | ------ | ------ |
-|  `fare_container_id` | Unique ID | **Required** | Identifies a fare container. |
-|  `fare_container_name` | Text | Optional | The name of the fare container as displayed to riders. |
-|  `fare_container_type` | Enum | Optional | The type of the fare container.<br>Valid options are:<br><br>`0` - Physical card.<br>`1` - Digital card or mobile app.<br>`2` - Both.|
-|  `amount` | Non-negative currency amount | Optional | The cost to acquire the fare container. Does not include any amount that could be used as a fare.|
-|  `minimum_initial_purchase` | Non-negative currency amount | Optional | The amount of the minimum fare purchase required when acquiring the container. |
-|  `currency` | Currency code | **Conditionally Required** | The currency of `fare_containers.amount` or `fare_containers.minimum_initial_purchase`. <br/> Conditionally Required: <br/> - **Required** if `fare_containers.amount` or `fare_containers.minimum_initial_purchase` are defined. <br/> - **Forbidden** if `fare_containers.amount` and `fare_containers.minimum_initial_purchase` are empty. |
-
+|  `fare_payment_type_group_id` | ID | **Required** | Identifies a fare payment type group. |
+|  `fare_payment_type_name` | Text | Optional | Name of the fare payment type.<br>For payment types that are transit cards (`fare_payment_type` =2)or mobile apps (`fare_payment_type` =2), the `fare_payment_type_name` should match the rider-facing names used by the organizations delivering them. |
+|  `fare_payment_type` | Enum | **Required** | The type of fare payment as displayed to riders.<br>Valid options are:<br><br>`0` - Cash.<br>`1` - contactless payment via bank cards.<br>`2` - transit card (contactless or not).<br>`3` mobile app - |
 
 ### fare_products.txt
 
 File: **Optional**
 
-Primary Key (`fare_product_id`, `fare_container_id`)
+Primary Key (`fare_product_id`, `fare_payment_type_group_id`)
 
 To describe the different types of tickets or fares that can be purchased by riders.
 
 |  Field Name | Type | Presence | Description |
 |  ------ | ------ | ------ | ------ |
-| `fare_product_id` |  ID | **Required** | Identifies a fare product. |
+| `fare_product_id` | ID | **Required** | Identifies a fare product. |
 | `fare_product_name` | Text | Optional | The name of the fare product as displayed to riders. |
 | `amount` | Currency amount | **Required** | The cost of the fare product. May be negative to represent transfer discounts. May be zero to represent a fare product that is free.|
 | `currency` | Currency code | **Required** | The currency of the cost of the fare product. |
-|  `fare_container_id` | Foreign ID referencing `fare_containers.fare_container_id` | Optional |  Identifies the fare container that the fare product can be loaded on. If this field is left blank, the record corresponds to a fare product that is purchased outside of a fare container. |
+|  `fare_payment_type_group_id` | Foreign ID referencing `fare_payment_types.fare_payment_type_group_id` | Optional |  Identifies the fare payment types that can be used to pay for the `fare_product` for the trip. |
 
 
 ### fare_leg_rules.txt
