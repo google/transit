@@ -351,7 +351,7 @@ To describe fare payment types to be associated with fare products.
 
 File: **Optional** 
 
-Primary Key (`fare_payment_type_group_id`)
+Primary Key (`*`)
 
 |  Field Name | Type | Presence | Description |
 |  ------ | ------ | ------ | ------ |
