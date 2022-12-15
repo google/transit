@@ -529,7 +529,7 @@ The following applies to `transfer_type=4`, which is used to link trips together
 
 The trips linked together MUST be operated by the same vehicle. The vehicle MAY be coupled to, or uncoupled from, other vehicles.
 
-If both a linked trips transfer and a block_id are provided and they produce conflicting results, then the linked trips transfer shall be used.
+If a feed specifies linked trip transfers via `transfer_type=4`, then no implicit in-seat transfer should be created for any trips using `block_id`-based heuristics.
 
 The last stop of `from_trip_id` SHOULD be geographically close to the first stop of `to_trip_id`, and the last arrival time of `from_trip_id` SHOULD be prior but close to the first departure time of `to_trip_id`. The last arrival time of `from_trip_id` MAY be later than the first departure time of `to_trip_id` in case the `to_trip_id` trip is occurring the subsequent service day. 
 
