@@ -357,7 +357,8 @@ Primary Key (`*`)
 |  ------ | ------ | ------ | ------ |
 |  `fare_payment_type_group_id` | ID | **Required** | Identifies a fare payment type group. |
 |  `fare_payment_type_name` | Text | Optional | Name of the fare payment type.<br>For payment types that are transit cards (`fare_payment_type` =2)or mobile apps (`fare_payment_type` =3), the `fare_payment_type_name` should be included and should match the rider-facing names used by the organizations delivering them. |
-|  `fare_payment_type` | Enum | **Required** | The type of fare payment as displayed to riders.<br>Valid options are:<br><br>`0` - Cash.<br>`1` - Contactless payment via bank cards (physical or in a virtual wallet).<br>`2` - Transit card (physical or virtual).<br>`3` - Mobile app |
+|  `fare_payment_type` | Enum | **Required** | The type of fare payment as displayed to riders.<br>Valid options are:<br><br>`0` - Cash (notes and coins).<br>`1` - Contactless payment via bank cards (physical or in a virtual wallet).<br>`2` - Transit card used to store fare value (physical or virtual).
+<br>`3` - Mobile app used to store fare tickets & passes. Mobile apps are not tied to a particular transit card, and they can be used directly for the trip. |
 
 ### fare_products.txt
 
