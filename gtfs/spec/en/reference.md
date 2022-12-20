@@ -363,7 +363,7 @@ To describe fare payment options to be associated with fare products.
 
 File: **Optional**
 
-Primary Key (`fare_product_id`, `fare_payment_options_group_id`)
+Primary Key (`fare_product_id`, `fare_payment_option_group_id`)
 
 To describe the different types of tickets or fares that can be purchased by riders.
 
@@ -373,7 +373,7 @@ To describe the different types of tickets or fares that can be purchased by rid
 | `fare_product_name` | Text | Optional | The name of the fare product as displayed to riders. |
 | `amount` | Currency amount | **Required** | The cost of the fare product. May be negative to represent transfer discounts. May be zero to represent a fare product that is free.|
 | `currency` | Currency code | **Required** | The currency of the cost of the fare product. |
-|  `fare_payment_option_group_id` | Foreign ID referencing `fare_payment_options.fare_payment_option_group_id` | Optional |  Identifies the fare payment types that can be used to pay for the `fare_product` for the trip. |
+|  `fare_payment_option_group_id` | Foreign ID referencing `fare_payment_options.fare_payment_option_group_id` | Optional |  Identifies the fare payment options that can be used to pay for the `fare_product` for the trip. |
 
 
 ### fare_leg_rules.txt
