@@ -356,7 +356,7 @@ To describe fare payment options to be associated with fare products.
 |  Field Name | Type | Presence | Description |
 |  ------ | ------ | ------ | ------ |
 |  `fare_payment_option_group_id` | ID | **Required** | Identifies a fare payment option group. |
-|  `fare_payment_option_name` | Text | Optional | Name of the fare payment option.<br>For payment options that are transit cards (`fare_payment_option =2`) or mobile apps (`fare_payment_option =3`), the `fare_payment_options_name` should be included and should match the rider-facing names used by the organizations delivering them. |
+|  `fare_payment_option_name` | Text | Optional | Name of the fare payment option to be displayed to riders.<br>For payment options that are transit cards (`fare_payment_option =2`) or mobile apps (`fare_payment_option =3`), the `fare_payment_options_name` should be included and should match the rider-facing names used by the organizations delivering them. |
 |  `fare_payment_option_type` | Enum | **Required** | The type of fare payment option as displayed to riders. This field represents the support that can be used directly to pay for the trip with no additional step.<br>Valid options are:<br><br>`0` - Cash (notes and coins).<br>`1` - Contactless payment via bank cards (physical or virtual).<br>`2` - Transit card used to store fare value (physical or virtual).<br>`3` - Mobile app used to store fare tickets & passes. Mobile apps are not tied to a particular transit card, and they can be used directly for the trip.|
 
 ### fare_products.txt
