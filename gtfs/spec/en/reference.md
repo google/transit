@@ -353,6 +353,12 @@ Primary Key (`*`)
 
 To describe fare payment options to be associated with fare products. 
 
+Fare payment options should be grouped under the same `fare_payment_option_group_id` when both the following statements are true:
+- The cost of all fare products (`fare_products.amount`) is not affected by the fare payment options chosen.
+- The same leg and transfer rules (as defined in `fare_leg_rules.txt` and `fare_transfer_rules.txt`) apply.
+
+The file `fare_payment_options.txt` shouldn't contain records that have the same values for `fare_product_option_name` and `fare_product_option_type`.
+
 |  Field Name | Type | Presence | Description |
 |  ------ | ------ | ------ | ------ |
 |  `fare_payment_option_group_id` | ID | **Required** | Identifies a fare payment option group. |
