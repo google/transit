@@ -1,6 +1,6 @@
 ## General Transit Feed Specification Reference
 
-**Revised May 9, 2022. See [Revision History](../../CHANGES.md) for more details.**
+**Revised Dec 8, 2022. See [Revision History](../../CHANGES.md) for more details.**
 
 This document defines the format and structure of the files that comprise a GTFS dataset.
 
