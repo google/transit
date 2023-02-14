@@ -19,8 +19,7 @@ This document defines the format and structure of the files that comprise a GTFS
     -   [calendar\_dates.txt](#calendar_datestxt)
     -   [fare\_attributes.txt](#fare_attributestxt)
     -   [fare\_rules.txt](#fare_rulestxt)
-    -   [fare\_payment\_options.txt](#fare_payment_optionstxt)
-    -   [fare\_payment\_option\_groups.txt](#fare_payment_option_groupstxt)           
+    -   [fare\_media.txt](#fare_media.txt)
     -   [fare\_products.txt](#fare_productstxt) 
     -   [fare\_leg\_rules.txt](#fare_leg_rulestxt)
     -   [fare\_transfer\_rules.txt](#fare_transfer_rulestxt)
@@ -111,8 +110,7 @@ This specification defines the following files:
 |  [calendar_dates.txt](#calendar_datestxt)  | **Conditionally Required** | Exceptions for the services defined in the [calendar.txt](#calendartxt). <br><br>Conditionally Required:<br> - **Required** if [calendar.txt](#calendartxt) is omitted. In which case [calendar_dates.txt](#calendar_datestxt) must contain all dates of service. <br> - Optional otherwise. |
 |  [fare_attributes.txt](#fare_attributestxt)  | Optional | Fare information for a transit agency's routes. |
 |  [fare_rules.txt](#fare_rulestxt)  | **Conditionally Required** | Rules to apply fares for itineraries.<br><br>Conditionally Required:<br>- **Required** if [fare_attributes.txt](#fare_attributestxt) is defined.<br>- **Forbidden** otherwise. |
-|  [fare_payment_options.txt](#fare_payment_optionstxt)  | Optional |To describe fare payment options associated with fare products. <br><br>File [fare_payment_options.txt](fare_payment_optionstxt) describes concepts that are not represented in [fare_attributes.txt](#fare_attributestxt) and [fare_rules.txt](#fare_rulestxt). As such, the use of [fare_payment_options.txt](#fare_payment_optionstxt) is entirely separate from files [fare_attributes.txt](#fare_attributestxt) and [fare_rules.txt](#fare_rulestxt). |
-|  [fare_payment_option_groups.txt](#fare_payment_option_groupstxt)  | Optional |to model groups of fare payment options that can each be associated with the same fare product. <br><br>File [fare_payment_option_groups.txt](fare_payment_option_groupstxt) describes concepts that are not represented in [fare_attributes.txt](#fare_attributestxt) and [fare_rules.txt](#fare_rulestxt). As such, the use of [fare_payment_option_groups.txt](#fare_payment_option_groupstxt) is entirely separate from files [fare_attributes.txt](#fare_attributestxt) and [fare_rules.txt](#fare_rulestxt). |
+|  [fare_media.txt](#fare_mediatxt)  | Optional |To describe fare media associated with fare products. <br><br>File [fare_media.txt](fare_mediatxt) describes concepts that are not represented in [fare_attributes.txt](#fare_attributestxt) and [fare_rules.txt](#fare_rulestxt). As such, the use of [fare_media.txt](#fare_mediatxt) is entirely separate from files [fare_attributes.txt](#fare_attributestxt) and [fare_rules.txt](#fare_rulestxt). |
 |  [fare_products.txt](#fare_productstxt)  | Optional | To describe the different types of tickets or fares that can be purchased by riders.<br><br>File [fare_products.txt](fare_productstxt) describes fare products that are not represented in [fare_attributes.txt](#fare_attributestxt) and [fare_rules.txt](#fare_rulestxt). As such, the use of [fare_products.txt](#fare_productstxt) is entirely separate from files [fare_attributes.txt](#fare_attributestxt) and [fare_rules.txt](#fare_rulestxt). |
 |  [fare_leg_rules.txt](#fare_leg_rulestxt)  | Optional | Fare rules for individual legs of travel.<br><br>File [fare_leg_rules.txt](#fare_leg_rulestxt) provides a more detailed method for modeling fare structures. As such, the use of [fare_leg_rules.txt](#fare_leg_rulestxt) is entirely separate from files [fare_attributes.txt](#fare_attributestxt) and [fare_rules.txt](#fare_rulestxt). |
 |  [fare_transfer_rules.txt](#fare_transfer_rulestxt)  | Optional | Fare rules for transfers between legs of travel.<br><br>Along with [fare_leg_rules.txt](#fare_leg_rulestxt), file [fare_transfer_rules.txt](#fare_transfer_rulestxt) provides a more detailed method for modeling fare structures. As such, the use of [fare_transfer_rules.txt](#fare_transfer_rulestxt) is entirely separate from files [fare_attributes.txt](#fare_attributestxt) and [fare_rules.txt](#fare_rulestxt). |
@@ -347,51 +345,33 @@ For examples that demonstrate how to specify a fare structure with [fare_rules.t
 |  `destination_id` | Foreign ID referencing `stops.zone_id` | Optional | Identifies a destination zone. If a fare class has multiple destination zones, create a record in [fare_rules.txt](#fare_rules.txt) for each `destination_id`.<hr>*Example: The `origin_id` and `destination_id` fields could be used together to specify that fare class "b" is valid for travel between zones 3 and 4, and for travel between zones 3 and 5, the [fare_rules.txt](#fare_rules.txt) file would contain these records for the fare class:* <br>`fare_id,...,origin_id,destination_id` <br>`b,...,3,4`<br> `b,...,3,5` |
 |  `contains_id` | Foreign ID referencing `stops.zone_id` | Optional | Identifies the zones that a rider will enter while using a given fare class. Used in some systems to calculate correct fare class. <hr>*Example: If fare class "c" is associated with all travel on the GRT route that passes through zones 5, 6, and 7 the [fare_rules.txt](#fare_rules.txt) would contain these records:* <br> `fare_id,route_id,...,contains_id` <br>  `c,GRT,...,5` <br>`c,GRT,...,6` <br>`c,GRT,...,7` <br> *Because all `contains_id` zones must be matched for the fare to apply, an itinerary that passes through zones 5 and 6 but not zone 7 would not have fare class "c". For more detail, see [https://code.google.com/p/googletransitdatafeed/wiki/FareExamples](https://code.google.com/p/googletransitdatafeed/wiki/FareExamples) in the GoogleTransitDataFeed project wiki.* |
 
-### fare_payment_options.txt
+### fare_media.txt
 
 File: **Optional** 
 
-Primary Key (`fare_payment_option_id`)
+Primary Key (`fare_medium_id`)
 
-To describe fare payment options associated with fare products. 
-
-|  Field Name | Type | Presence | Description |
-|  ------ | ------ | ------ | ------ |
-|  `fare_payment_option_id` | ID | **Required** | Identifies a fare payment option. |
-|  `fare_payment_option_name` | Text | Optional | Name of the fare payment option to be displayed to riders.<br>For payment options that are transit cards (`fare_payment_option =2`) or mobile apps (`fare_payment_option =3`), the `fare_payment_options_name` should be included and should match the rider-facing names used by the organizations delivering them. |
-|  `fare_payment_option_type` | Enum | **Required** | The type of fare payment option as displayed to riders. This field represents the support that can be used directly to pay for the trip with no additional step.<br>Valid options are:<br><br>`0` - Cash (notes and coins).<br>`1` - Non-contactless payment via bank cards (physical only)<br>`2` - Contactless payment via bank cards (physical or virtual).<br>`3` - Transit card used to store fare value (physical or virtual).<br>`4` - Mobile app used to store fare tickets & passes. Mobile apps are not tied to a particular transit card, and they can be used directly for the trip.|
-
-### fare_payment_option_groups.txt
-
-Provides a mechanism to model groups of fare payment options that can each be associated with the same fare product.
-
-File: **Optional** 
-
-Primary Key (`*`)
+To describe the different fare media that can be employed to use fare products. Fare media are physical or virtual containers used for the representation and/or validation of a fare product.
 
 |  Field Name | Type | Presence | Description |
 |  ------ | ------ | ------ | ------ |
-|  `fare_payment_option_group_id` | ID | **Required** | Identifies a fare payment option group. |
-|  `fare_payment_option_id` | Foreign ID referencing `fare_payment_options.fare_payment_option_id` | **Required** | Fare payment option for the specified fare payment option group. |
+|  `fare_medium_id` | ID | **Required** | Identifies a fare medium. |
+|  `fare_medium_name` | Text | Optional | Name of the fare medium to be displayed to riders.<br>For fare media which are transit cards (`fare_media_type =2`) or mobile apps (`fare_media_type =4`), the `fare_media_name` should be included and should match the rider-facing names used by the organizations delivering them. |
+|  `fare_medium_type` | Enum | **Required** | The type of fare medium. <br>Valid options are:<br><br>`0` or empty - None.<br>`1` - Physical paper ticket that allows a passenger to take either a certain number of pre-purchased trips or unlimited trips within a fixed period of time. <br>`2` - Physical transit card that have stored tickets, passes or monetary value.<br>`3` - cEVM as an open-loop token container for account-based ticketing.<br>`4` - Mobile app that have stored virtual transit cards, tickets, passes, or monetary value.|
 
 ### fare_products.txt
 
 File: **Optional**
 
-Primary Key (`fare_product_id`, `fare_payment`option_id`, `fare_payment_option_group_id`)
+Primary Key (`fare_product_id`, `fare_medium_id`)
 
 To describe the different types of tickets or fares that can be purchased by riders.
-
-Though a particular fare product (as identified by its `fare_product_id`) can be associated with multiple fare payment options via repeated entries with different combinations of `fare_payment_option_group_id` and `fare_payment_option_id`, a single fare payment option must not be linked to the same fare product more than once.
-
-When both `fare_payment_option_group_id` and `fare_payment_option_id` are empty, it is considered that the fare payment option is unknown.
 
 |  Field Name | Type | Presence | Description |
 |  ------ | ------ | ------ | ------ |
 | `fare_product_id` | ID | **Required** | Identifies a fare product. |
 | `fare_product_name` | Text | Optional | The name of the fare product as displayed to riders. |
-|  `fare_payment_option_id` | Foreign ID referencing `fare_payment_options.fare_payment_option_id` | **Conditionally Forbidden** |  Identifies the fare payment option that can be used to pay for the fare product  during the trip. <br><br>Conditionally Forbidden:<br>- **Forbidden** if `fare_payment_option_group_id` is defined.<br>- Optional otherwise.|
-|  `fare_payment_option_group_id` | Foreign ID referencing `fare_payment_option_groups.fare_payment_option_group_id` | **Conditionally Forbidden** |  Identifies a fare payment option group containing a set of fare payment options that can each be independently used to pay for the fare product during the trip. <br><br>Conditionally Forbidden:<br>- **Forbidden** if `fare_payment_option_id` is defined.<br>- Optional otherwise. |
+|  `fare_medium_id` | Foreign ID referencing `fare_media.fare_medium_id` | Optional |  Identifies a fare medium that can be employed used to use the `fare product` during the trip. When `fare_medium_id`is empty, it is considered that the fare media is unknown.|
 | `amount` | Currency amount | **Required** | The cost of the fare product. May be negative to represent transfer discounts. May be zero to represent a fare product that is free.|
 | `currency` | Currency code | **Required** | The currency of the cost of the fare product. |
 
