@@ -356,7 +356,7 @@ To describe the different fare media that can be employed to use fare products. 
 |  Field Name | Type | Presence | Description |
 |  ------ | ------ | ------ | ------ |
 |  `fare_medium_id` | ID | **Required** | Identifies a fare medium. |
-|  `fare_medium_name` | Text | Optional | Name of the fare medium to be displayed to riders.<br>For fare media which are transit cards (`fare_media_type =2`) or mobile apps (`fare_media_type =4`), the `fare_media_name` should be included and should match the rider-facing names used by the organizations delivering them. |
+|  `fare_medium_name` | Text | Optional | Name of the fare medium.<br>For fare media which are transit cards (`fare_medium_type =2`) or mobile apps (`fare_medium_type =4`), the `fare_medium_name` should be included and should match the rider-facing name used by the organizations delivering them. |
 |  `fare_medium_type` | Enum | **Required** | The type of fare medium. <br>Valid options are:<br><br>`0` or empty - None.<br>`1` - Physical paper ticket that allows a passenger to take either a certain number of pre-purchased trips or unlimited trips within a fixed period of time. <br>`2` - Physical transit card that have stored tickets, passes or monetary value.<br>`3` - cEVM as an open-loop token container for account-based ticketing.<br>`4` - Mobile app that have stored virtual transit cards, tickets, passes, or monetary value.|
 
 ### fare_products.txt
