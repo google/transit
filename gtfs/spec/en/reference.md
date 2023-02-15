@@ -351,7 +351,7 @@ File: **Optional**
 
 Primary Key (`fare_medium_id`)
 
-To describe the different fare media that can be employed to use fare products. Fare media are physical or virtual containers used for the representation and/or validation of a fare product.
+To describe the different fare media that can be employed to use fare products. Fare media are physical or virtual holders used for the representation and/or validation of a fare product.
 
 |  Field Name | Type | Presence | Description |
 |  ------ | ------ | ------ | ------ |
