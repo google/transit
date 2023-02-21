@@ -105,7 +105,7 @@ This specification defines the following files:
 |  [stops.txt](#stopstxt) | **Required** | Stops where vehicles pick up or drop off riders. Also defines stations and station entrances.  |
 |  [routes.txt](#routestxt) | **Required** | Transit routes. A route is a group of trips that are displayed to riders as a single service. |
 |  [trips.txt](#tripstxt)  | **Required** | Trips for each route. A trip is a sequence of two or more stops that occur during a specific time period. |
-|  [stop_times.txt](#stop_timestxt)  | **Required** | Times that a vehicle arrives at and departs from stops for each trip. |
+|  [stop_times.txt](#stop_timestxt)| **Required** | Times that a vehicle arrives at and departs from stops for each trip. |
 |  [calendar.txt](#calendartxt)  | **Conditionally Required** | Service dates specified using a weekly schedule with start and end dates. <br><br>Conditionally Required:<br> - **Required** unless all dates of service are defined in [calendar_dates.txt](#calendar_datestxt).<br> - Optional otherwise. |
 |  [calendar_dates.txt](#calendar_datestxt)  | **Conditionally Required** | Exceptions for the services defined in the [calendar.txt](#calendartxt). <br><br>Conditionally Required:<br> - **Required** if [calendar.txt](#calendartxt) is omitted. In which case [calendar_dates.txt](#calendar_datestxt) must contain all dates of service. <br> - Optional otherwise. |
 |  [fare_attributes.txt](#fare_attributestxt)  | Optional | Fare information for a transit agency's routes. |
@@ -357,7 +357,7 @@ To describe the different fare media that can be employed to use fare products. 
 |  ------ | ------ | ------ | ------ |
 |  `fare_medium_id` | Unique ID | **Required** | Identifies a fare medium. |
 |  `fare_medium_name` | Text | Optional | Name of the fare medium.<br>For fare media which are transit cards (`fare_medium_type =2`) or mobile apps (`fare_medium_type =4`), the `fare_medium_name` should be included and should match the rider-facing name used by the organizations delivering them. |
-|  `fare_medium_type` | Enum | **Required** | The type of fare medium. <br>Valid options are:<br><br>`0` - None.<br>`1` - Physical paper ticket that allows a passenger to take either a certain number of pre-purchased trips or unlimited trips within a fixed period of time. <br>`2` - Physical transit card that have stored tickets, passes or monetary value.<br>`3` - cEVM as an open-loop token container for account-based ticketing.<br>`4` - Mobile app that have stored virtual transit cards, tickets, passes, or monetary value.|
+|  `fare_medium_type` | Enum | **Required** | The type of fare medium. <br>Valid options are:<br><br>`0` - None.<br>`1` - Physical paper ticket that allows a passenger to take either a certain number of pre-purchased trips or unlimited trips within a fixed period of time. <br>`2` - Physical transit card that have stored tickets, passes or monetary value.<br>`3` - cEMV (contactless Europay, Mastercard and Visa) as an open-loop token container for account-based ticketing.<br>`4` - Mobile app that have stored virtual transit cards, tickets, passes, or monetary value.|
 
 ### fare_products.txt
 
