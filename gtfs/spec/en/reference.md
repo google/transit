@@ -309,7 +309,7 @@ File: **Optional**
 Primary key (`fare_id`)
 
 **Versions**<br>
-There are two modelling options for describing fares. GTFS-Fares V1 is the legacy option for describing minimal fare information. GTFS-Fares V2 is an updated method that allows for a more detailed account of an agency's fare structure. Both are allowed to be present in a dataset, but only one method should be used by a data consumer for a given dataset. It is recommended that GTFS-Fares V2 takes precedence over GTFS-Fares V1. <br><br>The files associated with GTFS-Fares V1 are: <br>- [fare_attributes.txt](#fare_attributestxt)<br>- [fare_rules.txt](#fare_rulestxt)<br><br>The files associated with GTFS-Fares V2 are: <br>- [fare_payment_options.txt](#fare_payment_optionstxt)<br>- [fare_products.txt](#fare_productstxt)<br>- [fare_leg_rules.txt](#fare_leg_rulestxt)<br>- [fare_transfer_rules.txt](#fare_transfer_rulestxt)
+There are two modelling options for describing fares. GTFS-Fares V1 is the legacy option for describing minimal fare information. GTFS-Fares V2 is an updated method that allows for a more detailed account of an agency's fare structure. Both are allowed to be present in a dataset, but only one method should be used by a data consumer for a given dataset. It is recommended that GTFS-Fares V2 takes precedence over GTFS-Fares V1. <br><br>The files associated with GTFS-Fares V1 are: <br>- [fare_attributes.txt](#fare_attributestxt)<br>- [fare_rules.txt](#fare_rulestxt)<br><br>The files associated with GTFS-Fares V2 are: <br>- [fare_media.txt](#fare_mediatxt)<br>- [fare_products.txt](#fare_productstxt)<br>- [fare_leg_rules.txt](#fare_leg_rulestxt)<br>- [fare_transfer_rules.txt](#fare_transfer_rulestxt)
 
 <br>
 
@@ -349,21 +349,21 @@ For examples that demonstrate how to specify a fare structure with [fare_rules.t
 
 File: **Optional** 
 
-Primary Key (`fare_medium_id`)
+Primary Key (`fare_media_id`)
 
 To describe the different fare media that can be employed to use fare products. Fare media are physical or virtual holders used for the representation and/or validation of a fare product.
 
 |  Field Name | Type | Presence | Description |
 |  ------ | ------ | ------ | ------ |
-|  `fare_medium_id` | Unique ID | **Required** | Identifies a fare medium. |
-|  `fare_medium_name` | Text | Optional | Name of the fare medium.<br>For fare media which are transit cards (`fare_medium_type =2`) or mobile apps (`fare_medium_type =4`), the `fare_medium_name` should be included and should match the rider-facing name used by the organizations delivering them. |
-|  `fare_medium_type` | Enum | **Required** | The type of fare medium. <br>Valid options are:<br><br>`0` - None.<br>`2` - Physical transit card that have stored tickets, passes or monetary value.<br>`3` - cEMV (contactless Europay, Mastercard and Visa) as an open-loop token container for account-based ticketing.<br>`4` - Mobile app that have stored virtual transit cards, tickets, passes, or monetary value.|
+|  `fare_media_id` | Unique ID | **Required** | Identifies a fare media. |
+|  `fare_media_name` | Text | Optional | Name of the fare media.<br>For fare media which are transit cards (`fare_media_type =2`) or mobile apps (`fare_media_type =4`), the `fare_media_name` should be included and should match the rider-facing name used by the organizations delivering them. |
+|  `fare_media_type` | Enum | **Required** | The type of fare media. <br>Valid options are:<br><br>`0` - None.<br>`2` - Physical transit card that has stored tickets, passes or monetary value.<br>`3` - cEMV (contactless Europay, Mastercard and Visa) as an open-loop token container for account-based ticketing.<br>`4` - Mobile app that have stored virtual transit cards, tickets, passes, or monetary value.|
 
 ### fare_products.txt
 
 File: **Optional**
 
-Primary Key (`fare_product_id`, `fare_medium_id`)
+Primary Key (`fare_product_id`, `fare_media_id`)
 
 To describe the different types of tickets or fares that can be purchased by riders.
 
@@ -371,7 +371,7 @@ To describe the different types of tickets or fares that can be purchased by rid
 |  ------ | ------ | ------ | ------ |
 | `fare_product_id` | ID | **Required** | Identifies a fare product. |
 | `fare_product_name` | Text | Optional | The name of the fare product as displayed to riders. |
-|  `fare_medium_id` | Foreign ID referencing `fare_media.fare_medium_id` | Optional |  Identifies a fare medium that can be employed used to use the `fare product` during the trip. When `fare_medium_id`is empty, it is considered that the fare media is unknown.|
+|  `fare_media_id` | Foreign ID referencing `fare_media.fare_media_id` | Optional |  Identifies a fare media that can be employed to use the `fare product` during the trip. When `fare_media_id`is empty, it is considered that the fare media is unknown.|
 | `amount` | Currency amount | **Required** | The cost of the fare product. May be negative to represent transfer discounts. May be zero to represent a fare product that is free.|
 | `currency` | Currency code | **Required** | The currency of the cost of the fare product. |
 
