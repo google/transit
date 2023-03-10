@@ -302,19 +302,6 @@ The [calendar_dates.txt](#calendar_datestxt) table explicitly activates or disab
 |  `date` | Date | **Required** | Date when service exception occurs. |
 |  `exception_type` | Enum | **Required** | Indicates whether service is available on the date specified in the date field. Valid options are:<br><br> `1` - Service has been added for the specified date.<br>`2` - Service has been removed for the specified date.<hr>*Example: Suppose a route has one set of trips available on holidays and another set of trips available on all other days. One `service_id` could correspond to the regular service schedule and another `service_id` could correspond to the holiday schedule. For a particular holiday, the [calendar_dates.txt](#calendar_datestxt) file could be used to add the holiday to the holiday `service_id` and to remove the holiday from the regular `service_id` schedule.* |
 
-### timeframes.txt
-
-File: **Optional**
-
-Primary key (*)
-
-|  Field Name | Type | Presence | Description |
-|  ------ | ------ | ------ | ------ |
-|  `timeframe_id` | ID | **Required** | Identifies a timeframe or set of timeframes. |
-|  `start_time` | Time | Optional |  Start time for the interval. The start time is included in the interval. |
-|  `end_time` | Time | Optional |  End time for the interval. The end time is included in the interval. |
-| `service_id` | Foreign ID referencing `calendar.service_id` | Optional | Identifies a set of dates that a timeframe is in effect. |
-
 ### fare_attributes.txt
 
 File: **Optional**
@@ -357,6 +344,19 @@ For examples that demonstrate how to specify a fare structure with [fare_rules.t
 |  `origin_id` | Foreign ID referencing `stops.zone_id` | Optional | Identifies an origin zone. If a fare class has multiple origin zones, create a record in [fare_rules.txt](#fare_rules.txt) for each `origin_id`.<hr>*Example: If fare class "b" is valid for all travel originating from either zone "2" or zone "8", the [fare_rules.txt](#fare_rules.txt) file would contain these records for the fare class:* <br> `fare_id,...,origin_id` <br> `b,...,2`  <br> `b,...,8` |
 |  `destination_id` | Foreign ID referencing `stops.zone_id` | Optional | Identifies a destination zone. If a fare class has multiple destination zones, create a record in [fare_rules.txt](#fare_rules.txt) for each `destination_id`.<hr>*Example: The `origin_id` and `destination_id` fields could be used together to specify that fare class "b" is valid for travel between zones 3 and 4, and for travel between zones 3 and 5, the [fare_rules.txt](#fare_rules.txt) file would contain these records for the fare class:* <br>`fare_id,...,origin_id,destination_id` <br>`b,...,3,4`<br> `b,...,3,5` |
 |  `contains_id` | Foreign ID referencing `stops.zone_id` | Optional | Identifies the zones that a rider will enter while using a given fare class. Used in some systems to calculate correct fare class. <hr>*Example: If fare class "c" is associated with all travel on the GRT route that passes through zones 5, 6, and 7 the [fare_rules.txt](#fare_rules.txt) would contain these records:* <br> `fare_id,route_id,...,contains_id` <br>  `c,GRT,...,5` <br>`c,GRT,...,6` <br>`c,GRT,...,7` <br> *Because all `contains_id` zones must be matched for the fare to apply, an itinerary that passes through zones 5 and 6 but not zone 7 would not have fare class "c". For more detail, see [https://code.google.com/p/googletransitdatafeed/wiki/FareExamples](https://code.google.com/p/googletransitdatafeed/wiki/FareExamples) in the GoogleTransitDataFeed project wiki.* |
+
+### timeframes.txt
+
+File: **Optional**
+
+Primary key (*)
+
+|  Field Name | Type | Presence | Description |
+|  ------ | ------ | ------ | ------ |
+|  `timeframe_id` | ID | **Required** | Identifies a timeframe or set of timeframes. |
+|  `start_time` | Time | Optional |  Start time for the interval. The start time is included in the interval. |
+|  `end_time` | Time | Optional |  End time for the interval. The end time is included in the interval. |
+| `service_id` | Foreign ID referencing `calendar.service_id` | Optional | Identifies a set of dates that a timeframe is in effect. |
 
 ### fare_products.txt
 
