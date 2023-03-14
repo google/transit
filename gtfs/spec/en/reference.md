@@ -371,7 +371,7 @@ To describe the different types of tickets or fares that can be purchased by rid
 |  ------ | ------ | ------ | ------ |
 | `fare_product_id` | ID | **Required** | Identifies a fare product. |
 | `fare_product_name` | Text | Optional | The name of the fare product as displayed to riders. |
-|  `fare_media_id` | Foreign ID referencing `fare_media.fare_media_id` | Optional |  Identifies a fare media that can be employed to use the `fare product` during the trip. When `fare_media_id`is empty, it is considered that the fare media is unknown.|
+|  `fare_media_id` | Foreign ID referencing `fare_media.fare_media_id` | Optional |  Identifies a fare media that can be employed to use the fare product during the trip. When `fare_media_id` is empty, it is considered that the fare media is unknown.|
 | `amount` | Currency amount | **Required** | The cost of the fare product. May be negative to represent transfer discounts. May be zero to represent a fare product that is free.|
 | `currency` | Currency code | **Required** | The currency of the cost of the fare product. |
 
