@@ -53,21 +53,25 @@ Every new feature adds complexity to the creation and reading of feeds. Therefor
 
 ### Revision History
 
+#### March 14, 2023
+
+* Added fare media. See [discussion](https://github.com/google/transit/pull/355).
+
 #### July 26, 2022
 
-* Added trip-to-trip transfers with in-seat option. See [discussion](https://github.com/google/transit/pull/303)
+* Added trip-to-trip transfers with in-seat option. See [discussion](https://github.com/google/transit/pull/303).
 
 #### May 17, 2022
 
-* GTFS-Fares v2 base implementation. See [discussion](https://github.com/google/transit/pull/286)
+* GTFS-Fares v2 base implementation. See [discussion](https://github.com/google/transit/pull/286).
 
 #### Oct 22, 2021
 
-* Added Primary and Foreign ID fields. See [discussion](https://github.com/google/transit/pull/278)
+* Added Primary and Foreign ID fields. See [discussion](https://github.com/google/transit/pull/278).
 
 #### Oct 05, 2021
 
-* Added Trip-to-trip and route-to-route transfers. See [discussion](https://github.com/google/transit/pull/284)
+* Added Trip-to-trip and route-to-route transfers. See [discussion](https://github.com/google/transit/pull/284).
 
 #### September 15, 2021
 
