@@ -17,9 +17,9 @@ This document defines the format and structure of the files that comprise a GTFS
     -   [stop\_times.txt](#stop_timestxt)
     -   [calendar.txt](#calendartxt)
     -   [calendar\_dates.txt](#calendar_datestxt)
-    -   [timeframes.txt](#timeframestxt)    
     -   [fare\_attributes.txt](#fare_attributestxt)
     -   [fare\_rules.txt](#fare_rulestxt)
+    -   [timeframes.txt](#timeframestxt)    
     -   [fare\_media.txt](#fare_mediatxt)
     -   [fare\_products.txt](#fare_productstxt) 
     -   [fare\_leg\_rules.txt](#fare_leg_rulestxt)
@@ -109,9 +109,9 @@ This specification defines the following files:
 |  [stop_times.txt](#stop_timestxt) | **Required** | Times that a vehicle arrives at and departs from stops for each trip. |
 |  [calendar.txt](#calendartxt)  | **Conditionally Required** | Service dates specified using a weekly schedule with start and end dates. <br><br>Conditionally Required:<br> - **Required** unless all dates of service are defined in [calendar_dates.txt](#calendar_datestxt).<br> - Optional otherwise. |
 |  [calendar_dates.txt](#calendar_datestxt)  | **Conditionally Required** | Exceptions for the services defined in the [calendar.txt](#calendartxt). <br><br>Conditionally Required:<br> - **Required** if [calendar.txt](#calendartxt) is omitted. In which case [calendar_dates.txt](#calendar_datestxt) must contain all dates of service. <br> - Optional otherwise. |
-|  [timeframes.txt](#timeframestxt)  | Optional | Time periods used in fare rules for time-dependant fares. |
 |  [fare_attributes.txt](#fare_attributestxt)  | Optional | Fare information for a transit agency's routes. |
 |  [fare_rules.txt](#fare_rulestxt)  | Optional | Rules to apply fares for itineraries. |
+|  [timeframes.txt](#timeframestxt)  | Optional | Date and time periods to use in fare rules for fares that depend on date and time factors. |
 |  [fare_media.txt](#fare_mediatxt)  | Optional | To describe the fare media that can be employed to use fare products. <br><br>File [fare_media.txt](#fare_mediatxt) describes concepts that are not represented in [fare_attributes.txt](#fare_attributestxt) and [fare_rules.txt](#fare_rulestxt). As such, the use of [fare_media.txt](#fare_mediatxt) is entirely separate from files [fare_attributes.txt](#fare_attributestxt) and [fare_rules.txt](#fare_rulestxt). |
 |  [fare_products.txt](#fare_productstxt)  | Optional | To describe the different types of tickets or fares that can be purchased by riders.<br><br>File [fare_products.txt](#fare_productstxt) describes fare products that are not represented in [fare_attributes.txt](#fare_attributestxt) and [fare_rules.txt](#fare_rulestxt). As such, the use of [fare_products.txt](#fare_productstxt) is entirely separate from files [fare_attributes.txt](#fare_attributestxt) and [fare_rules.txt](#fare_rulestxt). |
 |  [fare_leg_rules.txt](#fare_leg_rulestxt)  | Optional | Fare rules for individual legs of travel.<br><br>File [fare_leg_rules.txt](#fare_leg_rulestxt) provides a more detailed method for modeling fare structures. As such, the use of [fare_leg_rules.txt](#fare_leg_rulestxt) is entirely separate from files [fare_attributes.txt](#fare_attributestxt) and [fare_rules.txt](#fare_rulestxt). |
