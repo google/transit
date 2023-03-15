@@ -1,6 +1,6 @@
 ## General Transit Feed Specification Reference
 
-**Revised May 9, 2022. See [Revision History](../../CHANGES.md) for more details.**
+**Revised Dec 8, 2022. See [Revision History](../../CHANGES.md) for more details.**
 
 This document defines the format and structure of the files that comprise a GTFS dataset.
 
@@ -20,6 +20,7 @@ This document defines the format and structure of the files that comprise a GTFS
     -   [timeframes.txt](#timeframestxt)    
     -   [fare\_attributes.txt](#fare_attributestxt)
     -   [fare\_rules.txt](#fare_rulestxt)
+    -   [fare\_media.txt](#fare_mediatxt)
     -   [fare\_products.txt](#fare_productstxt) 
     -   [fare\_leg\_rules.txt](#fare_leg_rulestxt)
     -   [fare\_transfer\_rules.txt](#fare_transfer_rulestxt)
@@ -105,17 +106,18 @@ This specification defines the following files:
 |  [stops.txt](#stopstxt) | **Required** | Stops where vehicles pick up or drop off riders. Also defines stations and station entrances.  |
 |  [routes.txt](#routestxt) | **Required** | Transit routes. A route is a group of trips that are displayed to riders as a single service. |
 |  [trips.txt](#tripstxt)  | **Required** | Trips for each route. A trip is a sequence of two or more stops that occur during a specific time period. |
-|  [stop_times.txt](#stop_timestxt)  | **Required** | Times that a vehicle arrives at and departs from stops for each trip. |
+|  [stop_times.txt](#stop_timestxt) | **Required** | Times that a vehicle arrives at and departs from stops for each trip. |
 |  [calendar.txt](#calendartxt)  | **Conditionally Required** | Service dates specified using a weekly schedule with start and end dates. <br><br>Conditionally Required:<br> - **Required** unless all dates of service are defined in [calendar_dates.txt](#calendar_datestxt).<br> - Optional otherwise. |
 |  [calendar_dates.txt](#calendar_datestxt)  | **Conditionally Required** | Exceptions for the services defined in the [calendar.txt](#calendartxt). <br><br>Conditionally Required:<br> - **Required** if [calendar.txt](#calendartxt) is omitted. In which case [calendar_dates.txt](#calendar_datestxt) must contain all dates of service. <br> - Optional otherwise. |
 |  [timeframes.txt](#timeframestxt)  | Optional | Time periods used in fare rules for time-dependant fares. |
 |  [fare_attributes.txt](#fare_attributestxt)  | Optional | Fare information for a transit agency's routes. |
-|  [fare_rules.txt](#fare_rulestxt)  | **Conditionally Required** | Rules to apply fares for itineraries.<br><br>Conditionally Required:<br>- **Required** if [fare_attributes.txt](#fare_attributestxt) is defined.<br>- **Forbidden** otherwise. |
-|  [fare_products.txt](#fare_productstxt)  | Optional | To describe the different types of tickets or fares that can be purchased by riders.<br><br>File [fare_products.txt](fare_productstxt) describes fare products that are not represented in [fare_attributes.txt](#fare_attributestxt) and [fare_rules.txt](#fare_rulestxt). As such, the use of [fare_products.txt](#fare_productstxt) is entirely separate from files [fare_attributes.txt](#fare_attributestxt) and [fare_rules.txt](#fare_rulestxt). |
+|  [fare_rules.txt](#fare_rulestxt)  | Optional | Rules to apply fares for itineraries. |
+|  [fare_media.txt](#fare_mediatxt)  | Optional | To describe the fare media that can be employed to use fare products. <br><br>File [fare_media.txt](#fare_mediatxt) describes concepts that are not represented in [fare_attributes.txt](#fare_attributestxt) and [fare_rules.txt](#fare_rulestxt). As such, the use of [fare_media.txt](#fare_mediatxt) is entirely separate from files [fare_attributes.txt](#fare_attributestxt) and [fare_rules.txt](#fare_rulestxt). |
+|  [fare_products.txt](#fare_productstxt)  | Optional | To describe the different types of tickets or fares that can be purchased by riders.<br><br>File [fare_products.txt](#fare_productstxt) describes fare products that are not represented in [fare_attributes.txt](#fare_attributestxt) and [fare_rules.txt](#fare_rulestxt). As such, the use of [fare_products.txt](#fare_productstxt) is entirely separate from files [fare_attributes.txt](#fare_attributestxt) and [fare_rules.txt](#fare_rulestxt). |
 |  [fare_leg_rules.txt](#fare_leg_rulestxt)  | Optional | Fare rules for individual legs of travel.<br><br>File [fare_leg_rules.txt](#fare_leg_rulestxt) provides a more detailed method for modeling fare structures. As such, the use of [fare_leg_rules.txt](#fare_leg_rulestxt) is entirely separate from files [fare_attributes.txt](#fare_attributestxt) and [fare_rules.txt](#fare_rulestxt). |
 |  [fare_transfer_rules.txt](#fare_transfer_rulestxt)  | Optional | Fare rules for transfers between legs of travel.<br><br>Along with [fare_leg_rules.txt](#fare_leg_rulestxt), file [fare_transfer_rules.txt](#fare_transfer_rulestxt) provides a more detailed method for modeling fare structures. As such, the use of [fare_transfer_rules.txt](#fare_transfer_rulestxt) is entirely separate from files [fare_attributes.txt](#fare_attributestxt) and [fare_rules.txt](#fare_rulestxt). |
-|  [areas.txt](areastxt) | Optional | Area grouping of locations. |
-|  [stop_areas.txt](stop_areastxt) | Optional | Rules to assign stops to areas. |
+|  [areas.txt](#areastxt) | Optional | Area grouping of locations. |
+|  [stop_areas.txt](#stop_areastxt) | Optional | Rules to assign stops to areas. |
 |  [shapes.txt](#shapestxt)  | Optional | Rules for mapping vehicle travel paths, sometimes referred to as route alignments. |
 |  [frequencies.txt](#frequenciestxt)  | Optional | Headway (time between trips) for headway-based service or a compressed representation of fixed-schedule service. |
 |  [transfers.txt](#transferstxt)  | Optional | Rules for making connections at transfer points between routes. |
@@ -309,7 +311,7 @@ File: **Optional**
 Primary key (`fare_id`)
 
 **Versions**<br>
-There are two modelling options for describing fares. GTFS-Fares V1 is the legacy option for describing minimal fare information. GTFS-Fares V2 is an updated method that allows for a more detailed account of an agency's fare structure. Both are allowed to be present in a dataset, but only one method should be used by a data consumer for a given dataset. It is recommended that GTFS-Fares V2 takes precedence over GTFS-Fares V1. <br><br>The files associated with GTFS-Fares V1 are: <br>- [fare_attributes.txt](#fare_attributestxt)<br>- [fare_rules.txt](#fare_rulestxt)<br><br>The files associated with GTFS-Fares V2 are: <br>- [fare_products.txt](#fare_productstxt)<br>- [fare_leg_rules.txt](#fare_leg_rulestxt)<br>- [fare_transfer_rules.txt](#fare_transfer_rulestxt)
+There are two modelling options for describing fares. GTFS-Fares V1 is the legacy option for describing minimal fare information. GTFS-Fares V2 is an updated method that allows for a more detailed account of an agency's fare structure. Both are allowed to be present in a dataset, but only one method should be used by a data consumer for a given dataset. It is recommended that GTFS-Fares V2 takes precedence over GTFS-Fares V1. <br><br>The files associated with GTFS-Fares V1 are: <br>- [fare_attributes.txt](#fare_attributestxt)<br>- [fare_rules.txt](#fare_rulestxt)<br><br>The files associated with GTFS-Fares V2 are: <br>- [fare_media.txt](#fare_mediatxt)<br>- [fare_products.txt](#fare_productstxt)<br>- [fare_leg_rules.txt](#fare_leg_rulestxt)<br>- [fare_transfer_rules.txt](#fare_transfer_rulestxt)
 
 <br>
 
@@ -325,7 +327,7 @@ There are two modelling options for describing fares. GTFS-Fares V1 is the legac
 
 ### fare_rules.txt
 
-File: **Conditionally Required**
+File: **Optional**
 
 Primary key (`*`)
 
@@ -335,7 +337,7 @@ The [fare_rules.txt](#farerulestxt) table specifies how fares in [fare_attribute
 * Fare depends on which zones the itinerary passes through.
 * Fare depends on which route the itinerary uses.
 
-For examples that demonstrate how to specify a fare structure with [fare_rules.txt](#farerulestxt) and [fare_attributes.txt](#fareattributestxt), see [https://code.google.com/p/googletransitdatafeed/wiki/FareExamples](https://code.google.com/p/googletransitdatafeed/wiki/FareExamples) in the GoogleTransitDataFeed open source project wiki.
+For examples that demonstrate how to specify a fare structure with [fare_rules.txt](#farerulestxt) and [fare_attributes.txt](#fareattributestxt), see [FareExamples](https://web.archive.org/web/20111207224351/https://code.google.com/p/googletransitdatafeed/wiki/FareExamples) in the GoogleTransitDataFeed open source project wiki.
 
 |  Field Name | Type | Presence | Description |
 |  ------ | ------ | ------ | ------ |
@@ -358,20 +360,37 @@ Primary key (*)
 |  `end_time` | Time | Optional |  End time for the interval. The end time is included in the interval. |
 | `service_id` | Foreign ID referencing `calendar.service_id` | Optional | Identifies a set of dates that a timeframe is in effect. |
 
+### fare_media.txt
+
+File: **Optional** 
+
+Primary Key (`fare_media_id`)
+
+To describe the different fare media that can be employed to use fare products. Fare media are physical or virtual holders used for the representation and/or validation of a fare product.
+
+|  Field Name | Type | Presence | Description |
+|  ------ | ------ | ------ | ------ |
+|  `fare_media_id` | Unique ID | **Required** | Identifies a fare media. |
+|  `fare_media_name` | Text | Optional | Name of the fare media.<br><br>For fare media which are transit cards (`fare_media_type =2`) or mobile apps (`fare_media_type =4`), the `fare_media_name` should be included and should match the rider-facing name used by the organizations delivering them. |
+|  `fare_media_type` | Enum | **Required** | The type of fare media. Valid options are:<br><br>`0` - None.  Used when there is no fare media involved in purchasing or validating a fare product, such as paying cash to a driver or conductor with no physical ticket provided.<br>`2` - Physical transit card that has stored tickets, passes or monetary value.<br>`3` - cEMV (contactless Europay, Mastercard and Visa) as an open-loop token container for account-based ticketing.<br>`4` - Mobile app that have stored virtual transit cards, tickets, passes, or monetary value.|
+ master
+
 ### fare_products.txt
 
 File: **Optional**
 
-Primary Key (`fare_product_id`)
+Primary Key (`fare_product_id`, `fare_media_id`)
 
 To describe the different types of tickets or fares that can be purchased by riders.
 
 |  Field Name | Type | Presence | Description |
 |  ------ | ------ | ------ | ------ |
-| `fare_product_id` |  ID | **Required** | Identifies a fare product. |
+| `fare_product_id` | ID | **Required** | Identifies a fare product. |
 | `fare_product_name` | Text | Optional | The name of the fare product as displayed to riders. |
+|  `fare_media_id` | Foreign ID referencing `fare_media.fare_media_id` | Optional |  Identifies a fare media that can be employed to use the fare product during the trip. When `fare_media_id` is empty, it is considered that the fare media is unknown.|
 | `amount` | Currency amount | **Required** | The cost of the fare product. May be negative to represent transfer discounts. May be zero to represent a fare product that is free.|
 | `currency` | Currency code | **Required** | The currency of the cost of the fare product. |
+
 
 ### fare_leg_rules.txt
 
