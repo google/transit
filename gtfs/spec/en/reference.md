@@ -353,6 +353,8 @@ File: **Optional**
 
 Primary key (*)
 
+Used to describe fares that can vary based on the time of day, the day of the week, or a particular day in the year. Timeframes can be associated with fare products in `fare_leg_rules.txt`.
+
 |  Field Name | Type | Presence | Description |
 |  ------ | ------ | ------ | ------ |
 |  `timeframe_group_id` | ID | **Required** | Identifies a timeframe or set of timeframes. |
