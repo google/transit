@@ -360,7 +360,7 @@ Used to describe fares that can vary based on the time of day, the day of the we
 |  `timeframe_group_id` | ID | **Required** | Identifies a timeframe or set of timeframes. |
 |  `start_time` | Time | **Required** |  Start time for the interval. The start time is included in the interval. |
 |  `end_time` | Time | **Required** |  End time for the interval. The end time is included in the interval. |
-| `service_id` | Foreign ID referencing `calendar.service_id` | **Required** | Identifies a set of dates that a timeframe is in effect. |
+| `service_id` | Foreign ID referencing `calendar.service_id` or `calendar_dates.service_id | **Required** | Identifies a set of dates that a timeframe is in effect. |
 
 ### fare_media.txt
 
