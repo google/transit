@@ -360,7 +360,7 @@ Used to describe fares that can vary based on the time of day, the day of the we
 |  `timeframe_group_id` | ID | **Required** | Identifies a timeframe or set of timeframes. |
 |  `start_time` | Time | **Required** |  Start time for the interval. The interval includes the start time. |
 |  `end_time` | Time | **Required** |  End time for the interval. The interval does not include the end time. |
-| `service_id` | Foreign ID referencing `calendar.service_id` or `calendar_dates.service_id` | **Required** | Identifies a set of dates that a timeframe is in effect. <br>For each `service_id`, time intervals must be defined for the entire day (from `00:00:00` to `23:59:50`). <br>There must not be overlapping time intervals for the same `timeframe_group_id` and `service_id` values. |
+| `service_id` | Foreign ID referencing `calendar.service_id` or `calendar_dates.service_id` | **Required** | Identifies a set of dates that a timeframe is in effect. <br>There must not be overlapping time intervals for the same `timeframe_group_id` and `service_id` values. |
 
 ### fare_media.txt
 
@@ -436,6 +436,7 @@ To process the cost of a leg:
 |  `end_timeframe_group_id` | Foreign ID referencing `timeframes.timeframe_group_id` | Optional |  Defines the timeframe for the arrival of the fare leg.<br><br>For a fare leg rule that specifies a `end_timeframe_group_id`, that rule will match a particular leg if there exists at least a row in `timeframes.txt` where all of the following conditions are true:<br>- The row’s `timeframe_group_id` is equal to the `end_timeframe_group_id` value.<br>- The set of service days identified by the row’s `service_id` contains the service day of the leg’s departure trip.<br>- The arrival time of the leg, relative to the service day per [GTFS Time field type](#field-types) conventions, is greater than or equal to the rows `start_time` value and less than the `end_time` value.<br><br>If there are no matching `fare_leg_rules.end_timeframe_group_id` values to the `timeframe_group_id` being filtered, empty `fare_leg_rules.end_timeframe_group_id` will be matched by default. <br><br>An empty `fare_leg_rules.end_timeframe_group_id` indicates that the end time of the leg does not affect the fare. |
 | `timeframe_type` | Enum | **Conditionally Required** | Defines the type of fare validation to be associated with `timeframes.start_time` and `timeframes.end_time`.<br><br>Valid options are:<br>`0` - In vehicle.<br>`1` - At fare gate or on platform.<br><br>Conditionally Required:<br>- **Required**  if either `start_timeframe_group_id` or `end_timeframe_group_id` is defined.<br>- **Forbidden** otherwise.|
 | `fare_product_id` | Foreign ID referencing `fare_products.fare_product_id` | **Required** | The fare product required to travel the leg. |
+| `override` | Non-negative integer | Optional | When multiple entries in `fare_leg_rules.txt` match, the one with the highest `override` value will be selected.<br><br>An empty value for `override` is treated as zero.|
 
 ### fare_transfer_rules.txt
 
