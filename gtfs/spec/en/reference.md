@@ -60,6 +60,7 @@ Presence conditions applicable to fields and files:
 * **Optional** - The field or file may be omitted from the dataset.
 * **Conditionally Required** - The field or file must be included under conditions outlined in the field or file description.
 * **Conditionally Forbidden** - The field or file must not be included under conditions outlined in the field or file description.
+* **Recommended** - The field or file may be omitted from the dataset, but it is a best practice to include it. The best practice should be considered before omission.
 
 ### Field Types
 
