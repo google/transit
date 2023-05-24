@@ -154,7 +154,7 @@ Primary key (`agency_id`)
 
 |  Field Name | Type | Presence | Description |
 |  ------ | ------ | ------ | ------ |
-|  `agency_id` | Unique ID | **Conditionally Required** | Identifies a transit brand which is often synonymous with a transit agency. Note that in some cases, such as when a single agency operates multiple separate services, agencies and brands are distinct. This document uses the term "agency" in place of "brand". A dataset may contain data from multiple agencies. <br><br>Conditionally Required:<br>- **Required** when the dataset contains data for multiple transit agencies. <br>- Optional otherwise. |
+|  `agency_id` | Unique ID | **Conditionally Required** | Identifies a transit brand which is often synonymous with a transit agency. Note that in some cases, such as when a single agency operates multiple separate services, agencies and brands are distinct. This document uses the term "agency" in place of "brand". A dataset may contain data from multiple agencies. <br><br>Conditionally Required:<br>- **Required** when the dataset contains data for multiple transit agencies. <br>- Recommended otherwise. |
 |  `agency_name` | Text | **Required** | Full name of the transit agency. |
 |  `agency_url` | URL | **Required** | URL of the transit agency. |
 |  `agency_timezone` | Timezone | **Required** | Timezone where the transit agency is located. If multiple agencies are specified in the dataset, each must have the same `agency_timezone`. |
@@ -197,7 +197,7 @@ Primary key (`route_id`)
 |  Field Name | Type | Presence | Description |
 |  ------ | ------ | ------ | ------ |
 |  `route_id` | Unique ID | **Required** | Identifies a route. |
-|  `agency_id` | Foreign ID referencing `agency.agency_id` | **Conditionally Required** | Agency for the specified route.<br><br>Conditionally Required:<br>- **Required** if multiple agencies are defined in [agency.txt](#agency). <br>- Optional otherwise.   |
+|  `agency_id` | Foreign ID referencing `agency.agency_id` | **Conditionally Required** | Agency for the specified route.<br><br>Conditionally Required:<br>- **Required** if multiple agencies are defined in [agency.txt](#agency). <br>- Recommended otherwise. |
 |  `route_short_name` | Text | **Conditionally Required** | Short name of a route. Often a short, abstract identifier (e.g., "32", "100X", "Green") that riders use to identify a route. Both `route_short_name` and `route_long_name` may be defined.<br><br>Conditionally Required:<br>- **Required** if `routes.route_long_name` is empty.<br>- Recommended if there is a brief service designation. This should be the commonly-known passenger name of the service, no longer than 12 characters. |
 |  `route_long_name` | Text | **Conditionally Required** | Full name of a route. This name is generally more descriptive than the `route_short_name` and often includes the route's destination or stop. Both `route_short_name` and `route_long_name` may be defined.<br><br>Conditionally Required:<br>- **Required** if `routes.route_short_name` is empty.<br>- Optional otherwise. |
 |  `route_desc` | Text | Optional | Description of a route that provides useful, quality information. Should not be a duplicate of `route_short_name` or `route_long_name`. <hr> _Example: "A" trains operate between Inwood-207 St, Manhattan and Far Rockaway-Mott Avenue, Queens at all times. Also from about 6AM until about midnight, additional "A" trains operate between Inwood-207 St and Lefferts Boulevard (trains typically alternate between Lefferts Blvd and Far Rockaway)._ |
@@ -321,7 +321,7 @@ There are two modelling options for describing fares. GTFS-Fares V1 is the legac
 |  `currency_type` | Currency code | **Required** | Currency used to pay the fare. |
 |  `payment_method` | Enum | **Required** | Indicates when the fare must be paid. Valid options are:<br><br>`0` - Fare is paid on board.<br>`1` - Fare must be paid before boarding. |
 |  `transfers` | Enum | **Required** | Indicates the number of transfers permitted on this fare. Valid options are:<br><br>`0` - No transfers permitted on this fare.<br>`1` - Riders may transfer once.<br>`2` - Riders may transfer twice.<br>empty - Unlimited transfers are permitted. |
-|  `agency_id` | Foreign ID referencing `agency.agency_id` | **Conditionally Required** | Identifies the relevant agency for a fare. <br><br>Conditionally Required:<br>- **Required** if multiple agencies are defined in `agency.txt`.<br>- Optional otherwise. |
+|  `agency_id` | Foreign ID referencing `agency.agency_id` | **Conditionally Required** | Identifies the relevant agency for a fare. <br><br>Conditionally Required:<br>- **Required** if multiple agencies are defined in `agency.txt`.<br>- Recommended otherwise. |
 |  `transfer_duration` | Non-negative integer | Optional | Length of time in seconds before a transfer expires. When `transfers`=`0` this field may be used to indicate how long a ticket is valid for or it may be left empty. |
 
 ### fare_rules.txt
