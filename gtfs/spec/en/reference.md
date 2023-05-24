@@ -358,8 +358,8 @@ Used to describe fares that can vary based on the time of day, the day of the we
 |  Field Name | Type | Presence | Description |
 |  ------ | ------ | ------ | ------ |
 |  `timeframe_group_id` | ID | **Required** | Identifies a timeframe or set of timeframes. |
-|  `start_time` | Time | **Required** |  Start time for the interval. The interval includes the start time. |
-|  `end_time` | Time | **Required** |  End time for the interval. The interval does not include the end time. |
+|  `start_time` | Time | **Conditionally Required** |  Defines the beginning of a timeframe. The interval includes the start time.<br> Values greater than `24:00:00` are forbidden. An empty value in `start_time` is considered `00:00:00`. <br><br> Conditionally Required:<br> - **Required** if `timeframes.end_time` is defined.<br> - Forbidden otherwise |
+|  `end_time` | Time | **Conditionally Required** |  Defines the end of a timeframe. The interval does not include the end time.<br> Values greater than `24:00:00` are forbidden. An empty value in `end_time` is considered `24:00:00`. <br><br> Conditionally Required:<br> - **Required** if `timeframes.start_time` is defined.<br> - Forbidden otherwise |
 | `service_id` | Foreign ID referencing `calendar.service_id` or `calendar_dates.service_id` | **Required** | Identifies a set of dates that a timeframe is in effect. <br>There must not be overlapping time intervals for the same `timeframe_group_id` and `service_id` values. |
 
 ### fare_media.txt
