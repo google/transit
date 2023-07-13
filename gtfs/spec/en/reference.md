@@ -31,6 +31,7 @@ This document defines the format and structure of the files that comprise a GTFS
     -   [pathways.txt](#pathwaystxt)
     -   [levels.txt](#levelstxt)
     -   [locations.geojson](#locationsgeojson)
+    -   [booking_rules.txt](#booking_rulestxt)
     -   [translations.txt](#translationstxt)
     -   [feed\_info.txt](#feed_infotxt)
     -   [attributions.txt](#attributionstxt)
@@ -123,6 +124,7 @@ This specification defines the following files:
 |  [pathways.txt](#pathwaystxt)  | Optional | Pathways linking together locations within stations. |
 |  [levels.txt](#levelstxt)  | **Conditionally Required** | Levels within stations.<br><br>Conditionally Required:<br>- **Required** when describing pathways with elevators (`pathway_mode=5`).<br>- Optional otherwise. |
 |  [locations.geojson](#locationsgeojson)  | Optional | GeoJSON locations, which are `Polygon` and `MultiPolygon` features that indicate groups of lat/lon coordinates defining zones where riders can request either pickup or drop off. |
+|  [booking_rules.txt](#booking_rulestxt)  | Optional | Booking information for rider-requested services. |
 |  [translations.txt](#translationstxt)  | Optional | Translations of customer-facing dataset values. |
 |  [feed_info.txt](#feed_infotxt)  | Optional | Dataset metadata, including publisher, version, and expiration information. |
 |  [attributions.txt](#attributionstxt)  | Optional | Dataset attributions. |
@@ -640,6 +642,32 @@ File: **Optional**
 | &nbsp;&nbsp;&nbsp;&nbsp;\-&nbsp;`geometry` | Object | **Required** | Geometry of the location. |
 | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\-&nbsp;`type` | String | **Required** | Must be of type:<br>-&nbsp;`"Polygon"`<br>-&nbsp;`"MultiPolygon"` |
 | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\-&nbsp;`coordinates` | Array | **Required** | Geographic coordinates (latitude and longitude) defining the geometry of the location. |
+
+### booking_rules.txt
+
+File: **Optional**
+
+Primary key (`booking_rule_id`)
+
+Defines the booking rules for rider-requested services
+
+|  Field Name | Type | Presence | Description |
+|  ------ | ------ | ------ | ------ |
+| `booking_rule_id` | ID | **Required** | Identifies the rule. |
+| `booking_type` | Enum | **Required** | Indicates how far in advance booking can be made. Valid options are:<br><br>`0` - Real time booking.<br>`1` - Up to same-day booking with advance notice.<br>`2` - Up to prior day(s) booking. |
+| `prior_notice_duration_min` | Integer | **Conditionally Required** | Minimum number of minutes before travel to make the request.<br><br>**Conditionally Required**:<br>- **Required** for `booking_type=1`.<br>- **Forbidden** otherwise. |
+| `prior_notice_duration_max` | Integer | **Conditionally Forbidden** | Maximum number of minutes before travel to make the booking request.<br><br>**Conditionally Forbidden**:<br>- **Forbidden** for `booking_type=0` and `booking_type=2`.<br>- Optional for `booking_type=1`.|
+| `prior_notice_last_day` | Integer | **Conditionally Required** | Last day before travel to make the booking request. <br><br>Example: “Ride must be booked 1 day in advance before 5PM” will be encoded as `prior_notice_last_day=1`.<br><br>**Conditionally Required**:<br>- **Required** for `booking_type=2`.<br>- **Forbidden** otherwise. |
+| `prior_notice_last_time` | Time | **Conditionally Required** | Last time on the last day before travel to make the booking request.<br><br>Example: “Ride must be booked 1 day in advance before 5PM” will be encoded as `prior_notice_last_time=17:00:00`.<br><br>**Conditionally Required**:<br>- **Required** if `prior_notice_last_day` is defined.<br>- **Forbidden** otherwise. |
+| `prior_notice_start_day` | Integer | **Conditionally Forbidden** | Earliest day before travel to make the booking request.<br><br>Example: “Ride can be booked at the earliest one week in advance at midnight” will be encoded as `prior_notice_start_day=7`.<br><br>**Conditionally Forbidden**:<br>- **Forbidden** for `booking_type=0`.<br> - **Forbidden** for `booking_type=1` if `prior_notice_duration_max` is defined.<br> - Optional otherwise. |
+| `prior_notice_start_time` | Time | **Conditionally Required** | Earliest time on the earliest day before travel to make the booking request.<br><br>Example: “Ride can be booked at the earliest one week in advance at midnight” will be encoded as `prior_notice_start_time=00:00:00`.<br><br>**Conditionally Required**:<br>- **Required** if `prior_notice_start_day` is defined.<br>- **Forbidden** otherwise. |
+| `prior_notice_service_id` | ID referencing `calendar.service_id` | **Conditionally Forbidden** | Indicates the service days on which `prior_notice_last_day` or `prior_notice_start_day` are counted. <br><br>Example: If empty, `prior_notice_start_day=2` will be two calendar days in advance. If defined as a `service_id` containing only business days (weekdays without holidays), `prior_notice_start_day=2` will be two business days in advance.<br><br>**Conditionally Forbidden**:<br> - Optional if `booking_type=2`. <br> - **Forbidden** otherwise. |
+| `message` | Text | Optional | Message to riders utilizing service at a `stop_time` when booking on-demand pickup and drop off. Meant to provide minimal information to be transmitted within a user interface about the action a rider must take in order to utilize the service. |
+| `pickup_message` | Text | Optional | Functions in the same way as `message` but used when riders have on-demand pickup only. |
+| `drop_off_message` | Text | Optional | Functions in the same way as `message` but used when riders have on-demand drop off only. |
+| `phone_number` | Phone number | Optional | Phone number to call to make the booking request. |
+| `info_url` | URL | Optional | URL providing information about the booking rule. |
+| `booking_url` | URL | Optional | URL to an online interface or app where the booking request can be made. |
 
 ### translations.txt
 
