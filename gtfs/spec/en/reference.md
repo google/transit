@@ -30,6 +30,7 @@ This document defines the format and structure of the files that comprise a GTFS
     -   [transfers.txt](#transferstxt)
     -   [pathways.txt](#pathwaystxt)
     -   [levels.txt](#levelstxt)
+    -   [locations.geojson](#locationsgeojson)
     -   [translations.txt](#translationstxt)
     -   [feed\_info.txt](#feed_infotxt)
     -   [attributions.txt](#attributionstxt)
@@ -121,6 +122,7 @@ This specification defines the following files:
 |  [transfers.txt](#transferstxt)  | Optional | Rules for making connections at transfer points between routes. |
 |  [pathways.txt](#pathwaystxt)  | Optional | Pathways linking together locations within stations. |
 |  [levels.txt](#levelstxt)  | **Conditionally Required** | Levels within stations.<br><br>Conditionally Required:<br>- **Required** when describing pathways with elevators (`pathway_mode=5`).<br>- Optional otherwise. |
+|  [locations.geojson](#locationsgeojson)  | Optional | GeoJSON locations, which are `Polygon` and `MultiPolygon` features that indicate groups of lat/lon coordinates defining zones where riders can request either pickup or drop off. |
 |  [translations.txt](#translationstxt)  | Optional | Translations of customer-facing dataset values. |
 |  [feed_info.txt](#feed_infotxt)  | Optional | Dataset metadata, including publisher, version, and expiration information. |
 |  [attributions.txt](#attributionstxt)  | Optional | Dataset attributions. |
@@ -616,6 +618,28 @@ Describes levels in a station. Useful in conjunction with `pathways.txt`, and is
 |  `level_index` | Float | **Required** | Numeric index of the level that indicates its relative position. <br><br>Ground level should have index `0`, with levels above ground indicated by positive indices and levels below ground by negative indices.|
 |  `level_name` | Text | Optional | Name of the level as seen by the rider inside the building or station.<hr>_Example: Take the elevator to "Mezzanine" or "Platform" or "-1"._|
 
+### locations.geojson
+
+File: **Optional**
+
+- This file uses a subset of the GeoJSON format, described in [RFC 7946](https://tools.ietf.org/html/rfc7946).
+- The `locations.geojson` file must contain a `FeatureCollection`.
+- A `FeatureCollection` defines various stop locations where riders may request pickup or drop off.
+- Every GeoJSON `Feature` must have an `id`. The `id` belongs to the same namespace as `stop_id` in `stops.txt` and `area_id` in `stop_areas.txt`, called “stop locations”.
+- Every GeoJSON `Feature` should have objects and associated keys according to the table below:
+
+|  Field Name | Type | Presence | Description |
+|  ------ | ------ | ------ | ------ |
+| -&nbsp;`type` | String | **Required** | `"FeatureCollection"` of locations. |
+| -&nbsp;`features` | Array | **Required** | Collection of `"Feature"` objects describing the locations. |
+| &nbsp;&nbsp;&nbsp;&nbsp;\-&nbsp;`type` | String | **Required** | `"Feature"` |
+| &nbsp;&nbsp;&nbsp;&nbsp;\-&nbsp;`id` | String | **Required** | Location ID belonging to the same namespace as `stops.stop_id`. It is forbidden to define an `id` from `locations.geojson` with the same value as a `stops.stop_id`.|
+| &nbsp;&nbsp;&nbsp;&nbsp;\-&nbsp;`properties` | Object | **Required** | Location property keys. |
+| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\-&nbsp;`stop_name` | String | Optional | Indicates the name of the location as displayed to riders. |
+| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\-&nbsp;`stop_desc` | String | Optional | Meaningful description of the location to help orient riders. |
+| &nbsp;&nbsp;&nbsp;&nbsp;\-&nbsp;`geometry` | Object | **Required** | Geometry of the location. |
+| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\-&nbsp;`type` | String | **Required** | Must be of type:<br>-&nbsp;`"Polygon"`<br>-&nbsp;`"MultiPolygon"` |
+| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\-&nbsp;`coordinates` | Array | **Required** | Geographic coordinates (latitude and longitude) defining the geometry of the location. |
 
 ### translations.txt
 
