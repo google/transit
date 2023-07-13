@@ -624,6 +624,7 @@ Describes levels in a station. Useful in conjunction with `pathways.txt`, and is
 
 File: **Optional**
 
+Defines GeoJSON locations that indicate groups of lat/lon coordinates defining zones where riders can request either pickup or drop off.
 - This file uses a subset of the GeoJSON format, described in [RFC 7946](https://tools.ietf.org/html/rfc7946).
 - The `locations.geojson` file must contain a `FeatureCollection`.
 - A `FeatureCollection` defines various stop locations where riders may request pickup or drop off.
