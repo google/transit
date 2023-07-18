@@ -141,7 +141,7 @@ The following example demonstrates how a field value would appear in a comma-del
 * Extra spaces between fields or field names should be removed. Many parsers consider the spaces to be part of the value, which may cause errors.
 * Each line must end with a CRLF or LF linebreak character.
 * Files should be encoded in UTF-8 to support all Unicode characters. Files that include the Unicode byte-order mark (BOM) character are acceptable. See [http://unicode.org/faq/utf_bom.html#BOM](http://unicode.org/faq/utf_bom.html#BOM) for more information on the BOM character and UTF-8.
-* All dataset files must be zipped together.
+* All dataset files must be zipped together. The files must reside at the root level directly, not in a subfolder.
 
 ## Field Definitions
 
