@@ -636,7 +636,7 @@ Defines GeoJSON locations that indicate groups of lat/lon coordinates defining z
 | -&nbsp;`type` | String | **Required** | `"FeatureCollection"` of locations. |
 | -&nbsp;`features` | Array | **Required** | Collection of `"Feature"` objects describing the locations. |
 | &nbsp;&nbsp;&nbsp;&nbsp;\-&nbsp;`type` | String | **Required** | `"Feature"` |
-| &nbsp;&nbsp;&nbsp;&nbsp;\-&nbsp;`id` | String | **Required** | Location ID belonging to the same namespace as `stops.stop_id`. It is forbidden to define an `id` from `locations.geojson` with the same value as a `stops.stop_id`.|
+| &nbsp;&nbsp;&nbsp;&nbsp;\-&nbsp;`id` | String | **Required** | Location ID belonging to the same namespace as `stops.stop_id`. It is forbidden to define an `id` from `locations.geojson` with the same value as a `stops.stop_id` or a `stop_areas.area_id`.|
 | &nbsp;&nbsp;&nbsp;&nbsp;\-&nbsp;`properties` | Object | **Required** | Location property keys. |
 | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\-&nbsp;`stop_name` | String | Optional | Indicates the name of the location as displayed to riders. |
 | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\-&nbsp;`stop_desc` | String | Optional | Meaningful description of the location to help orient riders. |
