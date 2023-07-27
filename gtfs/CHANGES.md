@@ -53,6 +53,10 @@ Every new feature adds complexity to the creation and reading of feeds. Therefor
 
 ### Revision History
 
+#### July 2023
+* Forbid subfolders in GTFS files. See [discussion](https://github.com/google/transit/pull/379).
+* Added variable fares by time or day. See [discussion](https://github.com/google/transit/pull/357).
+
 #### March 14, 2023
 
 * Added fare media. See [discussion](https://github.com/google/transit/pull/355).
