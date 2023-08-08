@@ -27,6 +27,7 @@ This document defines the format and structure of the files that comprise a GTFS
     -   [areas.txt](#areastxt)
     -   [stop_areas.txt](#stop_areastxt)
     -   [shapes.txt](#shapestxt)
+    -   [shapes.geojson](#shapesgeojson)
     -   [frequencies.txt](#frequenciestxt)
     -   [transfers.txt](#transferstxt)
     -   [pathways.txt](#pathwaystxt)
@@ -120,6 +121,7 @@ This specification defines the following files:
 |  [areas.txt](#areastxt) | Optional | Area grouping of locations. |
 |  [stop_areas.txt](#stop_areastxt) | Optional | Rules to assign stops to areas. |
 |  [shapes.txt](#shapestxt)  | Optional | Rules for mapping vehicle travel paths, sometimes referred to as route alignments. |
+|  [shapes.geojson](#shapesgeojson)  | Optional | Rules for mapping vehicle travel paths, sometimes referred to as route alignments. |
 |  [frequencies.txt](#frequenciestxt)  | Optional | Headway (time between trips) for headway-based service or a compressed representation of fixed-schedule service. |
 |  [transfers.txt](#transferstxt)  | Optional | Rules for making connections at transfer points between routes. |
 |  [pathways.txt](#pathwaystxt)  | Optional | Pathways linking together locations within stations. |
@@ -521,6 +523,30 @@ Shapes describe the path that a vehicle travels along a route alignment, and are
 |  `shape_pt_sequence` | Non-negative integer | **Required** | Sequence in which the shape points connect to form the shape. Values must increase along the trip but do not need to be consecutive.<hr>*Example: If the shape "A_shp" has three points in its definition, the [shapes.txt](#shapestxt) file might contain these records to define the shape:* <br> `shape_id,shape_pt_lat,shape_pt_lon,shape_pt_sequence` <br> `A_shp,37.61956,-122.48161,0` <br> `A_shp,37.64430,-122.41070,6` <br> `A_shp,37.65863,-122.30839,11` |
 |  `shape_dist_traveled` | Non-negative float | Optional | Actual distance traveled along the shape from the first shape point to the point specified in this record. Used by trip planners to show the correct portion of the shape on a map. Values must increase along with `shape_pt_sequence`; they must not be used to show reverse travel along a route. Distance units must be consistent with those used in [stop_times.txt](#stop_timestxt).<br><br>Recommended for routes that have looping or inlining (the vehicle crosses or travels over the same portion of alignment in one trip).<br><img src="inlining.svg" width=200px style="display: block; margin-left: auto; margin-right: auto;"> <br>If a vehicle retraces or crosses the route alignment at points in the course of a trip, `shape_dist_traveled` is important to clarify how portions of the points in `shapes.txt` line up correspond with records in `stop_times.txt`.<hr>*Example: If a bus travels along the three points defined above for A_shp, the additional `shape_dist_traveled` values (shown here in kilometers) would look like this:* <br> `shape_id,shape_pt_lat,shape_pt_lon,shape_pt_sequence,shape_dist_traveled`<br>`A_shp,37.61956,-122.48161,0,0`<br>`A_shp,37.64430,-122.41070,6,6.8310` <br> `A_shp,37.65863,-122.30839,11,15.8765` |
 
+### shapes.geojson
+￼
+File: **Optional**
+￼
+Defines GeoJSON locations that indicate groups of lat/lon coordinates decribe the path that a vehicle travels along a route alignment.
+Shapes do not need to intercept the location of Stops exactly, but all Stops on a trip should lie within a small distance of the shape for that trip, i.e. close to straight line segments connecting the shape points.
+￼- This file uses a subset of the GeoJSON format, described in [RFC 7946](https://tools.ietf.org/html/rfc7946).
+￼- The `shapes.geojson` file must contain a `FeatureCollection`.
+￼- A `FeatureCollection` defines various paths a vehicle travels along a route alignment.
+￼- Every GeoJSON `Feature` must have an `id`. The `id` belongs to the same namespace as `shape_id` in `shapes.txt`.
+￼- Every GeoJSON `Feature` should have objects and associated keys according to the table below:
+￼
+|  Field Name | Type | Presence | Description |
+|  ------ | ------ | ------ | ------ |
+| -&nbsp;`type` | String | **Required** | `"FeatureCollection"` of locations. |
+| -&nbsp;`features` | Array | **Required** | Collection of `"Feature"` objects describing the path. |
+| &nbsp;&nbsp;&nbsp;&nbsp;\-&nbsp;`type` | String | **Required** | `"Feature"` |
+| &nbsp;&nbsp;&nbsp;&nbsp;\-&nbsp;`id` | String | **Required** | Shape ID belonging to the same namespace as `shapes.shape_id`. It is forbidden to define an `id` from `shapes.geojson` with the same value as a `shapes.shape_id`.|
+| &nbsp;&nbsp;&nbsp;&nbsp;\-&nbsp;`properties` | Object | **Required** | Location property keys. |
+| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\-&nbsp;`shape_dist_traveled` | Non-negative float | Optional | Indicates the total length of the path. |
+| &nbsp;&nbsp;&nbsp;&nbsp;\-&nbsp;`geometry` | Object | **Required** | Geometry of the location. |
+| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\-&nbsp;`type` | String | **Required** | Must be of type:<br>-&nbsp;`"LineString"` |
+| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\-&nbsp;`coordinates` | Array | **Required** | Geographic coordinates (latitude and longitude) defining the geometry of the location. |
+￼
 ### frequencies.txt
 
 File: **Optional**
