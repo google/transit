@@ -53,6 +53,16 @@ Every new feature adds complexity to the creation and reading of feeds. Therefor
 
 ### Revision History
 
+#### August 2023
+* Add fare_media_type=1. See [discussion](https://github.com/google/transit/pull/385).
+
+#### July 2023
+* Forbid subfolders in GTFS files. See [discussion](https://github.com/google/transit/pull/379).
+* Added variable fares by time or day. See [discussion](https://github.com/google/transit/pull/357).
+* Clarify implied timezone in stop_times.txt. See [discussion](https://github.com/google/transit/pull/378).
+* Specify stop times shape_dist_traveled must not exceed the trip shape's maximum distance. See [discussion](https://github.com/google/transit/pull/380).
+* Best practices: add recommended presence. See [discussion](https://github.com/google/transit/pull/386).
+
 #### March 14, 2023
 
 * Added fare media. See [discussion](https://github.com/google/transit/pull/355).
