@@ -13,7 +13,7 @@ The official specification, reference and documentation are written in English. 
   	- At any point in time the advocate can claim proposal abandoned.
 1. The advocate can call for a vote on a version of the proposal at any point in time following the initial 7-day interval required for discussion.
   	- Before calling for a vote, at least one GTFS producer and one GTFS consumer should implement the proposed change.  It is expected that the GTFS producer(s) include the change in a public-facing GTFS feed and provide a link to that data within the pull request comments, and that the GTFS consumer(s) provides a link in the pull request comments to an application that is utilizing the change in a non-trivial manner (i.e, it is supporting new or improved functionality).
-1. Vote lasts the minimum period sufficient to cover 7 full calendar days and 5 full Swiss business days. Vote ends at 23:59:59 UTC.
+1. Vote lasts the minimum period sufficient to cover 14 full calendar days. Vote ends at 23:59:59 UTC.
   	- The advocate should announce the specific end time at the start of the vote.
   	- During voting period only editorial changes to the proposal are allowed (typos, wording may change as long as it does not change the meaning).
   	- Anyone is allowed to vote yes/no in a form of comment to the pull request, and votes can be changed until the end of the voting period.
@@ -52,6 +52,16 @@ When adding features to the specification, we want to avoid making changes that 
 Every new feature adds complexity to the creation and reading of feeds. Therefore, we want to take care to only add features that we know to be useful. Ideally, any proposal will have been tested by generating data for a real transit system that uses the new feature and writing software to read and display it. Note that the GTFS readily allows for extensions to the format through the addition of extra columns and files that are ignored by the official parsers & validators, so proposals can be easily prototyped and tested on existing feeds.
 
 ### Revision History
+
+#### August 2023
+* Add fare_media_type=1. See [discussion](https://github.com/google/transit/pull/385).
+
+#### July 2023
+* Forbid subfolders in GTFS files. See [discussion](https://github.com/google/transit/pull/379).
+* Added variable fares by time or day. See [discussion](https://github.com/google/transit/pull/357).
+* Clarify implied timezone in stop_times.txt. See [discussion](https://github.com/google/transit/pull/378).
+* Specify stop times shape_dist_traveled must not exceed the trip shape's maximum distance. See [discussion](https://github.com/google/transit/pull/380).
+* Best practices: add recommended presence. See [discussion](https://github.com/google/transit/pull/386).
 
 #### March 14, 2023
 
