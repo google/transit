@@ -72,6 +72,13 @@ Fields labeled as **experimental** are subject to change and not yet formally ad
             *   [TranslatedString](#message-translatedstring)
                 *   [Translation](#message-translation)
             *   [SeverityLevel](#enum-severitylevel)
+        *   [Shape](#message-shape)
+        *   [Stop](#message-stop)
+            *   [WheelchairBoarding](#enum-wheelchairboarding)
+        *   [TripModifications](#message-tripmodifications)
+            *   [Modification](#message-modification)
+            *   [ReplacementStop](#message-replacementstop)
+            
 
 # Elements
 
@@ -556,11 +563,105 @@ A localized image URL mapped to a language.
 
 Describes the physical path that a vehicle takes when the shape is not part of the (CSV) GTFS, such as for an ad-hoc detour. Shapes belong to Trips and consist of an encoded polyline for more efficient transmission.  Shapes do not need to intercept the location of Stops exactly, but all Stops on a trip should lie within a small distance of the shape for that trip, i.e. close to straight line segments connecting the shape points
 
-**Caution:** this message is still **experimental**, and subject to change. It may be formally adopted in the future.<br>.
+**Fields**
+
+| _**Field Name**_ | _**Type**_ | _**Required**_ | _**Cardinality**_ | _**Description**_ |
+|------------------|------------|----------------|-------------------|-------------------|
+| **shape_id** | [string](https://developers.google.com/protocol-buffers/docs/proto#scalar) | Required | One |  Identifier of the shape. Must be different than any `shape_id` defined in the (CSV) GTFS. |
+| **encoded_polyline** | [string](https://developers.google.com/protocol-buffers/docs/proto#scalar) | Required | One | Encoded polyline representation of the shape. This polyline must contain at least two points. For more information about encoded polylines, see https://developers.google.com/maps/documentation/utilities/polylinealgorithm|
+
+## _message_ Stop
+
+Represent a new Stop added to the feed dynamically. All fields are as described in the (CSV) GTFS specification. Location type of the new stop is assumed to be `0` (routable stop). 
 
 **Fields**
 
 | _**Field Name**_ | _**Type**_ | _**Required**_ | _**Cardinality**_ | _**Description**_ |
 |------------------|------------|----------------|-------------------|-------------------|
-| **shape_id** | [string](https://developers.google.com/protocol-buffers/docs/proto#scalar) | Required | One |  Identifier of the shape. Must be different than any `shape_id` defined in the (CSV) GTFS. <br><br>**Caution:** this field is still **experimental**, and subject to change. It may be formally adopted in the future. |
-| **encoded_polyline** | [string](https://developers.google.com/protocol-buffers/docs/proto#scalar) | Required | One | Encoded polyline representation of the shape. This polyline must contain at least two points. For more information about encoded polylines, see https://developers.google.com/maps/documentation/utilities/polylinealgorithm <br><br>**Caution:** this field is still **experimental**, and subject to change. It may be formally adopted in the future. |
+| **stop_id** | [string](https://protobuf.dev/programming-guides/proto2/#scalar) | Required | One |  Identifier of the shape. Must be different than any `stop_id` defined in the (CSV) GTFS. |
+| **stop_code** | [TranslatedString](#message-translatedstring) | Required | One |  See definition of [stops.stop_code](https://github.com/google/transit/blob/master/gtfs/spec/en/reference.md#stopstxt) in (CSV) GTFS. |
+| **stop_name** | [TranslatedString](#message-translatedstring) | Optional | One |  See definition of [stops.stop_name](https://github.com/google/transit/blob/master/gtfs/spec/en/reference.md#stopstxt) in (CSV) GTFS. |
+| **tts_stop_name** | [TranslatedString](#message-translatedstring) | Optional | One |  See definition of [stops.tts_stop_name](https://github.com/google/transit/blob/master/gtfs/spec/en/reference.md#stopstxt) in (CSV) GTFS. |
+| **stop_desc** | [TranslatedString](#message-translatedstring) | Optional | One |  See definition of [stops.stop_desc](https://github.com/google/transit/blob/master/gtfs/spec/en/reference.md#stopstxt) in (CSV) GTFS. |
+| **stop_lat** | [float](https://developers.google.com/protocol-buffers/docs/proto#scalar) | Optional | One |  See definition of [stops.stop_lat](https://github.com/google/transit/blob/master/gtfs/spec/en/reference.md#stopstxt) in (CSV) GTFS. |
+| **stop_lon** | [float](https://developers.google.com/protocol-buffers/docs/proto#scalar) | Optional | One |  See definition of [stops.stop_lon](https://github.com/google/transit/blob/master/gtfs/spec/en/reference.md#stopstxt) in (CSV) GTFS. |
+| **zone_id** | [string](https://developers.google.com/protocol-buffers/docs/proto#scalar) | Optional | One |  See definition of [stops.zone_id](https://github.com/google/transit/blob/master/gtfs/spec/en/reference.md#stopstxt) in (CSV) GTFS. |
+| **stop_url** | [TranslatedString](#message-translatedstring) | Optional | One |  See definition of [stops.stop_url](https://github.com/google/transit/blob/master/gtfs/spec/en/reference.md#stopstxt) in (CSV) GTFS. |
+| **parent_station** | [string](https://developers.google.com/protocol-buffers/docs/proto#scalar) | Optional | One |  See definition of [stops.parent_station](https://github.com/google/transit/blob/master/gtfs/spec/en/reference.md#stopstxt) in (CSV) GTFS. |
+| **stop_timezone** | [string](https://developers.google.com/protocol-buffers/docs/proto#scalar) | Optional | One |  See definition of [stops.stop_timezone](https://github.com/google/transit/blob/master/gtfs/spec/en/reference.md#stopstxt) in (CSV) GTFS. |
+| **wheelchair_boarding** | [WheelchairBoarding](#enum-wheelchairboarding) | Optional | One |  See definition of [stops.wheelchair_boarding](https://github.com/google/transit/blob/master/gtfs/spec/en/reference.md#stopstxt) in (CSV) GTFS. |
+| **level_id** | [string](https://developers.google.com/protocol-buffers/docs/proto#scalar) | Optional | One |  See definition of [stops.level_id](https://github.com/google/transit/blob/master/gtfs/spec/en/reference.md#stopstxt) in (CSV) GTFS. |
+| **platform_code** | [TranslatedString](#message-translatedstring) | Optional | One |  See definition of [stops.platform_code](https://github.com/google/transit/blob/master/gtfs/spec/en/reference.md#stopstxt) in (CSV) GTFS. |
+
+## _enum_ WheelchairBoarding
+
+**Values**
+
+| _**Value**_ | _**Comment**_ |
+|-------------|---------------|
+| **UNKNOWN** | No accessibility information for the stop. |
+| **AVAILABLE** |  Some vehicles at this stop can be boarded by a rider in a wheelchair. |
+| **NOT_AVAILABLE** | Wheelchair boarding is not possible at this stop. |
+
+## _message_ TripModifications
+
+A `TripModifications` message identifies a list of similar `trip_ids` from the (CSV) GTFS sharing the same stop pattern, which are all affected by a particular modification, like a detour. The modification is in effect on all of the listed service_dates, until it is removed from the feed. On any given service date, a trip MUST NOT be assigned to more than one `TripModifications` object. 
+
+There MAY be multiple `TripModifications` for a given stop pattern. It may be desirable to split the trips into multiple modifications e.g. if the `propagated_modification_delay` changes significantly, over the course of the detour.
+
+Each affected trip is deemed to be canceled and replaced with a new trip. The affected trip can be omitted from the feed while it is detoured.  Each replacement trip has an automatically generated ID and shares all of the properties defined in trips.txt for the affected trip it replaced. Replacement trip IDs can be used in the same way as any other trip_id in GTFS-RT. For example, TripUpdates can be provided using the replacement trip ID.
+
+The stop times of each replacement trip are created from those of the affected trip, by performing the changes listed in modifications. Stop sequences are assigned from 1 to n, ignoring the stop_sequence values of the affected stop times. If a particular stop time is not affected by the detour, all other values will match those originally defined in stop_times.txt.
+
+### SLO: Service-level objective
+The frequency of data updates is expected to be approximately hourly (~24 times/day). Ingestion time may depend on the total number of affected trips. Consumers are expected to ingest a single TripModification within 5 minutes, and a feed with hundreds of detours within 20 minutes. 
+
+**Fields**
+
+| _**Field Name**_ | _**Type**_ | _**Required**_ | _**Cardinality**_ | _**Description**_ |
+|------------------|------------|----------------|-------------------|-------------------|
+| **modifications_id** | [string](https://developers.google.com/protocol-buffers/docs/proto#scalar) | Required | One | An arbitrary string to identify this detour. The `modifications_id` MUST be unique for all currently active detours. The ID of each replacement trip is generated by concatenating `modifications_id` + ‘_’ + `trip_id`. |
+| **trip_ids** | [string](https://developers.google.com/protocol-buffers/docs/proto#scalar) | Required | Many | A list of trips_ids from the (CSV) GTFS affected by this detour. All trips linked by those trip_ids MUST have the same stop pattern. Two trips have the same stop pattern, if they visit the same stops in the same order, and have identical stop sequences. If the value `start_times` is set, a maximum of one trip_id can be listed.  |
+| **start_times** | [string](https://developers.google.com/protocol-buffers/docs/proto#scalar) | Optional | Many | A list of start times in the real-time trip descriptor for the trip_id defined in trip_ids. Useful to target multiple departures of a trip_id in a frequency-based trip.  |
+| **service_dates** | [string](https://developers.google.com/protocol-buffers/docs/proto#scalar) | Required | Many | Dates on which the detour occurs, in the YYYYMMDD format. A trip_id will only be modified if it runs on a given service date; the trip IS NOT required to run on all of the service dates. Producers SHOULD only transmit detours occurring within the next week. |
+| **shape_id** | [string](https://developers.google.com/protocol-buffers/docs/proto#scalar) | Optional | One | The ID of the new shape for the modified trips. May refer to a new shape added using a GTFS-RT Shape message, or to an existing shape defined in the (CSV) GTFS feed’s shapes.txt. |
+| **modifications** | [string](#message-modification) | Required | Many | A list of modifications to apply to the affected trips. |
+
+## _message_ Modification
+
+A `Modification` message replaces a span of n stop times (`num_stops_replaced`) from each affected trip starting at `start_stop_sequence`. The spans of the modifications MUST not overlap. Spans may not be contiguous; in this case the two modifications MUST be merged into one.  These stop times are replaced with a new stop time for each replacement stop described by `replacement_stops`.
+
+The sequence of `replacement_stops` may be of arbitrary length. For example, 3 stops could be replaced by 2, 4, or 0 stops as the situation may require. 
+
+![](images/trip_modification.png)
+_An example showing the effect of a modification on a particular trip. This modification may also be applied to several other trips._
+
+![](images/propagated_delay.png)
+_Propagated detour delays affect all stops following the end of a modification. If a trip has multiple modifications, the delays are accumulated._
+
+
+**Fields**
+
+| _**Field Name**_ | _**Type**_ | _**Required**_ | _**Cardinality**_ | _**Description**_ |
+|------------------|------------|----------------|-------------------|-------------------|
+| **start_stop_sequence** | [uint32](https://developers.google.com/protocol-buffers/docs/proto#scalar) | Required | One | The stop sequence value from the (CSV) GTFS of the first stop of the original trip that is to be affected by this modification. |
+| **num_stops_replaced** | [uint32](https://developers.google.com/protocol-buffers/docs/proto#scalar) | Required | One | The number of stops which are canceled and replaced by the `replacement_stops`. May be zero to indicate no skipped stops. |
+| **propagated_modification_delay** | [int32](https://developers.google.com/protocol-buffers/docs/proto#scalar) | Optional | One | The number of seconds of delay to add to all departure and arrival times following the end of this modification. Can be a positive or negative number. If multiple modifications apply to the same trip, the delays accumulate as the trip advances. <br/><br/>If the value is not supplied, consumers MAY interpolate or infer the `propagated_modification_delay` based on other data.  |
+| **replacement_stops** | [ReplacementStop](#message-replacementstop) | Optional | Many | A list of replacement stops, replacing those of the original trip. The length of the new stop times may be less, the same, or greater than the number of replaced stop times. |
+
+## _message_ ReplacementStop
+
+Each `ReplacementStop` message acts as a template for generating a new stop time in each modified trip. The generated stop time will have the specified `stop_id`. 
+The `arrival_time` is calculated from a reference stop in the original trip, plus the offset in `travel_time_to_stop`. The `departure_time` always equals the `arrival_time`.
+The optional fields of [`stop_times.txt`](https://github.com/google/transit/blob/master/gtfs/spec/en/reference.md#stop_timestxt) in the (CSV) GTFS specification are all set to their default values.
+
+![](images/first_stop_reference.png)
+_If a modification affects the first stop of the trip, that stop also serves as the reference stop of the modification._
+
+
+**Fields**
+
+| _**Field Name**_ | _**Type**_ | _**Required**_ | _**Cardinality**_ | _**Description**_ |
+|------------------|------------|----------------|-------------------|-------------------|
+| **stop_id** | [string](https://developers.google.com/protocol-buffers/docs/proto#scalar) | Required | One | The replacement stop ID which will now be visited by the trip. May refer to a new stop added using a GTFS-RT `Stop` message, or to an existing stop defined in the (CSV) GTFS feed’s `stops.txt`. The stop MUST have `location_type=0` (routable stops). |
+| **travel_time_to_stop** | [int32](https://developers.google.com/protocol-buffers/docs/proto#scalar) | Optional | One | The difference in seconds between the arrival time at this stop and the arrival time at the reference stop. The reference stop is the stop prior to `start_stop_sequence`. If the modification begins at the first stop of the trip, then the first stop of the trip is the reference stop. <br/><br/>This value MUST be monotonically increasing and may only be a negative number if the first stop of the original trip is the reference stop. <br/><br/>If the value is not supplied, consumers MAY interpolate or infer the `travel_time_to_stop` based on other data. |
