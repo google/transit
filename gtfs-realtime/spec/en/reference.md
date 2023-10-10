@@ -572,7 +572,7 @@ Describes the physical path that a vehicle takes when the shape is not part of t
 
 ## _message_ Stop
 
-Represent a new Stop added to the feed dynamically. All fields are as described in the (CSV) GTFS specification. Location type of the new stop is assumed to be `0` (routable stop). 
+Represents a new Stop added to the feed dynamically. All fields are as described in the (CSV) GTFS specification. The location type of the new stop is `0` (routable stop). 
 
 **Fields**
 
@@ -642,7 +642,7 @@ _Propagated detour delays affect all stops following the end of a modification. 
 
 ## _message_ ReplacementStop
 
-Each `ReplacementStop` message acts as a template for generating a new stop time in each modified trip. 
+Each `ReplacementStop` message defines a stop that will now be visited by the trip, and optionally specifies the estimated travel time to the stop. 
 
 ![](images/first_stop_reference.png)
 _If a modification affects the first stop of the trip, that stop also serves as the reference stop of the modification._
