@@ -1,6 +1,6 @@
 # Trip Modifications
 
-A `TripModifications` message identifies a list of similar `trip_ids` from the (CSV) GTFS sharing the same stop pattern, which are all affected by a particular modification, such as a detour.
+A `TripModifications` message identifies a list of similar `trip_ids` from the (CSV) GTFS sharing the same stop pattern, which are all affected by particular modifications, such as a detour.
 
 ## SLO: Service-level objective
 
@@ -8,11 +8,11 @@ The frequency of data updates is expected to be approximately hourly (~24 times/
 
 ## TripModifications
 
-The modification is in effect on all of the listed service\_dates, until it is removed from the feed. On any given service date, a trip MUST NOT be assigned to more than one `TripModifications` object.
+The `TripModifications` is in effect on all of the listed service\_dates, until it is removed from the feed. On any given service date, a trip MUST NOT be assigned to more than one `TripModifications` object.
 
 There MAY be multiple `TripModifications` for a given stop pattern. It may be desirable to split the trips into multiple modifications e.g. if the `propagated_modification_delay` changes significantly, over the course of the detour.
 
-The trips created through GTFS-TripModifications modify and replace each specified `trip_id`, and don't create a copy or additional run. Modification are applied on the schedule information, like if a static GTFS (CSV) was modified. 
+The trips created through GTFS-TripModifications modify and replace each specified `trip_id`, and don't create a copy or additional run. Modifications are applied on the schedule information, like if a static GTFS (CSV) was modified. 
 
 The scheduled stop times of each replacement trip are created from those of the affected trip, by performing the changes listed in modifications. `stop_sequence` for all stop times are replaced by a new value of 1 to n, starting with 1 on the first stop_time and increasing by 1 for each stop in the trip. The trip ID is also replaced by a replacement trip ID (`modifications_id` + `_` + `trip_id`). A `TripUpdate` message must be provided to publish real-time arrival/departure times for the replacement trip.
 
