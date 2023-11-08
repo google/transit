@@ -30,6 +30,7 @@ This document defines the format and structure of the files that comprise a GTFS
     -   [transfers.txt](#transferstxt)
     -   [pathways.txt](#pathwaystxt)
     -   [levels.txt](#levelstxt)
+    -   [location_groups.txt](#location_groupstxt)
     -   [locations.geojson](#locationsgeojson)
     -   [booking_rules.txt](#booking_rulestxt)
     -   [translations.txt](#translationstxt)
@@ -619,6 +620,20 @@ Describes levels in a station. Useful in conjunction with `pathways.txt`, and is
 |  `level_id` | Unique ID | **Required** | Identifies a level in a station.|
 |  `level_index` | Float | **Required** | Numeric index of the level that indicates its relative position. <br><br>Ground level should have index `0`, with levels above ground indicated by positive indices and levels below ground by negative indices.|
 |  `level_name` | Text | Optional | Name of the level as seen by the rider inside the building or station.<hr>_Example: Take the elevator to "Mezzanine" or "Platform" or "-1"._|
+
+### location_groups.txt
+
+File: **Optional**
+
+Primary key (`location_group_id`, `location_id`)
+
+Defines location groups that indicate groups of stops where a rider may request pickup or drop off.
+
+| Field Name | Type | Required | Description |
+| ---------- | ---- | ------------ | ----------- |
+| `location_group_id` | ID | **Required** | Identifies a location group. A location group is a group of stops that together indicate locations where a rider may request pickup or drop off.<br><br> By default, every `stop_id` belongs to a `location_group_id` of the same value. Therefore, it is forbidden to define a `location_group_id` with the same value as a `stop_id`.<br><br>Multiple entries in `location_groups.txt` can have the same `location_group_id`. | 
+| `location_id` | Foreign ID referencing `stops.stop_id` | **Required** | Identifies a stop belonging to the location group. |
+| `location_group_name` | Text | Optional | Name of the location group. Must be defined either once, or exhaustively for a single `location_group_id`. |
 
 ### locations.geojson
 
