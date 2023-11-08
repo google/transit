@@ -480,8 +480,8 @@ Assigns stops from [stops.txt](#stopstxt) to areas.
 
 |  Field Name | Type | Presence | Description |
 |  ------ | ------ | ------ | ------ |
-| `area_id` | Foreign ID referencing `areas.area_id` | **Required** | Identifies an area to which one or multiple `stop_id`s belong. The same `stop_id` may be defined in many `area_id`s.<br><br>May also identify a group of stops and/or GeoJSON locations that together indicate locations where a rider may request pickup or drop off.<br><br>It is forbidden to define an `area_id` with the same value as a `stop_id` or `id` from `locations.geojson`. |
-| `stop_id` | Foreign ID referencing `stops.stop_id` or `id` from `locations.geojson` | **Required** | Identifies a stop or GeoJSON location. If a station (i.e. a stop with `stops.location_type=1`) is defined in this field, it is assumed that all of its platforms (i.e. all stops with `stops.location_type=0` that have this station defined as `stops.parent_station`) are part of the same area. This behavior can be overridden by assigning platforms to other areas. |
+| `area_id` | Foreign ID referencing `areas.area_id` | **Required** | Identifies an area to which one or multiple `stop_id`s belong. The same `stop_id` may be defined in many `area_id`s. |
+| `stop_id` | Foreign ID referencing `stops.stop_id` | **Required** | Identifies a stop. If a station (i.e. a stop with `stops.location_type=1`) is defined in this field, it is assumed that all of its platforms (i.e. all stops with `stops.location_type=0` that have this station defined as `stops.parent_station`) are part of the same area. This behavior can be overridden by assigning platforms to other areas. |
 
 ### shapes.txt
 
