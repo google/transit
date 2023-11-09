@@ -632,7 +632,7 @@ Defines location groups that indicate groups of stops where a rider may request 
 | Field Name | Type | Required | Description |
 | ---------- | ---- | ------------ | ----------- |
 | `location_group_id` | ID | **Required** | Identifies a location group. A location group is a group of stops that together indicate locations where a rider may request pickup or drop off.<br><br> By default, every `stop_id` belongs to a `location_group_id` of the same value. Therefore, it is forbidden to define a `location_group_id` with the same value as a `stop_id`.<br><br>Multiple entries in `location_groups.txt` can have the same `location_group_id`. | 
-| `location_id` | Foreign ID referencing `stops.stop_id` | **Required** | Identifies a stop belonging to the location group. |
+| `stop_id` | Foreign ID referencing `stops.stop_id` | **Required** | Identifies a stop belonging to the location group. |
 | `location_group_name` | Text | Optional | Name of the location group. Must be defined either once, or exhaustively for a single `location_group_id`. |
 
 ### locations.geojson
