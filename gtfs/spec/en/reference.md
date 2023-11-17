@@ -633,7 +633,7 @@ Defines location groups that indicate groups of stops where a rider may request 
 
 | Field Name | Type | Required | Description |
 | ---------- | ---- | ------------ | ----------- |
-| `location_group_id` | ID | **Required** | Identifies a location group. A location group is a group of stops that together indicate locations where a rider may request pickup or drop off.<br><br> By default, every `stop_id` belongs to a `location_group_id` of the same value. Therefore, it is forbidden to define a `location_group_id` with the same value as a `stop_id`.<br><br>Multiple entries in `location_groups.txt` can have the same `location_group_id`. | 
+| `location_group_id` | ID | **Required** | Identifies a location group. A location group is a group of stops that together indicate locations where a rider may request pickup or drop off.<br><br>Multiple entries in `location_groups.txt` can have the same `location_group_id`. | 
 | `stop_id` | Foreign ID referencing `stops.stop_id` | **Required** | Identifies a stop belonging to the location group. |
 | `location_group_name` | Text | Optional | Name of the location group. Must be defined either once, or exhaustively for a single `location_group_id`. |
 
@@ -653,7 +653,7 @@ Defines GeoJSON locations that indicate groups of lat/lon coordinates defining z
 | -&nbsp;`type` | String | **Required** | `"FeatureCollection"` of locations. |
 | -&nbsp;`features` | Array | **Required** | Collection of `"Feature"` objects describing the locations. |
 | &nbsp;&nbsp;&nbsp;&nbsp;\-&nbsp;`type` | String | **Required** | `"Feature"` |
-| &nbsp;&nbsp;&nbsp;&nbsp;\-&nbsp;`id` | String | **Required** | Location ID belonging to the same namespace as `stops.stop_id`. It is forbidden to define an `id` from `locations.geojson` with the same value as a `stops.stop_id` or a `location_groups.location_group_id`.|
+| &nbsp;&nbsp;&nbsp;&nbsp;\-&nbsp;`id` | String | **Required** | Location ID belonging to the same namespace as `stops.stop_id`. |
 | &nbsp;&nbsp;&nbsp;&nbsp;\-&nbsp;`properties` | Object | **Required** | Location property keys. |
 | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\-&nbsp;`stop_name` | String | Optional | Indicates the name of the location as displayed to riders. |
 | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\-&nbsp;`stop_desc` | String | Optional | Meaningful description of the location to help orient riders. |
