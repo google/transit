@@ -526,7 +526,7 @@ Defines network identifiers that apply for fare leg rules. Forbidden if `routes.
 
 File: **Conditionally Forbidden**
 
-Primary key (`*`)
+Primary key (`route_id`)
 
 Assigns routes from [routes.txt](#stopstxt) to networks. Forbidden if `routes.network_id` field exists.
 
