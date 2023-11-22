@@ -528,7 +528,7 @@ File: **Conditionally Forbidden**
 
 Primary key (`route_id`)
 
-Assigns routes from [routes.txt](#stopstxt) to networks. Forbidden if `routes.network_id` field exists.
+Assigns routes from [routes.txt](#routestxt) to networks. Forbidden if `routes.network_id` field exists.
 
 |  Field Name | Type | Presence | Description |
 |  ------ | ------ | ------ | ------ |
