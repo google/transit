@@ -53,6 +53,10 @@ Every new feature adds complexity to the creation and reading of feeds. Therefor
 
 ### Revision History
 
+#### November 2023
+* Best practices: add Dataset Publishing guidelines and Practice Recommendations for all files. See [discussion](https://github.com/google/transit/pull/406).
+* Add networks.txt & route_networks.txt. See [discussion](https://github.com/google/transit/pull/405)
+
 #### August 2023
 * Add fare_media_type=1. See [discussion](https://github.com/google/transit/pull/385).
 
