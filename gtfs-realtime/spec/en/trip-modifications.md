@@ -14,14 +14,14 @@ There MAY be multiple `TripModifications` for a given stop pattern. It may be de
 
 The trips created through GTFS-TripModifications modify and replace each specified `trip_id`, and don't create a copy or additional run. Modifications are applied on the schedule information, like if a static GTFS (CSV) was modified. 
 
-The scheduled stop times of each replacement trip are created from those of the affected trip, by performing the changes listed in modifications. `stop_sequence` for all stop times are replaced by a new value of 1 to n, starting with 1 on the first stop_time and increasing by 1 for each stop in the trip. The trip ID is also replaced by a replacement trip ID (`modifications_id` + `_` + `trip_id`). A `TripUpdate` message must be provided to publish real-time arrival/departure times for the replacement trip.
+The scheduled stop times of each replacement trip are created from those of the affected trip, by performing the changes listed in modifications. `stop_sequence` for all stop times are replaced by a new value of 1 to n, starting with 1 on the first stop_time and increasing by 1 for each stop in the trip. A `TripUpdate` message must be provided to publish real-time arrival/departure times for the replacement trip.
 
 
 ## Linkage to TripUpdates
 
-* A TripUpdate SHOULD be provided using the replacement trip ID (`modifications_id` + `_` + `trip_id`). 
-    * When the TripUpdate refers to the replacement trip ID, the consumer should behave as if the static GTFS would have been modified with the TripModifications (e.g. `arrival_time`, `departure_time`, `stop_sequence`, `stop_id` on replacement stops)
-    * Providing a TripUpdate with the replacement trip ID is the only way to create predictions at replacement stops
+* A TripUpdate SHOULD be provided using a `ModifiedTripSelector` inside the TripUpdate's `TripDescriptor`. 
+    * When the TripUpdate refers to the replacement trip, the consumer should behave as if the static GTFS would have been modified with the TripModifications (e.g. `arrival_time`, `departure_time`, `stop_sequence`, `stop_id` on replacement stops)
+    * Providing a TripUpdate with the a `ModifiedTripSelector` is the only way to create predictions at replacement stops
 * If no such TripUpdate is found, TripUpdates for the original `trip_id` will apply to the modified trip. 
     * In this case, the static GTFS information used should be from the static GTFS before any TripModifications applied. 
     * Real time can be available to the common stops between the previous trip and the new modified trip, no ETA is available at the replacement stops.

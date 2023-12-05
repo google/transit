@@ -840,6 +840,15 @@ message TripDescriptor {
   }
   optional ScheduleRelationship schedule_relationship = 4;
 
+  message ModifiedTripSelector {
+    // The modifications ID from the TripModifications object that affects this trip.
+    optional string modifications_id = 1;
+
+    // The trip_id from the GTFS feed that is modified by the modifications_id
+    optional string affected_trip_id = 2;
+  }
+  optional ModifiedTripSelector modified_trip = 7;
+
   // The extensions namespace allows 3rd-party developers to extend the
   // GTFS Realtime Specification in order to add and evaluate new features and
   // modifications to the spec.
