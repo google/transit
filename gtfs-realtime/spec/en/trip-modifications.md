@@ -21,6 +21,7 @@ The scheduled stop times of each replacement trip are created from those of the 
 
 * A TripUpdate SHOULD be provided using a `ModifiedTripSelector` inside the TripUpdate's `TripDescriptor`. 
     * When the TripUpdate refers to the replacement trip, the consumer should behave as if the static GTFS would have been modified with the TripModifications (e.g. `arrival_time`, `departure_time`, `stop_sequence`, `stop_id` on replacement stops)
+    * When providing a `ModifiedTripSelector`, the other fields of the `ScheduleRelationship` SHOULD be left empty, to avoid confusion by consumer that aren't looking for the `ModifiedTripSelector` value. 
     * Providing a TripUpdate with the a `ModifiedTripSelector` is the only way to create predictions at replacement stops
 * If no such TripUpdate is found, TripUpdates for the original `trip_id` will apply to the modified trip. 
     * In this case, the static GTFS information used should be from the static GTFS before any TripModifications applied. 
