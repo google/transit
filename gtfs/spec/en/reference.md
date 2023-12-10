@@ -121,8 +121,8 @@ This specification defines the following files:
 |  [fare_transfer_rules.txt](#fare_transfer_rulestxt)  | Optional | Fare rules for transfers between legs of travel.<br><br>Along with [fare_leg_rules.txt](#fare_leg_rulestxt), file [fare_transfer_rules.txt](#fare_transfer_rulestxt) provides a more detailed method for modeling fare structures. As such, the use of [fare_transfer_rules.txt](#fare_transfer_rulestxt) is entirely separate from files [fare_attributes.txt](#fare_attributestxt) and [fare_rules.txt](#fare_rulestxt). |
 |  [areas.txt](#areastxt) | Optional | Area grouping of locations. |
 |  [stop_areas.txt](#stop_areastxt) | Optional | Rules to assign stops to areas. |
-|  [networks.txt](#networkstxt) | **Conditionally Forbidden** | Network grouping of routes.<br><br>Conditionally Forbidden:<br>- **Forbidden** if `routes.network_id` field exists.<br>- Optional otherwise. |
-|  [route_networks.txt](#route_networkstxt) | **Conditionally Forbidden** | Rules to assign routes to networks.<br><br>Conditionally Forbidden:<br>- **Forbidden** if `routes.network_id` field exists.<br>- Optional otherwise. |
+|  [networks.txt](#networkstxt) | **Conditionally Forbidden** | Network grouping of routes.<br><br>Conditionally Forbidden:<br>- **Forbidden** if `network_id` is defined in [routes.txt](#routes.txt).<br>- Optional otherwise. |
+|  [route_networks.txt](#route_networkstxt) | **Conditionally Forbidden** | Rules to assign routes to networks.<br><br>Conditionally Forbidden:<br>- **Forbidden** if `network_id` is defined in [routes.txt](#routes.txt).<br>- Optional otherwise. |
 |  [shapes.txt](#shapestxt)  | Optional | Rules for mapping vehicle travel paths, sometimes referred to as route alignments. |
 |  [frequencies.txt](#frequenciestxt)  | Optional | Headway (time between trips) for headway-based service or a compressed representation of fixed-schedule service. |
 |  [transfers.txt](#transferstxt)  | Optional | Rules for making connections at transfer points between routes. |
@@ -529,7 +529,7 @@ File: **Conditionally Forbidden**
 
 Primary key (`network_id`)
 
-Defines network identifiers that apply for fare leg rules. Forbidden if `routes.network_id` field exists.
+Defines network identifiers that apply for fare leg rules. 
 
 |  Field Name | Type | Presence | Description |
 |  ------ | ------ | ------ | ------ |
@@ -542,7 +542,7 @@ File: **Conditionally Forbidden**
 
 Primary key (`route_id`)
 
-Assigns routes from [routes.txt](#routestxt) to networks. Forbidden if `routes.network_id` field exists.
+Assigns routes from [routes.txt](#routestxt) to networks. 
 
 |  Field Name | Type | Presence | Description |
 |  ------ | ------ | ------ | ------ |
