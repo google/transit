@@ -695,6 +695,8 @@ Primary key (`table_name`, `field_name`, `language`, `record_id`, `record_sub_id
 
 In regions that have multiple official languages, transit agencies/operators typically have language-specific names and web pages. In order to best serve riders in those regions, it is useful for the dataset to include these language-dependent values.
 
+If both referencing methods (`record_id`, `record_sub_id`) and `field_value` are used to translate the same value in 2 different rows, the translation provided with (`record_id`, `record_sub_id`) takes precedence.
+
 |  Field Name | Type | Presence | Description |
 |  ------ | ------ | ------ | ------ |
 |  `table_name` | Enum | **Required** | Defines the table that contains the field to be translated. Allowed values are:<br><br>- `agency`<br>- `stops`<br>- `routes`<br>- `trips`<br>- `stop_times`<br>- `pathways`<br>- `levels`<br>- `feed_info`<br>- `attributions`<br><br> Any file added to GTFS will have a `table_name` value equivalent to the file name, as listed above (i.e., not including the `.txt` file extension). |
@@ -712,8 +714,6 @@ File: **Recommended** (**Required** if `translations.txt` is provided)
 Primary key (none)
 
 The file contains information about the dataset itself, rather than the services that the dataset describes. In some cases, the publisher of the dataset is a different entity than any of the agencies.
-
-If both referencing methods (`record_id`, `record_sub_id`) and `field_value` are used to translate the same value in 2 different rows, the translation provided with (`record_id`, `record_sub_id`) takes precedence.
 
 |  Field Name | Type | Presence | Description |
 |  ------ | ------ | ------ | ------ |
