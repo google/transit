@@ -1,0 +1,37 @@
+name: Specification change
+description: Propose a change to the specification.
+labels: ['spec-change']
+
+body:
+  - type: markdown
+    attributes:
+      value: >
+        #### Before submitting a new change, please make sure the same one isn't already [proposed in an issue](https://github.com/google/transit/issues).
+  - type: textarea
+    attributes:
+      label: Describe the problem
+      description: >
+        Describe what you are trying to achieve.
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Use cases
+      description: >
+        Share examples of the scenarios you want the proposal to address, e.g GTFS-Fares v2 makes it possible to display the cost of a monthly pass. Show visuals of how it will appear to riders where relevant. [Here's a great example of communicating a complex use case](https://github.com/google/transit/pull/352#issuecomment-1284756181).
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Proposed solution
+      description: >
+        A clear description of what you want to happen.
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Additional information
+      description: >
+        Additional information that can help the community better understand your need.
+    validations:
+      required: false
