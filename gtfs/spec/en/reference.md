@@ -678,7 +678,7 @@ File: **Conditionally Required**
 
 Primary key (`level_id`)
 
-Describes levels in a station. Useful in conjunction with `pathways.txt`, and is required for navigating pathways with elevators (`pathway_mode=5`).
+Describes levels in a station. Useful in conjunction with `pathways.txt`.
 
 |  Field Name | Type | Presence | Description |
 |  ------ | ------ | ------ | ------ |
