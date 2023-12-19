@@ -438,7 +438,7 @@ To process the cost of a leg:
     - `fare_leg_rules.to_timeframe_group_id`
 <br/>
 
-2. If the leg exactly matches a record in `fare_leg_rules.txt` based on the characteristics of travel, that record must be processed to determine the cost of the leg.
+2. If the leg exactly matches a record in `fare_leg_rules.txt` based on the characteristics of travel, that record must be processed to determine the cost of the leg. This file handles empty entries in two ways: empty semantics OR rule_priority.
 <br/>
 
 3. If no exact matches are found AND `rule_priority` field does not exist, then empty entries in `fare_leg_rules.network_id`, `fare_leg_rules.from_area_id`, and `fare_leg_rules.to_area_id` must be checked to process the cost of the leg:
