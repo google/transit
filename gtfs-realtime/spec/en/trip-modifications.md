@@ -55,11 +55,3 @@ The optional fields of [`stop_times.txt`](https://github.com/google/transit/blob
 
 _If a modification affects the first stop of the trip, that stop also serves as the reference stop of the modification._
 
-## Shape
-
-Describes the physical path that a vehicle takes when the shape is not part of the (CSV) GTFS, such as for an ad-hoc detour. Shapes belong to Trips and consist of an encoded polyline for more efficient transmission.  Shapes do not need to intercept the location of Stops exactly, but all Stops on a trip should lie within a small distance of the shape for that trip, i.e. close to straight line segments connecting the shape points
-
-## Stop
-
-Represents a new Stop added to the feed dynamically. All fields are as described in the (CSV) GTFS specification. The location type of the new stop is `0` (routable stop).
-

@@ -1048,7 +1048,7 @@ message Stop {
     NOT_AVAILABLE = 2;
    }
 
-  required string stop_id = 1;
+  optional string stop_id = 1;
   optional TranslatedString stop_code = 2;
   optional TranslatedString stop_name = 3;
   optional TranslatedString tts_stop_name = 4;

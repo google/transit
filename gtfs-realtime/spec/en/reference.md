@@ -578,7 +578,7 @@ Represents a new Stop added to the feed dynamically. All fields are as described
 
 | _**Field Name**_ | _**Type**_ | _**Required**_ | _**Cardinality**_ | _**Description**_ |
 |------------------|------------|----------------|-------------------|-------------------|
-| **stop_id** | [string](https://protobuf.dev/programming-guides/proto2/#scalar) | Required | One |  Identifier of the shape. Must be different than any `stop_id` defined in the (CSV) GTFS. |
+| **stop_id** | [string](https://protobuf.dev/programming-guides/proto2/#scalar) | Required | One |  Identifier of the stop. Must be different than any `stop_id` defined in the (CSV) GTFS. |
 | **stop_code** | [TranslatedString](#message-translatedstring) | Optional | One |  See definition of [stops.stop_code](https://github.com/google/transit/blob/master/gtfs/spec/en/reference.md#stopstxt) in (CSV) GTFS. |
 | **stop_name** | [TranslatedString](#message-translatedstring) | Required | One |  See definition of [stops.stop_name](https://github.com/google/transit/blob/master/gtfs/spec/en/reference.md#stopstxt) in (CSV) GTFS. |
 | **tts_stop_name** | [TranslatedString](#message-translatedstring) | Optional | One |  See definition of [stops.tts_stop_name](https://github.com/google/transit/blob/master/gtfs/spec/en/reference.md#stopstxt) in (CSV) GTFS. |
