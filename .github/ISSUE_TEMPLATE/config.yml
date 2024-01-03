@@ -1,11 +1,11 @@
 contact_links:
-  - name: GTFS.org
+  - name: GTFS Documentation
     url: https://gtfs.org/
     about: The official reference for GTFS documentation. 
-  - name: GTFS Changes Google Group
+  - name: GTFS Changes Mailing List
     url: https://groups.google.com/g/gtfs-changes 
     about: Follow this group to get announcement on votes on the GTFS Schedule specification. 
-  - name: GTFS Realtime Google Group 
+  - name: GTFS Realtime Mailing List 
     url: https://groups.google.com/g/gtfs-realtime
     about: This group is the forum for discussing the GTFS Realtime specification, asking questions, and proposing changes.
   - name: GTFS Slack Channel
