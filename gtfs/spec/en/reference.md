@@ -47,7 +47,7 @@ This section defines terms that are used throughout this document.
 
 * **Dataset** - A complete set of files defined by this specification reference. Altering the dataset creates a new version of the dataset. Datasets should be published at a public, permanent URL, including the zip file name. (e.g., https://www.agency.org/gtfs/gtfs.zip).
 * **Record** - A basic data structure comprised of a number of different field values describing a single entity (e.g. transit agency, stop, route, etc.). Represented, in a table, as a row.
-* **Field** - A property of an object or entity. Represented, in a table, as a column.
+* **Field** - A property of an object or entity. Represented, in a table, as a column. The field exists if added in a file as a header. It may or may not have field values defined.
 * **Field value** - An individual entry in a field. Represented, in a table, as a single cell.
 * **Service day** - A service day is a time period used to indicate route scheduling. The exact definition of service day varies from agency to agency but service days often do not correspond with calendar days. A service day may exceed 24:00:00 if service begins on one day and ends on a following day. For example, service that runs from 08:00:00 on Friday to 02:00:00 on Saturday, could be denoted as running from 08:00:00 to 26:00:00 on a single service day.
 * **Text-to-speech field** - The field should contain the same information than its parent field (on which it falls back if it is empty). It is aimed to be read as text-to-speech, therefore, abbreviation should be either removed ("St" should be either read as "Street" or "Saint"; "Elizabeth I" should be "Elizabeth the first") or kept to be read as it ("JFK Airport" is said abbreviated).
@@ -121,8 +121,8 @@ This specification defines the following files:
 |  [fare_transfer_rules.txt](#fare_transfer_rulestxt)  | Optional | Fare rules for transfers between legs of travel.<br><br>Along with [fare_leg_rules.txt](#fare_leg_rulestxt), file [fare_transfer_rules.txt](#fare_transfer_rulestxt) provides a more detailed method for modeling fare structures. As such, the use of [fare_transfer_rules.txt](#fare_transfer_rulestxt) is entirely separate from files [fare_attributes.txt](#fare_attributestxt) and [fare_rules.txt](#fare_rulestxt). |
 |  [areas.txt](#areastxt) | Optional | Area grouping of locations. |
 |  [stop_areas.txt](#stop_areastxt) | Optional | Rules to assign stops to areas. |
-|  [networks.txt](#networkstxt) | **Conditionally Forbidden** | Network grouping of routes.<br><br>Conditionally Forbidden:<br>- **Forbidden** if `routes.network_id` field exists.<br>- Optional otherwise. |
-|  [route_networks.txt](#route_networkstxt) | **Conditionally Forbidden** | Rules to assign routes to networks.<br><br>Conditionally Forbidden:<br>- **Forbidden** if `routes.network_id` field exists.<br>- Optional otherwise. |
+|  [networks.txt](#networkstxt) | **Conditionally Forbidden** | Network grouping of routes.<br><br>Conditionally Forbidden:<br>- **Forbidden** if `network_id` exists in [routes.txt](#routes.txt).<br>- Optional otherwise. |
+|  [route_networks.txt](#route_networkstxt) | **Conditionally Forbidden** | Rules to assign routes to networks.<br><br>Conditionally Forbidden:<br>- **Forbidden** if `network_id` exists in [routes.txt](#routes.txt).<br>- Optional otherwise. |
 |  [shapes.txt](#shapestxt)  | Optional | Rules for mapping vehicle travel paths, sometimes referred to as route alignments. |
 |  [frequencies.txt](#frequenciestxt)  | Optional | Headway (time between trips) for headway-based service or a compressed representation of fixed-schedule service. |
 |  [transfers.txt](#transferstxt)  | Optional | Rules for making connections at transfer points between routes. |
@@ -529,7 +529,7 @@ File: **Conditionally Forbidden**
 
 Primary key (`network_id`)
 
-Defines network identifiers that apply for fare leg rules. Forbidden if `routes.network_id` field exists.
+Defines network identifiers that apply for fare leg rules. 
 
 |  Field Name | Type | Presence | Description |
 |  ------ | ------ | ------ | ------ |
@@ -542,7 +542,7 @@ File: **Conditionally Forbidden**
 
 Primary key (`route_id`)
 
-Assigns routes from [routes.txt](#routestxt) to networks. Forbidden if `routes.network_id` field exists.
+Assigns routes from [routes.txt](#routestxt) to networks. 
 
 |  Field Name | Type | Presence | Description |
 |  ------ | ------ | ------ | ------ |
@@ -678,7 +678,7 @@ File: **Conditionally Required**
 
 Primary key (`level_id`)
 
-Describes levels in a station. Useful in conjunction with `pathways.txt`, and is required for navigating pathways with elevators (`pathway_mode=5`).
+Describes levels in a station. Useful in conjunction with `pathways.txt`.
 
 |  Field Name | Type | Presence | Description |
 |  ------ | ------ | ------ | ------ |
