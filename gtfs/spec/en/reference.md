@@ -9,7 +9,7 @@ This document defines the format and structure of the files that comprise a GTFS
 1.  [Document Conventions](#document-conventions)
 2.  [Dataset Files](#dataset-files)
 3.  [File Requirements](#file-requirements)
-4.  [Dataset Publishing & General Practices](#dataset-publishing-&-general-practices)
+4.  [Dataset Publishing & General Practices](#dataset-publishing--general-practices)
 5.  [Field Definitions](#field-definitions)
     -   [agency.txt](#agencytxt)
     -   [stops.txt](#stopstxt)
