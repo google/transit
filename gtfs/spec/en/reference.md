@@ -163,7 +163,7 @@ The following example demonstrates how a field value would appear in a comma-del
     * If possible, the GTFS dataset should cover at least the next 30 days of service.
  * Old services (expired calendars) should be removed from the feed.
  * If a service modification will go into effect in 7 days or fewer, this service change should be expressed through a GTFS-realtime feed (service advisories or trip updates) rather than static GTFS dataset.
- * The web-server hosting GTFS data should be configured to correctly report the file modification date (see [HTTP/1.1 - Request for Comments 2616, under Section 14.29](https://tools.ietf.org/html/rfc2616#section-14.29)https://tools.ietf.org/html/rfc2616#section-14.29).
+ * The web-server hosting GTFS data should be configured to correctly report the file modification date (see [HTTP/1.1 - Request for Comments 2616, under Section 14.29](https://tools.ietf.org/html/rfc2616#section-14.29)).
 
 ## Field Definitions
 
