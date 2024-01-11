@@ -1086,6 +1086,9 @@ message TripModifications {
     // A list of replacement stops, replacing those of the original trip. The length of the new stop times may be less, the same, or greater than the number of replaced stop times. 
 		repeated ReplacementStop replacement_stops = 4;
 
+    // An `id` value from the `FeedEntity` message that contains the `Alert` describing this Modification for user-facing communication.
+    optional string service_alert_id = 5;
+
 		// The extensions namespace allows 3rd-party developers to extend the
 		// GTFS Realtime Specification in order to add and evaluate new features and
 		// modifications to the spec.
@@ -1099,6 +1102,7 @@ message TripModifications {
   repeated string trip_ids = 2;
 
   // Dates on which the detour occurs, in the YYYYMMDD format. Producers SHOULD only transmit detours occurring within the next week.
+  // The dates provided should not be used as user-facing information, if a user-facing start and end date needs to be provided, they can be provided in the linked service alert with `service_alert_id`
   repeated string service_dates = 3;
 
   // The ID of the new shape for the modified trips. May refer to a new shape added using a GTFS-RT Shape message, or to an existing shape defined in the GTFS-Static feed’s shapes.txt.
