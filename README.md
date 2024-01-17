@@ -3,4 +3,4 @@ Feed Specification (GTFS) and GTFS Realtime:
 * [GTFS](/gtfs/README.md)
 * [GTFS Realtime](/gtfs-realtime/README.md)
 
-Please visit https://developers.google.com/transit/ for information.
+Please visit https://gtfs.org for information.
