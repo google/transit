@@ -630,7 +630,7 @@ File: **Optional**
 
 Primary key (`location_group_id`, `location_id`)
 
-Defines location groups that indicate groups of stops where a rider may request pickup or drop off.
+Defines location groups, which are groups of stops where a rider may request pickup or drop off.
 
 | Field Name | Type | Required | Description |
 | ---------- | ---- | ------------ | ----------- |
