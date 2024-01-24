@@ -8,3 +8,6 @@ __pycache__/
 
 # C extensions
 *.so
+
+# macOS metadata files
+.DS_Store
