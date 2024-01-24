@@ -31,6 +31,7 @@ This document defines the format and structure of the files that comprise a GTFS
     -   [pathways.txt](#pathwaystxt)
     -   [levels.txt](#levelstxt)
     -   [location_groups.txt](#location_groupstxt)
+    -   [location_group_stops.txt](#location_group_stopstxt)
     -   [locations.geojson](#locationsgeojson)
     -   [booking_rules.txt](#booking_rulestxt)
     -   [translations.txt](#translationstxt)
@@ -125,6 +126,7 @@ This specification defines the following files:
 |  [pathways.txt](#pathwaystxt)  | Optional | Pathways linking together locations within stations. |
 |  [levels.txt](#levelstxt)  | **Conditionally Required** | Levels within stations.<br><br>Conditionally Required:<br>- **Required** when describing pathways with elevators (`pathway_mode=5`).<br>- Optional otherwise. |
 |  [location_groups.txt](#location_groupstxt)  | Optional | A group of stops that together indicate locations where a rider may request pickup or drop off. |
+|  [location_group_stops.txt](#location_group_stopstxt)  | Optional | Rules to assign stops to location groups. |
 |  [locations.geojson](#locationsgeojson)  | Optional | GeoJSON locations, which are `Polygon` and `MultiPolygon` features that indicate groups of lat/lon coordinates defining zones where riders can request either pickup or drop off. |
 |  [booking_rules.txt](#booking_rulestxt)  | Optional | Booking information for rider-requested services. |
 |  [translations.txt](#translationstxt)  | Optional | Translations of customer-facing dataset values. |
@@ -628,15 +630,28 @@ Describes levels in a station. Useful in conjunction with `pathways.txt`, and is
 
 File: **Optional**
 
-Primary key (`location_group_id`, `location_id`)
+Primary key (`location_group_id`)
 
 Defines location groups, which are groups of stops where a rider may request pickup or drop off.
 
 | Field Name | Type | Required | Description |
 | ---------- | ---- | ------------ | ----------- |
-| `location_group_id` | ID | **Required** | Identifies a location group. ID must be unique across all `stops.stop_id`, locations.geojson `id`, and `location_groups.location_group_id` values. <br><br>A location group is a group of stops that together indicate locations where a rider may request pickup or drop off.<br><br>Multiple entries in `location_groups.txt` can have the same `location_group_id`. | 
+| `location_group_id` | Unique ID | **Required** | Identifies a location group. ID must be unique across all `stops.stop_id`, locations.geojson `id`, and `location_groups.location_group_id` values. <br><br>A location group is a group of stops that together indicate locations where a rider may request pickup or drop off. | 
+| `location_group_name` | Text | Optional | The name of the location group as displayed to the rider. |
+
+### location_group_stops.txt
+
+File: **Optional**
+
+Primary key (`*`)
+
+Assigns stops from stops.txt to location groups.
+
+| Field Name | Type | Required | Description |
+| ---------- | ---- | ------------ | ----------- |
+| `location_group_id` | Foreign ID referencing `location_groups.location_group_id` | **Required** | Identifies a location group to which one or multiple `stop_id`s belong. The same `stop_id` may be defined in many `location_group_id`s. | 
 | `stop_id` | Foreign ID referencing `stops.stop_id` | **Required** | Identifies a stop belonging to the location group. |
-| `location_group_name` | Text | Optional | Name of the location group. Must be defined either once, or exhaustively for a single `location_group_id`. |
+
 
 ### locations.geojson
 
