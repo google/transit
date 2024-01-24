@@ -280,6 +280,9 @@ Primary key (`trip_id`, `stop_sequence`)
 | `pickup_booking_rule_id` | ID referencing `booking_rules.booking_rule_id` | Optional | Identifies the boarding booking rule at this stop time.<br><br>Recommended when `pickup_type=2`. |
 | `drop_off_booking_rule_id` | ID referencing `booking_rules.booking_rule_id` | Optional | Identifies the alighting booking rule at this stop time.<br><br>Recommended when `drop_off_type=2`. |
 
+#### On-demand Service - Zone Overlap Constraint
+Simultaneous overlap of locations.geojson `id` geometry, `start/end_pickup_drop_off_window` time, and `pickup_type` or `drop_off_type` between two or more stop_times.txt records with the same `trip_id` is forbidden. For examples that demonstrate what is forbidden, see GTFS-Flex data example page.
+
 ### calendar.txt
 
 File: **Conditionally Required**
