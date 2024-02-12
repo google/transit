@@ -34,6 +34,10 @@ This document defines the format and structure of the files that comprise a GTFS
     -   [transfers.txt](#transferstxt)
     -   [pathways.txt](#pathwaystxt)
     -   [levels.txt](#levelstxt)
+    -   [location_groups.txt](#location_groupstxt)
+    -   [location_group_stops.txt](#location_group_stopstxt)
+    -   [locations.geojson](#locationsgeojson)
+    -   [booking_rules.txt](#booking_rulestxt)
     -   [translations.txt](#translationstxt)
     -   [feed\_info.txt](#feed_infotxt)
     -   [attributions.txt](#attributionstxt)
@@ -129,6 +133,10 @@ This specification defines the following files:
 |  [transfers.txt](#transferstxt)  | Optional | Rules for making connections at transfer points between routes. |
 |  [pathways.txt](#pathwaystxt)  | Optional | Pathways linking together locations within stations. |
 |  [levels.txt](#levelstxt)  | **Conditionally Required** | Levels within stations.<br><br>Conditionally Required:<br>- **Required** when describing pathways with elevators (`pathway_mode=5`).<br>- Optional otherwise. |
+|  [location_groups.txt](#location_groupstxt)  | Optional | A group of stops that together indicate locations where a rider may request pickup or drop off. |
+|  [location_group_stops.txt](#location_group_stopstxt)  | Optional | Rules to assign stops to location groups. |
+|  [locations.geojson](#locationsgeojson)  | Optional | Zones for rider pickup or drop-off requests by on-demand services, represented as GeoJSON polygons. |
+|  [booking_rules.txt](#booking_rulestxt)  | Optional | Booking information for rider-requested services. |
 |  [translations.txt](#translationstxt)  | Optional | Translations of customer-facing dataset values. |
 |  [feed_info.txt](#feed_infotxt)  | Optional | Dataset metadata, including publisher, version, and expiration information. |
 |  [attributions.txt](#attributionstxt)  | Optional | Dataset attributions. |
@@ -687,6 +695,82 @@ Describes levels in a station. Useful in conjunction with [pathways.txt](#pathwa
 |  `level_index` | Float | **Required** | Numeric index of the level that indicates its relative position. <br><br>Ground level should have index `0`, with levels above ground indicated by positive indices and levels below ground by negative indices.|
 |  `level_name` | Text | Optional | Name of the level as seen by the rider inside the building or station.<hr>_Example: Take the elevator to "Mezzanine" or "Platform" or "-1"._|
 
+### location_groups.txt
+
+File: **Optional**
+
+Primary key (`location_group_id`)
+
+Defines location groups, which are groups of stops where a rider may request pickup or drop off.
+
+| Field Name | Type | Required | Description |
+| ---------- | ---- | ------------ | ----------- |
+| `location_group_id` | Unique ID | **Required** | Identifies a location group. ID must be unique across all `stops.stop_id`, locations.geojson `id`, and `location_groups.location_group_id` values. <br><br>A location group is a group of stops that together indicate locations where a rider may request pickup or drop off. | 
+| `location_group_name` | Text | Optional | The name of the location group as displayed to the rider. |
+
+### location_group_stops.txt
+
+File: **Optional**
+
+Primary key (`*`)
+
+Assigns stops from stops.txt to location groups.
+
+| Field Name | Type | Required | Description |
+| ---------- | ---- | ------------ | ----------- |
+| `location_group_id` | Foreign ID referencing `location_groups.location_group_id` | **Required** | Identifies a location group to which one or multiple `stop_id`s belong. The same `stop_id` may be defined in many `location_group_id`s. | 
+| `stop_id` | Foreign ID referencing `stops.stop_id` | **Required** | Identifies a stop belonging to the location group. |
+
+
+### locations.geojson
+
+File: **Optional**
+
+Defines zones where riders can request either pickup or drop off by on-demand services. These zones are represented as GeoJSON polygons.
+- This file uses a subset of the GeoJSON format, described in [RFC 7946](https://tools.ietf.org/html/rfc7946).
+- The `locations.geojson` file must contain a `FeatureCollection`.
+- A `FeatureCollection` defines various stop locations where riders may request pickup or drop off.
+- Every GeoJSON `Feature` must have an `id`. The `id` must be unique across all `stops.stop_id`, locations.geojson `id`, and `location_group_id` values.
+- Every GeoJSON `Feature` should have objects and associated keys according to the table below:
+
+|  Field Name | Type | Presence | Description |
+|  ------ | ------ | ------ | ------ |
+| -&nbsp;`type` | String | **Required** | `"FeatureCollection"` of locations. |
+| -&nbsp;`features` | Array | **Required** | Collection of `"Feature"` objects describing the locations. |
+| &nbsp;&nbsp;&nbsp;&nbsp;\-&nbsp;`type` | String | **Required** | `"Feature"` |
+| &nbsp;&nbsp;&nbsp;&nbsp;\-&nbsp;`id` | String | **Required** | Identifies a location. ID must be unique across all `stops.stop_id`, locations.geojson `id`, and `location_groups.location_group_id` values. |
+| &nbsp;&nbsp;&nbsp;&nbsp;\-&nbsp;`properties` | Object | **Required** | Location property keys. |
+| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\-&nbsp;`stop_name` | String | Optional | Indicates the name of the location as displayed to riders. |
+| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\-&nbsp;`stop_desc` | String | Optional | Meaningful description of the location to help orient riders. |
+| &nbsp;&nbsp;&nbsp;&nbsp;\-&nbsp;`geometry` | Object | **Required** | Geometry of the location. |
+| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\-&nbsp;`type` | String | **Required** | Must be of type:<br>-&nbsp;`"Polygon"`<br>-&nbsp;`"MultiPolygon"` |
+| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\-&nbsp;`coordinates` | Array | **Required** | Geographic coordinates (latitude and longitude) defining the geometry of the location. |
+
+### booking_rules.txt
+
+File: **Optional**
+
+Primary key (`booking_rule_id`)
+
+Defines the booking rules for rider-requested services
+
+|  Field Name | Type | Presence | Description |
+|  ------ | ------ | ------ | ------ |
+| `booking_rule_id` | ID | **Required** | Identifies the rule. |
+| `booking_type` | Enum | **Required** | Indicates how far in advance booking can be made. Valid options are:<br><br>`0` - Real time booking.<br>`1` - Up to same-day booking with advance notice.<br>`2` - Up to prior day(s) booking. |
+| `prior_notice_duration_min` | Integer | **Conditionally Required** | Minimum number of minutes before travel to make the request.<br><br>**Conditionally Required**:<br>- **Required** for `booking_type=1`.<br>- **Forbidden** otherwise. |
+| `prior_notice_duration_max` | Integer | **Conditionally Forbidden** | Maximum number of minutes before travel to make the booking request.<br><br>**Conditionally Forbidden**:<br>- **Forbidden** for `booking_type=0` and `booking_type=2`.<br>- Optional for `booking_type=1`.|
+| `prior_notice_last_day` | Integer | **Conditionally Required** | Last day before travel to make the booking request. <br><br>Example: “Ride must be booked 1 day in advance before 5PM” will be encoded as `prior_notice_last_day=1`.<br><br>**Conditionally Required**:<br>- **Required** for `booking_type=2`.<br>- **Forbidden** otherwise. |
+| `prior_notice_last_time` | Time | **Conditionally Required** | Last time on the last day before travel to make the booking request.<br><br>Example: “Ride must be booked 1 day in advance before 5PM” will be encoded as `prior_notice_last_time=17:00:00`.<br><br>**Conditionally Required**:<br>- **Required** if `prior_notice_last_day` is defined.<br>- **Forbidden** otherwise. |
+| `prior_notice_start_day` | Integer | **Conditionally Forbidden** | Earliest day before travel to make the booking request.<br><br>Example: “Ride can be booked at the earliest one week in advance at midnight” will be encoded as `prior_notice_start_day=7`.<br><br>**Conditionally Forbidden**:<br>- **Forbidden** for `booking_type=0`.<br> - **Forbidden** for `booking_type=1` if `prior_notice_duration_max` is defined.<br> - Optional otherwise. |
+| `prior_notice_start_time` | Time | **Conditionally Required** | Earliest time on the earliest day before travel to make the booking request.<br><br>Example: “Ride can be booked at the earliest one week in advance at midnight” will be encoded as `prior_notice_start_time=00:00:00`.<br><br>**Conditionally Required**:<br>- **Required** if `prior_notice_start_day` is defined.<br>- **Forbidden** otherwise. |
+| `prior_notice_service_id` | ID referencing `calendar.service_id` | **Conditionally Forbidden** | Indicates the service days on which `prior_notice_last_day` or `prior_notice_start_day` are counted. <br><br>Example: If empty, `prior_notice_start_day=2` will be two calendar days in advance. If defined as a `service_id` containing only business days (weekdays without holidays), `prior_notice_start_day=2` will be two business days in advance.<br><br>**Conditionally Forbidden**:<br> - Optional if `booking_type=2`. <br> - **Forbidden** otherwise. |
+| `message` | Text | Optional | Message to riders utilizing service at a `stop_time` when booking on-demand pickup and drop off. Meant to provide minimal information to be transmitted within a user interface about the action a rider must take in order to utilize the service. |
+| `pickup_message` | Text | Optional | Functions in the same way as `message` but used when riders have on-demand pickup only. |
+| `drop_off_message` | Text | Optional | Functions in the same way as `message` but used when riders have on-demand drop off only. |
+| `phone_number` | Phone number | Optional | Phone number to call to make the booking request. |
+| `info_url` | URL | Optional | URL providing information about the booking rule. |
+| `booking_url` | URL | Optional | URL to an online interface or app where the booking request can be made. |
 
 ### translations.txt
 
