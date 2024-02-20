@@ -1124,6 +1124,23 @@ message TripModifications {
 }
 
 // NOTE: This field is still experimental, and subject to change. It may be formally adopted in the future.
+// Select a stop by stop sequence or by stop_id. At least one of the two values must be provided.
+message StopSelector { 
+  // Must be the same as in stop_times.txt in the corresponding GTFS feed.
+  optional uint32 stop_sequence = 1;
+  // Must be the same as in stops.txt in the corresponding GTFS feed.
+  optional string stop_id = 4;
+
+  // The extensions namespace allows 3rd-party developers to extend the
+  // GTFS Realtime Specification in order to add and evaluate new features and
+  // modifications to the spec.
+  extensions 1000 to 1999;
+
+  // The following extension IDs are reserved for private use by any organization.
+  extensions 9000 to 9999;
+}
+
+// NOTE: This field is still experimental, and subject to change. It may be formally adopted in the future.
 message ReplacementStop {
   // The difference in seconds between the arrival time at this stop and the arrival time at the reference stop. The reference stop is the stop prior to start_stop_sequence. If the modification begins at the first stop of the trip, then the first stop of the trip is the reference stop.
   // This value MUST be monotonically increasing and may only be a negative number if the first stop of the original trip is the reference stop.

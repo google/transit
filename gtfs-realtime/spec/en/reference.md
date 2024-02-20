@@ -623,7 +623,7 @@ A `TripModifications` message identifies a list of similar trips which are all a
 | **start_times** | [string](https://protobuf.dev/programming-guides/proto2/#scalar) | Optional | Many | A list of start times in the real-time trip descriptor for the trip_id defined in trip_ids. Useful to target multiple departures of a trip_id in a frequency-based trip.  |
 | **service_dates** | [string](https://protobuf.dev/programming-guides/proto2/#scalar) | Required | Many | Dates on which the modification occurs, in the YYYYMMDD format. A trip_id will only be modified if it runs on a given service date; the trip IS NOT required to run on all of the service dates. Producers SHOULD only transmit detours occurring within the next week. The dates provided should not be used as user-facing information, if a user-facing start and end date needs to be provided, they can be provided in the linked service alert with `service_alert_id` |
 | **shape_id** | [string](https://protobuf.dev/programming-guides/proto2/#scalar) | Optional | One | The ID of the new shape for the modified trips. May refer to a new shape added using a GTFS-RT Shape message, or to an existing shape defined in the (CSV) GTFS feed’s shapes.txt. |
-| **modifications** | [string](#message-modification) | Required | Many | A list of modifications to apply to the affected trips. |
+| **modifications** | [Modification](#message-modification) | Required | Many | A list of modifications to apply to the affected trips. |
 
 ## _message_ Modification
 
@@ -642,11 +642,24 @@ _Propagated detour delays affect all stops following the end of a modification. 
 
 | _**Field Name**_ | _**Type**_ | _**Required**_ | _**Cardinality**_ | _**Description**_ |
 |------------------|------------|----------------|-------------------|-------------------|
-| **start_stop_sequence** | [uint32](https://protobuf.dev/programming-guides/proto2/#scalar) | Required | One | The stop sequence value from the (CSV) GTFS of the first stop of the original trip that is to be affected by this modification. |
+| **start_stop_selector** | [StopSelector](#message-stopselector) | Required | One | The stop selector of the first stop of the original trip that is to be affected by this modification. |
 | **num_stops_replaced** | [uint32](https://protobuf.dev/programming-guides/proto2/#scalar) | Required | One | The number of stops which are canceled and replaced by the `replacement_stops`. May be zero to indicate no skipped stops. |
 | **propagated_modification_delay** | [int32](https://protobuf.dev/programming-guides/proto2/#scalar) | Optional | One | The number of seconds of delay to add to all departure and arrival times following the end of this modification. Can be a positive or negative number. If multiple modifications apply to the same trip, the delays accumulate as the trip advances. <br/><br/>If the value is not supplied, consumers MAY interpolate or infer the `propagated_modification_delay` based on other data.  |
 | **replacement_stops** | [ReplacementStop](#message-replacementstop) | Optional | Many | A list of replacement stops, replacing those of the original trip. The length of the new stop times may be less, the same, or greater than the number of replaced stop times. |
 | **service_alert_id** | [string](https://protobuf.dev/programming-guides/proto2/#scalar) | Optional | One | An `id` value from the `FeedEntity` message that contains the `Alert` describing this Modification for user-facing communication. |
+
+## _message_ StopSelector
+
+Selector for a stop. Either by `stop_id` or `stop_sequence`. At least one of the two value must be provided. 
+
+<br><br>**Caution:** this field is still **experimental**, and subject to change. It may be formally adopted in the future.
+
+**Fields**
+
+| _**Field Name**_ | _**Type**_ | _**Required**_ | _**Cardinality**_ | _**Description**_ |
+|------------------|------------|----------------|-------------------|-------------------|
+| **stop_sequence** | [uint32](https://protobuf.dev/programming-guides/proto2/#scalar) | Conditionnaly Required | One |  Must be the same as in stop_times.txt in the corresponding GTFS feed.  Either `stop_sequence` or `stop_id` must be provided within a `StopSelector` - both fields cannot be empty.  `stop_sequence` is required for trips that visit the same stop_id more than once (e.g., a loop) to disambiguate which stop the prediction is for.  |
+| **stop_id** | [string](https://protobuf.dev/programming-guides/proto2/#scalar) | Conditionnaly Required | One | Must be the same as in stops.txt in the corresponding GTFS feed. Either `stop_sequence` or `stop_id` must be provided within a `StopSelector` - both fields cannot be empty. |
 
 ## _message_ ReplacementStop
 
