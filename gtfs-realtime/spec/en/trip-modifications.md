@@ -2,6 +2,8 @@
 
 A `TripModifications` message identifies a list of similar `trip_ids` from the (CSV) GTFS sharing the same stop pattern, which are all affected by particular modifications, such as a detour.
 
+<br><br>**Caution:** this entity is still **experimental**, and subject to change. It may be formally adopted in the future.
+
 ## SLO: Service-level objective
 
 The frequency of data updates is expected to be approximately hourly (~24 times/day). Ingestion time may depend on the total number of affected trips. Consumers are expected to ingest a single TripModification within 5 minutes, and a feed with hundreds of detours within 20 minutes.
