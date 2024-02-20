@@ -563,6 +563,8 @@ A localized image URL mapped to a language.
 
 Describes the physical path that a vehicle takes when the shape is not part of the (CSV) GTFS, such as for an ad-hoc detour. Shapes belong to Trips and consist of an encoded polyline for more efficient transmission.  Shapes do not need to intercept the location of Stops exactly, but all Stops on a trip should lie within a small distance of the shape for that trip, i.e. close to straight line segments connecting the shape points
 
+<br><br>**Caution:** this field is still **experimental**, and subject to change. It may be formally adopted in the future.
+
 **Fields**
 
 | _**Field Name**_ | _**Type**_ | _**Required**_ | _**Cardinality**_ | _**Description**_ |
@@ -573,6 +575,8 @@ Describes the physical path that a vehicle takes when the shape is not part of t
 ## _message_ Stop
 
 Represents a new Stop added to the feed dynamically. All fields are as described in the (CSV) GTFS specification. The location type of the new stop is `0` (routable stop). 
+
+<br><br>**Caution:** this field is still **experimental**, and subject to change. It may be formally adopted in the future.
 
 **Fields**
 
@@ -606,6 +610,8 @@ Represents a new Stop added to the feed dynamically. All fields are as described
 ## _message_ TripModifications
 
 A `TripModifications` message identifies a list of similar trips which are all affected by particular modifications, such as a detour.
+
+<br><br>**Caution:** this field is still **experimental**, and subject to change. It may be formally adopted in the future.
  
 [More about Trip Modifications...](trip-modifications.md)
 
@@ -622,6 +628,8 @@ A `TripModifications` message identifies a list of similar trips which are all a
 ## _message_ Modification
 
 A `Modification` message replaces a span of n stop times (`num_stops_replaced`) from each affected trip starting at `start_stop_sequence`.
+
+<br><br>**Caution:** this field is still **experimental**, and subject to change. It may be formally adopted in the future.
 
 ![](images/trip_modification.png)
 _An example showing the effect of a modification on a particular trip. This modification may also be applied to several other trips._
@@ -643,6 +651,8 @@ _Propagated detour delays affect all stops following the end of a modification. 
 ## _message_ ReplacementStop
 
 Each `ReplacementStop` message defines a stop that will now be visited by the trip, and optionally specifies the estimated travel time to the stop. 
+
+<br><br>**Caution:** this field is still **experimental**, and subject to change. It may be formally adopted in the future.
 
 ![](images/first_stop_reference.png)
 _If a modification affects the first stop of the trip, that stop also serves as the reference stop of the modification._

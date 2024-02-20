@@ -1019,6 +1019,7 @@ message TranslatedImage {
 // Tracing the points in order provides the path of the vehicle.  Shapes do not need to intercept
 // the location of Stops exactly, but all Stops on a trip should lie within a small distance of
 // the shape for that trip, i.e. close to straight line segments connecting the shape points
+// NOTE: This field is still experimental, and subject to change. It may be formally adopted in the future.
 message Shape {
   // Identifier of the shape. Must be different than any shape_id defined in the (CSV) GTFS.
   // This field is required as per reference.md, but needs to be specified here optional because "Required is Forever"
@@ -1041,6 +1042,7 @@ message Shape {
 }
 
 // Describes a stop which is served by trips. All fields are as described in the GTFS-Static specification.
+// NOTE: This field is still experimental, and subject to change. It may be formally adopted in the future.
 message Stop {
   enum WheelchairBoarding {
     UNKNOWN = 0;
@@ -1072,6 +1074,7 @@ message Stop {
   extensions 9000 to 9999;
 }
 
+// NOTE: This field is still experimental, and subject to change. It may be formally adopted in the future.
 message TripModifications {
 	message Modification {
     // The first stop sequence of the original trip that is to be affected by this modification.
@@ -1120,6 +1123,7 @@ message TripModifications {
   extensions 9000 to 9999;
 }
 
+// NOTE: This field is still experimental, and subject to change. It may be formally adopted in the future.
 message ReplacementStop {
   // The difference in seconds between the arrival time at this stop and the arrival time at the reference stop. The reference stop is the stop prior to start_stop_sequence. If the modification begins at the first stop of the trip, then the first stop of the trip is the reference stop.
   // This value MUST be monotonically increasing and may only be a negative number if the first stop of the original trip is the reference stop.
