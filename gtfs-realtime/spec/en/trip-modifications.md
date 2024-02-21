@@ -32,7 +32,7 @@ The scheduled stop times of each replacement trip are created from those of the 
 
 ##  Modification
 
-A `Modification` message replaces a span of n stop times (`num_stops_replaced`) from each affected trip starting at `start_stop_sequence`. The spans of the modifications MUST not overlap. Spans may not be contiguous; in this case the two modifications MUST be merged into one.  These stop times are replaced with a new stop time for each replacement stop described by `replacement_stops`.
+A `Modification` message replaces a span of n stop times (between `start_stop_selector` and `end_stop_selector`) from each affected trip starting at `start_stop_selector`. The spans of the modifications MUST not overlap. Spans may not be contiguous; in this case the two modifications MUST be merged into one.  These stop times are replaced with a new stop time for each replacement stop described by `replacement_stops`.
 
 The sequence of `replacement_stops` may be of arbitrary length. For example, 3 stops could be replaced by 2, 4, or 0 stops as the situation may require.
 
