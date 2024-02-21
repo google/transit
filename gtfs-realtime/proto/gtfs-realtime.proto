@@ -1107,18 +1107,31 @@ message TripModifications {
 		extensions 9000 to 9999;
 	}
 
-   // A list of trips affected by this detour.
-  repeated string trip_ids = 2;
+  message SelectedTrips {
+    // A list of trips affected with this replacement.
+    repeated string trip_ids = 1;
+    // The ID of the new shape for the modified trips in this SelectedTrips.
+    // May refer to a new shape added using a GTFS-RT Shape message, or to an existing shape defined in the GTFS-Static feed’s shapes.txt.
+    optional string shape_id = 2;
 
-  // Dates on which the detour occurs, in the YYYYMMDD format. Producers SHOULD only transmit detours occurring within the next week.
+    // The extensions namespace allows 3rd-party developers to extend the
+    // GTFS Realtime Specification in order to add and evaluate new features and
+    // modifications to the spec.
+    extensions 1000 to 1999;
+
+    // The following extension IDs are reserved for private use by any organization.
+    extensions 9000 to 9999;
+}
+
+   // A list of selected trips affected by this TripModifications.
+  repeated SelectedTrips selected_trips = 1;
+
+  // Dates on which the modifications occurs, in the YYYYMMDD format. Producers SHOULD only transmit detours occurring within the next week.
   // The dates provided should not be used as user-facing information, if a user-facing start and end date needs to be provided, they can be provided in the linked service alert with `service_alert_id`
-  repeated string service_dates = 3;
-
-  // The ID of the new shape for the modified trips. May refer to a new shape added using a GTFS-RT Shape message, or to an existing shape defined in the GTFS-Static feed’s shapes.txt.
-  optional string shape_id = 4;
+  repeated string service_dates = 2;
 
   // A list of modifications to apply to the affected trips. 
-  repeated Modification modifications = 5; 
+  repeated Modification modifications = 3; 
 
   // The extensions namespace allows 3rd-party developers to extend the
   // GTFS Realtime Specification in order to add and evaluate new features and
@@ -1135,7 +1148,7 @@ message StopSelector {
   // Must be the same as in stop_times.txt in the corresponding GTFS feed.
   optional uint32 stop_sequence = 1;
   // Must be the same as in stops.txt in the corresponding GTFS feed.
-  optional string stop_id = 4;
+  optional string stop_id = 2;
 
   // The extensions namespace allows 3rd-party developers to extend the
   // GTFS Realtime Specification in order to add and evaluate new features and
