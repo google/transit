@@ -1077,16 +1077,22 @@ message Stop {
 // NOTE: This field is still experimental, and subject to change. It may be formally adopted in the future.
 message TripModifications {
 	message Modification {
-    // The first stop sequence of the original trip that is to be affected by this modification.
-		optional uint32 start_stop_sequence = 1;
+    // he stop selector of the first stop of the original trip that is to be affected by this modification. 
+    // If `end_stop_selector` is not provided, no stop will be removed and the stop from the `start_stop_selector` 
+    // is only provided as a reference stop for `travel_time_to_stop` calculations.
+		optional StopSelector start_stop_selector = 1;
 
-    // The number of stops which are canceled and replaced by the replacement_stops. May be zero to indicate no skipped stops.
-		optional uint32 num_stops_replaced = 2;
+    // The stop selector of the last stop of the original trip that is to be affected by this modification. 
+    // The selection is inclusive, so if only one stop_time is replaced by that modification, `start_stop_selector` and `end_stop_selector` should be equivalent.
+    // If no stop_time is replaced, `end_stop_selector` should not be provided. It's otherwise required.
+		optional StopSelector end_stop_selector = 2;
 
-    // The number of seconds of delay to add to all departure and arrival times following the end of this modification. If multiple modifications apply to the same trip, the delays accumulate as the trip advances. 
+    // The number of seconds of delay to add to all departure and arrival times following the end of this modification. 
+    //If multiple modifications apply to the same trip, the delays accumulate as the trip advances. 
 		optional int32 propagated_modification_delay = 3 [default = 0];
 
-    // A list of replacement stops, replacing those of the original trip. The length of the new stop times may be less, the same, or greater than the number of replaced stop times. 
+    // A list of replacement stops, replacing those of the original trip. 
+    // The length of the new stop times may be less, the same, or greater than the number of replaced stop times. 
 		repeated ReplacementStop replacement_stops = 4;
 
     // An `id` value from the `FeedEntity` message that contains the `Alert` describing this Modification for user-facing communication.
@@ -1101,7 +1107,7 @@ message TripModifications {
 		extensions 9000 to 9999;
 	}
 
-   // A list of trips affected by this detour. All trips linked by those trip_ids MUST have the same stop pattern. Two trips have the same stop pattern, if they visit the same stops in the same order, and have identical stop sequences.
+   // A list of trips affected by this detour.
   repeated string trip_ids = 2;
 
   // Dates on which the detour occurs, in the YYYYMMDD format. Producers SHOULD only transmit detours occurring within the next week.
