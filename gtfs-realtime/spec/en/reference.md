@@ -619,10 +619,9 @@ A `TripModifications` message identifies a list of similar trips which are all a
 
 | _**Field Name**_ | _**Type**_ | _**Required**_ | _**Cardinality**_ | _**Description**_ |
 |------------------|------------|----------------|-------------------|-------------------|
-| **trip_ids** | [string](https://protobuf.dev/programming-guides/proto2/#scalar) | Required | Many | A list of trips_ids from the (CSV) GTFS affected by this modification. If the value `start_times` is set, a maximum of one trip_id can be listed.  |
-| **start_times** | [string](https://protobuf.dev/programming-guides/proto2/#scalar) | Optional | Many | A list of start times in the real-time trip descriptor for the trip_id defined in trip_ids. Useful to target multiple departures of a trip_id in a frequency-based trip.  |
+| **selected_trips** | [SelectedTrips](#message-selectedtrips) | Required | Many | A list of selected trips affected by this TripModifications. Need to contain at least one `SelectedTrips`. If the value `start_times` is set, a maximum of one `SelectedTrips` with one trip_id can be listed.  |
+| **start_times** | [string](https://protobuf.dev/programming-guides/proto2/#scalar) | Optional | Many | A list of start times in the real-time trip descriptor for the trip_id defined in trip_ids. Useful to target multiple departures of a trip_id in a frequency-based trip. |
 | **service_dates** | [string](https://protobuf.dev/programming-guides/proto2/#scalar) | Required | Many | Dates on which the modification occurs, in the YYYYMMDD format. A trip_id will only be modified if it runs on a given service date; the trip IS NOT required to run on all of the service dates. Producers SHOULD only transmit detours occurring within the next week. The dates provided should not be used as user-facing information, if a user-facing start and end date needs to be provided, they can be provided in the linked service alert with `service_alert_id` |
-| **shape_id** | [string](https://protobuf.dev/programming-guides/proto2/#scalar) | Optional | One | The ID of the new shape for the modified trips. May refer to a new shape added using a GTFS-RT Shape message, or to an existing shape defined in the (CSV) GTFS feed’s shapes.txt. |
 | **modifications** | [Modification](#message-modification) | Required | Many | A list of modifications to apply to the affected trips. |
 
 ## _message_ Modification
@@ -660,6 +659,19 @@ Selector for a stop. Either by `stop_id` or `stop_sequence`. At least one of the
 |------------------|------------|----------------|-------------------|-------------------|
 | **stop_sequence** | [uint32](https://protobuf.dev/programming-guides/proto2/#scalar) | Conditionnaly Required | One |  Must be the same as in stop_times.txt in the corresponding GTFS feed.  Either `stop_sequence` or `stop_id` must be provided within a `StopSelector` - both fields cannot be empty.  `stop_sequence` is required for trips that visit the same stop_id more than once (e.g., a loop) to disambiguate which stop the prediction is for.  |
 | **stop_id** | [string](https://protobuf.dev/programming-guides/proto2/#scalar) | Conditionnaly Required | One | Must be the same as in stops.txt in the corresponding GTFS feed. Either `stop_sequence` or `stop_id` must be provided within a `StopSelector` - both fields cannot be empty. |
+
+## _message_ SelectedTrips
+
+Selector for a stop. Either by `stop_id` or `stop_sequence`. At least one of the two value must be provided. 
+
+<br><br>**Caution:** this field is still **experimental**, and subject to change. It may be formally adopted in the future.
+
+**Fields**
+
+| _**Field Name**_ | _**Type**_ | _**Required**_ | _**Cardinality**_ | _**Description**_ |
+|------------------|------------|----------------|-------------------|-------------------|
+| **trip_ids** | [uint32](https://protobuf.dev/programming-guides/proto2/#scalar) | Many | One | A list of trip_id from the original (CSV) GTFS that are affected by the containing replacement. Need to contain at least one trip_id.  |
+| **shape_id** | [string](https://protobuf.dev/programming-guides/proto2/#scalar) | Required | One | The ID of the new shape for the modified trips in this SelectedTrips. May refer to a new shape added using a GTFS-RT Shape message, or to an existing shape defined in the GTFS-Static feed’s shapes.txt. |
 
 ## _message_ ReplacementStop
 
