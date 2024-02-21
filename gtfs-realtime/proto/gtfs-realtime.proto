@@ -1098,6 +1098,10 @@ message TripModifications {
     // An `id` value from the `FeedEntity` message that contains the `Alert` describing this Modification for user-facing communication.
     optional string service_alert_id = 5;
 
+    // This timestamp identifies the moment when the modification has last been changed.
+    // In POSIX time (i.e., number of seconds since January 1st 1970 00:00:00 UTC).
+    optional uint64 last_modified_time = 6;
+
 		// The extensions namespace allows 3rd-party developers to extend the
 		// GTFS Realtime Specification in order to add and evaluate new features and
 		// modifications to the spec.

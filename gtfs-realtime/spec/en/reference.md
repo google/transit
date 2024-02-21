@@ -646,6 +646,7 @@ _Propagated detour delays affect all stops following the end of a modification. 
 | **propagated_modification_delay** | [int32](https://protobuf.dev/programming-guides/proto2/#scalar) | Optional | One | The number of seconds of delay to add to all departure and arrival times following the end of this modification. Can be a positive or negative number. If multiple modifications apply to the same trip, the delays accumulate as the trip advances. <br/><br/>If the value is not supplied, consumers MAY interpolate or infer the `propagated_modification_delay` based on other data.  |
 | **replacement_stops** | [ReplacementStop](#message-replacementstop) | Optional | Many | A list of replacement stops, replacing those of the original trip. The length of the new stop times may be less, the same, or greater than the number of replaced stop times. |
 | **service_alert_id** | [string](https://protobuf.dev/programming-guides/proto2/#scalar) | Optional | One | An `id` value from the `FeedEntity` message that contains the `Alert` describing this Modification for user-facing communication. |
+| **last_modified_time** | [uint64](https://protobuf.dev/programming-guides/proto2/#scalar) | Optional | One | This timestamp identifies the moment when the modification has last been changed. In POSIX time (i.e., number of seconds since January 1st 1970 00:00:00 UTC). |
 
 ## _message_ StopSelector
 
