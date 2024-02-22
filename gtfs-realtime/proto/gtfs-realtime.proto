@@ -1130,12 +1130,16 @@ message TripModifications {
    // A list of selected trips affected by this TripModifications.
   repeated SelectedTrips selected_trips = 1;
 
+  // A list of start times in the real-time trip descriptor for the trip_id defined in trip_ids. 
+  // Useful to target multiple departures of a trip_id in a frequency-based trip.
+  repeated string start_times = 2;
+
   // Dates on which the modifications occurs, in the YYYYMMDD format. Producers SHOULD only transmit detours occurring within the next week.
   // The dates provided should not be used as user-facing information, if a user-facing start and end date needs to be provided, they can be provided in the linked service alert with `service_alert_id`
-  repeated string service_dates = 2;
+  repeated string service_dates = 3;
 
   // A list of modifications to apply to the affected trips. 
-  repeated Modification modifications = 3; 
+  repeated Modification modifications = 4; 
 
   // The extensions namespace allows 3rd-party developers to extend the
   // GTFS Realtime Specification in order to add and evaluate new features and
