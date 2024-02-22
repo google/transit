@@ -1077,7 +1077,7 @@ message Stop {
 // NOTE: This field is still experimental, and subject to change. It may be formally adopted in the future.
 message TripModifications {
 	message Modification {
-    // The stop selector of the first stop of the original trip that is to be affected by this modification.
+    // The stop selector of the first stop_time of the original trip that is to be affected by this modification.
     // Used in conjuction with `end_stop_selector`. 
     //`start_stop_selector` is required and is used to define the reference stop used with `travel_time_to_stop`.
 		optional StopSelector start_stop_selector = 1;
