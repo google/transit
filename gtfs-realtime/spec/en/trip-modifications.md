@@ -2,6 +2,8 @@
 
 A `TripModifications` message identifies a list of similar `trip_ids` from the (CSV) GTFS sharing the same stop pattern, which are all affected by particular modifications, such as a detour.
 
+<br><br>**Caution:** this entity is still **experimental**, and subject to change. It may be formally adopted in the future.
+
 ## SLO: Service-level objective
 
 The frequency of data updates is expected to be approximately hourly (~24 times/day). Ingestion time may depend on the total number of affected trips. Consumers are expected to ingest a single TripModification within 5 minutes, and a feed with hundreds of detours within 20 minutes.
@@ -30,7 +32,7 @@ The scheduled stop times of each replacement trip are created from those of the 
 
 ##  Modification
 
-A `Modification` message replaces a span of n stop times (`num_stops_replaced`) from each affected trip starting at `start_stop_sequence`. The spans of the modifications MUST not overlap. Spans may not be contiguous; in this case the two modifications MUST be merged into one.  These stop times are replaced with a new stop time for each replacement stop described by `replacement_stops`.
+A `Modification` message replaces a span of n stop times (between `start_stop_selector` and `end_stop_selector`) from each affected trip starting at `start_stop_selector`. The spans of the modifications MUST not overlap. Spans may not be contiguous; in this case the two modifications MUST be merged into one.  These stop times are replaced with a new stop time for each replacement stop described by `replacement_stops`.
 
 The sequence of `replacement_stops` may be of arbitrary length. For example, 3 stops could be replaced by 2, 4, or 0 stops as the situation may require.
 
