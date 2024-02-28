@@ -103,6 +103,8 @@ message FeedEntity {
   optional TripUpdate trip_update = 3;
   optional VehiclePosition vehicle = 4;
   optional Alert alert = 5;
+
+  // NOTE: This field is still experimental, and subject to change. It may be formally adopted in the future.
   optional Shape shape = 6;
   optional Stop stop = 7;
   optional TripModifications trip_modifications = 8;
@@ -1019,17 +1021,19 @@ message TranslatedImage {
 // Tracing the points in order provides the path of the vehicle.  Shapes do not need to intercept
 // the location of Stops exactly, but all Stops on a trip should lie within a small distance of
 // the shape for that trip, i.e. close to straight line segments connecting the shape points
-// NOTE: This field is still experimental, and subject to change. It may be formally adopted in the future.
+// NOTE: This message is still experimental, and subject to change. It may be formally adopted in the future.
 message Shape {
   // Identifier of the shape. Must be different than any shape_id defined in the (CSV) GTFS.
   // This field is required as per reference.md, but needs to be specified here optional because "Required is Forever"
   // See https://developers.google.com/protocol-buffers/docs/proto#specifying_field_rules
+  // NOTE: This field is still experimental, and subject to change. It may be formally adopted in the future.
   optional string shape_id = 1;
   
   // Encoded polyline representation of the shape. This polyline must contain at least two points.
   // For more information about encoded polylines, see https://developers.google.com/maps/documentation/utilities/polylinealgorithm
   // This field is required as per reference.md, but needs to be specified here optional because "Required is Forever"
   // See https://developers.google.com/protocol-buffers/docs/proto#specifying_field_rules
+  // NOTE: This field is still experimental, and subject to change. It may be formally adopted in the future.
   optional string encoded_polyline = 2;
 
   // The extensions namespace allows 3rd-party developers to extend the
@@ -1042,7 +1046,7 @@ message Shape {
 }
 
 // Describes a stop which is served by trips. All fields are as described in the GTFS-Static specification.
-// NOTE: This field is still experimental, and subject to change. It may be formally adopted in the future.
+// NOTE: This message is still experimental, and subject to change. It may be formally adopted in the future.
 message Stop {
   enum WheelchairBoarding {
     UNKNOWN = 0;
@@ -1102,13 +1106,13 @@ message TripModifications {
     // In POSIX time (i.e., number of seconds since January 1st 1970 00:00:00 UTC).
     optional uint64 last_modified_time = 6;
 
-		// The extensions namespace allows 3rd-party developers to extend the
-		// GTFS Realtime Specification in order to add and evaluate new features and
-		// modifications to the spec.
-		extensions 1000 to 1999;
+    // The extensions namespace allows 3rd-party developers to extend the
+    // GTFS Realtime Specification in order to add and evaluate new features and
+    // modifications to the spec.
+    extensions 1000 to 1999;
 
-		// The following extension IDs are reserved for private use by any organization.
-		extensions 9000 to 9999;
+    // The following extension IDs are reserved for private use by any organization.
+    extensions 9000 to 9999;
 	}
 
   message SelectedTrips {
