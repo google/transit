@@ -83,7 +83,7 @@ message FeedHeader {
   // it can be still provided.
   // The URL should be a fully qualified URL that includes http:// or https://, and any
   // special characters in the URL must be correctly escaped.
-  optional string GTFS_url = 5;
+  optional string gtfs_url = 5;
 
   // The extensions namespace allows 3rd-party developers to extend the
   // GTFS Realtime specification in order to add and evaluate new features and
