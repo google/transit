@@ -626,7 +626,7 @@ A `TripModifications` message identifies a list of similar trips which are all a
 
 ## _message_ Modification
 
-A `Modification` message replaces a span of n stop times from each affected trip starting at `start_stop_selector`.
+A `Modification` message describes changes to each affected trip starting at `start_stop_selector`.
 
 <br><br>**Caution:** this field is still **experimental**, and subject to change. It may be formally adopted in the future.
 
