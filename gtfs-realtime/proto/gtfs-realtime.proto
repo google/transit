@@ -1080,6 +1080,7 @@ message Stop {
 
 // NOTE: This field is still experimental, and subject to change. It may be formally adopted in the future.
 message TripModifications {
+  // A `Modification` message replaces a span of n stop times from each affected trip starting at `start_stop_selector`.
   message Modification {
     // The stop selector of the first stop_time of the original trip that is to be affected by this modification.
     // Used in conjuction with `end_stop_selector`. 
