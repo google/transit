@@ -72,6 +72,13 @@ Fields labeled as **experimental** are subject to change and not yet formally ad
             *   [TranslatedString](#message-translatedstring)
                 *   [Translation](#message-translation)
             *   [SeverityLevel](#enum-severitylevel)
+        *   [Shape](#message-shape)
+        *   [Stop](#message-stop)
+            *   [WheelchairBoarding](#enum-wheelchairboarding)
+        *   [TripModifications](#message-tripmodifications)
+            *   [Modification](#message-modification)
+            *   [ReplacementStop](#message-replacementstop)
+            
 
 # Elements
 
@@ -554,9 +561,9 @@ A localized image URL mapped to a language.
 
 ## _message_ Shape
 
-Describes the physical path that a vehicle takes when the shape is not part of the (CSV) GTFS, such as for an ad-hoc detour. Shapes belong to Trips and consist of an encoded polyline for more efficient transmission.  Shapes do not need to intercept the location of Stops exactly, but all Stops on a trip should lie within a small distance of the shape for that trip, i.e. close to straight line segments connecting the shape points
+Describes the physical path that a vehicle takes when the shape is not part of the (CSV) GTFS, such as for an ad-hoc detour. Shapes belong to Trips and consist of an encoded polyline for more efficient transmission.  Shapes do not need to intercept the location of Stops exactly, but all Stops on a trip should lie within a small distance of the shape for that trip, i.e. close to straight line segments connecting the shape points.
 
-**Caution:** this message is still **experimental**, and subject to change. It may be formally adopted in the future.<br>.
+<br><br>**Caution:** this message is still **experimental**, and subject to change. It may be formally adopted in the future.
 
 **Fields**
 
@@ -564,3 +571,122 @@ Describes the physical path that a vehicle takes when the shape is not part of t
 |------------------|------------|----------------|-------------------|-------------------|
 | **shape_id** | [string](https://protobuf.dev/programming-guides/proto2/#scalar) | Required | One |  Identifier of the shape. Must be different than any `shape_id` defined in the (CSV) GTFS. <br><br>**Caution:** this field is still **experimental**, and subject to change. It may be formally adopted in the future. |
 | **encoded_polyline** | [string](https://protobuf.dev/programming-guides/proto2/#scalar) | Required | One | Encoded polyline representation of the shape. This polyline must contain at least two points. For more information about encoded polylines, see https://developers.google.com/maps/documentation/utilities/polylinealgorithm <br><br>**Caution:** this field is still **experimental**, and subject to change. It may be formally adopted in the future. |
+
+## _message_ Stop
+
+Represents a new Stop added to the feed dynamically. All fields are as described in the (CSV) GTFS specification. The location type of the new stop is `0` (routable stop). 
+
+<br><br>**Caution:** this field is still **experimental**, and subject to change. It may be formally adopted in the future.
+
+**Fields**
+
+| _**Field Name**_ | _**Type**_ | _**Required**_ | _**Cardinality**_ | _**Description**_ |
+|------------------|------------|----------------|-------------------|-------------------|
+| **stop_id** | [string](https://protobuf.dev/programming-guides/proto2/#scalar) | Required | One |  Identifier of the stop. Must be different than any `stop_id` defined in the (CSV) GTFS. |
+| **stop_code** | [TranslatedString](#message-translatedstring) | Optional | One |  See definition of [stops.stop_code](https://github.com/google/transit/blob/master/gtfs/spec/en/reference.md#stopstxt) in (CSV) GTFS. |
+| **stop_name** | [TranslatedString](#message-translatedstring) | Required | One |  See definition of [stops.stop_name](https://github.com/google/transit/blob/master/gtfs/spec/en/reference.md#stopstxt) in (CSV) GTFS. |
+| **tts_stop_name** | [TranslatedString](#message-translatedstring) | Optional | One |  See definition of [stops.tts_stop_name](https://github.com/google/transit/blob/master/gtfs/spec/en/reference.md#stopstxt) in (CSV) GTFS. |
+| **stop_desc** | [TranslatedString](#message-translatedstring) | Optional | One |  See definition of [stops.stop_desc](https://github.com/google/transit/blob/master/gtfs/spec/en/reference.md#stopstxt) in (CSV) GTFS. |
+| **stop_lat** | [float](https://protobuf.dev/programming-guides/proto2/#scalar) | Required | One |  See definition of [stops.stop_lat](https://github.com/google/transit/blob/master/gtfs/spec/en/reference.md#stopstxt) in (CSV) GTFS. |
+| **stop_lon** | [float](https://protobuf.dev/programming-guides/proto2/#scalar) | Required | One |  See definition of [stops.stop_lon](https://github.com/google/transit/blob/master/gtfs/spec/en/reference.md#stopstxt) in (CSV) GTFS. |
+| **zone_id** | [string](https://protobuf.dev/programming-guides/proto2/#scalar) | Optional | One |  See definition of [stops.zone_id](https://github.com/google/transit/blob/master/gtfs/spec/en/reference.md#stopstxt) in (CSV) GTFS. |
+| **stop_url** | [TranslatedString](#message-translatedstring) | Optional | One |  See definition of [stops.stop_url](https://github.com/google/transit/blob/master/gtfs/spec/en/reference.md#stopstxt) in (CSV) GTFS. |
+| **parent_station** | [string](https://protobuf.dev/programming-guides/proto2/#scalar) | Optional | One |  See definition of [stops.parent_station](https://github.com/google/transit/blob/master/gtfs/spec/en/reference.md#stopstxt) in (CSV) GTFS. |
+| **stop_timezone** | [string](https://protobuf.dev/programming-guides/proto2/#scalar) | Optional | One |  See definition of [stops.stop_timezone](https://github.com/google/transit/blob/master/gtfs/spec/en/reference.md#stopstxt) in (CSV) GTFS. |
+| **wheelchair_boarding** | [WheelchairBoarding](#enum-wheelchairboarding) | Optional | One |  See definition of [stops.wheelchair_boarding](https://github.com/google/transit/blob/master/gtfs/spec/en/reference.md#stopstxt) in (CSV) GTFS. |
+| **level_id** | [string](https://protobuf.dev/programming-guides/proto2/#scalar) | Optional | One |  See definition of [stops.level_id](https://github.com/google/transit/blob/master/gtfs/spec/en/reference.md#stopstxt) in (CSV) GTFS. |
+| **platform_code** | [TranslatedString](#message-translatedstring) | Optional | One |  See definition of [stops.platform_code](https://github.com/google/transit/blob/master/gtfs/spec/en/reference.md#stopstxt) in (CSV) GTFS. |
+
+## _enum_ WheelchairBoarding
+
+**Values**
+
+| _**Value**_ | _**Comment**_ |
+|-------------|---------------|
+| **UNKNOWN** | No accessibility information for the stop. |
+| **AVAILABLE** |  Some vehicles at this stop can be boarded by a rider in a wheelchair. |
+| **NOT_AVAILABLE** | Wheelchair boarding is not possible at this stop. |
+
+## _message_ TripModifications
+
+A `TripModifications` message identifies a list of similar trips which are all affected by particular modifications, such as a detour.
+
+<br><br>**Caution:** this field is still **experimental**, and subject to change. It may be formally adopted in the future.
+ 
+[More about Trip Modifications...](trip-modifications.md)
+
+**Fields**
+
+| _**Field Name**_ | _**Type**_ | _**Required**_ | _**Cardinality**_ | _**Description**_ |
+|------------------|------------|----------------|-------------------|-------------------|
+| **selected_trips** | [SelectedTrips](#message-selectedtrips) | Required | Many | A list of selected trips affected by this TripModifications. Needs to contain at least one `SelectedTrips`. If the value `start_times` is set, a maximum of one `SelectedTrips` with one trip_id can be listed.  |
+| **start_times** | [string](https://protobuf.dev/programming-guides/proto2/#scalar) | Optional | Many | A list of start times in the real-time trip descriptor for the trip_id defined in trip_ids. Useful to target multiple departures of a trip_id in a frequency-based trip. |
+| **service_dates** | [string](https://protobuf.dev/programming-guides/proto2/#scalar) | Required | Many | Dates on which the modification occurs, in the YYYYMMDD format. A trip_id will only be modified if it runs on a given service date; the trip IS NOT required to run on all of the service dates. Producers SHOULD only transmit detours occurring within the next week. The dates provided should not be used as user-facing information, if a user-facing start and end date need to be provided, they can be provided in the linked service alert with `service_alert_id` |
+| **modifications** | [Modification](#message-modification) | Required | Many | A list of modifications to apply to the affected trips. |
+
+## _message_ Modification
+
+A `Modification` message describes changes to each affected trip starting at `start_stop_selector`.
+
+<br><br>**Caution:** this field is still **experimental**, and subject to change. It may be formally adopted in the future.
+
+![](images/trip_modification.png)
+_An example showing the effect of a modification on a particular trip. This modification may also be applied to several other trips._
+
+![](images/propagated_delay.png)
+_Propagated detour delays affect all stops following the end of a modification. If a trip has multiple modifications, the delays are accumulated._
+
+
+**Fields**
+
+| _**Field Name**_ | _**Type**_ | _**Required**_ | _**Cardinality**_ | _**Description**_ |
+|------------------|------------|----------------|-------------------|-------------------|
+| **start_stop_selector** | [StopSelector](#message-stopselector) | Required | One | The stop selector of the first stop of the original trip that is to be affected by this modification. Used in conjuction with `end_stop_selector`. `start_stop_selector` is required and is used to define the reference stop used with `travel_time_to_stop`. See [`travel_time_to_stop`](#message-replacementstop) for details |
+| **end_stop_selector** | [StopSelector](#message-stopselector) | Conditionally required | One | The stop selector of the last stop of the original trip that is to be affected by this modification. The selection is inclusive, so if only one stop_time is replaced by that modification, `start_stop_selector` and `end_stop_selector` must be equivalent. If no stop_time is replaced, `end_stop_selector` must not be provided. It's otherwise required.  |
+| **propagated_modification_delay** | [int32](https://protobuf.dev/programming-guides/proto2/#scalar) | Optional | One | The number of seconds of delay to add to all departure and arrival times subsequent to the last stop inserted by a modification. If a modification affects only the shape (i.e. neither `end_stop_selector` nor `replacement_stops` are provided), then the delay propagation begins at the subsequent stop after `start_stop_selector`. Can be a positive or negative number. If multiple modifications apply to the same trip, the delays accumulate as the trip advances. <br/><br/>If the value is not supplied, consumers MAY interpolate or infer the `propagated_modification_delay` based on other data.  |
+| **replacement_stops** | [ReplacementStop](#message-replacementstop) | Optional | Many | A list of replacement stops, replacing those of the original trip. The length of the new stop times may be less, the same, or greater than the number of replaced stop times. |
+| **service_alert_id** | [string](https://protobuf.dev/programming-guides/proto2/#scalar) | Optional | One | An `id` value from the `FeedEntity` message that contains the `Alert` describing this Modification for user-facing communication. |
+| **last_modified_time** | [uint64](https://protobuf.dev/programming-guides/proto2/#scalar) | Optional | One | This timestamp identifies the moment when the modification has last been changed. In POSIX time (i.e., number of seconds since January 1st 1970 00:00:00 UTC). |
+
+## _message_ StopSelector
+
+Selector for a stop. Either by `stop_id` or `stop_sequence`. At least one of the two values must be provided. 
+
+<br><br>**Caution:** this field is still **experimental**, and subject to change. It may be formally adopted in the future.
+
+**Fields**
+
+| _**Field Name**_ | _**Type**_ | _**Required**_ | _**Cardinality**_ | _**Description**_ |
+|------------------|------------|----------------|-------------------|-------------------|
+| **stop_sequence** | [uint32](https://protobuf.dev/programming-guides/proto2/#scalar) | Conditionally Required | One |  Must be the same as in stop_times.txt in the corresponding GTFS feed.  Either `stop_sequence` or `stop_id` must be provided within a `StopSelector` - both fields cannot be empty.  `stop_sequence` is required for trips that visit the same stop_id more than once (e.g., a loop) to disambiguate which stop the prediction is for.  |
+| **stop_id** | [string](https://protobuf.dev/programming-guides/proto2/#scalar) | Conditionally Required | One | Must be the same as in stops.txt in the corresponding GTFS feed. Either `stop_sequence` or `stop_id` must be provided within a `StopSelector` - both fields cannot be empty. |
+
+## _message_ SelectedTrips
+
+List of selected trips with an associated shape.
+
+<br><br>**Caution:** this field is still **experimental**, and subject to change. It may be formally adopted in the future.
+
+**Fields**
+
+| _**Field Name**_ | _**Type**_ | _**Required**_ | _**Cardinality**_ | _**Description**_ |
+|------------------|------------|----------------|-------------------|-------------------|
+| **trip_ids** | [uint32](https://protobuf.dev/programming-guides/proto2/#scalar) | Many | One | A list of trip_id from the original (CSV) GTFS that are affected by the containing replacement. Need to contain at least one trip_id.  |
+| **shape_id** | [string](https://protobuf.dev/programming-guides/proto2/#scalar) | Required | One | The ID of the new shape for the modified trips in this SelectedTrips. May refer to a new shape added using a GTFS-RT Shape message, or to an existing shape defined in the GTFS-Static feed’s shapes.txt. |
+
+## _message_ ReplacementStop
+
+Each `ReplacementStop` message defines a stop that will now be visited by the trip, and optionally specifies the estimated travel time to the stop. 
+
+<br><br>**Caution:** this field is still **experimental**, and subject to change. It may be formally adopted in the future.
+
+![](images/first_stop_reference.png)
+_If a modification affects the first stop of the trip, that stop also serves as the reference stop of the modification._
+
+
+**Fields**
+
+| _**Field Name**_ | _**Type**_ | _**Required**_ | _**Cardinality**_ | _**Description**_ |
+|------------------|------------|----------------|-------------------|-------------------|
+| **stop_id** | [string](https://protobuf.dev/programming-guides/proto2/#scalar) | Required | One | The replacement stop ID which will now be visited by the trip. May refer to a new stop added using a GTFS-RT `Stop` message, or to an existing stop defined in the (CSV) GTFS feed’s `stops.txt`. The stop MUST have `location_type=0` (routable stops). |
+| **travel_time_to_stop** | [int32](https://protobuf.dev/programming-guides/proto2/#scalar) | Optional | One | The difference in seconds between the arrival time at this stop and the arrival time at the reference stop. The reference stop is the stop prior to `start_stop_selector`. If the modification begins at the first stop of the trip, then the first stop of the trip is the reference stop. <br/><br/>This value MUST be monotonically increasing and may only be a negative number if the first stop of the original trip is the reference stop. <br/><br/>If the value is not supplied, consumers MAY interpolate or infer the `travel_time_to_stop` based on other data. |
