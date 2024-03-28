@@ -450,7 +450,7 @@ To process the cost of a leg:
 4. If the `rule_priority` field exists, then
     - An empty entry in `fare_leg_rules.network_id` indicates the network of the leg does not affect the matching of this rule.
     - An empty entry in `fare_leg_rules.from_area_id` indicates the departure area of the leg does not affect the matching of this rule.
-    - An empty entry in `fare_leg_rules.to_area_id` indicates the avviral area of the leg does not affect the matching of this rule.
+    - An empty entry in `fare_leg_rules.to_area_id` indicates the arrival area of the leg does not affect the matching of this rule.
 <br/>
       
 5. If the leg does not match any of the rules described above, then the fare is unknown.
