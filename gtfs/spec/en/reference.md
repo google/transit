@@ -60,6 +60,8 @@ This section defines terms that are used throughout this document.
 * **Journey** - Overall travel from origin to destination, including all legs and transfers in-between.
 * **Sub-journey** - Two or more legs that comprise a subset of a journey.
 * **Fare product** - Purchassable fare products that can be used to pay for or validate travel.
+* **Effective Fare Leg** - A sub-journey of two or more legs that should be treated as a single leg for the purposes of matching against rules in [fare_leg_rules.txt](#fare_leg_rulestxt) for the purposes of fare calculation.
+
 
 ### Presence
 Presence conditions applicable to fields and files:
