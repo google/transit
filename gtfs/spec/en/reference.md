@@ -24,6 +24,7 @@ This document defines the format and structure of the files that comprise a GTFS
     -   [fare\_media.txt](#fare_mediatxt)
     -   [fare\_products.txt](#fare_productstxt) 
     -   [fare\_leg\_rules.txt](#fare_leg_rulestxt)
+    -   [fare_leg_join_rules.txt](#fare_leg_join_rulestxt)
     -   [fare\_transfer\_rules.txt](#fare_transfer_rulestxt)
     -   [areas.txt](#areastxt)
     -   [stop_areas.txt](#stop_areastxt)
@@ -125,6 +126,7 @@ This specification defines the following files:
 |  [fare_media.txt](#fare_mediatxt)  | Optional | To describe the fare media that can be employed to use fare products. <br><br>File [fare_media.txt](#fare_mediatxt) describes concepts that are not represented in [fare_attributes.txt](#fare_attributestxt) and [fare_rules.txt](#fare_rulestxt). As such, the use of [fare_media.txt](#fare_mediatxt) is entirely separate from files [fare_attributes.txt](#fare_attributestxt) and [fare_rules.txt](#fare_rulestxt). |
 |  [fare_products.txt](#fare_productstxt)  | Optional | To describe the different types of tickets or fares that can be purchased by riders.<br><br>File [fare_products.txt](#fare_productstxt) describes fare products that are not represented in [fare_attributes.txt](#fare_attributestxt) and [fare_rules.txt](#fare_rulestxt). As such, the use of [fare_products.txt](#fare_productstxt) is entirely separate from files [fare_attributes.txt](#fare_attributestxt) and [fare_rules.txt](#fare_rulestxt). |
 |  [fare_leg_rules.txt](#fare_leg_rulestxt)  | Optional | Fare rules for individual legs of travel.<br><br>File [fare_leg_rules.txt](#fare_leg_rulestxt) provides a more detailed method for modeling fare structures. As such, the use of [fare_leg_rules.txt](#fare_leg_rulestxt) is entirely separate from files [fare_attributes.txt](#fare_attributestxt) and [fare_rules.txt](#fare_rulestxt). |
+|  [fare_leg_join_rules.txt](#fare_leg_join_rulestxt)  | Optional | Rules for defining two or more legs should be considered as a single **effective fare leg** for the purposes of matching against rules in [fare_leg_rules.txt](#fare_leg_rulestxt)|
 |  [fare_transfer_rules.txt](#fare_transfer_rulestxt)  | Optional | Fare rules for transfers between legs of travel.<br><br>Along with [fare_leg_rules.txt](#fare_leg_rulestxt), file [fare_transfer_rules.txt](#fare_transfer_rulestxt) provides a more detailed method for modeling fare structures. As such, the use of [fare_transfer_rules.txt](#fare_transfer_rulestxt) is entirely separate from files [fare_attributes.txt](#fare_attributestxt) and [fare_rules.txt](#fare_rulestxt). |
 |  [areas.txt](#areastxt) | Optional | Area grouping of locations. |
 |  [stop_areas.txt](#stop_areastxt) | Optional | Rules to assign stops to areas. |
@@ -481,6 +483,22 @@ To process the cost of a leg:
 |  `from_timeframe_group_id` | Foreign ID referencing `timeframes.timeframe_group_id` | Optional |  Defines the timeframe for the fare validation event at the start of the fare leg.<br><br>The “start time” of the fare leg is the time at which the event is scheduled to occur.  For example, the time could be the scheduled departure time of a bus at the start of a fare leg where the rider boards and validates their fare. For the rule matching semantics below, the start time is computed in local time, as determined by [Local Time Semantics](#localtimesemantics) of [timeframes.txt](#timeframestxt).  The stop or station of the fare leg’s departure event should be used for timezone resolution, where appropriate.<br><br>For a fare leg rule that specifies a `from_timeframe_group_id`, that rule will match a particular leg if there exists at least one record in [timeframes.txt](#timeframestxt) where all of the following conditions are true<br>- The value of `timeframe_group_id` is equal to the `from_timeframe_group_id` value.<br>- The set of days identified by the record’s `service_id` contains the “current day” of the fare leg’s start time.<br>- The “time-of-day” of the fare leg's start time is greater than or equal to the record’s `timeframes.start_time` value and less than the `timeframes.end_time` value.<br><br>An empty `fare_leg_rules.from_timeframe_group_id` indicates that the start time of the leg does not affect the matching of this rule. |
 |  `to_timeframe_group_id` |  Foreign ID referencing `timeframes.timeframe_group_id` | Optional |  Defines the timeframe for the fare validation event at the end of the fare leg.<br><br>The “end time” of the fare leg is the time at which the event is scheduled to occur.  For example, the time could be the scheduled arrival time of a bus at the end of a fare leg where the rider gets off and validates their fare.  For the rule matching semantics below, the end time is computed in local time, as determined by [Local Time Semantics](#localtimesemantics) of [timeframes.txt](#timeframestxt).  The stop or station of the fare leg’s arrival event should be used for timezone resolution, where appropriate.<br><br>For a fare leg rule that specifies a `to_timeframe_group_id`, that rule will match a particular leg if there exists at least one record in [timeframes.txt](#timeframestxt) where all of the following conditions are true<br>- The value of `timeframe_group_id` is equal to the `to_timeframe_group_id` value.<br>- The set of days identified by the record’s `service_id` contains the “current day” of the fare leg’s end time.<br>- The “time-of-day” of the fare leg's end time is greater than or equal to the record’s `timeframes.start_time` value and less than the `timeframes.end_time` value.<br><br>An empty `fare_leg_rules.to_timeframe_group_id` indicates that the end time of the leg does not affect the matching of this rule. |
 | `fare_product_id` | Foreign ID referencing `fare_products.fare_product_id` | **Required** | The fare product required to travel the leg. |
+
+### fare_leg_join_rules.txt
+
+File: **Optional**
+
+Primary Key (`from_network_id, to_network_id`)
+
+For a sub-journey of two consecutive legs with a transfer, if the transfer matches all matching predicates specified by a particular row in the file, then those two legs should be considered as a single **effective fare leg** for the purposes of matching against rules in [`fare_leg_rules.txt`](#fare_leg_rulestxt).
+- The last station of the pre-transfer leg and the first station of the post-transfer leg must be the same for the row.
+- If a matching predicate field value is blank or unspecified for a particular row in the file, then that field should be ignored for the purposes of matching.
+- When a sub-journey contains consecutive transfers that each match a join rule, then the entire sub-journey should be considered as a single **effective fare leg**.
+
+|  Field Name | Type | Presence | Description |
+|  ------ | ------ | ------ | ------ |
+| `from_network_id` | Foreign ID referencing `routes.network_id` or `networks.network_id`| **Required** | Matches a pre-transfer leg that uses the specified route network.  If specified, the same `to_network_id` must also be specified. |
+| `to_network_id` | Foreign ID referencing `routes.network_id` or `networks.network_id`| **Required** | Matches a post-transfer leg that uses the specified route network.  If specified, the same `from_network_id` must also be specified. |
 
 ### fare_transfer_rules.txt
 
