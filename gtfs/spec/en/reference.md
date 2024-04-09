@@ -407,7 +407,7 @@ File: **Optional**
 
 Primary Key (`fare_product_id`, `fare_media_id`)
 
-To describe the different types of tickets or fares, including those directly purchasable by riders and integral virtual entities like transfer costs.
+Used to describe the range of fares available for purchase by riders or taken into account when computing the total fare for journeys with multiple segments, such as transfer costs.
 
 |  Field Name | Type | Presence | Description |
 |  ------ | ------ | ------ | ------ |
