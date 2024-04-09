@@ -407,7 +407,7 @@ File: **Optional**
 
 Primary Key (`fare_product_id`, `fare_media_id`)
 
-Used to describe the range of fares available for purchase by riders or taken into account when computing the total fare for journeys with multiple segments, such as transfer costs.
+Used to describe the range of fares available for purchase by riders or taken into account when computing the total fare for journeys with multiple legs, such as transfer costs.
 
 |  Field Name | Type | Presence | Description |
 |  ------ | ------ | ------ | ------ |
