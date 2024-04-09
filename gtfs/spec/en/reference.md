@@ -411,7 +411,9 @@ Used to describe the range of fares available for purchase by riders or taken in
 
 |  Field Name | Type | Presence | Description |
 |  ------ | ------ | ------ | ------ |
-| `fare_product_id` | ID | **Required** | Identifies a fare product.<br><br>Multiple records in [fare_products.txt](#fare_productstxt) may share the same `fare_product_id`, in which case all records with that ID will be applied when referenced from another file. These multiple records may possess the same `fare_product_id` but with different `fare_media_id`, indicating different methods for purchasing and validating the same fare product. Based on these different methods, there may also be varying values in all non-primary-key fields, such as representing different fare product names and costs. |
+| `fare_product_id` | ID | **Required** | Identifies a fare product or set of fare products.<br><br>Multiple records in [fare_products.txt](#fare_productstxt) may share the same `fare_product_id`, in which case all records with that ID will be retrieved when referenced from another file. 
+Multiple records may share the same `fare_product_id` but with different `fare_media_id`s, indicating various methods available for employing the fare product, potentially at different prices. 
+|
 | `fare_product_name` | Text | Optional | The name of the fare product as displayed to riders. |
 |  `fare_media_id` | Foreign ID referencing `fare_media.fare_media_id` | Optional |  Identifies a fare media that can be employed to use the fare product during the trip. When `fare_media_id` is empty, it is considered that the fare media is unknown.|
 | `amount` | Currency amount | **Required** | The cost of the fare product. May be negative to represent transfer discounts. May be zero to represent a fare product that is free. |
