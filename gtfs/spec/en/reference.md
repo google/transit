@@ -737,6 +737,7 @@ Assigns stops from stops.txt to location groups.
 File: **Optional**
 
 Defines zones where riders can request either pickup or drop off by on-demand services. These zones are represented as GeoJSON polygons.
+
 - This file uses a subset of the GeoJSON format, described in [RFC 7946](https://tools.ietf.org/html/rfc7946).
 - The `locations.geojson` file must contain a `FeatureCollection`.
 - A `FeatureCollection` defines various stop locations where riders may request pickup or drop off.
