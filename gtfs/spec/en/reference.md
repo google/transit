@@ -303,8 +303,8 @@ Primary key (`trip_id`, `stop_sequence`)
 | `drop_off_booking_rule_id` | ID referencing `booking_rules.booking_rule_id` | Optional | Identifies the alighting booking rule at this stop time.<br><br>Recommended when `drop_off_type=2`. |
 
 #### On-demand Service Routing Behavior
-- When providing routing or travel time between the origin and destination, data consumers should ignore intermediate stop_times.txt records with the same `trip_id` that have `start_pickup_drop_off_window` and `end_pickup_drop_off_window` defined. For examples that demonstrate what should be ignored, see the data example page.
-- Simultaneous overlap of locations.geojson `id` geometry, `start/end_pickup_drop_off_window` time, and `pickup_type` or `drop_off_type` between two or more stop_times.txt records with the same `trip_id` is forbidden. For examples that demonstrate what is forbidden, see the data example page.
+- When providing routing or travel time between the origin and destination, data consumers should ignore intermediate stop_times.txt records with the same `trip_id` that have `start_pickup_drop_off_window` and `end_pickup_drop_off_window` defined. For examples that demonstrate what should be ignored, see [the data example page](https://gtfs.org/schedule/examples/flex/#ignoring-intermediate-stop-times-records-with-pickupdrop-off-windows).
+- Simultaneous overlap of locations.geojson `id` geometry, `start/end_pickup_drop_off_window` time, and `pickup_type` or `drop_off_type` between two or more stop_times.txt records with the same `trip_id` is forbidden. For examples that demonstrate what is forbidden, see [the data example page](https://gtfs.org/schedule/examples/flex/#zone-overlap-constraint).
 
 ### calendar.txt
 
