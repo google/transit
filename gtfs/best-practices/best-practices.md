@@ -233,10 +233,13 @@ Working Group members voted on each Best Practice. Most Best Practices were appr
 
 Some GTFS Best Practices have been merged into the spec and have been removed from this document.
 
-### Why not just change the GTFS reference?
+### Why not change the GTFS Reference directly?
 
-Good question! The process of examining the Specification, data usage and needs did indeed trigger some changes to the Specification. Since then, certain Best Practices have been merged into the spec based on their level of adoption and community consensus. 
-Eventually, the GTFS Best Practices will become part of the core GTFS Reference. To contribute to this effort, please go to the [GTFS Reference GitHub repository](https://github.com/google/transit/), or contact [specifications@mobilitydata.org](mailto:specifications@mobilitydata.org).
+Good question! 
+The process of examining the Specification, data usage and needs did indeed trigger some changes to the Specification. 
+The Best Practices were created to bring everyone's understanding of the spec into harmony with the intention for some to be added into the spec and undergo the larger governance process, and others to be moved into a "how-to" guide. 
+Since then, some Best Practices have been added into the spec based on their level of adoption and community consensus. 
+To contribute to this effort, please go to the [GTFS Reference GitHub repository](https://github.com/google/transit/), or contact [specifications@mobilitydata.org](mailto:specifications@mobilitydata.org).
 
 ### How to check for conformance with these Best Practices?
 
@@ -251,9 +254,9 @@ Refer your vendor or software service provider to these Best Practices. We recom
 
 Identify the contact for the feed, using the `feed_contact_email` or `feed_contact_url` fields in [feed_info.txt](https://gtfs.org/schedule/reference/#feed_infotxt) if they are provided, or looking up contact information on the transit agency or feed producer website. When communicating the issue to the feed producer, link to the specific GTFS Best Practice that isn't being followed using this document (See ["Linking to this Document"](#linking-to-this-document)) or [the appropriate warning](https://gtfs-validator.mobilitydata.org/rules.html#WARNING-table) in the Canonical GTFS Schedule Validator if available.
 
-### How can I get involved?
-
-Email [specifications@mobilitydata.org](mailto:specifications@mobilitydata.org).
+### How to propose or amend published GTFS Best Practices
+New Best Practices are now being added directly into the [spec](https://gtfs.org/schedule/reference/) in order to gradually consolidate both documents. 
+If you'd like to suggest a new best practice, please go to the [GTFS Reference GitHub repository](https://github.com/google/transit/), [open an issue](https://github.com/google/transit/issues/new/choose) or create a Pull Request, or contact [specifications@mobilitydata.org](mailto:specifications@mobilitydata.org).
 
 ## About This Document
 
@@ -265,10 +268,6 @@ The objectives of maintaining GTFS Best Practices is to:
 * Improve end-user customer experience in public transportation apps
 * Make it easier for software developers to deploy and scale applications, products, and services
 * Facilitate the use of GTFS in various application categories (beyond its original focus on trip planning)
-
-### How to propose or amend published GTFS Best Practices
-
-The Best Practices are in the process of being merged into the spec. If you'd like to suggest a new best practice, please go to the [GTFS Reference GitHub repository](https://github.com/google/transit/) to open an issue or create a PR, or contact [specifications@mobilitydata.org](mailto:specifications@mobilitydata.org).
 
 ### Linking to This Document
 
