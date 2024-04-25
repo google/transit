@@ -254,7 +254,8 @@ Refer your vendor or software service provider to these Best Practices. We recom
 
 Identify the contact for the feed, using the `feed_contact_email` or `feed_contact_url` fields in [feed_info.txt](https://gtfs.org/schedule/reference/#feed_infotxt) if they are provided, or looking up contact information on the transit agency or feed producer website. When communicating the issue to the feed producer, link to the specific GTFS Best Practice that isn't being followed using this document (See ["Linking to this Document"](#linking-to-this-document)) or [the appropriate warning](https://gtfs-validator.mobilitydata.org/rules.html#WARNING-table) in the Canonical GTFS Schedule Validator if available.
 
-### How to propose or amend published GTFS Best Practices
+### How to propose new Best Practices?
+
 New Best Practices are now being added directly into the [spec](https://gtfs.org/schedule/reference/) in order to gradually consolidate both documents. 
 If you'd like to suggest a new best practice, please go to the [GTFS Reference GitHub repository](https://github.com/google/transit/), [open an issue](https://github.com/google/transit/issues/new/choose) or create a Pull Request, or contact [specifications@mobilitydata.org](mailto:specifications@mobilitydata.org).
 
@@ -262,7 +263,7 @@ If you'd like to suggest a new best practice, please go to the [GTFS Reference G
 
 ### Objectives
 
-The objectives of maintaining GTFS Best Practices is to:
+The objectives of these GTFS Best Practices are:
 
 * Support greater interoperability of transit data
 * Improve end-user customer experience in public transportation apps
