@@ -737,6 +737,7 @@ Assigns stops from stops.txt to location groups.
 File: **Optional**
 
 Defines zones where riders can request either pickup or drop off by on-demand services. These zones are represented as GeoJSON polygons.
+
 - This file uses a subset of the GeoJSON format, described in [RFC 7946](https://tools.ietf.org/html/rfc7946).
 - The `locations.geojson` file must contain a `FeatureCollection`.
 - A `FeatureCollection` defines various stop locations where riders may request pickup or drop off.
@@ -766,7 +767,7 @@ Defines the booking rules for rider-requested services
 
 |  Field Name | Type | Presence | Description |
 |  ------ | ------ | ------ | ------ |
-| `booking_rule_id` | ID | **Required** | Identifies the rule. |
+| `booking_rule_id` | Unique ID | **Required** | Identifies a rule. |
 | `booking_type` | Enum | **Required** | Indicates how far in advance booking can be made. Valid options are:<br><br>`0` - Real time booking.<br>`1` - Up to same-day booking with advance notice.<br>`2` - Up to prior day(s) booking. |
 | `prior_notice_duration_min` | Integer | **Conditionally Required** | Minimum number of minutes before travel to make the request.<br><br>**Conditionally Required**:<br>- **Required** for `booking_type=1`.<br>- **Forbidden** otherwise. |
 | `prior_notice_duration_max` | Integer | **Conditionally Forbidden** | Maximum number of minutes before travel to make the booking request.<br><br>**Conditionally Forbidden**:<br>- **Forbidden** for `booking_type=0` and `booking_type=2`.<br>- Optional for `booking_type=1`.|
