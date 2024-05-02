@@ -713,7 +713,7 @@ Primary key (`location_group_id`)
 
 Defines location groups, which are groups of stops where a rider may request pickup or drop off.
 
-| Field Name | Type | Required | Description |
+| Field Name | Type | Presence | Description |
 | ---------- | ---- | ------------ | ----------- |
 | `location_group_id` | Unique ID | **Required** | Identifies a location group. ID must be unique across all `stops.stop_id`, locations.geojson `id`, and `location_groups.location_group_id` values. <br><br>A location group is a group of stops that together indicate locations where a rider may request pickup or drop off. | 
 | `location_group_name` | Text | Optional | The name of the location group as displayed to the rider. |
@@ -726,7 +726,7 @@ Primary key (`*`)
 
 Assigns stops from stops.txt to location groups.
 
-| Field Name | Type | Required | Description |
+| Field Name | Type | Presence | Description |
 | ---------- | ---- | ------------ | ----------- |
 | `location_group_id` | Foreign ID referencing `location_groups.location_group_id` | **Required** | Identifies a location group to which one or multiple `stop_id`s belong. The same `stop_id` may be defined in many `location_group_id`s. | 
 | `stop_id` | Foreign ID referencing `stops.stop_id` | **Required** | Identifies a stop belonging to the location group. |
