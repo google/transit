@@ -410,7 +410,7 @@ There must not be overlapping time intervals for the same `timeframe_group_id` a
 
 File: **Optional** 
 
-Primary Key (`fare_media_id`)
+Primary key (`fare_media_id`)
 
 To describe the different fare media that can be employed to use fare products. Fare media are physical or virtual holders used for the representation and/or validation of a fare product.
 
@@ -424,7 +424,7 @@ To describe the different fare media that can be employed to use fare products. 
 
 File: **Optional**
 
-Primary Key (`fare_product_id`, `fare_media_id`)
+Primary key (`fare_product_id`, `fare_media_id`)
 
 Used to describe the range of fares available for purchase by riders or taken into account when computing the total fare for journeys with multiple legs, such as transfer costs.
 
@@ -441,7 +441,7 @@ Used to describe the range of fares available for purchase by riders or taken in
 
 File: **Optional**
 
-Primary Key (`network_id, from_area_id, to_area_id, from_timeframe_group_id, to_timeframe_group_id, fare_product_id`)
+Primary key (`network_id, from_area_id, to_area_id, from_timeframe_group_id, to_timeframe_group_id, fare_product_id`)
 
 Fare rules for individual legs of travel.
 
@@ -484,7 +484,7 @@ To process the cost of a leg:
 
 File: **Optional**
 
-Primary Key (`from_leg_group_id, to_leg_group_id, fare_product_id, transfer_count, duration_limit`)
+Primary key (`from_leg_group_id, to_leg_group_id, fare_product_id, transfer_count, duration_limit`)
 
 Fare rules for transfers between legs of travel defined in [`fare_leg_rules.txt`](#fare_leg_rulestxt).
 
