@@ -389,7 +389,7 @@ For examples that demonstrate how to specify a fare structure with [fare_rules.t
 
 File: **Optional**
 
-Primary key (*)
+Primary key (`*`)
 
 Used to describe fares that can vary based on the time of day, the day of the week, or a particular day in the year. Timeframes can be associated with fare products in [fare_leg_rules.txt](#fare_leg_rulestxt). <br>
 There must not be overlapping time intervals for the same `timeframe_group_id` and `service_id` values.
