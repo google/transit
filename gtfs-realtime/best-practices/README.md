@@ -1,6 +1,6 @@
-# GTFS Schedule Best Practices
+# GTFS Realtime Best Practices
 
-These are recommended practices for describing real-time public transportation services in the [GTFS Realtime] Reference (../spec/en/reference.md) format. These complement the explicit recommendations outlined in the GTFS Realtime Reference using the terms “recommend” or “should”. Although not mandatory, following these best practices can significantly improve the quality of the data and the overall experience for riders.
+These are recommended practices for describing real-time public transportation services in the [GTFS Realtime](../spec/en/reference.md) Reference format. These complement the explicit recommendations outlined in the GTFS Realtime Reference using the terms “recommend” or “should”. Although not mandatory, following these best practices can significantly improve the quality of the data and the overall experience for riders.
 These practices have been synthesized from the experience of the [GTFS Best Practices working group members](https://gtfs.org/schedule/best-practices/#gtfs-best-practices-working-group) and application-specific GTFS practice recommendations. See the [FAQ](https://gtfs.org/schedule/best-practices/#frequently-asked-questions-faq) for more information.
 
 ⚠️ **NOTE: The Best Practices are in the process of being merged into the [spec](../spec/).
