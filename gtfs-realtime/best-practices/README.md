@@ -8,7 +8,7 @@ These practices have been synthesized from the experience of the [GTFS Best Prac
 **New Best Practices will be added directly to the GTFS Realtime Reference. If you'd like to suggest a new Best practice, you can:**
 - **look at the existing [list of outstanding issues and PRs](https://github.com/google/transit/issues/421). If your new Best Practice idea is referenced on this list, comment on the issue**
 - **[open a new issue](https://github.com/google/transit/issues/new/choose)**
-- **open a Pull Request following the [Spec Amendment Process](https://gtfs.org/realtime/process/).**
+- **open a Pull Request following the [GTFS Realtime Amendment Process](https://gtfs.org/realtime/process/).**
 ---
 
 ## Documentation Structure
