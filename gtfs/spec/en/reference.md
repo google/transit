@@ -285,7 +285,7 @@ Primary key (`trip_id`, `stop_sequence`)
 |  ------ | ------ | ------ | ------ |
 |  `trip_id` | Foreign ID referencing `trips.trip_id` | **Required** | Identifies a trip.  |
 |  `arrival_time` | Time | **Conditionally Required** | Arrival time at the stop (defined by `stop_times.stop_id`) for a specific trip (defined by `stop_times.trip_id`) in the time zone specified by `agency.agency_timezone`, not `stops.stop_timezone`. <br><br>If there are not separate times for arrival and departure at a stop, `arrival_time` and `departure_time` should be the same. <br><br>For times occurring after midnight on the service day, enter the time as a value greater than 24:00:00 in HH:MM:SS.<br><br> If exact arrival and departure times (`timepoint=1` or empty) are not available, estimated or interpolated arrival and departure times (`timepoint=0`) should be provided.<br><br>Conditionally Required:<br>- **Required** for the first and last stop in a trip (defined by `stop_times.stop_sequence`). <br>- **Required** for `timepoint=1`.<br>-&nbsp;**Forbidden** when `start_pickup_drop_off_window` or `end_pickup_drop_off_window` are defined.<br>- Optional otherwise.|
-|  `departure_time` | Time | **Conditionally Required** | Departure time from the stop (defined by `stop_times.stop_id`) for a specific trip (defined by `stop_times.trip_id`) in the time zone specified by `agency.agency_timezone`, not `stops.stop_timezone`.<br><br>If there are not separate times for arrival and departure at a stop, `arrival_time` and `departure_time` should be the same. <br><br>For times occurring after midnight on the service day, enter the time as a value greater than 24:00:00 in HH:MM:SS.<br><br> If exact arrival and departure times (`timepoint=1` or empty) are not available, estimated or interpolated arrival and departure times (`timepoint=0`) should be provided.<br><br>Conditionally Required:<br>- **Required** for `timepoint=1`.<br>-&nbsp;**Forbidden** when `start_pickup_drop_off_window` or `end_pickup_drop_off_window` are defined.<br>- Optional otherwise.| |
+|  `departure_time` | Time | **Conditionally Required** | Departure time from the stop (defined by `stop_times.stop_id`) for a specific trip (defined by `stop_times.trip_id`) in the time zone specified by `agency.agency_timezone`, not `stops.stop_timezone`.<br><br>If there are not separate times for arrival and departure at a stop, `arrival_time` and `departure_time` should be the same. <br><br>For times occurring after midnight on the service day, enter the time as a value greater than 24:00:00 in HH:MM:SS.<br><br> If exact arrival and departure times (`timepoint=1` or empty) are not available, estimated or interpolated arrival and departure times (`timepoint=0`) should be provided.<br><br>Conditionally Required:<br>- **Required** for `timepoint=1`.<br>-&nbsp;**Forbidden** when `start_pickup_drop_off_window` or `end_pickup_drop_off_window` are defined.<br>- Optional otherwise. |
 |  `stop_id` | Foreign ID referencing `stops.stop_id` | **Conditionally Required** | Identifies the serviced stop. All stops serviced during a trip must have a record in [stop_times.txt](#stop_timestxt). Referenced locations must be stops/platforms, i.e. their `stops.location_type` value must be `0` or empty. A stop may be serviced multiple times in the same trip, and multiple trips and routes may service the same stop.<br><br>On-demand service using stops should be referenced in the sequence in which service is available at those stops. A data consumer should assume that travel is possible from one stop or location to any stop or location later in the trip, provided that the `pickup/drop_off_type` of each stop_time and the time constraints of each `start/end_pickup_drop_off_window` do not forbid it.<br><br>Conditionally Required:<br>- **Required** if `stop_times.location_group_id` AND `stop_times.location_id` are NOT defined.<br>- **Forbidden** if `stop_times.location_group_id` or `stop_times.location_id` are defined. |
 |  `location_group_id` | Foreign ID referencing `location_groups.location_group_id` | **Conditionally Forbidden** | Identifies the serviced location group that indicates groups of stops where riders may request pickup or drop off. All location groups serviced during a trip must have a record in [stop_times.txt](#stop_timestxt). Multiple trips and routes may service the same location group.<br><br>On-demand service using location groups should be referenced in the sequence in which service is available at those location groups. A data consumer should assume that travel is possible from one stop or location to any stop or location later in the trip, provided that the `pickup/drop_off_type` of each stop_time and the time constraints of each `start/end_pickup_drop_off_window` do not forbid it.<br><br>**Conditionally Forbidden**:<br>- **Forbidden** if `stop_times.stop_id` or `stop_times.location_id` are defined. |
 |  `location_id` | Foreign ID referencing `id` from `locations.geojson` | **Conditionally Forbidden** | Identifies the GeoJSON location that corresponds to serviced zone where riders may request pickup or drop off. All GeoJSON locations serviced during a trip must have a record in [stop_times.txt](#stop_timestxt). Multiple trips and routes may service the same GeoJSON location.<br><br>On-demand service within locations should be referenced in the sequence in which service is available in those locations. A data consumer should assume that travel is possible from one stop or location to any stop or location later in the trip, provided that the `pickup/drop_off_type` of each stop_time and the time constraints of each `start/end_pickup_drop_off_window` do not forbid it.<br><br>**Conditionally Forbidden**:<br>- **Forbidden** if `stop_times.stop_id` or `stop_times.location_group_id` are defined. |
@@ -389,7 +389,7 @@ For examples that demonstrate how to specify a fare structure with [fare_rules.t
 
 File: **Optional**
 
-Primary key (*)
+Primary key (`*`)
 
 Used to describe fares that can vary based on the time of day, the day of the week, or a particular day in the year. Timeframes can be associated with fare products in [fare_leg_rules.txt](#fare_leg_rulestxt). <br>
 There must not be overlapping time intervals for the same `timeframe_group_id` and `service_id` values.
@@ -410,7 +410,7 @@ There must not be overlapping time intervals for the same `timeframe_group_id` a
 
 File: **Optional** 
 
-Primary Key (`fare_media_id`)
+Primary key (`fare_media_id`)
 
 To describe the different fare media that can be employed to use fare products. Fare media are physical or virtual holders used for the representation and/or validation of a fare product.
 
@@ -424,7 +424,7 @@ To describe the different fare media that can be employed to use fare products. 
 
 File: **Optional**
 
-Primary Key (`fare_product_id`, `fare_media_id`)
+Primary key (`fare_product_id`, `fare_media_id`)
 
 Used to describe the range of fares available for purchase by riders or taken into account when computing the total fare for journeys with multiple legs, such as transfer costs.
 
@@ -441,7 +441,7 @@ Used to describe the range of fares available for purchase by riders or taken in
 
 File: **Optional**
 
-Primary Key (`network_id, from_area_id, to_area_id, from_timeframe_group_id, to_timeframe_group_id, fare_product_id`)
+Primary key (`network_id, from_area_id, to_area_id, from_timeframe_group_id, to_timeframe_group_id, fare_product_id`)
 
 Fare rules for individual legs of travel.
 
@@ -484,7 +484,7 @@ To process the cost of a leg:
 
 File: **Optional**
 
-Primary Key (`from_leg_group_id, to_leg_group_id, fare_product_id, transfer_count, duration_limit`)
+Primary key (`from_leg_group_id, to_leg_group_id, fare_product_id, transfer_count, duration_limit`)
 
 Fare rules for transfers between legs of travel defined in [`fare_leg_rules.txt`](#fare_leg_rulestxt).
 
@@ -713,7 +713,7 @@ Primary key (`location_group_id`)
 
 Defines location groups, which are groups of stops where a rider may request pickup or drop off.
 
-| Field Name | Type | Required | Description |
+| Field Name | Type | Presence | Description |
 | ---------- | ---- | ------------ | ----------- |
 | `location_group_id` | Unique ID | **Required** | Identifies a location group. ID must be unique across all `stops.stop_id`, locations.geojson `id`, and `location_groups.location_group_id` values. <br><br>A location group is a group of stops that together indicate locations where a rider may request pickup or drop off. | 
 | `location_group_name` | Text | Optional | The name of the location group as displayed to the rider. |
@@ -726,7 +726,7 @@ Primary key (`*`)
 
 Assigns stops from stops.txt to location groups.
 
-| Field Name | Type | Required | Description |
+| Field Name | Type | Presence | Description |
 | ---------- | ---- | ------------ | ----------- |
 | `location_group_id` | Foreign ID referencing `location_groups.location_group_id` | **Required** | Identifies a location group to which one or multiple `stop_id`s belong. The same `stop_id` may be defined in many `location_group_id`s. | 
 | `stop_id` | Foreign ID referencing `stops.stop_id` | **Required** | Identifies a stop belonging to the location group. |
