@@ -138,7 +138,7 @@ This specification defines the following files:
 |  [locations.geojson](#locationsgeojson)  | Optional | Zones for rider pickup or drop-off requests by on-demand services, represented as GeoJSON polygons. |
 |  [booking_rules.txt](#booking_rulestxt)  | Optional | Booking information for rider-requested services. |
 |  [translations.txt](#translationstxt)  | Optional | Translations of customer-facing dataset values. |
-|  [feed_info.txt](#feed_infotxt)  | **Conditionally Required** | Dataset metadata, including publisher, version, and expiration information.<br><br>Conditionally Required:<br>- **Required** if [translations.txt](#translationstxt) is provided.<br>- **Recommended** otherwise.|
+|  [feed_info.txt](#feed_infotxt)  | **Conditionally Required** | Dataset metadata, including publisher, version, and expiration information.<br><br>Conditionally Required:<br>- **Required** if [translations.txt](#translationstxt) is provided.<br>- Recommended otherwise.|
 |  [attributions.txt](#attributionstxt)  | Optional | Dataset attributions. |
 
 ## File Requirements
