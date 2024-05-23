@@ -1,0 +1,21 @@
+name: Question
+description: Ask a question or raise a problem without a proposed solution.
+labels: ['question']
+
+body:
+  - type: markdown
+    attributes:
+      value: >
+        #### Before submitting a question, please make sure there isn't an already [existing issue for it](https://github.com/google/transit/issues?q=+is%3Aissue+label%3Aquestion+).
+  - type: textarea
+    attributes:
+      label: Introduce yourself
+      description: >
+        If you are new to the specification, please introduce yourself (name and organization/link to your GTFS feed)!
+    validations:
+      required: false
+  - type: textarea
+    attributes:
+      label: Ask a question
+    validations:
+      required: true
