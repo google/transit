@@ -54,7 +54,11 @@ Every new feature adds complexity to the creation and reading of feeds. Therefor
 ### Revision History
 
 #### May 2024
-* Added `rule_priority` field in `fare_leg_rules.txt`
+* Added `rule_priority` field in `fare_leg_rules.txt`. See [discussion](https://github.com/google/transit/pull/418).
+* Clarify presence of `stops.zone_id`. See [discussion](https://github.com/google/transit/pull/432).
+
+#### April 2024
+* Clarify fare product definition. See [discussion](https://github.com/google/transit/pull/426). 
 
 #### March 2024
 * Added GTFS Flex. See [discussion](https://github.com/google/transit/pull/433).
