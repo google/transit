@@ -53,6 +53,9 @@ Every new feature adds complexity to the creation and reading of feeds. Therefor
 
 ### Revision History
 
+#### May 2024
+* Added `rule_priority` field in `fare_leg_rules.txt`
+
 #### March 2024
 * Added GTFS Flex. See [discussion](https://github.com/google/transit/pull/433).
 
