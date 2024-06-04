@@ -111,7 +111,7 @@ This specification defines the following files:
 |  File Name | Presence | Description |
 |  ------ | ------ | ------ |
 |  [agency.txt](#agencytxt) | **Required** | Transit agencies with service represented in this dataset. |
-|  [stops.txt](#stopstxt) | **Required** | Stops where vehicles pick up or drop off riders. Also defines stations and station entrances.  |
+|  [stops.txt](#stopstxt) | **Conditionally Required** | Stops where vehicles pick up or drop off riders. Also defines stations and station entrances. <br><br>Conditionally Required:<br> - **Required** if [locations.geojson](#locationsgeojson) does not exist. <br>- Optional otherwise. |
 |  [routes.txt](#routestxt) | **Required** | Transit routes. A route is a group of trips that are displayed to riders as a single service. |
 |  [trips.txt](#tripstxt)  | **Required** | Trips for each route. A trip is a sequence of two or more stops that occur during a specific time period. |
 |  [stop_times.txt](#stop_timestxt) | **Required** | Times that a vehicle arrives at and departs from stops for each trip. |
@@ -194,7 +194,7 @@ Primary key (`agency_id`)
 
 ### stops.txt
 
-File: **Required**
+File: **Conditionally Required**
 
 Primary key (`stop_id`)
 
