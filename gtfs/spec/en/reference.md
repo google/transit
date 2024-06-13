@@ -747,6 +747,7 @@ File: **Optional**
 Defines zones where riders can request either pickup or drop off by on-demand services. These zones are represented as GeoJSON polygons.
 
 - This file uses a subset of the GeoJSON format, described in [RFC 7946](https://tools.ietf.org/html/rfc7946).
+- Each polygon must be valid by the definition of the [OpenGis Simple Features Specification, section 6.1.11](https://portal.ogc.org/files/?artifact_id=25355).
 - The `locations.geojson` file must contain a `FeatureCollection`.
 - A `FeatureCollection` defines various stop locations where riders may request pickup or drop off.
 - Every GeoJSON `Feature` must have an `id`. The `id` must be unique across all `stops.stop_id`, locations.geojson `id`, and `location_group_id` values.
