@@ -1,4 +1,6 @@
-Service alerts allow you to provide updates whenever there is disruption on the network. Delays and cancellations of individual trips should usually be communicated using [Trip updates](trip-updates.md).
+Service alerts allow you to provide updates whenever there is disruption on the network. Delays and cancellations of individual trips should usually be communicated using [Trip updates](trip-updates.md). 
+Alerts should be used for notifying that a stop will be out of service for extended periods.
+Alerts can be used by consumers to modify trip planner behavior. 
 
 You have the option to provide the following:
 
@@ -22,7 +24,7 @@ Entities are selected using their GTFS identifiers, and you can select any of th
 *   Route - affects the whole route
 *   Route type - affects any route of this type. e.g. all subways.
 *   Trip - affects a particular trip
-*   Stop - affects a particular stop
+*   Stop - affects a particular stop.
 
 You may include more than one of the fields listed above in one `informed_entity`. When multiple fields are included in one `informed_entity`, they should be interpreted as being joined by the `AND` logical operator. In other words, the alert should only be applied in a context that meets all of the fields provided in an `informed_entity`. For example, if `route_id: "1"` and `stop_id: "5"` are both included in one `informed_entity`, then the alert should apply only to route 1 at stop 5.  It should NOT be applied to any other stop on route 1, and it should NOT be applied to any other route at stop 5.
 
@@ -49,7 +51,7 @@ What is the cause of this alert? You may specify one of the following:
 
 What effect does this problem have on the specified entity? You may specify one of the following:
 
-*   No service
+*   No service: If an Alert with Effect No service exists and conflicts with values in [Trip updates](trip-updates.md), Alerts should be considered the source of truth. 
 *   Reduced service
 *   Significant delays (insignificant delays should only be provided through [Trip updates](trip-updates.md)).
 *   Detour
