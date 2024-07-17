@@ -1,5 +1,4 @@
 Service alerts allow you to provide updates whenever there is disruption on the network. Delays and cancellations of individual trips should usually be communicated using [Trip updates](trip-updates.md). 
-Alerts should be used for notifying that a stop will be out of service for extended periods.
 
 You have the option to provide the following:
 
@@ -49,8 +48,7 @@ What is the cause of this alert? You may specify one of the following:
 ## Effect
 
 What effect does this problem have on the specified entity? You may specify one of the following:
-
-*   No service: If an Alert with Effect No service exists and conflicts with values in [Trip updates](trip-updates.md), Alerts should be considered the source of truth. Alerts with Effect No service can be used by consumers to modify trip planner behavior. 
+*   No service: If an Alert with Effect No service exists and the change is not reflected in [Trip updates](trip-updates.md), Alerts should be considered the source of truth. Alerts with Effect No service can be used by consumers to modify trip planner behavior. If a stop is out of service and it affects many trips, use Alerts instead of providing TripUpdates for all trips with the skipped stop time.
 *   Reduced service
 *   Significant delays (insignificant delays should only be provided through [Trip updates](trip-updates.md)).
 *   Detour
