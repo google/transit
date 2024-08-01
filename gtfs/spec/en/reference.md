@@ -138,7 +138,7 @@ This specification defines the following files:
 |  [locations.geojson](#locationsgeojson)  | Optional | Zones for rider pickup or drop-off requests by on-demand services, represented as GeoJSON polygons. |
 |  [booking_rules.txt](#booking_rulestxt)  | Optional | Booking information for rider-requested services. |
 |  [translations.txt](#translationstxt)  | Optional | Translations of customer-facing dataset values. |
-|  [feed_info.txt](#feed_infotxt)  | Optional | Dataset metadata, including publisher, version, and expiration information. |
+|  [feed_info.txt](#feed_infotxt)  | **Conditionally Required** | Dataset metadata, including publisher, version, and expiration information.<br><br>Conditionally Required:<br>- **Required** if [translations.txt](#translationstxt) is provided.<br>- Recommended otherwise.|
 |  [attributions.txt](#attributionstxt)  | Optional | Dataset attributions. |
 
 ## File Requirements
@@ -299,8 +299,8 @@ Primary key (`trip_id`, `stop_sequence`)
 |  `continuous_drop_off` | Enum | **Conditionally Forbidden** | Indicates that the rider can alight from the transit vehicle at any point along the vehicle’s travel path as described by [shapes.txt](#shapestxt), from this `stop_time` to the next `stop_time` in the trip’s `stop_sequence`. Valid options are: <br><br>`0` - Continuous stopping drop off. <br>`1` or empty - No continuous stopping drop off. <br>`2` - Must phone agency to arrange continuous stopping drop off. <br>`3` - Must coordinate with driver to arrange continuous stopping drop off. <br><br>If this field is populated, it overrides any continuous drop-off behavior defined in [routes.txt](#routestxt). If this field is empty, the `stop_time` inherits any continuous drop-off behavior defined in [routes.txt](#routestxt).<br><br>**Conditionally Forbidden**:<br>- **Forbidden** if `start_pickup_drop_off_window` or `end_pickup_drop_off_window` are defined.<br> - Optional otherwise. |
 |  `shape_dist_traveled` | Non-negative float | Optional | Actual distance traveled along the associated shape, from the first stop to the stop specified in this record. This field specifies how much of the shape to draw between any two stops during a trip. Must be in the same units used in [shapes.txt](#shapestxt). Values used for `shape_dist_traveled` must increase along with `stop_sequence`; they must not be used to show reverse travel along a route.<br><br>Recommended for routes that have looping or inlining (the vehicle crosses or travels over the same portion of alignment in one trip). See [`shapes.shape_dist_traveled`](#shapestxt). <hr>*Example: If a bus travels a distance of 5.25 kilometers from the start of the shape to the stop,`shape_dist_traveled`=`5.25`.*|
 |  `timepoint` | Enum | Optional | Indicates if arrival and departure times for a stop are strictly adhered to by the vehicle or if they are instead approximate and/or interpolated times. This field allows a GTFS producer to provide interpolated stop-times, while indicating that the times are approximate. Valid options are:<br><br>`0` - Times are considered approximate. <br>`1` - Times are considered exact. <br><br> All records of [stop_times.txt](#stop_timestxt) with defined arrival or departure times should have timepoint values populated. If no timepoint values are provided, all times are considered exact. |
-| `pickup_booking_rule_id` | ID referencing `booking_rules.booking_rule_id` | Optional | Identifies the boarding booking rule at this stop time.<br><br>Recommended when `pickup_type=2`. |
-| `drop_off_booking_rule_id` | ID referencing `booking_rules.booking_rule_id` | Optional | Identifies the alighting booking rule at this stop time.<br><br>Recommended when `drop_off_type=2`. |
+| `pickup_booking_rule_id` | Foreign ID referencing `booking_rules.booking_rule_id` | Optional | Identifies the boarding booking rule at this stop time.<br><br>Recommended when `pickup_type=2`. |
+| `drop_off_booking_rule_id` | Foreign ID referencing `booking_rules.booking_rule_id` | Optional | Identifies the alighting booking rule at this stop time.<br><br>Recommended when `drop_off_type=2`. |
 
 #### On-demand Service Routing Behavior
 - When providing routing or travel time between the origin and destination, data consumers should ignore intermediate stop_times.txt records with the same `trip_id` that have `start_pickup_drop_off_window` and `end_pickup_drop_off_window` defined. For examples that demonstrate what should be ignored, see [the data example page](https://gtfs.org/schedule/examples/flex/#ignoring-intermediate-stop-times-records-with-pickupdrop-off-windows).
@@ -582,7 +582,7 @@ File: **Optional**
 
 Primary key (`shape_id`, `shape_pt_sequence`)
 
-Shapes describe the path that a vehicle travels along a route alignment, and are defined in the file shapes.txt. Shapes are associated with Trips, and consist of a sequence of points through which the vehicle passes in order. Shapes do not need to intercept the location of Stops exactly, but all Stops on a trip should lie within a small distance of the shape for that trip, i.e. close to straight line segments connecting the shape points.
+Shapes describe the path that a vehicle travels along a route alignment, and are defined in the file shapes.txt. Shapes are associated with Trips, and consist of a sequence of points through which the vehicle passes in order. Shapes do not need to intercept the location of Stops exactly, but all Stops on a trip should lie within a small distance of the shape for that trip, i.e. close to straight line segments connecting the shape points. The shapes.txt file should be included for all route-based services (not for zone-based demand-responsive services).
 
 |  Field Name | Type | Presence | Description |
 |  ------ | ------ | ------ | ------ |
@@ -783,7 +783,7 @@ Defines the booking rules for rider-requested services
 | `prior_notice_last_time` | Time | **Conditionally Required** | Last time on the last day before travel to make the booking request.<br><br>Example: “Ride must be booked 1 day in advance before 5PM” will be encoded as `prior_notice_last_time=17:00:00`.<br><br>**Conditionally Required**:<br>- **Required** if `prior_notice_last_day` is defined.<br>- **Forbidden** otherwise. |
 | `prior_notice_start_day` | Integer | **Conditionally Forbidden** | Earliest day before travel to make the booking request.<br><br>Example: “Ride can be booked at the earliest one week in advance at midnight” will be encoded as `prior_notice_start_day=7`.<br><br>**Conditionally Forbidden**:<br>- **Forbidden** for `booking_type=0`.<br> - **Forbidden** for `booking_type=1` if `prior_notice_duration_max` is defined.<br> - Optional otherwise. |
 | `prior_notice_start_time` | Time | **Conditionally Required** | Earliest time on the earliest day before travel to make the booking request.<br><br>Example: “Ride can be booked at the earliest one week in advance at midnight” will be encoded as `prior_notice_start_time=00:00:00`.<br><br>**Conditionally Required**:<br>- **Required** if `prior_notice_start_day` is defined.<br>- **Forbidden** otherwise. |
-| `prior_notice_service_id` | ID referencing `calendar.service_id` | **Conditionally Forbidden** | Indicates the service days on which `prior_notice_last_day` or `prior_notice_start_day` are counted. <br><br>Example: If empty, `prior_notice_start_day=2` will be two calendar days in advance. If defined as a `service_id` containing only business days (weekdays without holidays), `prior_notice_start_day=2` will be two business days in advance.<br><br>**Conditionally Forbidden**:<br> - Optional if `booking_type=2`. <br> - **Forbidden** otherwise. |
+| `prior_notice_service_id` | Foreign ID referencing `calendar.service_id` | **Conditionally Forbidden** | Indicates the service days on which `prior_notice_last_day` or `prior_notice_start_day` are counted. <br><br>Example: If empty, `prior_notice_start_day=2` will be two calendar days in advance. If defined as a `service_id` containing only business days (weekdays without holidays), `prior_notice_start_day=2` will be two business days in advance.<br><br>**Conditionally Forbidden**:<br> - Optional if `booking_type=2`. <br> - **Forbidden** otherwise. |
 | `message` | Text | Optional | Message to riders utilizing service at a `stop_time` when booking on-demand pickup and drop off. Meant to provide minimal information to be transmitted within a user interface about the action a rider must take in order to utilize the service. |
 | `pickup_message` | Text | Optional | Functions in the same way as `message` but used when riders have on-demand pickup only. |
 | `drop_off_message` | Text | Optional | Functions in the same way as `message` but used when riders have on-demand drop off only. |
@@ -813,7 +813,7 @@ If both referencing methods (`record_id`, `record_sub_id`) and `field_value` are
 
 ### feed_info.txt
 
-File: **Recommended** (**Required** if [translations.txt](#translations) is provided)
+File: **Conditionally Required**
 
 Primary key (none)
 
