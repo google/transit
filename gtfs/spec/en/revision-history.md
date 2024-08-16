@@ -1,5 +1,14 @@
 ### Revision History
 
+### August 2024
+* Change stops.txt presence because of demand responsive services. See [discussion](https://github.com/google/transit/pull/472).
+* Clarify intended use for timepoint in stop_times.txt. See [discussion](https://github.com/google/transit/pull/474).
+* Add that headsigns are recommended. See [discussion](https://github.com/google/transit/pull/485).
+
+### July 2024
+* Update requirement for feed_info.txt. See [discussion](https://github.com/google/transit/pull/460).
+* Add that shapes should be included. See [discussion](https://github.com/google/transit/pull/470).
+
 #### May 2024
 * Added `rule_priority` field in `fare_leg_rules.txt`. See [discussion](https://github.com/google/transit/pull/418).
 * Clarify presence of `stops.zone_id`. See [discussion](https://github.com/google/transit/pull/432).
