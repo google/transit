@@ -848,6 +848,20 @@ message TripDescriptor {
 
     // The trip_id from the GTFS feed that is modified by the modifications_id
     optional string affected_trip_id = 2;
+
+    // The initially scheduled start time of this trip instance, applied to the frequency based modified trip. Same definition as start_time in TripDescriptor.
+    optional string start_time = 3;
+
+    // The start date of this trip instance in YYYYMMDD format, applied to the modified trip. Same definition as start_date in TripDescriptor.
+    optional string start_date = 4;
+
+    // The extensions namespace allows 3rd-party developers to extend the
+    // GTFS Realtime Specification in order to add and evaluate new features and
+    // modifications to the spec.
+    extensions 1000 to 1999;
+
+    // The following extension IDs are reserved for private use by any organization.
+    extensions 9000 to 9999;
   }
   optional ModifiedTripSelector modified_trip = 7;
 
@@ -1180,6 +1194,10 @@ message ReplacementStop {
 
   // The replacement stop ID which will now be visited by the trip. May refer to a new stop added using a GTFS-RT Stop message, or to an existing stop defined in the GTFS-Static feed’s stops.txt. The stop MUST have location_type=0 (routable stops).
   optional string stop_id = 2;
+
+  // The amount of time difference between the scheduled arrival time and departure time. If not specified, the same dwell time from the schedule is applied.
+  // If specified, the arrival time of the replacement stop is defined as `reference_stop.departure_time + travel_time_to_stop` and departure time is defined as `reference_stop.departure_time + travel_time_to_stop + dwell_time`
+  optional uint32 dwell_time = 3;
 
   // The extensions namespace allows 3rd-party developers to extend the
   // GTFS Realtime Specification in order to add and evaluate new features and
