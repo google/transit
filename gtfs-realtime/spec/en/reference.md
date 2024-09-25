@@ -170,8 +170,19 @@ Note that the update can describe a trip that has already completed.To this end,
 
 Timing information for a single predicted event (either arrival or departure). Timing consists of delay and/or estimated time, and uncertainty.
 
-*   delay should be used when the prediction is given relative to some existing schedule in GTFS.
-*   time should be given whether there is a predicted schedule or not. If both time and delay are specified, time will take precedence (although normally, time, if given for a scheduled trip, should be equal to scheduled time in GTFS + delay).
+*   `delay` should be used when the prediction is given relative to some existing schedule in GTFS.
+*   `time` should be given whether there is a predicted schedule or not.
+
+The behaviour of `delay` and `time` depends on the schedule relationship:
+
+| `TripUpdate.schedule_relationship` | `StopTimeUpdate.schedule_relationship` | Behaviour                                                                                                                                                                  |
+|------------------------------------|----------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `SCHEDULED`                        | `SCHEDULED`                            | `time` will take precedence (although normally, `time`, if given for a scheduled trip, should be equal to scheduled time in GTFS + `delay`)                                |
+| `SCHEDULED`                        | `SKIPPED`                              | the vehicle was scheduled to stop, but will not do so now. `time` and `delay` may be specified but not compulsory.                                                         |
+| `ADDED` or `DUPLICATED`            | `SCHEDULED`                            | `time` must be specified for the estimated time. If `delay` is also specified, as the trip is not in the static GTFS, the scheduled time is calculated by `time` - `delay` |
+| `ADDED` or `DUPLICATED`            | `SKIPPED`                              | The added trip was planned to stop, but will no longer do so. `time` and `delay` may be specified with the same meaning as if the stop isn't skipped.                      |
+| `UNSCHEDULED`                      | `UNSCHEDULED`                          | the vehicle is expected to stop at the `time` given, `delay` must not be specified.                                                                                        |
+| `UNSCHEDULED`                      | `SKIPPED`                              | the vehicle should normally stop according to the trip pattern, but will not do so now. `time` may be specified but is not compulsory.                                     |
 
 Uncertainty applies equally to both time and delay. The uncertainty roughly specifies the expected error in true delay (but note, we don't yet define its precise statistical meaning). It's possible for the uncertainty to be 0, for example for trains that are driven under computer timing control.
 
