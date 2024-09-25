@@ -695,10 +695,10 @@ List of selected trips with an associated shape.
 
 **Fields**
 
-| _**Field Name**_ | _**Type**_ | _**Required**_ | _**Cardinality**_ | _**Description**_ |
-|------------------|------------|----------------|-------------------|-------------------|
-| **trip_ids** | [uint32](https://protobuf.dev/programming-guides/proto2/#scalar) | Many | One | A list of trip_id from the original (CSV) GTFS that are affected by the containing replacement. Need to contain at least one trip_id.  |
-| **shape_id** | [string](https://protobuf.dev/programming-guides/proto2/#scalar) | Required | One | The ID of the new shape for the modified trips in this SelectedTrips. May refer to a new shape added using a GTFS-RT Shape message, or to an existing shape defined in the GTFS-Static feed’s shapes.txt. |
+| _**Field Name**_ | _**Type**_                                                       | _**Required**_ | _**Cardinality**_ | _**Description**_                                                                                                                                                                                                                  |
+|------------------|------------------------------------------------------------------|----------------|-------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **trip_ids**     | [uint32](https://protobuf.dev/programming-guides/proto2/#scalar) | Many           | One               | A list of trip_id from the original (CSV) GTFS that are affected by the containing replacement. Need to contain at least one trip_id. A `TripUpdate` with `schedule_relationship=REPLACEMENT` must not already exist for the trip. |
+| **shape_id**     | [string](https://protobuf.dev/programming-guides/proto2/#scalar) | Required       | One               | The ID of the new shape for the modified trips in this SelectedTrips. May refer to a new shape added using a GTFS-RT Shape message, or to an existing shape defined in the GTFS-Static feed’s shapes.txt.                          |
 
 ## _message_ ReplacementStop
 

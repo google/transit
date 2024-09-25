@@ -1160,7 +1160,7 @@ message TripModifications {
   }
 
   message SelectedTrips {
-    // A list of trips affected with this replacement that all have the same new `shape_id`.
+    // A list of trips affected with this replacement that all have the same new `shape_id`. A `TripUpdate` with `schedule_relationship=REPLACEMENT` must not already exist for the trip.
     repeated string trip_ids = 1;
     // The ID of the new shape for the modified trips in this SelectedTrips.
     // May refer to a new shape added using a GTFS-RT Shape message, or to an existing shape defined in the GTFS-Static feed’s shapes.txt.
