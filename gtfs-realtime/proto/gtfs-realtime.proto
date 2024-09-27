@@ -848,7 +848,24 @@ message TripDescriptor {
 
     // The trip_id from the GTFS feed that is modified by the modifications_id
     optional string affected_trip_id = 2;
+
+    // The initially scheduled start time of this trip instance, applied to the frequency based modified trip. Same definition as start_time in TripDescriptor.
+    optional string start_time = 3;
+
+    // The start date of this trip instance in YYYYMMDD format, applied to the modified trip. Same definition as start_date in TripDescriptor.
+    optional string start_date = 4;
+
+    // The extensions namespace allows 3rd-party developers to extend the
+    // GTFS Realtime Specification in order to add and evaluate new features and
+    // modifications to the spec.
+    extensions 1000 to 1999;
+
+    // The following extension IDs are reserved for private use by any organization.
+    extensions 9000 to 9999;
   }
+
+  // Linkage to any modifications done to this trip (shape changes, removal or addition of stops). 
+  // If this field is provided, the `trip_id`, `route_id`, `direction_id`, `start_time`, `start_date` fields of the `TripDescriptor` MUST be left empty, to avoid confusion by consumers that aren't looking for the `ModifiedTripSelector` value. 
   optional ModifiedTripSelector modified_trip = 7;
 
   // The extensions namespace allows 3rd-party developers to extend the
