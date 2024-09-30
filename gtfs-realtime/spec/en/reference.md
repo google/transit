@@ -498,7 +498,7 @@ If a trip is done in accordance with a modified schedule, not reflected in GTFS,
 | _**Value**_ | _**Comment**_ |
 |-------------|---------------|
 | **SCHEDULED** | Trip that is running in accordance with its GTFS schedule, or is close enough to the scheduled trip to be associated with it. |
-| **ADDED** | An extra trip unrelated to any existing trips, for example, to respond to sudden passenger load. The complete journey of the added trip must be specified via `StopTimeUpdate`s. |
+| **ADDED** | An extra trip unrelated to any existing trips, for example, to respond to sudden passenger load. The complete journey of the added trip, including all stops and times, must be specified via `StopTimeUpdate`s. |
 | **UNSCHEDULED** | A trip that is running with no schedule associated to it - this value is used to identify trips defined in GTFS frequencies.txt with exact_times = 0. It should not be used to describe trips not defined in GTFS frequencies.txt, or trips in GTFS frequencies.txt with exact_times = 1. Trips with `schedule_relationship: UNSCHEDULED` must also set all StopTimeUpdates `schedule_relationship: UNSCHEDULED`|
 | **CANCELED** | A trip that existed in the schedule but was removed. |
 | **REPLACEMENT** | A trip that replaces an existing scheduled trip, for example, with a changed schedule or a diverted route. The complete journey of the replacement trip must be specified via `StopTimeUpdate`s, and the original schedule from the GTFS static isn't used for the replaced instance. |
