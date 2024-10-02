@@ -489,9 +489,7 @@ If `schedule_relationship` is `ADDED`, `trip_id` must be set to a value not exis
 
 ## _enum_ ScheduleRelationship
 
-The relation between this trip and the static schedule. <br>
-If a new trip is done in accordance with temporary schedule, not reflected in GTFS, then it shouldn't be marked as SCHEDULED, but marked as ADDED.<br/>
-If a trip is done in accordance with a modified schedule, not reflected in GTFS, then it shouldn't be marked as SCHEDULED, but marked as REPLACEMENT.<br/>
+The relation between this trip and the static schedule. If a new trip is done in accordance with temporary schedule, not reflected in GTFS, then it shouldn't be marked as SCHEDULED, but marked as ADDED. If a trip is done in accordance with a modified schedule, not reflected in GTFS, then it shouldn't be marked as SCHEDULED, but marked as REPLACEMENT.
 
 **Values**
 
