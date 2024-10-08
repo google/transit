@@ -169,11 +169,11 @@ Note that the update can describe a trip that has already completed.To this end,
 
 ## _message_ StopTimeEvent
 
-Timing information for a single predicted event (either arrival or departure). Timing consists of delay and/or estimated time, and uncertainty. A scheduled time can also be added for added or replacement trips.
+Timing information for a single predicted event (either arrival or departure). Timing consists of delay and/or estimated time, and uncertainty. A scheduled time can also be added for added, replacement or duplicated trips.
 
 *   delay should be used when the prediction is given relative to some existing schedule in GTFS.
 *   time should be given whether there is a predicted schedule or not, and must be given for added or replacement trips. If both time and delay are specified, time will take precedence (although normally, time, if given for a scheduled trip, should be equal to scheduled time in GTFS + delay).
-*   scheduled time may be given if the trip is an added or replacement trip, and must be given if the stop is specified as a timepoint.
+*   scheduled time may be given if the trip is an added, replacement or duplicated trip, and must be given if the stop is specified as a timepoint.
 
 Uncertainty applies equally to both time and delay. The uncertainty roughly specifies the expected error in true delay (but note, we don't yet define its precise statistical meaning). It's possible for the uncertainty to be 0, for example for trains that are driven under computer timing control.
 
@@ -183,7 +183,7 @@ Uncertainty applies equally to both time and delay. The uncertainty roughly spec
 |------------------|------------|----------------|-------------------|-------------------|
 | **delay** | [int32](https://protobuf.dev/programming-guides/proto2/#scalar) | Conditionally required | One | Delay (in seconds) can be positive (meaning that the vehicle is late) or negative (meaning that the vehicle is ahead of schedule). Delay of 0 means that the vehicle is exactly on time.  Either delay or time must be provided within a StopTimeEvent - both fields cannot be empty. |
 | **time** | [int64](https://protobuf.dev/programming-guides/proto2/#scalar) | Conditionally required | One | Estimated or actual event as absolute time. In POSIX time (i.e., number of seconds since January 1st 1970 00:00:00 UTC). Either delay or time must be provided within a StopTimeEvent - both fields cannot be empty. For added or replacement trips, time must be provided as there is no schedule in GTFS static. |
-| **scheduled_time** | [int64](https://protobuf.dev/programming-guides/proto2/#scalar) | Conditionally required | One | Scheduled time for an added or replacement trip. In POSIX time (i.e., number of seconds since January 1st 1970 00:00:00 UTC). The vehicle will wait for this time if StopTimeUpdate.stop_time_properties.timepoint is 1 or unspecified. A scheduled time must be given if StopTimeUpdate.stop_time_properties.timepoint is true. |
+| **scheduled_time** | [int64](https://protobuf.dev/programming-guides/proto2/#scalar) | Conditionally required | One | Scheduled time for an added, replacement or duplicated trip. In POSIX time (i.e., number of seconds since January 1st 1970 00:00:00 UTC). The vehicle will wait for this time if StopTimeUpdate.stop_time_properties.timepoint is 1 or unspecified.<br>**Required** if StopTimeUpdate.stop_time_properties.timepoint is true.<br>**Forbidden** if TripUpdate.schedule_relationship is not ADDED, REPLACEMENT or DUPLICATED. |
 | **uncertainty** | [int32](https://protobuf.dev/programming-guides/proto2/#scalar) | Optional | One | If uncertainty is omitted, it is interpreted as unknown. To specify a completely certain prediction, set its uncertainty to 0. |
 
 ## _message_ StopTimeUpdate
