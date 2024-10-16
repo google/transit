@@ -20,7 +20,8 @@ This document defines the format and structure of the files that comprise a GTFS
     -   [calendar\_dates.txt](#calendar_datestxt)
     -   [fare\_attributes.txt](#fare_attributestxt)
     -   [fare\_rules.txt](#fare_rulestxt)
-    -   [timeframes.txt](#timeframestxt)    
+    -   [timeframes.txt](#timeframestxt)
+    -   [rider\_categories.txt](#rider_categoriestxt)   
     -   [fare\_media.txt](#fare_mediatxt)
     -   [fare\_products.txt](#fare_productstxt) 
     -   [fare\_leg\_rules.txt](#fare_leg_rulestxt)
@@ -120,6 +121,7 @@ This specification defines the following files:
 |  [fare_attributes.txt](#fare_attributestxt)  | Optional | Fare information for a transit agency's routes. |
 |  [fare_rules.txt](#fare_rulestxt)  | Optional | Rules to apply fares for itineraries. |
 |  [timeframes.txt](#timeframestxt)  | Optional | Date and time periods to use in fare rules for fares that depend on date and time factors. |
+|  [rider_categories.txt](#rider_categoriestxt)  | Optional | Defines categories of riders (e.g. elderly, student). |
 |  [fare_media.txt](#fare_mediatxt)  | Optional | To describe the fare media that can be employed to use fare products. <br><br>File [fare_media.txt](#fare_mediatxt) describes concepts that are not represented in [fare_attributes.txt](#fare_attributestxt) and [fare_rules.txt](#fare_rulestxt). As such, the use of [fare_media.txt](#fare_mediatxt) is entirely separate from files [fare_attributes.txt](#fare_attributestxt) and [fare_rules.txt](#fare_rulestxt). |
 |  [fare_products.txt](#fare_productstxt)  | Optional | To describe the different types of tickets or fares that can be purchased by riders.<br><br>File [fare_products.txt](#fare_productstxt) describes fare products that are not represented in [fare_attributes.txt](#fare_attributestxt) and [fare_rules.txt](#fare_rulestxt). As such, the use of [fare_products.txt](#fare_productstxt) is entirely separate from files [fare_attributes.txt](#fare_attributestxt) and [fare_rules.txt](#fare_rulestxt). |
 |  [fare_leg_rules.txt](#fare_leg_rulestxt)  | Optional | Fare rules for individual legs of travel.<br><br>File [fare_leg_rules.txt](#fare_leg_rulestxt) provides a more detailed method for modeling fare structures. As such, the use of [fare_leg_rules.txt](#fare_leg_rulestxt) is entirely separate from files [fare_attributes.txt](#fare_attributestxt) and [fare_rules.txt](#fare_rulestxt). |
@@ -406,6 +408,21 @@ There must not be overlapping time intervals for the same `timeframe_group_id` a
 - The “current day” is the current date of the fare event’s time, computed relative to the local timezone.  The “current day” may be different from the service day of a fare leg’s trip, especially for trips that extend past midnight.
 - The “time-of-day” for the fare event is computed relative to “current day” using GTFS Time field-type semantics.
 
+### rider_categories.txt
+
+File: **Optional** 
+
+Primary key (`rider_category_id`)
+
+Defines categories of riders (e.g. elderly, student).
+
+|  Field Name | Type | Presence | Description |
+|  ------ | ------ | ------ | ------ |
+|  `rider_category_id` | Unique ID | **Required** | Identifies a rider category. |
+|  `rider_category_name` | Text | **Required** | Rider category name as displayed to the rider. |
+|  `is_default_fare_category` | Enum | **Required** | Specifies if an entry in [rider_categories.txt](#rider_categoriestxt) should be considered the default category (i.e. the main category that should be displayed to riders). For example: Adult fare, Regular fare, etc. Valid options are:<br><br>`0` or empty - Category is not considered the default.<br>`1` - Category is considered the default one.<br><br>When multiple rider categories are eligible for a single fare product specified by a `fare_product_id`, there must be only one of these rider categories indicated as the default rider category (`is_default_fare_category = 1`). |
+|  `eligibility_url` | URL | Optional | URL of a web page, usually from the operating agency, that provides detailed information about a specific rider category and/or describes its eligibility criteria. |
+
 ### fare_media.txt
 
 File: **Optional** 
@@ -424,14 +441,15 @@ To describe the different fare media that can be employed to use fare products. 
 
 File: **Optional**
 
-Primary key (`fare_product_id`, `fare_media_id`)
+Primary key (`fare_product_id`, `rider_category_id`, `fare_media_id`)
 
 Used to describe the range of fares available for purchase by riders or taken into account when computing the total fare for journeys with multiple legs, such as transfer costs.
 
 |  Field Name | Type | Presence | Description |
 |  ------ | ------ | ------ | ------ |
-| `fare_product_id` | ID | **Required** | Identifies a fare product or set of fare products.<br><br>Multiple records in [fare_products.txt](#fare_productstxt) may share the same `fare_product_id`, in which case all records with that ID will be retrieved when referenced from another file.<br><br>Multiple records may share the same `fare_product_id` but with different `fare_media_id`s, indicating various methods available for employing the fare product, potentially at different prices. |
+| `fare_product_id` | ID | **Required** | Identifies a fare product or set of fare products.<br><br>Multiple records in [fare_products.txt](#fare_productstxt) may share the same `fare_product_id`, in which case all records with that ID will be retrieved when referenced from another file.<br><br>Multiple records may share the same `fare_product_id` but with different `fare_media_id`s, indicating various methods available for employing the fare product, potentially at different prices.<br><br>Multiple records may share the same `fare_product_id` but with different `rider_categories_id`s, indicating multiple rider categories are eligible for the fare product, potentially at different prices. |
 | `fare_product_name` | Text | Optional | The name of the fare product as displayed to riders. |
+|  `rider_category_id` | Foreign ID referencing `rider_categories.rider_category_id` | Optional |  Identifies a rider category eligible for the fare product.<br><br>If `fare_products.rider_category_id` is empty, the fare product is eligible for any `rider_category_id`.<br><br>When multiple rider categories are eligible for a single fare product specified by a `fare_product_id`, there must be only one of these rider categories indicated as the default rider category (`is_default_fare_category = 1`). |
 |  `fare_media_id` | Foreign ID referencing `fare_media.fare_media_id` | Optional |  Identifies a fare media that can be employed to use the fare product during the trip. When `fare_media_id` is empty, it is considered that the fare media is unknown.|
 | `amount` | Currency amount | **Required** | The cost of the fare product. May be negative to represent transfer discounts. May be zero to represent a fare product that is free. |
 | `currency` | Currency code | **Required** | The currency of the cost of the fare product. |
