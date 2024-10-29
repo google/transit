@@ -78,13 +78,6 @@ message FeedHeader {
   // currently active or when a new one is available to download.
   optional string feed_version = 4;
 
-  // String containing an URL linking to the GTFS file. It should be the feed that is
-  // currently active. If a link to the upcoming GTFS file is the only one available
-  // it can be still provided.
-  // The URL should be a fully qualified URL that includes http:// or https://, and any
-  // special characters in the URL must be correctly escaped.
-  optional string gtfs_url = 5;
-
   // The extensions namespace allows 3rd-party developers to extend the
   // GTFS Realtime specification in order to add and evaluate new features and
   // modifications to the spec.
