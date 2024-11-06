@@ -491,7 +491,7 @@ File: **Optional**
 Primary Key (`from_network_id, to_network_id, from_stop_id, to_stop_id`)
 
 For a sub-journey of two consecutive legs with a transfer, if the transfer matches all matching predicates specified by a particular row in the file, then those two legs should be considered as a single **effective fare leg** for the purposes of matching against rules in [`fare_leg_rules.txt`](#fare_leg_rulestxt).
-- The last station of the pre-transfer leg and the first station of the post-transfer leg must be the same for the row.
+- Unless overridden explicitly by `from_stop_id` and `to_stop_id`, the last station of the pre-transfer leg and the first station of the post-transfer leg must be the same for the row.
 - If a matching predicate field value is blank or unspecified for a particular row in the file, then that field should be ignored for the purposes of matching.
 - When a sub-journey contains consecutive transfers that each match a join rule, then the entire sub-journey should be considered as a single **effective fare leg**.
 
