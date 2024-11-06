@@ -488,7 +488,7 @@ To process the cost of a leg:
 
 File: **Optional**
 
-Primary Key (`from_network_id, to_network_id`)
+Primary Key (`from_network_id, to_network_id, from_stop_id, to_stop_id`)
 
 For a sub-journey of two consecutive legs with a transfer, if the transfer matches all matching predicates specified by a particular row in the file, then those two legs should be considered as a single **effective fare leg** for the purposes of matching against rules in [`fare_leg_rules.txt`](#fare_leg_rulestxt).
 - The last station of the pre-transfer leg and the first station of the post-transfer leg must be the same for the row.
@@ -499,6 +499,8 @@ For a sub-journey of two consecutive legs with a transfer, if the transfer match
 |  ------ | ------ | ------ | ------ |
 | `from_network_id` | Foreign ID referencing `routes.network_id` or `networks.network_id`| **Required** | Matches a pre-transfer leg that uses the specified route network.  If specified, the same `to_network_id` must also be specified. |
 | `to_network_id` | Foreign ID referencing `routes.network_id` or `networks.network_id`| **Required** | Matches a post-transfer leg that uses the specified route network.  If specified, the same `from_network_id` must also be specified. |
+| `from_stop_id` | Foreign ID referencing `stops.stop_id`| **Conditionally Required** | Matches a pre-transfer leg that ends at the specified stop (`location_type=0` or empty) or station (`location_type=1`).<br><br>Conditionally Required:<br> - **Required** if `to_stop_id` is defined.<br> - Optional otherwise. |
+| `to_stop_id` | Foreign ID referencing `stops.stop_id`| **Conditionally Required** | Matches a post-transfer leg that starts at the specified stop (`location_type=0` or empty) or station (`location_type=1`).<br><br>Conditionally Required:<br> - **Required** if `from_stop_id` is defined.<br> - Optional otherwise. |
 
 ### fare_transfer_rules.txt
 
