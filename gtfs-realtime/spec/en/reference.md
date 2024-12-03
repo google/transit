@@ -196,7 +196,7 @@ Realtime update for arrival and/or departure events for a given stop on a trip. 
 Updates can be supplied for both past and future events. The producer is allowed, although not required, to drop past events.
 The update is linked to a specific stop either through stop_sequence or stop_id, so one of these fields must necessarily be set.  If the same stop_id is visited more than once in a trip, then stop_sequence should be provided in all StopTimeUpdates for that stop_id on that trip.
 
-In added or replacement trips, updates are used to specify the stops visited by the trip without referring to the GTFS Static. In such trips, `stop_id`, `stop_sequence`, `departure` and `arrival` must all be set.
+In added or replacement trips, updates are used to specify the stops visited by the trip without referring to an existing trip in the GTFS Static. In such trips, `stop_id`, `stop_sequence`, `departure` and `arrival` must all be set.
 
 **Fields**
 
