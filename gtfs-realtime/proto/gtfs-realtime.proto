@@ -193,7 +193,6 @@ message TripUpdate {
     // Scheduled time for an added or replacement trip.
     // In Unix time (i.e., number of seconds since January 1st 1970 00:00:00
     // UTC).
-    // Required if the parent StopTimeUpdate specifies stop_time_properties.timepoint = true
     optional int64 scheduled_time = 4;
 
     // The extensions namespace allows 3rd-party developers to extend the
