@@ -287,19 +287,6 @@ message TripUpdate {
       // The updated drop off of the vehicle at the stop.
       optional DropOffPickupType drop_off_type = 4;
 
-      // The updated timing point status of the vehicle at the stop.
-      // If false, the vehicle will no longer wait at the stop;
-      // if true, the vehicle will wait until the scheduled time at the stop.
-      optional bool timepoint = 5;
-
-      // Identifies the boarding booking rule at this stop time.
-      // Refers to a `booking_rule_id` defined in the GTFS `booking_rules.txt`.
-      optional string pickup_booking_rule_id = 6;
-
-      // Identifies the alighting booking rule at this stop time.
-      // Refers to a `booking_rule_id` defined in the GTFS `booking_rules.txt`.
-      optional string drop_off_booking_rule_id = 7;
-
       // The extensions namespace allows 3rd-party developers to extend the
       // GTFS Realtime Specification in order to add and evaluate new features
       // and modifications to the spec.
@@ -428,10 +415,6 @@ message TripUpdate {
     // Specifies the name for this trip when it differs from the original.
     // NOTE: This field is still experimental, and subject to change. It may be formally adopted in the future.
     optional string trip_short_name = 6;
-
-    // Specifies the block for this trip when it differs from the original.
-    // NOTE: This field is still experimental, and subject to change. It may be formally adopted in the future.
-    optional string block_id = 7;
 
     // The extensions namespace allows 3rd-party developers to extend the
     // GTFS Realtime Specification in order to add and evaluate new features
