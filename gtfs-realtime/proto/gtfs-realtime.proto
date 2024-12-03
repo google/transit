@@ -226,7 +226,7 @@ message TripUpdate {
     // In order to provide departure_occupancy_status without either arrival or
     // departure StopTimeEvents, ScheduleRelationship should be set to NO_DATA. 
     optional VehiclePosition.OccupancyStatus departure_occupancy_status = 7;
-    
+
     // The relation between the StopTimeEvents and the static schedule.
     enum ScheduleRelationship {
       // The vehicle is proceeding in accordance with its static schedule of
@@ -258,7 +258,7 @@ message TripUpdate {
       UNSCHEDULED = 3;
     }
     optional ScheduleRelationship schedule_relationship = 5
-        [default = SCHEDULED];
+    [default = SCHEDULED];
 
     // Provides the updated values for the stop time.
     // NOTE: This message is still experimental, and subject to change. It may be formally adopted in the future.
@@ -277,26 +277,26 @@ message TripUpdate {
       // (e.g., `VehiclePosition.stop_id`).
       // NOTE: This field is still experimental, and subject to change. It may be formally adopted in the future.
       optional string assigned_stop_id = 1;
-      
+
       // The updated headsign of the vehicle at the stop.
       optional string stop_headsign = 2;
-      
+
       // The updated pickup of the vehicle at the stop.
       optional DropOffPickupType pickup_type = 3;
-      
+
       // The updated drop off of the vehicle at the stop.
       optional DropOffPickupType drop_off_type = 4;
-      
-      // The updated timing point status of the vehicle at the stop. 
-      // If false, the vehicle will no longer wait at the stop; 
+
+      // The updated timing point status of the vehicle at the stop.
+      // If false, the vehicle will no longer wait at the stop;
       // if true, the vehicle will wait until the scheduled time at the stop.
       optional bool timepoint = 5;
-      
-      // Identifies the boarding booking rule at this stop time. 
+
+      // Identifies the boarding booking rule at this stop time.
       // Refers to a `booking_rule_id` defined in the GTFS `booking_rules.txt`.
       optional string pickup_booking_rule_id = 6;
-      
-      // Identifies the alighting booking rule at this stop time. 
+
+      // Identifies the alighting booking rule at this stop time.
       // Refers to a `booking_rule_id` defined in the GTFS `booking_rules.txt`.
       optional string drop_off_booking_rule_id = 7;
 
@@ -420,7 +420,7 @@ message TripUpdate {
     // be marked as schedule_relationship=SKIPPED.
     // NOTE: This field is still experimental, and subject to change. It may be formally adopted in the future. 
     optional string shape_id = 4;
-    
+
     // Specifies the headsign for this trip when it differs from the original.
     // NOTE: This field is still experimental, and subject to change. It may be formally adopted in the future.
     optional string trip_headsign = 5;
@@ -695,10 +695,10 @@ message Alert {
 
   // Severity of this alert.
   enum SeverityLevel {
-	UNKNOWN_SEVERITY = 1;
-	INFO = 2;
-	WARNING = 3;
-	SEVERE = 4;
+    UNKNOWN_SEVERITY = 1;
+    INFO = 2;
+    WARNING = 3;
+    SEVERE = 4;
   }
 
   optional SeverityLevel severity_level = 14 [default = UNKNOWN_SEVERITY];
@@ -706,18 +706,18 @@ message Alert {
   // TranslatedImage to be displayed along the alert text. Used to explain visually the alert effect of a detour, station closure, etc. The image must enhance the understanding of the alert. Any essential information communicated within the image must also be contained in the alert text.
   // The following types of images are discouraged : image containing mainly text, marketing or branded images that add no additional information. 
   // NOTE: This field is still experimental, and subject to change. It may be formally adopted in the future.
-  optional TranslatedImage image = 15; 
+  optional TranslatedImage image = 15;
 
   // Text describing the appearance of the linked image in the `image` field (e.g., in case the image can't be displayed
   // or the user can't see the image for accessibility reasons). See the HTML spec for alt image text - https://html.spec.whatwg.org/#alt.
   // NOTE: This field is still experimental, and subject to change. It may be formally adopted in the future.
   optional TranslatedString image_alternative_text = 16;
-  
-  
+
+
   // Description of the cause of the alert that allows for agency-specific language; more specific than the Cause. If cause_detail is included, then Cause must also be included.
   // NOTE: This field is still experimental, and subject to change. It may be formally adopted in the future.
   optional TranslatedString cause_detail = 17;
-  
+
   // Description of the effect of the alert that allows for agency-specific language; more specific than the Effect. If effect_detail is included, then Effect must also be included.
   // NOTE: This field is still experimental, and subject to change. It may be formally adopted in the future.
   optional TranslatedString effect_detail = 18;
@@ -866,8 +866,8 @@ message TripDescriptor {
     // date and/or time. Duplicating a trip is allowed if the service related to the original trip in (CSV) GTFS
     // (in calendar.txt or calendar_dates.txt) is operating within the next 30 days. The trip to be duplicated is
     // identified via TripUpdate.TripDescriptor.trip_id. This enumeration does not modify the existing trip referenced by
-    // TripUpdate.TripDescriptor.trip_id - if a producer wants to replace the original trip, a value of `REPLACEMENT` should be used instead. 
-    // 
+    // TripUpdate.TripDescriptor.trip_id - if a producer wants to replace the original trip, a value of `REPLACEMENT` should be used instead.
+    //
     // Trips defined in GTFS frequencies.txt with exact_times that is
     // empty or equal to 0 cannot be duplicated. The VehiclePosition.TripDescriptor.trip_id for the new trip must contain
     // the matching value from TripUpdate.TripProperties.trip_id and VehiclePosition.TripDescriptor.ScheduleRelationship
@@ -897,7 +897,24 @@ message TripDescriptor {
 
     // The trip_id from the GTFS feed that is modified by the modifications_id
     optional string affected_trip_id = 2;
+
+    // The initially scheduled start time of this trip instance, applied to the frequency based modified trip. Same definition as start_time in TripDescriptor.
+    optional string start_time = 3;
+
+    // The start date of this trip instance in YYYYMMDD format, applied to the modified trip. Same definition as start_date in TripDescriptor.
+    optional string start_date = 4;
+
+    // The extensions namespace allows 3rd-party developers to extend the
+    // GTFS Realtime Specification in order to add and evaluate new features and
+    // modifications to the spec.
+    extensions 1000 to 1999;
+
+    // The following extension IDs are reserved for private use by any organization.
+    extensions 9000 to 9999;
   }
+
+  // Linkage to any modifications done to this trip (shape changes, removal or addition of stops).
+  // If this field is provided, the `trip_id`, `route_id`, `direction_id`, `start_time`, `start_date` fields of the `TripDescriptor` MUST be left empty, to avoid confusion by consumers that aren't looking for the `ModifiedTripSelector` value.
   optional ModifiedTripSelector modified_trip = 7;
 
   // The extensions namespace allows 3rd-party developers to extend the
@@ -1077,7 +1094,7 @@ message Shape {
   // See https://developers.google.com/protocol-buffers/docs/proto#specifying_field_rules
   // NOTE: This field is still experimental, and subject to change. It may be formally adopted in the future.
   optional string shape_id = 1;
-  
+
   // Encoded polyline representation of the shape. This polyline must contain at least two points.
   // For more information about encoded polylines, see https://developers.google.com/maps/documentation/utilities/polylinealgorithm
   // This field is required as per reference.md, but needs to be specified here optional because "Required is Forever"
@@ -1101,7 +1118,7 @@ message Stop {
     UNKNOWN = 0;
     AVAILABLE = 1;
     NOT_AVAILABLE = 2;
-   }
+  }
 
   optional string stop_id = 1;
   optional TranslatedString stop_code = 2;
@@ -1179,9 +1196,9 @@ message TripModifications {
 
     // The following extension IDs are reserved for private use by any organization.
     extensions 9000 to 9999;
-}
+  }
 
-   // A list of selected trips affected by this TripModifications.
+  // A list of selected trips affected by this TripModifications.
   repeated SelectedTrips selected_trips = 1;
 
   // A list of start times in the real-time trip descriptor for the trip_id defined in trip_ids. 
@@ -1193,7 +1210,7 @@ message TripModifications {
   repeated string service_dates = 3;
 
   // A list of modifications to apply to the affected trips. 
-  repeated Modification modifications = 4; 
+  repeated Modification modifications = 4;
 
   // The extensions namespace allows 3rd-party developers to extend the
   // GTFS Realtime Specification in order to add and evaluate new features and
@@ -1206,7 +1223,7 @@ message TripModifications {
 
 // NOTE: This field is still experimental, and subject to change. It may be formally adopted in the future.
 // Select a stop by stop sequence or by stop_id. At least one of the two values must be provided.
-message StopSelector { 
+message StopSelector {
   // Must be the same as in stop_times.txt in the corresponding GTFS feed.
   optional uint32 stop_sequence = 1;
   // Must be the same as in stops.txt in the corresponding GTFS feed.

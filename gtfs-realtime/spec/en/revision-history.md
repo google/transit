@@ -1,43 +1,47 @@
 ### Revision History
 
+#### October 2024
+
+* Clarification and small changes for Trip Modifications. See [discussion](https://github.com/google/transit/pull/497).
+
 #### March 2024
 
 * Adopted Trip-Modifications. See [discussion](https://github.com/google/transit/pull/403).
 
-### November 2022
+#### November 2022
 
 * Added support for DELETED trips. See [discussion](https://github.com/google/transit/pull/352).
 
-### July 2022
+#### July 2022
 
 * Add cause_detail and effect_detail. See [discussion](https://github.com/google/transit/pull/332)
 * Added ability to specify a wheelchair_accessible value in a TripUpdate.VehicleDescriptor. See [discussion](https://github.com/google/transit/pull/340).
 
-### September 2021
+#### September 2021
 
 * Feature/image in alerts. See [discussion](https://github.com/google/transit/pull/283).
 
-### August 2021
+#### August 2021
 
 * Add GTFS-NewShapes as experimental. See [discussion](https://github.com/google/transit/pull/272).
 
-### April 2021
+#### April 2021
 
 * Add departure_occupancy_status to TripUpdate. See [discussion](https://github.com/google/transit/pull/260).
 
-### February 2021
+#### February 2021
 
 * Clarification of GTFS Realtime occupancy descriptions. See [discussion](https://github.com/google/transit/pull/259).
 
-### September 2020 
+#### September 2020 
 
 * Support multi-car crowding. See [discussion](https://github.com/google/transit/pull/237).
 
-### April 2020
+#### April 2020
 
 * Support stop assignments. See [discussion](https://github.com/google/transit/pull/219).
 
-### July 2020
+#### July 2020
 
 * Support DUPLICATED trips. See [discussion](https://github.com/google/transit/pull/221).
 * Alert tts_header_text, tts_description_text no longer experimental. See [discussion](https://github.com/google/transit/pull/229).
