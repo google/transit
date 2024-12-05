@@ -55,6 +55,7 @@ Fields labeled as **experimental** are subject to change and not yet formally ad
         *   [VehiclePosition](#message-vehicleposition)
             *   [TripDescriptor](#message-tripdescriptor)
                 *   [ScheduleRelationship](#enum-schedulerelationship-1)
+                *   [ModifiedTripSelector](#message-modifiedtripselector)
             *   [VehicleDescriptor](#message-vehicledescriptor)
                 *   [WheelchairAccessible](#enum-wheelchairaccessible)
             *   [Position](#message-position)
@@ -104,6 +105,7 @@ Metadata about a feed, included in feed messages.
 | **gtfs_realtime_version** | [string](https://protobuf.dev/programming-guides/proto2/#scalar) | Required | One | Version of the feed specification. The current version is 2.0. |
 | **incrementality** | [Incrementality](#enum-incrementality) | Required | One |
 | **timestamp** | [uint64](https://protobuf.dev/programming-guides/proto2/#scalar) | Required | One | This timestamp identifies the moment when the content of this feed has been created (in server time). In POSIX time (i.e., number of seconds since January 1st 1970 00:00:00 UTC). To avoid time skew between systems producing and consuming realtime information it is strongly advised to derive timestamp from a time server. It is completely acceptable to use Stratum 3 or even lower strata servers since time differences up to a couple of seconds are tolerable. |
+| **feed_version** | [string](https://protobuf.dev/programming-guides/proto2/#scalar) | Optional | One | String that matches the `feed_info.feed_version` from the GTFS feed that the realtime data is based on. Consumers can use this to identify which GTFS feed is currently active or when a new one is available to download. |
 
 ## _enum_ Incrementality
 
@@ -121,7 +123,7 @@ Determines whether the current fetch is incremental.
 
 ## _message_ FeedEntity
 
-A definition (or update) of an entity in the transit feed. If the entity is not being deleted, exactly one of 'trip_update', 'vehicle', 'alert' and 'shape' fields should be populated.
+A definition (or update) of an entity in the transit feed. If the entity is not being deleted, exactly one of 'trip_update', 'vehicle', 'alert', 'shape', 'stop' or 'trip_modification' fields should be populated.
 
 **Fields**
 
@@ -133,6 +135,8 @@ A definition (or update) of an entity in the transit feed. If the entity is not 
 | **vehicle** | [VehiclePosition](#message-vehicleposition) | Conditionally required | One | Data about the realtime position of a vehicle. At least one of the fields trip_update, vehicle, alert, or shape must be provided - all these fields cannot be empty. |
 | **alert** | [Alert](#message-alert) | Conditionally required | One | Data about the realtime alert. At least one of the fields trip_update, vehicle, alert, or shape must be provided - all these fields cannot be empty. |
 | **shape** | [Shape](#message-shape) | Conditionally required | One | Data about the realtime added shapes, such as for a detour. At least one of the fields trip_update, vehicle, alert, or shape must be provided - all these fields cannot be empty. <br><br>**Caution:** this field is still **experimental**, and subject to change. It may be formally adopted in the future. |
+| **stop** | [Stop](#message-stop) | Conditionally required | One | A new stop added to the feed dynamically. <br><br>**Caution:** this field is still **experimental**, and subject to change. It may be formally adopted in the future. |
+| **trip_modifications** | [TripModifications)(#message-tripmodifications) | Conditionally required | One | List of trips affected by a particular modifications, such as a detour. <br><br>**Caution:** this field is still **experimental**, and subject to change. It may be formally adopted in the future. |
 
 
 ## _message_ TripUpdate
@@ -149,6 +153,7 @@ Depending on the value of ScheduleRelationship, a TripUpdate can specify:
 The updates can be for future, predicted arrival/departure events, or for past events that already occurred. In most cases information about past events is a measured value thus its uncertainty value is recommended to be 0\. Although there could be cases when this does not hold so it is allowed to have uncertainty value different from 0 for past events. If an update's uncertainty is not 0, either the update is an approximate prediction for a trip that has not completed or the measurement is not precise or the update was a prediction for the past that has not been verified after the event occurred.
 
 If a vehicle is serving multiple trips within the same block (for more information about trips and blocks, please refer to [GTFS trips.txt](https://github.com/google/transit/blob/master/gtfs/spec/en/reference.md#tripstxt)):
+
 * the feed should include a TripUpdate for the trip currently being served by the vehicle. Producers are encouraged to include TripUpdates for one or more trips after the current trip in this vehicle's block if the producer is confident in the quality of the predictions for these future trip(s). Including multiple TripUpdates for the same vehicle avoids prediction "pop-in" for riders as the vehicle transitions from one trip to another and also gives riders advance notice of delays that impact downstream trips (e.g., when the known delay exceeds planned layover times between trips).
 * the respective TripUpdate entities are not required to be added to the feed in the same order that they are scheduled in the block. For example, if there are trips with `trip_ids` 1, 2, and 3 that all belong to one block, and the vehicle travels trip 1, then trip 2, and then trip 3, the `trip_update` entities may appear in any order - for example, adding trip 2, then trip 1, and then trip 3 is allowed.
 
@@ -437,6 +442,7 @@ A geographic position of a vehicle.
 A descriptor that identifies a single instance of a GTFS trip.
 
 To specify a single trip instance, in many cases a `trip_id` by itself is sufficient. However, the following cases require additional information to resolve to a single trip instance:
+
 * For trips defined in frequencies.txt, `start_date` and `start_time` are required in addition to `trip_id`
 * If the trip lasts for more than 24 hours, or is delayed such that it would collide with a scheduled trip on the following day, then `start_date` is required in addition to `trip_id`
 * If the `trip_id` field can't be provided, then `route_id`, `direction_id`, `start_date`, and `start_time` must all be provided
@@ -459,6 +465,7 @@ TripDescriptor.route_id cannot be used within an Alert EntitySelector to specify
 | **start_time** | [string](https://protobuf.dev/programming-guides/proto2/#scalar) | Conditionally required | One | The initially scheduled start time of this trip instance. When the trip_id corresponds to a non-frequency-based trip, this field should either be omitted or be equal to the value in the GTFS feed. When the trip_id correponds to a frequency-based trip defined in GTFS frequencies.txt, start_time is required and must be specified for trip updates and vehicle positions. If the trip corresponds to exact_times=1 GTFS record, then start_time must be some multiple (including zero) of headway_secs later than frequencies.txt start_time for the corresponding time period. If the trip corresponds to exact_times=0, then its start_time may be arbitrary, and is initially expected to be the first departure of the trip. Once established, the start_time of this frequency-based exact_times=0 trip should be considered immutable, even if the first departure time changes -- that time change may instead be reflected in a StopTimeUpdate. If trip_id is omitted, start_time must be provided. Format and semantics of the field is same as that of GTFS/frequencies.txt/start_time, e.g., 11:15:35 or 25:15:35. |
 | **start_date** | [string](https://protobuf.dev/programming-guides/proto2/#scalar) | Conditionally required | One | The start date of this trip instance in YYYYMMDD format. For scheduled trips (trips not defined in GTFS frequencies.txt), this field must be provided to disambiguate trips that are so late as to collide with a scheduled trip on a next day. For example, for a train that departs 8:00 and 20:00 every day, and is 12 hours late, there would be two distinct trips on the same time. This field can be provided but is not mandatory for schedules in which such collisions are impossible - for example, a service running on hourly schedule where a vehicle that is one hour late is not considered to be related to schedule anymore. This field is required for frequency-based trips defined in GTFS frequencies.txt. If trip_id is omitted, start_date must be provided. |
 | **schedule_relationship** | [ScheduleRelationship](#enum-schedulerelationship-1) | Optional | One | The relation between this trip and the static schedule. If TripDescriptor is provided in an Alert `EntitySelector`, the `schedule_relationship` field is ignored by consumers when identifying the matching trip instance.
+| **modified_trip** | [ModifiedTripSelector](#message-modifiedtripselector) | Optional | One | Linkage to any modifications done to this trip (shape changes, removal or addition of stops). If this field is provided, the `trip_id`, `route_id`, `direction_id`, `start_time`, `start_date` fields of the `TripDescriptor` MUST be left empty, to avoid confusion by consumers that aren't looking for the `ModifiedTripSelector` value. 
 
 ## _enum_ ScheduleRelationship
 
@@ -474,6 +481,18 @@ The relation between this trip and the static schedule. If a trip is done in acc
 | **CANCELED** | A trip that existed in the schedule but was removed. |
 | **DUPLICATED** | A new trip that is the same as an existing scheduled trip except for service start date and time. Used with `TripUpdate.TripProperties.trip_id`, `TripUpdate.TripProperties.start_date`, and `TripUpdate.TripProperties.start_time` to copy an existing trip from static GTFS but start at a different service date and/or time. Duplicating a trip is allowed if the service related to the original trip in (CSV) GTFS (in `calendar.txt` or `calendar_dates.txt`) is operating within the next 30 days. The trip to be duplicated is identified via `TripUpdate.TripDescriptor.trip_id`. <br><br> This enumeration does not modify the existing trip referenced by `TripUpdate.TripDescriptor.trip_id` - if a producer wants to cancel the original trip, it must publish a separate `TripUpdate` with the value of CANCELED. Trips defined in GTFS `frequencies.txt` with `exact_times` that is empty or equal to `0` cannot be duplicated. The `VehiclePosition.TripDescriptor.trip_id` for the new trip must contain the matching value from `TripUpdate.TripProperties.trip_id` and `VehiclePosition.TripDescriptor.ScheduleRelationship` must also be set to `DUPLICATED`.  <br><br>*Existing producers and consumers that were using the ADDED enumeration to represent duplicated trips must follow the [migration guide](/gtfs-realtime/spec/en/examples/migration-duplicated.md) to transition to the DUPLICATED enumeration.* |
 | **DELETED** | A trip that existed in the schedule but was removed that must not be shown to users. <br><br> DELETED should be used instead of CANCELED to indicate that a transit provider would like to entirely remove information about the corresponding trip from consuming applications, so the trip is not shown as cancelled to riders, e.g. a trip that is entirely being replaced by another trip. This designation becomes particularly important if several trips are cancelled and replaced with substitute service. If consumers were to show explicit information about the cancellations it would distract from the more important real-time predictions.<br><br>**Caution:** this field is still **experimental**, and subject to change. It may be formally adopted in the future. |
+
+## _message_ ModifiedTripSelector
+
+When a service is affected by a trip modification, `ModifiedTripSelector` is used to select some trip. More detail in the [Trip Modification](https://github.com/google/transit/blob/master/gtfs-realtime/spec/en/trip-modifications.md#linkage-to-tripupdates) specification.
+
+**Values**
+
+| _**Field Name**_ | _**Type**_ | _**Required**_ | _**Cardinality**_ | _**Description**_ |
+| **modifications_id** | [string](https://protobuf.dev/programming-guides/proto2/#scalar) | Required | One | The `id` of the `FeedEntity` in which the contained `TripModifications` object affects this trip.
+| **affected_trip_id** | [string](https://protobuf.dev/programming-guides/proto2/#scalar) | Required | One | The `trip_id` from the GTFS feed that is modified by the `modifications_id`
+| **start_time** | [string](https://protobuf.dev/programming-guides/proto2/#scalar) | Optional | One | The initially scheduled start time of this trip instance, applied to the frequency based modified trip. Same definition as **start_time** in [TripDescriptor](#message-tripdescriptor).
+| **start_date** | [string](https://protobuf.dev/programming-guides/proto2/#scalar) | Optional | One |  The start date of this trip instance in YYYYMMDD format, applied to the modified trip. Same definition as **start_date** in [TripDescriptor](#message-tripdescriptor).
 
 ## _message_ VehicleDescriptor
 

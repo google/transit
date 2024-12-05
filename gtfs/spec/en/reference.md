@@ -1,6 +1,6 @@
 ## General Transit Feed Specification Reference
 
-**Revised Nov 16, 2023. See [Revision History](../../CHANGES.md) for more details.**
+**Revised Oct 16, 2024. See [Revision History](https://gtfs.org/schedule/process/#revision-history) for more details.**
 
 This document defines the format and structure of the files that comprise a GTFS dataset.
 
@@ -114,7 +114,7 @@ This specification defines the following files:
 |  File Name | Presence | Description |
 |  ------ | ------ | ------ |
 |  [agency.txt](#agencytxt) | **Required** | Transit agencies with service represented in this dataset. |
-|  [stops.txt](#stopstxt) | **Required** | Stops where vehicles pick up or drop off riders. Also defines stations and station entrances.  |
+|  [stops.txt](#stopstxt) | **Conditionally Required** | Stops where vehicles pick up or drop off riders. Also defines stations and station entrances. <br><br>Conditionally Required:<br> - Optional if demand-responsive zones are defined in [locations.geojson](#locationsgeojson). <br>- **Required** otherwise. |
 |  [routes.txt](#routestxt) | **Required** | Transit routes. A route is a group of trips that are displayed to riders as a single service. |
 |  [trips.txt](#tripstxt)  | **Required** | Trips for each route. A trip is a sequence of two or more stops that occur during a specific time period. |
 |  [stop_times.txt](#stop_timestxt) | **Required** | Times that a vehicle arrives at and departs from stops for each trip. |
@@ -142,7 +142,7 @@ This specification defines the following files:
 |  [locations.geojson](#locationsgeojson)  | Optional | Zones for rider pickup or drop-off requests by on-demand services, represented as GeoJSON polygons. |
 |  [booking_rules.txt](#booking_rulestxt)  | Optional | Booking information for rider-requested services. |
 |  [translations.txt](#translationstxt)  | Optional | Translations of customer-facing dataset values. |
-|  [feed_info.txt](#feed_infotxt)  | Optional | Dataset metadata, including publisher, version, and expiration information. |
+|  [feed_info.txt](#feed_infotxt)  | **Conditionally Required** | Dataset metadata, including publisher, version, and expiration information.<br><br>Conditionally Required:<br>- **Required** if [translations.txt](#translationstxt) is provided.<br>- Recommended otherwise.|
 |  [attributions.txt](#attributionstxt)  | Optional | Dataset attributions. |
 
 ## File Requirements
@@ -198,7 +198,7 @@ Primary key (`agency_id`)
 
 ### stops.txt
 
-File: **Required**
+File: **Conditionally Required**
 
 Primary key (`stop_id`)
 
@@ -211,9 +211,9 @@ Primary key (`stop_id`)
 |  `stop_desc` | Text | Optional | Description of the location that provides useful, quality information. Should not be a duplicate of `stop_name`.|
 |  `stop_lat` | Latitude | **Conditionally Required** | Latitude of the location.<br><br>For stops/platforms (`location_type=0`) and boarding area (`location_type=4`), the coordinates must be the ones of the bus pole — if exists — and otherwise of where the travelers are boarding the vehicle (on the sidewalk or the platform, and not on the roadway or the track where the vehicle stops). <br><br>Conditionally Required:<br>- **Required** for locations which are stops (`location_type=0`), stations (`location_type=1`) or entrances/exits (`location_type=2`).<br>- Optional for locations which are generic nodes (`location_type=3`) or boarding areas (`location_type=4`).|
 |  `stop_lon` | Longitude | **Conditionally Required** | Longitude of the location.<br><br>For stops/platforms (`location_type=0`) and boarding area (`location_type=4`), the coordinates must be the ones of the bus pole — if exists — and otherwise of where the travelers are boarding the vehicle (on the sidewalk or the platform, and not on the roadway or the track where the vehicle stops). <br><br>Conditionally Required:<br>- **Required** for locations which are stops (`location_type=0`), stations (`location_type=1`) or entrances/exits (`location_type=2`).<br>- Optional for locations which are generic nodes (`location_type=3`) or boarding areas (`location_type=4`). |
-|  `zone_id` | ID | **Conditionally Required** | Identifies the fare zone for a stop. If this record represents a station or station entrance, the `zone_id` is ignored.<br><br>Conditionally Required:<br>- **Required** if providing fare information using [fare_rules.txt](#fare_rulestxt) <br>- Optional otherwise.|
+|  `zone_id` | ID | Optional | Identifies the fare zone for a stop. If this record represents a station or station entrance, the `zone_id` is ignored.|
 |  `stop_url` | URL | Optional | URL of a web page about the location. This should be different from the `agency.agency_url` and the `routes.route_url` field values. |
-|  `location_type` | Enum | Optional | Location type. Valid options are:<br><br>`0` (or blank) - **Stop** (or **Platform**). A location where passengers board or disembark from a transit vehicle. Is called a platform when defined within a `parent_station`.<br>`1` - **Station**. A physical structure or area that contains one or more platform.<br>`2` - **Entrance/Exit**. A location where passengers can enter or exit a station from the street. If an entrance/exit belongs to multiple stations, it may be linked by pathways to both, but the data provider must pick one of them as parent.<br>`3` - **Generic Node**. A location within a station, not matching any other `location_type`, that may be used to link together pathways define in [pathways.txt](#pathwaystxt).<br>`4` - **Boarding Area**. A specific location on a platform, where passengers can board and/or alight vehicles.|
+|  `location_type` | Enum | Optional | Location type. Valid options are:<br><br>`0` (or empty) - **Stop** (or **Platform**). A location where passengers board or disembark from a transit vehicle. Is called a platform when defined within a `parent_station`.<br>`1` - **Station**. A physical structure or area that contains one or more platform.<br>`2` - **Entrance/Exit**. A location where passengers can enter or exit a station from the street. If an entrance/exit belongs to multiple stations, it may be linked by pathways to both, but the data provider must pick one of them as parent.<br>`3` - **Generic Node**. A location within a station, not matching any other `location_type`, that may be used to link together pathways define in [pathways.txt](#pathwaystxt).<br>`4` - **Boarding Area**. A specific location on a platform, where passengers can board and/or alight vehicles.|
 |  `parent_station` | Foreign ID referencing `stops.stop_id` | **Conditionally Required** | Defines hierarchy between the different locations defined in [stops.txt](#stopstxt). It contains the ID of the parent location, as followed:<br><br>- **Stop/platform** (`location_type=0`): the `parent_station` field contains the ID of a station.<br>- **Station** (`location_type=1`): this field must be empty.<br>- **Entrance/exit** (`location_type=2`) or **generic node** (`location_type=3`): the `parent_station` field contains the ID of a station (`location_type=1`)<br>- **Boarding Area** (`location_type=4`): the `parent_station` field contains ID of a platform.<br><br>Conditionally Required:<br>- **Required** for locations which are entrances (`location_type=2`), generic nodes (`location_type=3`) or boarding areas (`location_type=4`).<br>- Optional for stops/platforms (`location_type=0`).<br>- Forbidden for stations (`location_type=1`).|
 |  `stop_timezone` | Timezone | Optional | Timezone of the location. If the location has a parent station, it inherits the parent station’s timezone instead of applying its own. Stations and parentless stops with empty `stop_timezone` inherit the timezone specified by `agency.agency_timezone`. The times provided in [stop_times.txt](#stop_timestxt) are in the timezone specified by `agency.agency_timezone`, not `stop_timezone`. This ensures that the time values in a trip always increase over the course of a trip, regardless of which timezones the trip crosses. |
 |  `wheelchair_boarding` | Enum | Optional | Indicates whether wheelchair boardings are possible from the location. Valid options are: <br><br>For parentless stops:<br>`0` or empty - No accessibility information for the stop.<br>`1` - Some vehicles at this stop can be boarded by a rider in a wheelchair.<br>`2` - Wheelchair boarding is not possible at this stop. <br><br>For child stops: <br>`0` or empty - Stop will inherit its `wheelchair_boarding` behavior from the parent station, if specified in the parent.<br>`1` - There exists some accessible path from outside the station to the specific stop/platform.<br>`2` - There exists no accessible path from outside the station to the specific stop/platform.<br><br> For station entrances/exits: <br>`0` or empty - Station entrance will inherit its `wheelchair_boarding` behavior from the parent station, if specified for the parent.<br>`1` - Station entrance is wheelchair accessible.<br>`2` - No accessible path from station entrance to stops/platforms. |
@@ -254,7 +254,7 @@ Primary key (`trip_id`)
 |  `route_id` | Foreign ID referencing `routes.route_id` | **Required** | Identifies a route. |
 |  `service_id` | Foreign ID referencing `calendar.service_id` or `calendar_dates.service_id` | **Required** | Identifies a set of dates when service is available for one or more routes. |
 |  `trip_id` | Unique ID | **Required** | Identifies a trip. |
-|  `trip_headsign` | Text | Optional | Text that appears on signage identifying the trip's destination to riders. Should be used to distinguish between different patterns of service on the same route.<br><br> If the headsign changes during a trip, values for `trip_headsign` may be overridden by defining values in `stop_times.stop_headsign` for specific `stop_time`s along the trip. |
+|  `trip_headsign` | Text | Optional | Text that appears on signage identifying the trip's destination to riders. This field is recommended for all services with headsign text displayed on the vehicle which may be used to distinguish amongst trips in a route.<br><br> If the headsign changes during a trip, values for `trip_headsign` may be overridden by defining values in `stop_times.stop_headsign` for specific `stop_time`s along the trip. |
 |  `trip_short_name` | Text | Optional | Public facing text used to identify the trip to riders, for instance, to identify train numbers for commuter rail trips. If riders do not commonly rely on trip names, `trip_short_name` should be empty. A `trip_short_name` value, if provided, should uniquely identify a trip within a service day; it should not be used for destination names or limited/express designations. |
 |  `direction_id` | Enum | Optional | Indicates the direction of travel for a trip. This field should not be used in routing; it provides a way to separate trips by direction when publishing time tables. Valid options are: <br><br>`0` - Travel in one direction (e.g. outbound travel).<br>`1` - Travel in the opposite direction (e.g. inbound travel).<hr>*Example: The `trip_headsign` and `direction_id` fields may be used together to assign a name to travel in each direction for a set of trips. A [trips.txt](#tripstxt) file could contain these records for use in time tables:* <br> `trip_id,...,trip_headsign,direction_id` <br> `1234,...,Airport,0` <br> `1505,...,Downtown,1` |
 |  `block_id` | ID | Optional | Identifies the block to which the trip belongs. A block consists of a single trip or many sequential trips made using the same vehicle, defined by shared service days and `block_id`. A `block_id` may have trips with different service days, making distinct blocks. See the [example below](#example-blocks-and-service-day). To provide in-seat transfers information, [transfers](#transferstxt) of `transfer_type` `4` should be provided instead. |
@@ -288,8 +288,8 @@ Primary key (`trip_id`, `stop_sequence`)
 |  Field Name | Type | Presence | Description |
 |  ------ | ------ | ------ | ------ |
 |  `trip_id` | Foreign ID referencing `trips.trip_id` | **Required** | Identifies a trip.  |
-|  `arrival_time` | Time | **Conditionally Required** | Arrival time at the stop (defined by `stop_times.stop_id`) for a specific trip (defined by `stop_times.trip_id`) in the time zone specified by `agency.agency_timezone`, not `stops.stop_timezone`. <br><br>If there are not separate times for arrival and departure at a stop, `arrival_time` and `departure_time` should be the same. <br><br>For times occurring after midnight on the service day, enter the time as a value greater than 24:00:00 in HH:MM:SS.<br><br> If exact arrival and departure times (`timepoint=1` or empty) are not available, estimated or interpolated arrival and departure times (`timepoint=0`) should be provided.<br><br>Conditionally Required:<br>- **Required** for the first and last stop in a trip (defined by `stop_times.stop_sequence`). <br>- **Required** for `timepoint=1`.<br>-&nbsp;**Forbidden** when `start_pickup_drop_off_window` or `end_pickup_drop_off_window` are defined.<br>- Optional otherwise.|
-|  `departure_time` | Time | **Conditionally Required** | Departure time from the stop (defined by `stop_times.stop_id`) for a specific trip (defined by `stop_times.trip_id`) in the time zone specified by `agency.agency_timezone`, not `stops.stop_timezone`.<br><br>If there are not separate times for arrival and departure at a stop, `arrival_time` and `departure_time` should be the same. <br><br>For times occurring after midnight on the service day, enter the time as a value greater than 24:00:00 in HH:MM:SS.<br><br> If exact arrival and departure times (`timepoint=1` or empty) are not available, estimated or interpolated arrival and departure times (`timepoint=0`) should be provided.<br><br>Conditionally Required:<br>- **Required** for `timepoint=1`.<br>-&nbsp;**Forbidden** when `start_pickup_drop_off_window` or `end_pickup_drop_off_window` are defined.<br>- Optional otherwise.| |
+|  `arrival_time` | Time | **Conditionally Required** | Arrival time at the stop (defined by `stop_times.stop_id`) for a specific trip (defined by `stop_times.trip_id`) in the time zone specified by `agency.agency_timezone`, not `stops.stop_timezone`. <br><br>If there are not separate times for arrival and departure at a stop, `arrival_time` and `departure_time` should be the same. <br><br>For times occurring after midnight on the service day, enter the time as a value greater than 24:00:00 in HH:MM:SS.<br><br> If exact arrival and departure times (`timepoint=1`) are not available, estimated or interpolated arrival and departure times (`timepoint=0`) should be provided.<br><br>Conditionally Required:<br>- **Required** for the first and last stop in a trip (defined by `stop_times.stop_sequence`). <br>- **Required** for `timepoint=1`.<br>-&nbsp;**Forbidden** when `start_pickup_drop_off_window` or `end_pickup_drop_off_window` are defined.<br>- Optional otherwise.|
+|  `departure_time` | Time | **Conditionally Required** | Departure time from the stop (defined by `stop_times.stop_id`) for a specific trip (defined by `stop_times.trip_id`) in the time zone specified by `agency.agency_timezone`, not `stops.stop_timezone`.<br><br>If there are not separate times for arrival and departure at a stop, `arrival_time` and `departure_time` should be the same. <br><br>For times occurring after midnight on the service day, enter the time as a value greater than 24:00:00 in HH:MM:SS.<br><br> If exact arrival and departure times (`timepoint=1`) are not available, estimated or interpolated arrival and departure times (`timepoint=0`) should be provided.<br><br>Conditionally Required:<br>- **Required** for `timepoint=1`.<br>-&nbsp;**Forbidden** when `start_pickup_drop_off_window` or `end_pickup_drop_off_window` are defined.<br>- Optional otherwise. |
 |  `stop_id` | Foreign ID referencing `stops.stop_id` | **Conditionally Required** | Identifies the serviced stop. All stops serviced during a trip must have a record in [stop_times.txt](#stop_timestxt). Referenced locations must be stops/platforms, i.e. their `stops.location_type` value must be `0` or empty. A stop may be serviced multiple times in the same trip, and multiple trips and routes may service the same stop.<br><br>On-demand service using stops should be referenced in the sequence in which service is available at those stops. A data consumer should assume that travel is possible from one stop or location to any stop or location later in the trip, provided that the `pickup/drop_off_type` of each stop_time and the time constraints of each `start/end_pickup_drop_off_window` do not forbid it.<br><br>Conditionally Required:<br>- **Required** if `stop_times.location_group_id` AND `stop_times.location_id` are NOT defined.<br>- **Forbidden** if `stop_times.location_group_id` or `stop_times.location_id` are defined. |
 |  `location_group_id` | Foreign ID referencing `location_groups.location_group_id` | **Conditionally Forbidden** | Identifies the serviced location group that indicates groups of stops where riders may request pickup or drop off. All location groups serviced during a trip must have a record in [stop_times.txt](#stop_timestxt). Multiple trips and routes may service the same location group.<br><br>On-demand service using location groups should be referenced in the sequence in which service is available at those location groups. A data consumer should assume that travel is possible from one stop or location to any stop or location later in the trip, provided that the `pickup/drop_off_type` of each stop_time and the time constraints of each `start/end_pickup_drop_off_window` do not forbid it.<br><br>**Conditionally Forbidden**:<br>- **Forbidden** if `stop_times.stop_id` or `stop_times.location_id` are defined. |
 |  `location_id` | Foreign ID referencing `id` from `locations.geojson` | **Conditionally Forbidden** | Identifies the GeoJSON location that corresponds to serviced zone where riders may request pickup or drop off. All GeoJSON locations serviced during a trip must have a record in [stop_times.txt](#stop_timestxt). Multiple trips and routes may service the same GeoJSON location.<br><br>On-demand service within locations should be referenced in the sequence in which service is available in those locations. A data consumer should assume that travel is possible from one stop or location to any stop or location later in the trip, provided that the `pickup/drop_off_type` of each stop_time and the time constraints of each `start/end_pickup_drop_off_window` do not forbid it.<br><br>**Conditionally Forbidden**:<br>- **Forbidden** if `stop_times.stop_id` or `stop_times.location_group_id` are defined. |
@@ -302,13 +302,13 @@ Primary key (`trip_id`, `stop_sequence`)
 |  `continuous_pickup` | Enum | **Conditionally Forbidden** | Indicates that the rider can board the transit vehicle at any point along the vehicle’s travel path as described by [shapes.txt](#shapestxt), from this `stop_time` to the next `stop_time` in the trip’s `stop_sequence`. Valid options are: <br><br>`0` - Continuous stopping pickup. <br>`1` or empty - No continuous stopping pickup. <br>`2` - Must phone agency to arrange continuous stopping pickup. <br>`3` - Must coordinate with driver to arrange continuous stopping pickup.  <br><br>If this field is populated, it overrides any continuous pickup behavior defined in [routes.txt](#routestxt). If this field is empty, the `stop_time` inherits any continuous pickup behavior defined in [routes.txt](#routestxt).<br><br>**Conditionally Forbidden**:<br>- **Forbidden** if `start_pickup_drop_off_window` or `end_pickup_drop_off_window` are defined.<br> - Optional otherwise. |
 |  `continuous_drop_off` | Enum | **Conditionally Forbidden** | Indicates that the rider can alight from the transit vehicle at any point along the vehicle’s travel path as described by [shapes.txt](#shapestxt), from this `stop_time` to the next `stop_time` in the trip’s `stop_sequence`. Valid options are: <br><br>`0` - Continuous stopping drop off. <br>`1` or empty - No continuous stopping drop off. <br>`2` - Must phone agency to arrange continuous stopping drop off. <br>`3` - Must coordinate with driver to arrange continuous stopping drop off. <br><br>If this field is populated, it overrides any continuous drop-off behavior defined in [routes.txt](#routestxt). If this field is empty, the `stop_time` inherits any continuous drop-off behavior defined in [routes.txt](#routestxt).<br><br>**Conditionally Forbidden**:<br>- **Forbidden** if `start_pickup_drop_off_window` or `end_pickup_drop_off_window` are defined.<br> - Optional otherwise. |
 |  `shape_dist_traveled` | Non-negative float | Optional | Actual distance traveled along the associated shape, from the first stop to the stop specified in this record. This field specifies how much of the shape to draw between any two stops during a trip. Must be in the same units used in [shapes.txt](#shapestxt). Values used for `shape_dist_traveled` must increase along with `stop_sequence`; they must not be used to show reverse travel along a route.<br><br>Recommended for routes that have looping or inlining (the vehicle crosses or travels over the same portion of alignment in one trip). See [`shapes.shape_dist_traveled`](#shapestxt). <hr>*Example: If a bus travels a distance of 5.25 kilometers from the start of the shape to the stop,`shape_dist_traveled`=`5.25`.*|
-|  `timepoint` | Enum | Recommended | Indicates if arrival and departure times for a stop are strictly adhered to by the vehicle or if they are instead approximate and/or interpolated times. This field allows a GTFS producer to provide interpolated stop-times, while indicating that the times are approximate. Valid options are:<br><br>`0` - Times are considered approximate.<br>`1` or empty - Times are considered exact. |
-| `pickup_booking_rule_id` | ID referencing `booking_rules.booking_rule_id` | Optional | Identifies the boarding booking rule at this stop time.<br><br>Recommended when `pickup_type=2`. |
-| `drop_off_booking_rule_id` | ID referencing `booking_rules.booking_rule_id` | Optional | Identifies the alighting booking rule at this stop time.<br><br>Recommended when `drop_off_type=2`. |
+|  `timepoint` | Enum | Optional | Indicates if arrival and departure times for a stop are strictly adhered to by the vehicle or if they are instead approximate and/or interpolated times. This field allows a GTFS producer to provide interpolated stop-times, while indicating that the times are approximate. Valid options are:<br><br>`0` - Times are considered approximate. <br>`1` - Times are considered exact. <br><br> All records of [stop_times.txt](#stop_timestxt) with defined arrival or departure times should have timepoint values populated. If no timepoint values are provided, all times are considered exact. |
+| `pickup_booking_rule_id` | Foreign ID referencing `booking_rules.booking_rule_id` | Optional | Identifies the boarding booking rule at this stop time.<br><br>Recommended when `pickup_type=2`. |
+| `drop_off_booking_rule_id` | Foreign ID referencing `booking_rules.booking_rule_id` | Optional | Identifies the alighting booking rule at this stop time.<br><br>Recommended when `drop_off_type=2`. |
 
 #### On-demand Service Routing Behavior
-- When providing routing or travel time between the origin and destination, data consumers should ignore intermediate stop_times.txt records with the same `trip_id` that have `start_pickup_drop_off_window` and `end_pickup_drop_off_window` defined. For examples that demonstrate what should be ignored, see the data example page.
-- Simultaneous overlap of locations.geojson `id` geometry, `start/end_pickup_drop_off_window` time, and `pickup_type` or `drop_off_type` between two or more stop_times.txt records with the same `trip_id` is forbidden. For examples that demonstrate what is forbidden, see the data example page.
+- When providing routing or travel time between the origin and destination, data consumers should ignore intermediate stop_times.txt records with the same `trip_id` that have `start_pickup_drop_off_window` and `end_pickup_drop_off_window` defined. For examples that demonstrate what should be ignored, see [the data example page](https://gtfs.org/schedule/examples/flex/#ignoring-intermediate-stop-times-records-with-pickupdrop-off-windows).
+- Simultaneous overlap of locations.geojson `id` geometry, `start/end_pickup_drop_off_window` time, and `pickup_type` or `drop_off_type` between two or more stop_times.txt records with the same `trip_id` is forbidden. For examples that demonstrate what is forbidden, see [the data example page](https://gtfs.org/schedule/examples/flex/#zone-overlap-constraint).
 
 ### calendar.txt
 
@@ -393,7 +393,7 @@ For examples that demonstrate how to specify a fare structure with [fare_rules.t
 
 File: **Optional**
 
-Primary key (*)
+Primary key (`*`)
 
 Used to describe fares that can vary based on the time of day, the day of the week, or a particular day in the year. Timeframes can be associated with fare products in [fare_leg_rules.txt](#fare_leg_rulestxt). <br>
 There must not be overlapping time intervals for the same `timeframe_group_id` and `service_id` values.
@@ -414,7 +414,7 @@ There must not be overlapping time intervals for the same `timeframe_group_id` a
 
 File: **Optional** 
 
-Primary Key (`fare_media_id`)
+Primary key (`fare_media_id`)
 
 To describe the different fare media that can be employed to use fare products. Fare media are physical or virtual holders used for the representation and/or validation of a fare product.
 
@@ -428,16 +428,16 @@ To describe the different fare media that can be employed to use fare products. 
 
 File: **Optional**
 
-Primary Key (`fare_product_id`, `fare_media_id`)
+Primary key (`fare_product_id`, `fare_media_id`)
 
-To describe the different types of tickets or fares that can be purchased by riders.
+Used to describe the range of fares available for purchase by riders or taken into account when computing the total fare for journeys with multiple legs, such as transfer costs.
 
 |  Field Name | Type | Presence | Description |
 |  ------ | ------ | ------ | ------ |
-| `fare_product_id` | ID | **Required** | Identifies a fare product. |
+| `fare_product_id` | ID | **Required** | Identifies a fare product or set of fare products.<br><br>Multiple records in [fare_products.txt](#fare_productstxt) may share the same `fare_product_id`, in which case all records with that ID will be retrieved when referenced from another file.<br><br>Multiple records may share the same `fare_product_id` but with different `fare_media_id`s, indicating various methods available for employing the fare product, potentially at different prices. |
 | `fare_product_name` | Text | Optional | The name of the fare product as displayed to riders. |
 |  `fare_media_id` | Foreign ID referencing `fare_media.fare_media_id` | Optional |  Identifies a fare media that can be employed to use the fare product during the trip. When `fare_media_id` is empty, it is considered that the fare media is unknown.|
-| `amount` | Currency amount | **Required** | The cost of the fare product. May be negative to represent transfer discounts. May be zero to represent a fare product that is free.|
+| `amount` | Currency amount | **Required** | The cost of the fare product. May be negative to represent transfer discounts. May be zero to represent a fare product that is free. |
 | `currency` | Currency code | **Required** | The currency of the cost of the fare product. |
 
 
@@ -445,7 +445,7 @@ To describe the different types of tickets or fares that can be purchased by rid
 
 File: **Optional**
 
-Primary Key (`network_id, from_area_id, to_area_id, from_timeframe_group_id, to_timeframe_group_id, fare_product_id`)
+Primary key (`network_id, from_area_id, to_area_id, from_timeframe_group_id, to_timeframe_group_id, fare_product_id`)
 
 Fare rules for individual legs of travel.
 
@@ -458,31 +458,39 @@ To process the cost of a leg:
     - `fare_leg_rules.from_area_id`
     - `fare_leg_rules.to_area_id`
     - `fare_leg_rules.from_timeframe_group_id`
-    - `fare_leg_rules.to_timeframe_group_id`<br/>    
+    - `fare_leg_rules.to_timeframe_group_id`
 <br/>
 
-2. If the leg exactly matches a record in [fare_leg_rules.txt](#fare_leg_rulestxt) based on the characteristics of travel, that record must be processed to determine the cost of the leg.
+2. If the leg exactly matches a record in [fare_leg_rules.txt](#fare_leg_rulestxt) based on the characteristics of travel, that record must be processed to determine the cost of the leg. This file handles empty entries in two ways: empty semantics OR rule_priority.
 <br/>
 
-3. If no exact matches are found, then empty entries in `fare_leg_rules.network_id`, `fare_leg_rules.from_area_id`, and `fare_leg_rules.to_area_id` must be checked to process the cost of the leg:
+3. If no exact matches are found AND the `rule_priority` field does not exist, then empty entries in `fare_leg_rules.network_id`, `fare_leg_rules.from_area_id`, and `fare_leg_rules.to_area_id` must be checked to process the cost of the leg:
     - An empty entry in `fare_leg_rules.network_id` corresponds to all networks defined in [routes.txt](#routestxt) or [networks.txt](#networkstxt) excluding the ones listed under `fare_leg_rules.network_id`
+
     - An empty entry in `fare_leg_rules.from_area_id` corresponds to all areas defined in `areas.area_id` excluding the ones listed under `fare_leg_rules.from_area_id`
     - An empty entry in `fare_leg_rules.to_area_id` corresponds to all areas defined in `areas.area_id` excluding the ones listed under `fare_leg_rules.to_area_id`
 <br/>
 
-4. If the leg does not match any of the rules described above, then the fare is unknown.
+4. If the `rule_priority` field exists, then
+    - An empty entry in `fare_leg_rules.network_id` indicates the network of the leg does not affect the matching of this rule.
+    - An empty entry in `fare_leg_rules.from_area_id` indicates the departure area of the leg does not affect the matching of this rule.
+    - An empty entry in `fare_leg_rules.to_area_id` indicates the arrival area of the leg does not affect the matching of this rule.
+<br/>
+      
+5. If the leg does not match any of the rules described above, then the fare is unknown.
 
 <br/>
 
 |  Field Name | Type | Presence | Description |
 |  ------ | ------ | ------ | ------ |
 | `leg_group_id` | ID | Optional | Identifies a group of entries in [fare_leg_rules.txt](#fare_leg_rulestxt).<br><br> Used to describe fare transfer rules between `fare_transfer_rules.from_leg_group_id` and `fare_transfer_rules.to_leg_group_id`.<br><br>Multiple entries in [fare_leg_rules.txt](#fare_leg_rulestxt) may belong to the same `fare_leg_rules.leg_group_id`.<br><br>The same entry in [fare_leg_rules.txt](#fare_leg_rulestxt) (not including `fare_leg_rules.leg_group_id`) must not belong to multiple `fare_leg_rules.leg_group_id`.|
-| `network_id` | Foreign ID referencing `routes.network_id` or `networks.network_id`| Optional | Identifies a route network that applies for the fare leg rule.<br><br>If there are no matching `fare_leg_rules.network_id` values to the `network_id` being filtered, empty `fare_leg_rules.network_id` will be matched by default.<br><br> An empty entry in `fare_leg_rules.network_id` corresponds to all networks defined in [routes.txt](#routestxt) or [networks.txt](#networkstxt) excluding the ones listed under `fare_leg_rules.network_id`<br><br>When matching against an [effective fare leg of multiple legs](#fare_leg_join_rulestxt), each leg must have the same `network_id` which will be used for matching. |
-| `from_area_id` | Foreign ID referencing `areas.area_id` | Optional | Identifies a departure area.<br><br>If there are no matching `fare_leg_rules.from_area_id` values to the `area_id` being filtered, empty `fare_leg_rules.from_area_id` will be matched by default. <br><br>An empty entry in `fare_leg_rules.from_area_id` corresponds to all areas defined in `areas.area_id` excluding the ones listed under `fare_leg_rules.from_area_id`<br><br>When matching against an [effective fare leg of multiple legs](#fare_leg_join_rulestxt), the first leg of the effective fare leg is used for determining the departure area. |
-| `to_area_id` | Foreign ID referencing `areas.area_id` | Optional | Identifies an arrival area.<br><br>If there are no matching `fare_leg_rules.to_area_id` values to the `area_id` being filtered, empty `fare_leg_rules.to_area_id` will be matched by default.<br><br> An empty entry in `fare_leg_rules.to_area_id` corresponds to all areas defined in `areas.area_id` excluding the ones listed under `fare_leg_rules.to_area_id`<br><br>When matching against an [effective fare leg of multiple legs](#fare_leg_join_rulestxt), the last leg of the effective fare leg is used for determining the arrival area. |
+| `network_id` | Foreign ID referencing `routes.network_id` or `networks.network_id`| Optional | Identifies a route network that applies for the fare leg rule.<br><br>If the `rule_priority` field does not exist AND there are no matching `fare_leg_rules.network_id` values to the `network_id` being filtered, empty `fare_leg_rules.network_id` will be matched by default.<br><br> An empty entry in `fare_leg_rules.network_id` corresponds to all networks defined in [routes.txt](#routestxt) or [networks.txt](#networkstxt) excluding the ones listed under `fare_leg_rules.network_id`<br><br> If the `rule_priority` field exists in the file, an empty `fare_leg_rules.network_id` indicates that the route network of the leg does not affect the matching of this rule.<br><br>When matching against an [effective fare leg of multiple legs](#fare_leg_join_rulestxt), each leg must have the same `network_id` which will be used for matching. |
+| `from_area_id` | Foreign ID referencing `areas.area_id` | Optional | Identifies a departure area.<br><br>If the `rule_priority` field does not exist AND there are no matching `fare_leg_rules.from_area_id` values to the `area_id` being filtered, empty `fare_leg_rules.from_area_id` will be matched by default. <br><br>An empty entry in `fare_leg_rules.from_area_id` corresponds to all areas defined in `areas.area_id` excluding the ones listed under `fare_leg_rules.from_area_id`<br><br> If the `rule_priority` field exists in the file, an empty `fare_leg_rules.from_area_id` indicates that the departure area of the leg does not affect the matching of this rule.<br><br>When matching against an [effective fare leg of multiple legs](#fare_leg_join_rulestxt), the first leg of the effective fare leg is used for determining the departure area. |
+| `to_area_id` | Foreign ID referencing `areas.area_id` | Optional | Identifies an arrival area.<br><br>If the `rule_priority` field does not exist AND there are no matching `fare_leg_rules.to_area_id` values to the `area_id` being filtered, empty `fare_leg_rules.to_area_id` will be matched by default.<br><br> An empty entry in `fare_leg_rules.to_area_id` corresponds to all areas defined in `areas.area_id` excluding the ones listed under `fare_leg_rules.to_area_id`<br><br>If the `rule_priority` field exists in the file, an empty `fare_leg_rules.to_area_id` indicates that the arrival area of the leg does not affect the matching of this rule.<br><br>When matching against an [effective fare leg of multiple legs](#fare_leg_join_rulestxt), the last leg of the effective fare leg is used for determining the arrival area. |
 |  `from_timeframe_group_id` | Foreign ID referencing `timeframes.timeframe_group_id` | Optional |  Defines the timeframe for the fare validation event at the start of the fare leg.<br><br>The “start time” of the fare leg is the time at which the event is scheduled to occur.  For example, the time could be the scheduled departure time of a bus at the start of a fare leg where the rider boards and validates their fare. For the rule matching semantics below, the start time is computed in local time, as determined by [Local Time Semantics](#localtimesemantics) of [timeframes.txt](#timeframestxt).  The stop or station of the fare leg’s departure event should be used for timezone resolution, where appropriate.<br><br>For a fare leg rule that specifies a `from_timeframe_group_id`, that rule will match a particular leg if there exists at least one record in [timeframes.txt](#timeframestxt) where all of the following conditions are true<br>- The value of `timeframe_group_id` is equal to the `from_timeframe_group_id` value.<br>- The set of days identified by the record’s `service_id` contains the “current day” of the fare leg’s start time.<br>- The “time-of-day” of the fare leg's start time is greater than or equal to the record’s `timeframes.start_time` value and less than the `timeframes.end_time` value.<br><br>An empty `fare_leg_rules.from_timeframe_group_id` indicates that the start time of the leg does not affect the matching of this rule.<br><br>When matching against an [effective fare leg of multiple legs](#fare_leg_join_rulestxt), the first leg of the effective fare leg is used for determining the starting fare validation event. |
 |  `to_timeframe_group_id` |  Foreign ID referencing `timeframes.timeframe_group_id` | Optional |  Defines the timeframe for the fare validation event at the end of the fare leg.<br><br>The “end time” of the fare leg is the time at which the event is scheduled to occur.  For example, the time could be the scheduled arrival time of a bus at the end of a fare leg where the rider gets off and validates their fare.  For the rule matching semantics below, the end time is computed in local time, as determined by [Local Time Semantics](#localtimesemantics) of [timeframes.txt](#timeframestxt).  The stop or station of the fare leg’s arrival event should be used for timezone resolution, where appropriate.<br><br>For a fare leg rule that specifies a `to_timeframe_group_id`, that rule will match a particular leg if there exists at least one record in [timeframes.txt](#timeframestxt) where all of the following conditions are true<br>- The value of `timeframe_group_id` is equal to the `to_timeframe_group_id` value.<br>- The set of days identified by the record’s `service_id` contains the “current day” of the fare leg’s end time.<br>- The “time-of-day” of the fare leg's end time is greater than or equal to the record’s `timeframes.start_time` value and less than the `timeframes.end_time` value.<br><br>An empty `fare_leg_rules.to_timeframe_group_id` indicates that the end time of the leg does not affect the matching of this rule.<br><br>When matching against an [effective fare leg of multiple legs](#fare_leg_join_rulestxt), the last leg of the effective fare leg is used for determining the ending fare validation event. |
 | `fare_product_id` | Foreign ID referencing `fare_products.fare_product_id` | **Required** | The fare product required to travel the leg. |
+| `rule_priority` | Non-negative integer | Optional | Defines the order of priority in which matching rules are applied to legs, allowing certain rules to take precedence over others. When multiple entries in `fare_leg_rules.txt` match, the rule or set of rules with the highest value for `rule_priority` will be selected.<br><br>An empty value for `rule_priority` is treated as zero. |
 
 ### fare_leg_join_rules.txt
 
@@ -506,7 +514,7 @@ For a sub-journey of two consecutive legs with a transfer, if the transfer match
 
 File: **Optional**
 
-Primary Key (`from_leg_group_id, to_leg_group_id, fare_product_id, transfer_count, duration_limit`)
+Primary key (`from_leg_group_id, to_leg_group_id, fare_product_id, transfer_count, duration_limit`)
 
 Fare rules for transfers between legs of travel defined in [`fare_leg_rules.txt`](#fare_leg_rulestxt).
 
@@ -596,7 +604,7 @@ File: **Optional**
 
 Primary key (`shape_id`, `shape_pt_sequence`)
 
-Shapes describe the path that a vehicle travels along a route alignment, and are defined in the file shapes.txt. Shapes are associated with Trips, and consist of a sequence of points through which the vehicle passes in order. Shapes do not need to intercept the location of Stops exactly, but all Stops on a trip should lie within a small distance of the shape for that trip, i.e. close to straight line segments connecting the shape points.
+Shapes describe the path that a vehicle travels along a route alignment, and are defined in the file shapes.txt. Shapes are associated with Trips, and consist of a sequence of points through which the vehicle passes in order. Shapes do not need to intercept the location of Stops exactly, but all Stops on a trip should lie within a small distance of the shape for that trip, i.e. close to straight line segments connecting the shape points. The shapes.txt file should be included for all route-based services (not for zone-based demand-responsive services).
 
 |  Field Name | Type | Presence | Description |
 |  ------ | ------ | ------ | ------ |
@@ -647,12 +655,12 @@ For a given ordered pair of arriving trip and departing trip, the transfer with 
 
 |  Field Name | Type | Presence | Description |
 |  ------ | ------ | ------ | ------ |
-|  `from_stop_id` | Foreign ID referencing `stops.stop_id` | **Conditionally Required** | Identifies a stop or station where a connection between routes begins. If this field refers to a station, the transfer rule applies to all its child stops. Refering to a station is forbiden for `transfer_types` 4 and 5. |
-|  `to_stop_id` | Foreign ID referencing `stops.stop_id` | **Conditionally Required** | Identifies a stop or station where a connection between routes ends. If this field refers to a station, the transfer rule applies to all child stops. Refering to a station is forbiden for `transfer_types` 4 and 5. |
+|  `from_stop_id` | Foreign ID referencing `stops.stop_id` | **Conditionally Required** | Identifies a stop (`location_type=0`) or a station (`location_type=1`) where a connection between routes begins. If this field refers to a station, the transfer rule applies to all its child stops. It must refer to a stop (`location_type=0`) if `transfer_type` is `4` or `5`.<br><br>Conditionally Required:<br>- **Required** if `transfer_type` is `1`, `2`, or `3`.<br>- Optional if `transfer_type` is `4` or `5`. |
+|  `to_stop_id` | Foreign ID referencing `stops.stop_id` | **Conditionally Required** | Identifies a stop (`location_type=0`) or a station (`location_type=1`) where a connection between routes ends. If this field refers to a station, the transfer rule applies to all child stops. It must refer to a stop (`location_type=0`) if `transfer_type` is 4 or 5.<br><br>Conditionally Required:<br>- **Required** if `transfer_type` is `1`, `2`, or `3`.<br>- Optional if `transfer_type` is `4` or `5`. |
 | `from_route_id`  | Foreign ID referencing `routes.route_id` | Optional | Identifies a route where a connection begins.<br><br>If `from_route_id` is defined, the transfer will apply to the arriving trip on the route for the given `from_stop_id`.<br><br>If both `from_trip_id` and `from_route_id` are defined, the `trip_id` must belong to the `route_id`, and `from_trip_id` will take precedence. |
 | `to_route_id`  | Foreign ID referencing `routes.route_id` | Optional | Identifies a route where a connection ends.<br><br>If `to_route_id` is defined, the transfer will apply to the departing trip on the route for the given `to_stop_id`.<br><br>If both `to_trip_id` and `to_route_id` are defined, the `trip_id` must belong to the `route_id`, and `to_trip_id` will take precedence. |
-| `from_trip_id`  | Foreign ID referencing `trips.trip_id` | **Conditionally Required** | Identifies a trip where a connection between routes begins.<br><br>If `from_trip_id` is defined, the transfer will apply to the arriving trip for the given `from_stop_id`.<br><br>If both `from_trip_id` and `from_route_id` are defined, the `trip_id` must belong to the `route_id`, and `from_trip_id` will take precedence. REQUIRED if `transfer_type` is `4` or `5`. |
-| `to_trip_id`  | Foreign ID referencing `trips.trip_id` | **Conditionally Required** | Identifies a trip where a connection between routes ends.<br><br>If `to_trip_id` is defined, the transfer will apply to the departing trip for the given `to_stop_id`.<br><br>If both `to_trip_id` and `to_route_id` are defined, the `trip_id` must belong to the `route_id`, and `to_trip_id` will take precedence. REQUIRED if `transfer_type` is `4` or `5`. |
+| `from_trip_id`  | Foreign ID referencing `trips.trip_id` | **Conditionally Required** | Identifies a trip where a connection between routes begins.<br><br>If `from_trip_id` is defined, the transfer will apply to the arriving trip for the given `from_stop_id`.<br><br>If both `from_trip_id` and `from_route_id` are defined, the `trip_id` must belong to the `route_id`, and `from_trip_id` will take precedence.<br><br>Conditionally Required:<br>- **Required** if `transfer_type` is `4` or `5`. <br>- Optional otherwise. |
+| `to_trip_id`  | Foreign ID referencing `trips.trip_id` | **Conditionally Required** | Identifies a trip where a connection between routes ends.<br><br>If `to_trip_id` is defined, the transfer will apply to the departing trip for the given `to_stop_id`.<br><br>If both `to_trip_id` and `to_route_id` are defined, the `trip_id` must belong to the `route_id`, and `to_trip_id` will take precedence. <br><br>Conditionally Required:<br>- **Required** if `transfer_type` is `4` or `5`. <br>- Optional otherwise. |
 |  `transfer_type` | Enum | **Required** | Indicates the type of connection for the specified (`from_stop_id`, `to_stop_id`) pair. Valid options are:<br><br> `0` or empty - Recommended transfer point between routes.<br>`1` - Timed transfer point between two routes. The departing vehicle is expected to wait for the arriving one and leave sufficient time for a rider to transfer between routes.<br>`2` - Transfer requires a minimum amount of time between arrival and departure to ensure a connection. The time required to transfer is specified by `min_transfer_time`.<br>`3` - Transfers are not possible between routes at the location.<br>`4` - Passengers can transfer from one trip to another by staying onboard the same vehicle (an "in-seat transfer"). More details about this type of transfer [below](#linked-trips).  <br>`5` - In-seat transfers are not allowed between sequential trips. The passenger must alight from the vehicle and re-board. More details about this type of transfer [below](#linked-trips). |
 |  `min_transfer_time` | Non-negative integer | Optional | Amount of time, in seconds, that must be available to permit a transfer between routes at the specified stops. The `min_transfer_time` should be sufficient to permit a typical rider to move between the two stops, including buffer time to allow for schedule variance on each route. |
 
@@ -735,7 +743,7 @@ Primary key (`location_group_id`)
 
 Defines location groups, which are groups of stops where a rider may request pickup or drop off.
 
-| Field Name | Type | Required | Description |
+| Field Name | Type | Presence | Description |
 | ---------- | ---- | ------------ | ----------- |
 | `location_group_id` | Unique ID | **Required** | Identifies a location group. ID must be unique across all `stops.stop_id`, locations.geojson `id`, and `location_groups.location_group_id` values. <br><br>A location group is a group of stops that together indicate locations where a rider may request pickup or drop off. | 
 | `location_group_name` | Text | Optional | The name of the location group as displayed to the rider. |
@@ -748,7 +756,7 @@ Primary key (`*`)
 
 Assigns stops from stops.txt to location groups.
 
-| Field Name | Type | Required | Description |
+| Field Name | Type | Presence | Description |
 | ---------- | ---- | ------------ | ----------- |
 | `location_group_id` | Foreign ID referencing `location_groups.location_group_id` | **Required** | Identifies a location group to which one or multiple `stop_id`s belong. The same `stop_id` may be defined in many `location_group_id`s. | 
 | `stop_id` | Foreign ID referencing `stops.stop_id` | **Required** | Identifies a stop belonging to the location group. |
@@ -759,7 +767,9 @@ Assigns stops from stops.txt to location groups.
 File: **Optional**
 
 Defines zones where riders can request either pickup or drop off by on-demand services. These zones are represented as GeoJSON polygons.
+
 - This file uses a subset of the GeoJSON format, described in [RFC 7946](https://tools.ietf.org/html/rfc7946).
+- Each polygon must be valid by the definition of the [OpenGIS Simple Features Specification, section 6.1.11](http://www.opengis.net/doc/is/sfa/1.2.1).
 - The `locations.geojson` file must contain a `FeatureCollection`.
 - A `FeatureCollection` defines various stop locations where riders may request pickup or drop off.
 - Every GeoJSON `Feature` must have an `id`. The `id` must be unique across all `stops.stop_id`, locations.geojson `id`, and `location_group_id` values.
@@ -788,7 +798,7 @@ Defines the booking rules for rider-requested services
 
 |  Field Name | Type | Presence | Description |
 |  ------ | ------ | ------ | ------ |
-| `booking_rule_id` | ID | **Required** | Identifies the rule. |
+| `booking_rule_id` | Unique ID | **Required** | Identifies a rule. |
 | `booking_type` | Enum | **Required** | Indicates how far in advance booking can be made. Valid options are:<br><br>`0` - Real time booking.<br>`1` - Up to same-day booking with advance notice.<br>`2` - Up to prior day(s) booking. |
 | `prior_notice_duration_min` | Integer | **Conditionally Required** | Minimum number of minutes before travel to make the request.<br><br>**Conditionally Required**:<br>- **Required** for `booking_type=1`.<br>- **Forbidden** otherwise. |
 | `prior_notice_duration_max` | Integer | **Conditionally Forbidden** | Maximum number of minutes before travel to make the booking request.<br><br>**Conditionally Forbidden**:<br>- **Forbidden** for `booking_type=0` and `booking_type=2`.<br>- Optional for `booking_type=1`.|
@@ -796,7 +806,7 @@ Defines the booking rules for rider-requested services
 | `prior_notice_last_time` | Time | **Conditionally Required** | Last time on the last day before travel to make the booking request.<br><br>Example: “Ride must be booked 1 day in advance before 5PM” will be encoded as `prior_notice_last_time=17:00:00`.<br><br>**Conditionally Required**:<br>- **Required** if `prior_notice_last_day` is defined.<br>- **Forbidden** otherwise. |
 | `prior_notice_start_day` | Integer | **Conditionally Forbidden** | Earliest day before travel to make the booking request.<br><br>Example: “Ride can be booked at the earliest one week in advance at midnight” will be encoded as `prior_notice_start_day=7`.<br><br>**Conditionally Forbidden**:<br>- **Forbidden** for `booking_type=0`.<br> - **Forbidden** for `booking_type=1` if `prior_notice_duration_max` is defined.<br> - Optional otherwise. |
 | `prior_notice_start_time` | Time | **Conditionally Required** | Earliest time on the earliest day before travel to make the booking request.<br><br>Example: “Ride can be booked at the earliest one week in advance at midnight” will be encoded as `prior_notice_start_time=00:00:00`.<br><br>**Conditionally Required**:<br>- **Required** if `prior_notice_start_day` is defined.<br>- **Forbidden** otherwise. |
-| `prior_notice_service_id` | ID referencing `calendar.service_id` | **Conditionally Forbidden** | Indicates the service days on which `prior_notice_last_day` or `prior_notice_start_day` are counted. <br><br>Example: If empty, `prior_notice_start_day=2` will be two calendar days in advance. If defined as a `service_id` containing only business days (weekdays without holidays), `prior_notice_start_day=2` will be two business days in advance.<br><br>**Conditionally Forbidden**:<br> - Optional if `booking_type=2`. <br> - **Forbidden** otherwise. |
+| `prior_notice_service_id` | Foreign ID referencing `calendar.service_id` | **Conditionally Forbidden** | Indicates the service days on which `prior_notice_last_day` or `prior_notice_start_day` are counted. <br><br>Example: If empty, `prior_notice_start_day=2` will be two calendar days in advance. If defined as a `service_id` containing only business days (weekdays without holidays), `prior_notice_start_day=2` will be two business days in advance.<br><br>**Conditionally Forbidden**:<br> - Optional if `booking_type=2`. <br> - **Forbidden** otherwise. |
 | `message` | Text | Optional | Message to riders utilizing service at a `stop_time` when booking on-demand pickup and drop off. Meant to provide minimal information to be transmitted within a user interface about the action a rider must take in order to utilize the service. |
 | `pickup_message` | Text | Optional | Functions in the same way as `message` but used when riders have on-demand pickup only. |
 | `drop_off_message` | Text | Optional | Functions in the same way as `message` but used when riders have on-demand drop off only. |
@@ -826,7 +836,7 @@ If both referencing methods (`record_id`, `record_sub_id`) and `field_value` are
 
 ### feed_info.txt
 
-File: **Recommended** (**Required** if [translations.txt](#translations) is provided)
+File: **Conditionally Required**
 
 Primary key (none)
 
