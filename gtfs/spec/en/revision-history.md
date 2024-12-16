@@ -1,5 +1,8 @@
 ### Revision History
 
+#### December 2024
+* Added `fare_leg_join_rules.txt` and introduced the concept of Effective Fare Leg. See [discussion](https://github.com/google/transit/pull/439).
+
 #### September 2024
 * Clarify presence and use of from/to_stop_id & from/to_trip_id fields in transfers.txt. See [discussion](https://github.com/google/transit/pull/455).
 * Added validity rules for polygons in GeoJSON files. See [discussion](https://github.com/google/transit/pull/476).
