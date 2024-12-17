@@ -1,5 +1,9 @@
 ### Revision History
 
+#### December 2024
+
+* Added new string field that matches feed_info.feed_version from the GTFS Schedule feed that the realtime data is based on. See [discussion](https://github.com/google/transit/pull/434).
+
 #### October 2024
 
 * Clarification and small changes for Trip Modifications. See [discussion](https://github.com/google/transit/pull/497).
