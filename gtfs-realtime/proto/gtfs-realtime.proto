@@ -278,22 +278,9 @@ message TripUpdate {
       optional string assigned_stop_id = 1;
 
       // The updated headsign of the vehicle at the stop.
+      // NOTE: This field is still experimental, and subject to change. It may be formally adopted in the future.
       optional string stop_headsign = 2;
-
-      // The updated pickup of the vehicle at the stop.
-      optional DropOffPickupType pickup_type = 3;
-
-      // The updated drop off of the vehicle at the stop.
-      optional DropOffPickupType drop_off_type = 4;
-
-      // The extensions namespace allows 3rd-party developers to extend the
-      // GTFS Realtime Specification in order to add and evaluate new features
-      // and modifications to the spec.
-      extensions 1000 to 1999;
-
-      // The following extension IDs are reserved for private use by any organization.
-      extensions 9000 to 9999;
-
+      
       enum DropOffPickupType {
         // Regularly scheduled pickup/dropoff.
         REGULAR = 0;
@@ -307,6 +294,22 @@ message TripUpdate {
         // Must coordinate with driver to arrange pickup/dropoff.
         COORDINATE_WITH_DRIVER = 3;
       }
+      
+      // The updated pickup of the vehicle at the stop.
+      // NOTE: This field is still experimental, and subject to change. It may be formally adopted in the future.
+      optional DropOffPickupType pickup_type = 3;
+
+      // The updated drop off of the vehicle at the stop.
+      // NOTE: This field is still experimental, and subject to change. It may be formally adopted in the future.
+      optional DropOffPickupType drop_off_type = 4;
+
+      // The extensions namespace allows 3rd-party developers to extend the
+      // GTFS Realtime Specification in order to add and evaluate new features
+      // and modifications to the spec.
+      extensions 1000 to 1999;
+
+      // The following extension IDs are reserved for private use by any organization.
+      extensions 9000 to 9999;
     }
 
     // Realtime updates for certain properties defined within GTFS stop_times.txt
