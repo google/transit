@@ -10,7 +10,7 @@ If a vehicle is serving multiple trips within the same block (for more informati
 
 ## StopTimeUpdate
 
-A trip update consists of one or more updates to vehicle stop times, which are referred to as [StopTimeUpdates](reference.md#message-stoptimeupdate). These can be supplied for past and future stop times. You are allowed, but not required, to drop past stop times, unless the trip is an added or replacement trip not found in the GTFS static.  Producers should not drop a past `StopTimeUpdate` if it refers to a stop with a scheduled arrival time in the future for the given trip (i.e. the vehicle has passed the stop ahead of schedule), as otherwise it will be concluded that there is no update for this stop.
+A trip update consists of one or more updates to vehicle stop times, which are referred to as [StopTimeUpdates](reference.md#message-stoptimeupdate). These can be supplied for past and future stop times. You are allowed, but not required, to drop past stop times, unless the trip is a new or replacement trip not found in the GTFS static.  Producers should not drop a past `StopTimeUpdate` if it refers to a stop with a scheduled arrival time in the future for the given trip (i.e. the vehicle has passed the stop ahead of schedule), as otherwise it will be concluded that there is no update for this stop.
 
 For example, if the following data appears in the GTFS-rt feed:
 
