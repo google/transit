@@ -1,5 +1,8 @@
 ### Revision History
 
+#### January 2025
+* Update agency_fare_url to expand its description and include fare information only. See [discussion](https://github.com/google/transit/pull/524).
+
 #### December 2024
 * Added `fare_leg_join_rules.txt` and introduced the concept of Effective Fare Leg. See [discussion](https://github.com/google/transit/pull/439).
 
