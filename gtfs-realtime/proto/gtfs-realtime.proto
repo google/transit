@@ -73,6 +73,11 @@ message FeedHeader {
   // January 1st 1970 00:00:00 UTC).
   optional uint64 timestamp = 3;
 
+  // String that matches the feed_info.feed_version from the GTFS feed that the real
+  // time data is based on. Consumers can use this to identify which GTFS feed is
+  // currently active or when a new one is available to download.
+  optional string feed_version = 4;
+
   // The extensions namespace allows 3rd-party developers to extend the
   // GTFS Realtime specification in order to add and evaluate new features and
   // modifications to the spec.
@@ -106,6 +111,8 @@ message FeedEntity {
 
   // NOTE: This field is still experimental, and subject to change. It may be formally adopted in the future.
   optional Shape shape = 6;
+  optional Stop stop = 7;
+  optional TripModifications trip_modifications = 8;
 
   // The extensions namespace allows 3rd-party developers to extend the
   // GTFS Realtime Specification in order to add and evaluate new features and
@@ -218,7 +225,7 @@ message TripUpdate {
     // In order to provide departure_occupancy_status without either arrival or
     // departure StopTimeEvents, ScheduleRelationship should be set to NO_DATA. 
     optional VehiclePosition.OccupancyStatus departure_occupancy_status = 7;
-    
+
     // The relation between the StopTimeEvents and the static schedule.
     enum ScheduleRelationship {
       // The vehicle is proceeding in accordance with its static schedule of
@@ -250,7 +257,7 @@ message TripUpdate {
       UNSCHEDULED = 3;
     }
     optional ScheduleRelationship schedule_relationship = 5
-        [default = SCHEDULED];
+    [default = SCHEDULED];
 
     // Provides the updated values for the stop time.
     // NOTE: This message is still experimental, and subject to change. It may be formally adopted in the future.
@@ -639,10 +646,10 @@ message Alert {
 
   // Severity of this alert.
   enum SeverityLevel {
-	UNKNOWN_SEVERITY = 1;
-	INFO = 2;
-	WARNING = 3;
-	SEVERE = 4;
+    UNKNOWN_SEVERITY = 1;
+    INFO = 2;
+    WARNING = 3;
+    SEVERE = 4;
   }
 
   optional SeverityLevel severity_level = 14 [default = UNKNOWN_SEVERITY];
@@ -650,18 +657,18 @@ message Alert {
   // TranslatedImage to be displayed along the alert text. Used to explain visually the alert effect of a detour, station closure, etc. The image must enhance the understanding of the alert. Any essential information communicated within the image must also be contained in the alert text.
   // The following types of images are discouraged : image containing mainly text, marketing or branded images that add no additional information. 
   // NOTE: This field is still experimental, and subject to change. It may be formally adopted in the future.
-  optional TranslatedImage image = 15; 
+  optional TranslatedImage image = 15;
 
   // Text describing the appearance of the linked image in the `image` field (e.g., in case the image can't be displayed
   // or the user can't see the image for accessibility reasons). See the HTML spec for alt image text - https://html.spec.whatwg.org/#alt.
   // NOTE: This field is still experimental, and subject to change. It may be formally adopted in the future.
   optional TranslatedString image_alternative_text = 16;
-  
-  
+
+
   // Description of the cause of the alert that allows for agency-specific language; more specific than the Cause. If cause_detail is included, then Cause must also be included.
   // NOTE: This field is still experimental, and subject to change. It may be formally adopted in the future.
   optional TranslatedString cause_detail = 17;
-  
+
   // Description of the effect of the alert that allows for agency-specific language; more specific than the Effect. If effect_detail is included, then Effect must also be included.
   // NOTE: This field is still experimental, and subject to change. It may be formally adopted in the future.
   optional TranslatedString effect_detail = 18;
@@ -808,7 +815,7 @@ message TripDescriptor {
     CANCELED = 3;
 
     // Should not be used - for backwards-compatibility only.
-    REPLACEMENT = 5 [deprecated=true];
+    REPLACEMENT = 5 [deprecated = true];
 
     // An extra trip that was added in addition to a running schedule, for example, to replace a broken vehicle or to
     // respond to sudden passenger load. Used with TripUpdate.TripProperties.trip_id, TripUpdate.TripProperties.start_date,
@@ -839,6 +846,32 @@ message TripDescriptor {
     DELETED = 7;
   }
   optional ScheduleRelationship schedule_relationship = 4;
+
+  message ModifiedTripSelector {
+    // The 'id' from the FeedEntity in which the contained TripModifications object affects this trip.
+    optional string modifications_id = 1;
+
+    // The trip_id from the GTFS feed that is modified by the modifications_id
+    optional string affected_trip_id = 2;
+
+    // The initially scheduled start time of this trip instance, applied to the frequency based modified trip. Same definition as start_time in TripDescriptor.
+    optional string start_time = 3;
+
+    // The start date of this trip instance in YYYYMMDD format, applied to the modified trip. Same definition as start_date in TripDescriptor.
+    optional string start_date = 4;
+
+    // The extensions namespace allows 3rd-party developers to extend the
+    // GTFS Realtime Specification in order to add and evaluate new features and
+    // modifications to the spec.
+    extensions 1000 to 1999;
+
+    // The following extension IDs are reserved for private use by any organization.
+    extensions 9000 to 9999;
+  }
+
+  // Linkage to any modifications done to this trip (shape changes, removal or addition of stops). 
+  // If this field is provided, the `trip_id`, `route_id`, `direction_id`, `start_time`, `start_date` fields of the `TripDescriptor` MUST be left empty, to avoid confusion by consumers that aren't looking for the `ModifiedTripSelector` value. 
+  optional ModifiedTripSelector modified_trip = 7;
 
   // The extensions namespace allows 3rd-party developers to extend the
   // GTFS Realtime Specification in order to add and evaluate new features and
@@ -1017,13 +1050,158 @@ message Shape {
   // See https://developers.google.com/protocol-buffers/docs/proto#specifying_field_rules
   // NOTE: This field is still experimental, and subject to change. It may be formally adopted in the future.
   optional string shape_id = 1;
-  
+
   // Encoded polyline representation of the shape. This polyline must contain at least two points.
   // For more information about encoded polylines, see https://developers.google.com/maps/documentation/utilities/polylinealgorithm
   // This field is required as per reference.md, but needs to be specified here optional because "Required is Forever"
   // See https://developers.google.com/protocol-buffers/docs/proto#specifying_field_rules
   // NOTE: This field is still experimental, and subject to change. It may be formally adopted in the future.
   optional string encoded_polyline = 2;
+
+  // The extensions namespace allows 3rd-party developers to extend the
+  // GTFS Realtime Specification in order to add and evaluate new features and
+  // modifications to the spec.
+  extensions 1000 to 1999;
+
+  // The following extension IDs are reserved for private use by any organization.
+  extensions 9000 to 9999;
+}
+
+// Describes a stop which is served by trips. All fields are as described in the GTFS-Static specification.
+// NOTE: This message is still experimental, and subject to change. It may be formally adopted in the future.
+message Stop {
+  enum WheelchairBoarding {
+    UNKNOWN = 0;
+    AVAILABLE = 1;
+    NOT_AVAILABLE = 2;
+  }
+
+  optional string stop_id = 1;
+  optional TranslatedString stop_code = 2;
+  optional TranslatedString stop_name = 3;
+  optional TranslatedString tts_stop_name = 4;
+  optional TranslatedString stop_desc = 5;
+  optional float stop_lat = 6;
+  optional float stop_lon = 7;
+  optional string zone_id = 8;
+  optional TranslatedString stop_url = 9;
+  optional string parent_station = 11;
+  optional string stop_timezone = 12;
+  optional WheelchairBoarding wheelchair_boarding = 13 [default = UNKNOWN];
+  optional string level_id = 14;
+  optional TranslatedString platform_code = 15;
+
+  // The extensions namespace allows 3rd-party developers to extend the
+  // GTFS Realtime Specification in order to add and evaluate new features and
+  // modifications to the spec.
+  extensions 1000 to 1999;
+
+  // The following extension IDs are reserved for private use by any organization.
+  extensions 9000 to 9999;
+}
+
+// NOTE: This field is still experimental, and subject to change. It may be formally adopted in the future.
+message TripModifications {
+  // A `Modification` message replaces a span of n stop times from each affected trip starting at `start_stop_selector`.
+  message Modification {
+    // The stop selector of the first stop_time of the original trip that is to be affected by this modification.
+    // Used in conjuction with `end_stop_selector`. 
+    // `start_stop_selector` is required and is used to define the reference stop used with `travel_time_to_stop`.
+    optional StopSelector start_stop_selector = 1;
+
+    // The stop selector of the last stop of the original trip that is to be affected by this modification. 
+    // The selection is inclusive, so if only one stop_time is replaced by that modification, `start_stop_selector` and `end_stop_selector` must be equivalent.
+    // If no stop_time is replaced, `end_stop_selector` must not be provided. It's otherwise required.
+    optional StopSelector end_stop_selector = 2;
+
+    // The number of seconds of delay to add to all departure and arrival times following the end of this modification. 
+    // If multiple modifications apply to the same trip, the delays accumulate as the trip advances. 
+    optional int32 propagated_modification_delay = 3 [default = 0];
+
+    // A list of replacement stops, replacing those of the original trip. 
+    // The length of the new stop times may be less, the same, or greater than the number of replaced stop times. 
+    repeated ReplacementStop replacement_stops = 4;
+
+    // An `id` value from the `FeedEntity` message that contains the `Alert` describing this Modification for user-facing communication.
+    optional string service_alert_id = 5;
+
+    // This timestamp identifies the moment when the modification has last been changed.
+    // In POSIX time (i.e., number of seconds since January 1st 1970 00:00:00 UTC).
+    optional uint64 last_modified_time = 6;
+
+    // The extensions namespace allows 3rd-party developers to extend the
+    // GTFS Realtime Specification in order to add and evaluate new features and
+    // modifications to the spec.
+    extensions 1000 to 1999;
+
+    // The following extension IDs are reserved for private use by any organization.
+    extensions 9000 to 9999;
+  }
+
+  message SelectedTrips {
+    // A list of trips affected with this replacement that all have the same new `shape_id`.
+    repeated string trip_ids = 1;
+    // The ID of the new shape for the modified trips in this SelectedTrips.
+    // May refer to a new shape added using a GTFS-RT Shape message, or to an existing shape defined in the GTFS-Static feed’s shapes.txt.
+    optional string shape_id = 2;
+
+    // The extensions namespace allows 3rd-party developers to extend the
+    // GTFS Realtime Specification in order to add and evaluate new features and
+    // modifications to the spec.
+    extensions 1000 to 1999;
+
+    // The following extension IDs are reserved for private use by any organization.
+    extensions 9000 to 9999;
+  }
+
+  // A list of selected trips affected by this TripModifications.
+  repeated SelectedTrips selected_trips = 1;
+
+  // A list of start times in the real-time trip descriptor for the trip_id defined in trip_ids. 
+  // Useful to target multiple departures of a trip_id in a frequency-based trip.
+  repeated string start_times = 2;
+
+  // Dates on which the modifications occurs, in the YYYYMMDD format. Producers SHOULD only transmit detours occurring within the next week.
+  // The dates provided should not be used as user-facing information, if a user-facing start and end date needs to be provided, they can be provided in the linked service alert with `service_alert_id`
+  repeated string service_dates = 3;
+
+  // A list of modifications to apply to the affected trips. 
+  repeated Modification modifications = 4;
+
+  // The extensions namespace allows 3rd-party developers to extend the
+  // GTFS Realtime Specification in order to add and evaluate new features and
+  // modifications to the spec.
+  extensions 1000 to 1999;
+
+  // The following extension IDs are reserved for private use by any organization.
+  extensions 9000 to 9999;
+}
+
+// NOTE: This field is still experimental, and subject to change. It may be formally adopted in the future.
+// Select a stop by stop sequence or by stop_id. At least one of the two values must be provided.
+message StopSelector {
+  // Must be the same as in stop_times.txt in the corresponding GTFS feed.
+  optional uint32 stop_sequence = 1;
+  // Must be the same as in stops.txt in the corresponding GTFS feed.
+  optional string stop_id = 2;
+
+  // The extensions namespace allows 3rd-party developers to extend the
+  // GTFS Realtime Specification in order to add and evaluate new features and
+  // modifications to the spec.
+  extensions 1000 to 1999;
+
+  // The following extension IDs are reserved for private use by any organization.
+  extensions 9000 to 9999;
+}
+
+// NOTE: This field is still experimental, and subject to change. It may be formally adopted in the future.
+message ReplacementStop {
+  // The difference in seconds between the arrival time at this stop and the arrival time at the reference stop. The reference stop is the stop prior to start_stop_selector. If the modification begins at the first stop of the trip, then the first stop of the trip is the reference stop.
+  // This value MUST be monotonically increasing and may only be a negative number if the first stop of the original trip is the reference stop.
+  optional int32 travel_time_to_stop = 1;
+
+  // The replacement stop ID which will now be visited by the trip. May refer to a new stop added using a GTFS-RT Stop message, or to an existing stop defined in the GTFS-Static feed’s stops.txt. The stop MUST have location_type=0 (routable stops).
+  optional string stop_id = 2;
 
   // The extensions namespace allows 3rd-party developers to extend the
   // GTFS Realtime Specification in order to add and evaluate new features and

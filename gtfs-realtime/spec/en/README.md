@@ -17,6 +17,7 @@ The specification currently supports the following types of information:
 *   **Trip updates** - delays, cancellations, changed routes
 *   **Service alerts** - stop moved, unforeseen events affecting a station, route or the entire network
 *   **Vehicle positions** - information about the vehicles including location and congestion level
+*   **Trip modifications** - information about detours affecting a set of trips
 
 A feed may, although not required to, combine entities of different types. Feeds are served via HTTP and updated frequently. The file itself is a regular binary file, so any type of webserver can host and serve the file (other transfer protocols might be used as well). Alternatively, web application servers could also be used which as a response to a valid HTTP GET request will return the feed. There are no constraints on how frequently nor on the exact method of how the feed should be updated or retrieved.
 
