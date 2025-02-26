@@ -1,5 +1,8 @@
 ### Revision History
 
+#### February 2025
+* Added rider_categories.txt. See [discussion](https://github.com/google/transit/pull/511).
+
 #### January 2025
 * Update agency_fare_url to expand its description and include fare information only. See [discussion](https://github.com/google/transit/pull/524).
 
