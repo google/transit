@@ -73,7 +73,7 @@ For example, a `VehiclePosition` entity has `vehicle_id:A` and `trip_id:4`, then
 
 | Field Name | Recommendation |
 | --- | --- |
-| `schedule_relationship` | The behavior of `ADDED` trips are unspecified and the use of this enumeration is not recommended.<br/>If the trip is not scheduled to run originally, use `NEW` if it doesn't follow the stopping pattern of an existing trip, or `DUPLICATED` if it is a copy of an existing trip.<br/>If the trip runs on a modified schedule or calling points, but can be associated to an original scheduled trip in the GTFS static, use `REPLACEMENT` and specify the full list of calling points for the modified trip. |
+| `schedule_relationship` | The behavior of `ADDED` trips are unspecified and the use of this enumeration is not recommended.<br/>If the trip is not scheduled to run originally, use `NEW` if it doesn't follow the stopping pattern of an existing trip, or `DUPLICATED` if it is a copy of an existing trip.<br/>If the trip runs on a modified schedule or stops, but can be associated to an original scheduled trip in the GTFS static, use `REPLACEMENT` and specify the full list of stop times for the modified trip. |
 
 ### TripProperties
 
