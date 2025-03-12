@@ -6,7 +6,7 @@ Proposed changes to the specification are categorized based on their impact on i
 
 ## 1. Functional changes
 
-Functional changes refers to modifications that significantly affect specification functionalities. These changes typically require testing and include adding new elements (files, fields, enums) or modifying existing ones. Such changes have to follow the complete specification [Change Process](../change-process) in order to be officially adopted.
+Functional changes refers to modifications that significantly affect specification functionalities. These changes typically require testing and include adding new elements (files, fields, enums) or modifying existing ones. Such changes have to follow the complete specification [Change Process](change-process.md) in order to be officially adopted.
 
 Past Examples:
 
@@ -27,7 +27,7 @@ Modifications that do not introduce substantial changes to existing functionalit
 
 ### Governance
 
-Changes to the processes and guidelines governing the management of the specification include updates to the [Change Process](../change-process), modifications to [Roles and Responsibilities](../roles) and [Change Types](../change-types), revisions to the [Guiding Principles](../guiding-principles), and adjustments to any other document related to the [governance framework](../intro). These updates ensure clear and effective management practices.
+Changes to the processes and guidelines governing the management of the specification include updates to the [Change Process](change-process.md), modifications to [Roles and Responsibilities](roles.md) and [Change Types](change-types.md), revisions to the [Guiding Principles](guiding-principles.md), and adjustments to any other document related to the [governance framework](introduction.md). These updates ensure clear and effective management practices.
 
 * Past Examples:   
     * [PR #387](https://github.com/google/transit/pull/387) updates the specification change process to switch from Swiss business days to calendar days only.

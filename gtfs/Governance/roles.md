@@ -37,7 +37,7 @@ Individuals or organizations that do not qualify as either Producers or Consumer
 
 ## Maintainer
 
-The Maintainer supports and facilitates the specification [Change Process](../change-process), and their role as an impartial facilitator is to guide the community toward making consensus-driven decisions. MobilityData currently serves as the Maintainer of GTFS. 
+The Maintainer supports and facilitates the specification [Change Process](change-process.md), and their role as an impartial facilitator is to guide the community toward making consensus-driven decisions. MobilityData currently serves as the Maintainer of GTFS. 
 
 **Responsibilities**:
 
@@ -62,7 +62,7 @@ An Advocate proposes a change to the official specification by publishing a Pull
 
 **Responsibilities**
 
-* Follows the requirements of the [Change Process](../change-process) for the proposed change.  
+* Follows the requirements of the [Change Process](change-process.md) for the proposed change.  
 * Request assistance from the Maintainer if necessary. 
 
 ### First Adopter
