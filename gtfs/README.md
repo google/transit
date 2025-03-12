@@ -3,4 +3,4 @@ This directory contains the official General Transit Feed Specification (GTFS) S
 ### Quick links
 - [GTFS Reference](spec/en)
 - [GTFS Best Practices](best-practices)
-- [How to change the specification?](CHANGES.md)
+- [How to change the specification?](governance)
