@@ -262,7 +262,7 @@ The vote must meet the following conditions:
 | **Minimum Votes** | At least 5 votes must be cast. |
 | **Participant Composition** | At least 2 consumers and 2 producers must participate in the vote. |
 | **Advocate's Vote** | The Advocate cannot vote for their own proposal. |
-| **Invalid Votes** | Votes are considered invalid if:  <br>- A contributor casts their vote outside (before or after) the official voting period. <br>- An individual or organization votes more than once (Only one vote per individual or organization is permitted.)  |
+| **Invalid Votes** | Votes are considered invalid if:  <br>- A contributor casts their vote outside (before or after) the official voting period. <br>- An individual or organization votes more than once (Only one vote per individual or organization is permitted.) <br>- A contributor votes Against the proposal without including actionable feedback.  |
 | **Minimum Voting Period**  | The voting period must last at least **14 full calendar days** and end at **23:59:59 UTC**. |
 
 ### Step 2.5: Testing
@@ -350,7 +350,7 @@ The vote must meet the following conditions:
 | **Minimum Votes** | At least 5 votes must be cast. |
 | **Participant Composition** | At least 2 consumers and 2 producers must participate in the vote. |
 | **Advocate's Vote** | The Advocate cannot vote for their own proposal. |
-| **Invalid Votes** | Votes are considered invalid if:  <br>- A contributor casts their vote outside (before or after) the official voting period. <br>- A contributor votes more than once (Only one vote per contributor is permitted.)  |
+| **Invalid Votes** | Votes are considered invalid if:  <br>- A contributor casts their vote outside (before or after) the official voting period. <br>- A contributor votes more than once (Only one vote per contributor is permitted.) <br>- A contributor votes Against the proposal without including actionable feedback. |
 | **Minimum Voting Period**  | The voting period must last at least **14 full calendar days** and end at **23:59:59 UTC**. |
 
 ### Step 2.7: Adoption
