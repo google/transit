@@ -285,7 +285,7 @@ One GTFS [Producer](roles.md/#producers) and one GTFS [Consumer](roles.md/#consu
     
 2. **Testing**
 
-    * The [First Adopters](roles.md/#first-adopter) apply and test the changes in a public-facing environment.  
+    * The [First Adopters](roles.md/#first-adopter) apply and test the changes in a public-facing environment. For the Producer, this means a public GTFS feed; for the Consumer, this means a public-facing, production version of an application.
     * Testing lasts as long as necessary to ensure that all requirements are met before calling a vote to adopt.
 
 3. **Proof of Testing**
