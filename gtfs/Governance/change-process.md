@@ -31,8 +31,10 @@ Depending on the type of the proposed change, different tracks apply to the Chan
 This process guides how the community proposes, reviews, and adopts [Functional changes](change-types.md/#1-functional-changes) to the specification in the [GTFS Repository](https://github.com/google/transit/pulls). 
 
 * A proposal is submitted by opening a Pull Request in the GTFS Repository.   
-* The community engages in discussions to refine the proposal and reviews it before testing.   
-* After a preliminary vote, [First Adopters](roles.md/#first-adopter) test the proposed changes.   
+* The community engages in discussions to refine the proposal. 
+* The [Contributors](roles.md/#contributors) and the [Maintainer](roles.md/#maintainer) review the proposed changes.   
+* The community votes to confirm consensus before testing.
+* [First Adopters](roles.md/#first-adopter) test the proposed changes.   
 * The community votes to decide whether the changes should be officially adopted.  
 * Finally, changes are implemented into the specification.
 
@@ -43,7 +45,8 @@ This process guides how the community proposes, reviews, and adopts [Functional 
 This process guides how the community proposes, reviews, and adopts [Non-Functional changes](change-types.md/#2-non-functional-changes) to the specification in the [GTFS Repository](https://github.com/google/transit/pulls).
 
 * A proposal is submitted by opening a Pull Request in the GTFS Repository.   
-* The community engages in discussions to refine the proposal.  
+* The community engages in discussions to refine the proposal. 
+* The [Contributors](roles.md/#contributors) and the [Maintainer](roles.md/#maintainer) review the proposed changes.    
 * The community votes to decide whether the changes should be officially adopted.  
 * Finally, changes are implemented into the specification.
 
@@ -55,6 +58,7 @@ This process guides how the community proposes, reviews, and adopts [changes to 
 
 * A proposal is submitted by opening a Pull Request in the GTFS Repository.   
 * The community engages in discussions to refine the proposal.
+* The [Contributors](roles.md/#contributors) and the [Maintainer](roles.md/#maintainer) review the proposed changes.   
 * Finally, changes are implemented into the specification.
 
 ## Process Steps
