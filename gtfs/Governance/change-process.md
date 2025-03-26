@@ -54,7 +54,7 @@ This process guides how the community proposes, reviews, and adopts [Non-Functio
 This process guides how the community proposes, reviews, and adopts [changes to maintain the documentation](change-types.md/#3-documentation-maintenance) in the [GTFS Repository](https://github.com/google/transit/pulls).
 
 * A proposal is submitted by opening a Pull Request in the GTFS Repository.   
-* The community engages in discussions to refine the proposal  
+* The community engages in discussions to refine the proposal.
 * Finally, changes are implemented into the specification.
 
 ## Process Steps
