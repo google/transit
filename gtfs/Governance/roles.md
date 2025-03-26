@@ -33,7 +33,7 @@ A GTFS Consumer is an individual or organization that ingests GTFS data, typical
 
 #### General Contributors
 
-Individuals or organizations that do not qualify as either Producers or Consumers are considered as General Contributors or simply referred to as Contributors. 
+Individuals or organizations that do not qualify as either Producers or Consumers are considered as General Contributors or simply referred to as Contributors. General Contributors can vote in proposals.
 
 ## Maintainer
 
