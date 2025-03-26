@@ -281,7 +281,7 @@ One GTFS [Producer](roles.md/#producers) and one GTFS [Consumer](roles.md/#consu
 
 1. **Tester Confirmation**  
      
-    * The [Advocate](roles.md/#advocate) confirms the identity of the [First Adopters](roles.md/#first-adopter) which will test the changes in the Pull Request comment section.  
+    * The [Advocate](roles.md/#advocate) confirms the identity of the [First Adopters](roles.md/#first-adopter) which will test the changes and provide commentary in the Pull Request comment section.
     
 2. **Testing**
 
