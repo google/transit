@@ -299,7 +299,7 @@ The [Advocate](roles.md/#advocate) can proceed with a Vote to Adopt ([step 2.6](
 | Requirement | Details |
 | :---- | :---- |
 | **Minimum Testing Period**  | The testing period must last **at least 7 full calendar days**. |
-| **Tester Participation** | At least 1 Consumer and 1 Producer must apply and test the proposed changes. |
+| **Tester Participation** | At least 2 contributors with at least 1 Consumer and 1 Producer must apply and test the proposed changes. |
 | **Problem identification during testing** | First Adopters testing the changes must report any identified issues by commenting on the Pull Request, ideally with a suggested solution, to allow the Advocate to make necessary adjustments to the proposal. <br>- If the change significantly impacts the proposal’s scope, any Contributor may flag it, prompting the Advocate to either return the proposal to the discussion step ([step 2.2](#step-22-pull-request-discussion)) or consider withdrawing it. |
 | **Testing Proof** | First Adopters must apply, test, and share changes in a public-facing environment:  <br>- a link to a public-facing GTFS feed for Producers <br>- a public-facing link to a GTFS consuming application for Consumers.  |
 
