@@ -475,7 +475,7 @@ Note that if the trip_id is not known, then station sequence ids in TripUpdate a
 
 TripDescriptor.route_id cannot be used within an Alert EntitySelector to specify a route-wide alert that affects all trips for a route - use EntitySelector.route_id instead.
 
-If `schedule_relationship` is `NEW`, `trip_id` must be set to a value not exist in the GTFS feed, and `route_id` must be set to a value listed in `routes.txt` in the GTFS static, to associate the trip to a route. `start_date` should be set, and `direction_id` may be set for the new trip.
+If `schedule_relationship` is `NEW`, `trip_id` must be set to a value not listed in the GTFS feed, and `route_id` must be set to a value listed in `routes.txt` in the GTFS static, to associate the trip to a route. `start_date` should be set, and `direction_id` may be set for the new trip.
 
 **Fields**
 
