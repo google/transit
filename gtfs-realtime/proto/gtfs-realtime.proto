@@ -845,6 +845,7 @@ message TripDescriptor {
     CANCELED = 3;
 
     // A trip that replaces an existing trip in the schedule.
+    // NOTE: This field is still experimental, and subject to change. It may be formally adopted in the future.
     REPLACEMENT = 5;
 
     // An extra trip that was added in addition to a running schedule, for example, to replace a broken vehicle or to
