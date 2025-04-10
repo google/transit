@@ -190,9 +190,10 @@ message TripUpdate {
     // To specify a completely certain prediction, set its uncertainty to 0.
     optional int32 uncertainty = 3;
 
-    // Scheduled time for a new or replacement trip.
+    // Scheduled time for a NEW, REPLACEMENT, or DUPLICATED trip.
     // In Unix time (i.e., number of seconds since January 1st 1970 00:00:00
     // UTC).
+    // NOTE: This field is still experimental, and subject to change. It may be formally adopted in the future.
     optional int64 scheduled_time = 4;
 
     // The extensions namespace allows 3rd-party developers to extend the
