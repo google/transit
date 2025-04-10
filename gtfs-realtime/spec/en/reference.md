@@ -172,7 +172,7 @@ Note that the update can describe a trip that has already completed.To this end,
 
 ## _message_ StopTimeEvent
 
-Timing information for a single predicted event (either arrival or departure). Timing consists of delay and/or estimated time, and uncertainty. A scheduled time can also be added for added, replacement or duplicated trips.
+Timing information for a single predicted event (either arrival or departure). Timing consists of delay and/or estimated time, and uncertainty. A scheduled time can also be added for NEW, REPLACEMENT, or DUPLICATED trips.
 
 *   delay should be used when the prediction is given relative to some existing schedule in GTFS.
 *   time should be given whether there is a predicted schedule or not, and must be given for new or replacement trips. If both time and delay are specified, time will take precedence (although normally, time, if given for a scheduled trip, should be equal to scheduled time in GTFS + delay).
