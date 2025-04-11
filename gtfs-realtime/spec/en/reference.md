@@ -12,6 +12,7 @@ The following values are used in the *Required* field:
 
 *   **Required**: This field must be provided by a GTFS-realtime feed producer.
 *   **Conditionally required**: This field is required under certain conditions, which are outlined in the field *Description*. Outside of these conditions, the field is optional.
+*   **Conditionally forbidden**: This field is forbidden under certain conditions, which are outlined in the field *Description*. Outside of these conditions, the field is optional.
 *   **Optional**: This field is optional and is not required to be implemented by producers. However, if the data is available in the underlying automatic vehicle location systems (e.g., VehiclePosition `timestamp`) it is recommended that producers provide these optional fields when possible.
 
 *Note that semantic requirements were not defined in GTFS-realtime version 1.0, and therefore feeds with `gtfs_realtime_version` of `1` may not meet these requirements (see [the proposal for semantic requirements](https://github.com/google/transit/pull/64) for details).*
