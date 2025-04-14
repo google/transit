@@ -193,6 +193,7 @@ message TripUpdate {
     // Scheduled time for a NEW, REPLACEMENT, or DUPLICATED trip.
     // In Unix time (i.e., number of seconds since January 1st 1970 00:00:00
     // UTC).
+    // Optional if TripUpdate.schedule_relationship is NEW, REPLACEMENT or DUPLICATED, forbidden otherwise.
     // NOTE: This field is still experimental, and subject to change. It may be formally adopted in the future.
     optional int64 scheduled_time = 4;
 
