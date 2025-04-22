@@ -11,7 +11,7 @@ The governance framework for GTFS is composed of the following elements:
 * [Change types](change-types.md)
 * [Change process](change-process.md)
 
-![](assets/governance-intro-pillars.svg)
+![](assets/governance-intro.svg)
 
 Notably, the GTFS Change Process is the procedure by which modifications or additions to GTFS are proposed, discussed, and approved by the community. This process ensures that the specification evolves in a stable, predictable and collaborative way.
 
