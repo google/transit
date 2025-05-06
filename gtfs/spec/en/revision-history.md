@@ -1,5 +1,8 @@
 ### Revision History
 
+#### April 2025
+* Added clarification to allow value 1 for continuous_pickup/continuous_drop_off for DRT services See [discussion](https://github.com/google/transit/pull/558).
+
 #### February 2025
 * Added rider_categories.txt. See [discussion](https://github.com/google/transit/pull/511).
 
