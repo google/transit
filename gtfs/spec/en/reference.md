@@ -90,6 +90,7 @@ Presence conditions applicable to fields and files:
 - **Integer** - An integer.
 - **Phone number** - A phone number.
 - **Time** - Time in the HH:MM:SS format (H:MM:SS is also accepted). The time is measured from "noon minus 12h" of the service day (effectively midnight except for days on which daylight savings time changes occur). For times occurring after midnight on the service day, enter the time as a value greater than 24:00:00 in HH:MM:SS. <br> *Example: `14:30:00` for 2:30PM or `25:35:00` for 1:35AM on the next day.*
+- **Local time** - Time in the HH:MM:SS format (H:MM:SS is also accepted). Represents a wall-clock time shown in the local time of the specified location.
 - **Text** - A string of UTF-8 characters, which is aimed to be displayed and which must therefore be human readable.
 - **Timezone** - TZ timezone from the [https://www.iana.org/time-zones](https://www.iana.org/time-zones). Timezone names never contain the space character but may contain an underscore. Refer to [http://en.wikipedia.org/wiki/List\_of\_tz\_zones](http://en.wikipedia.org/wiki/List\_of\_tz\_zones) for a list of valid values. <br> *Example: `Asia/Tokyo`, `America/Los_Angeles` or `Africa/Cairo`.*
 - **URL** - A fully qualified URL that includes http:// or https://, and any special characters in the URL must be correctly escaped. See the following [http://www.w3.org/Addressing/URL/4\_URI\_Recommentations.html](http://www.w3.org/Addressing/URL/4\_URI\_Recommentations.html) for a description of how to create fully qualified URL values.
@@ -403,14 +404,14 @@ There must not be overlapping time intervals for the same `timeframe_group_id` a
 |  Field Name | Type | Presence | Description |
 |  ------ | ------ | ------ | ------ |
 |  `timeframe_group_id` | ID | **Required** | Identifies a timeframe or set of timeframes. |
-|  `start_time` | Time | **Conditionally Required** |  Defines the beginning of a timeframe. The interval includes the start time.<br> Values greater than `24:00:00` are forbidden. An empty value in `start_time` is considered `00:00:00`. <br><br> Conditionally Required:<br> - **Required** if `timeframes.end_time` is defined.<br> - **Forbidden** otherwise |
-|  `end_time` | Time | **Conditionally Required** |  Defines the end of a timeframe. The interval does not include the end time.<br> Values greater than `24:00:00` are forbidden. An empty value in `end_time` is considered `24:00:00`. <br><br> Conditionally Required:<br> - **Required** if `timeframes.start_time` is defined.<br> - **Forbidden** otherwise |
+|  `start_time` | Local time | **Conditionally Required** |  Defines the beginning of a timeframe. The interval includes the start time.<br> Values greater than `24:00:00` are forbidden. An empty value in `start_time` is considered `00:00:00`. <br><br> Conditionally Required:<br> - **Required** if `timeframes.end_time` is defined.<br> - **Forbidden** otherwise |
+|  `end_time` | Local time | **Conditionally Required** |  Defines the end of a timeframe. The interval does not include the end time.<br> Values greater than `24:00:00` are forbidden. An empty value in `end_time` is considered `24:00:00`. <br><br> Conditionally Required:<br> - **Required** if `timeframes.start_time` is defined.<br> - **Forbidden** otherwise |
 | `service_id` | Foreign ID referencing `calendar.service_id` or `calendar_dates.service_id` | **Required** | Identifies a set of dates that a timeframe is in effect. |
 
 #### Timeframe Local Time Semantics
 - When evaluating a fare event’s time against [timeframes.txt](#timeframestxt), the event time is computed in local time using the local timezone, as determined by the `stop_timezone`, if specified, of the stop or parent station for the fare event. If not specified, the feed’s agency timezone should be used instead.
 - The “current day” is the current date of the fare event’s time, computed relative to the local timezone.  The “current day” may be different from the service day of a fare leg’s trip, especially for trips that extend past midnight.
-- The “time-of-day” for the fare event is computed relative to “current day” using GTFS Time field-type semantics.
+- The “time-of-day” for the fare event is computed relative to “current day” using GTFS Local time field-type semantics.
 
 ### rider_categories.txt
 
