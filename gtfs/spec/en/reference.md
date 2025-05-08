@@ -539,7 +539,7 @@ Fare rules for transfers between legs of travel defined in [`fare_leg_rules.txt`
 
 To process the cost of a multi-leg journey:
 
-1. The applicable fare leg groups defined in `fare_leg_rules.txt` should be determined for all individual legs of travel based on the rider’s journey.
+1. The applicable fare leg groups defined in `fare_leg_rules.txt` should be determined for all individual legs or effective fare legs of travel based on the rider’s journey.
 2. The file [fare_transfer_rules.txt](#fare_transfer_rulestxt) must be filtered by the fields that define the characteristics of the transfer, these fields are:
     - `fare_transfer_rules.from_leg_group_id`
     - `fare_transfer_rules.to_leg_group_id`<br/>
