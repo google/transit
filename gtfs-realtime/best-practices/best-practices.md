@@ -52,7 +52,7 @@ All entities should only be removed from a GTFS Realtime feed when they are no l
 General guidelines for trip cancellations:
 
 * When canceling trips over a number of days, producers should provide TripUpdates referencing the given `trip_ids` and `start_dates` as `CANCELED` as well as an Alert with `NO_SERVICE` referencing the same `trip_ids` and `TimeRange` that can be shown to riders explaining the cancellation (e.g., detour).
-* If no stops in a trip will be visited, the trip should be `CANCELED` instead of having all `stop_time_updates` being marked as `SKIPPED`.  
+* If no stops in a trip will be visited, the trip should be `CANCELED` instead of having all `stop_time_updates` being marked as `SKIPPED`, unless the trip was a `NEW` or `DUPLICATED` trip and was subsequently canceled. 
 
 | Field Name | Recommendation |
 | --- | --- |
@@ -73,7 +73,13 @@ For example, a `VehiclePosition` entity has `vehicle_id:A` and `trip_id:4`, then
 
 | Field Name | Recommendation |
 | --- | --- |
-| `schedule_relationship` | The behavior of `ADDED` trips are unspecified and the use of this enumeration is not recommended. |
+| `schedule_relationship` | The behavior of `ADDED` trips are unspecified and the use of this enumeration is not recommended.<br/>If the trip is not scheduled to run originally, use `NEW` if it doesn't follow the stopping pattern of an existing trip, or `DUPLICATED` if it is a copy of an existing trip.<br/>If the trip runs on a modified schedule or stops, but can be associated to an original scheduled trip in the GTFS static, use `REPLACEMENT` and specify the full list of stop times for the modified trip. |
+
+### TripProperties
+
+| Field Name | Recommendation |
+| --- | --- |
+| `trip_headsign` | Should always be provided for a trip with `TripDescriptor.schedule_relationship` = `NEW`, and provided for a trip with `TripDescriptor.schedule_relationship` = `REPLACEMENT` if the trip is diverted. |
 
 ### VehicleDescriptor
 
@@ -100,6 +106,7 @@ For example, a `VehiclePosition` entity has `vehicle_id:A` and `trip_id:4`, then
 | Field Name | Recommendation |
 | --- | --- |
 | `delay` | If only `delay` is provided in a `stop_time_update` `arrival` or `departure` (and not `time`), then the GTFS [`stop_times.txt`](https://gtfs.org/reference/static#stopstxt) should contain `arrival_times` and/or `departure_times` for these corresponding stops. A `delay` value in the realtime feed is meaningless unless you have a clock time to add it to in the GTFS `stop_times.txt` file. |
+| `scheduled_time` | If the trip is a new or replacement trip, and the trip will run according to a schedule (which can be a modified schedule in case of a replacement trip), `scheduled_time` should be provided for all timepoints. If a duplicated trip runs have different run or dwell times compared to the original, `scheduled_time` can also be used to specify them. |
 
 ### VehiclePosition
 
