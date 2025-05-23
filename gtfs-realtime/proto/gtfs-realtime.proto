@@ -195,6 +195,13 @@ message TripUpdate {
     // To specify a completely certain prediction, set its uncertainty to 0.
     optional int32 uncertainty = 3;
 
+    // Scheduled time for a NEW, REPLACEMENT, or DUPLICATED trip.
+    // In Unix time (i.e., number of seconds since January 1st 1970 00:00:00
+    // UTC).
+    // Optional if TripUpdate.schedule_relationship is NEW, REPLACEMENT or DUPLICATED, forbidden otherwise.
+    // NOTE: This field is still experimental, and subject to change. It may be formally adopted in the future.
+    optional int64 scheduled_time = 4;
+
     // The extensions namespace allows 3rd-party developers to extend the
     // GTFS Realtime Specification in order to add and evaluate new features
     // and modifications to the spec.
@@ -276,6 +283,32 @@ message TripUpdate {
       // (e.g., `VehiclePosition.stop_id`).
       // NOTE: This field is still experimental, and subject to change. It may be formally adopted in the future.
       optional string assigned_stop_id = 1;
+
+      // The updated headsign of the vehicle at the stop.
+      // NOTE: This field is still experimental, and subject to change. It may be formally adopted in the future.
+      optional string stop_headsign = 2;
+      
+      enum DropOffPickupType {
+        // Regularly scheduled pickup/dropoff.
+        REGULAR = 0;
+
+        // No pickup/dropoff available
+        NONE = 1;
+
+        // Must phone agency to arrange pickup/dropoff.
+        PHONE_AGENCY = 2;
+
+        // Must coordinate with driver to arrange pickup/dropoff.
+        COORDINATE_WITH_DRIVER = 3;
+      }
+      
+      // The updated pickup of the vehicle at the stop.
+      // NOTE: This field is still experimental, and subject to change. It may be formally adopted in the future.
+      optional DropOffPickupType pickup_type = 3;
+
+      // The updated drop off of the vehicle at the stop.
+      // NOTE: This field is still experimental, and subject to change. It may be formally adopted in the future.
+      optional DropOffPickupType drop_off_type = 4;
 
       // The extensions namespace allows 3rd-party developers to extend the
       // GTFS Realtime Specification in order to add and evaluate new features
@@ -383,6 +416,14 @@ message TripUpdate {
     // be marked as schedule_relationship=SKIPPED.
     // NOTE: This field is still experimental, and subject to change. It may be formally adopted in the future. 
     optional string shape_id = 4;
+
+    // Specifies the headsign for this trip when it differs from the original.
+    // NOTE: This field is still experimental, and subject to change. It may be formally adopted in the future.
+    optional string trip_headsign = 5;
+
+    // Specifies the name for this trip when it differs from the original.
+    // NOTE: This field is still experimental, and subject to change. It may be formally adopted in the future.
+    optional string trip_short_name = 6;
 
     // The extensions namespace allows 3rd-party developers to extend the
     // GTFS Realtime Specification in order to add and evaluate new features
@@ -798,14 +839,10 @@ message TripDescriptor {
     // enough to the scheduled trip to be associated with it.
     SCHEDULED = 0;
 
-    // An extra trip that was added in addition to a running schedule, for
-    // example, to replace a broken vehicle or to respond to sudden passenger
-    // load.
-    // NOTE: Currently, behavior is unspecified for feeds that use this mode. There are discussions on the GTFS GitHub
-    // [(1)](https://github.com/google/transit/issues/106) [(2)](https://github.com/google/transit/pull/221)
-    // [(3)](https://github.com/google/transit/pull/219) around fully specifying or deprecating ADDED trips and the
-    // documentation will be updated when those discussions are finalized.
-    ADDED = 1;
+    // This value has been deprecated as the behavior was unspecified. 
+    // Use DUPLICATED for an extra trip that is the same as a scheduled trip except the start date or time, 
+    // or NEW for an extra trip that is unrelated to an existing trip.
+    ADDED = 1 [deprecated = true];
 
     // A trip that is running with no schedule associated to it (GTFS frequencies.txt exact_times=0).
     // Trips with ScheduleRelationship=UNSCHEDULED must also set all StopTimeUpdates.ScheduleRelationship=UNSCHEDULED.
@@ -814,8 +851,9 @@ message TripDescriptor {
     // A trip that existed in the schedule but was removed.
     CANCELED = 3;
 
-    // Should not be used - for backwards-compatibility only.
-    REPLACEMENT = 5 [deprecated = true];
+    // A trip that replaces an existing trip in the schedule.
+    // NOTE: This field is still experimental, and subject to change. It may be formally adopted in the future.
+    REPLACEMENT = 5;
 
     // An extra trip that was added in addition to a running schedule, for example, to replace a broken vehicle or to
     // respond to sudden passenger load. Used with TripUpdate.TripProperties.trip_id, TripUpdate.TripProperties.start_date,
@@ -824,7 +862,10 @@ message TripDescriptor {
     // (in calendar.txt or calendar_dates.txt) is operating within the next 30 days. The trip to be duplicated is
     // identified via TripUpdate.TripDescriptor.trip_id. This enumeration does not modify the existing trip referenced by
     // TripUpdate.TripDescriptor.trip_id - if a producer wants to cancel the original trip, it must publish a separate
-    // TripUpdate with the value of CANCELED or DELETED. Trips defined in GTFS frequencies.txt with exact_times that is
+    // TripUpdate with the value of CANCELED or DELETED. If a producer wants to replace the original trip, a value of 
+    // `REPLACEMENT` should be used instead.
+    //
+    // Trips defined in GTFS frequencies.txt with exact_times that is
     // empty or equal to 0 cannot be duplicated. The VehiclePosition.TripDescriptor.trip_id for the new trip must contain
     // the matching value from TripUpdate.TripProperties.trip_id and VehiclePosition.TripDescriptor.ScheduleRelationship
     // must also be set to DUPLICATED.
@@ -844,6 +885,10 @@ message TripDescriptor {
     // real-time predictions.
     // NOTE: This field is still experimental, and subject to change. It may be formally adopted in the future.
     DELETED = 7;
+
+    // An extra trip unrelated to any existing trips, for example, to respond to sudden passenger load.
+    // NOTE: This field is still experimental, and subject to change. It may be formally adopted in the future.
+    NEW = 8;
   }
   optional ScheduleRelationship schedule_relationship = 4;
 
@@ -869,8 +914,8 @@ message TripDescriptor {
     extensions 9000 to 9999;
   }
 
-  // Linkage to any modifications done to this trip (shape changes, removal or addition of stops). 
-  // If this field is provided, the `trip_id`, `route_id`, `direction_id`, `start_time`, `start_date` fields of the `TripDescriptor` MUST be left empty, to avoid confusion by consumers that aren't looking for the `ModifiedTripSelector` value. 
+  // Linkage to any modifications done to this trip (shape changes, removal or addition of stops).
+  // If this field is provided, the `trip_id`, `route_id`, `direction_id`, `start_time`, `start_date` fields of the `TripDescriptor` MUST be left empty, to avoid confusion by consumers that aren't looking for the `ModifiedTripSelector` value.
   optional ModifiedTripSelector modified_trip = 7;
 
   // The extensions namespace allows 3rd-party developers to extend the
@@ -1139,7 +1184,7 @@ message TripModifications {
   }
 
   message SelectedTrips {
-    // A list of trips affected with this replacement that all have the same new `shape_id`.
+    // A list of trips affected with this replacement that all have the same new `shape_id`. A `TripUpdate` with `schedule_relationship=REPLACEMENT` must not already exist for the trip.
     repeated string trip_ids = 1;
     // The ID of the new shape for the modified trips in this SelectedTrips.
     // May refer to a new shape added using a GTFS-RT Shape message, or to an existing shape defined in the GTFS-Static feed’s shapes.txt.
