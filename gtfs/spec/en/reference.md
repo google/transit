@@ -910,13 +910,13 @@ This file describes the capacity, accessibility and features of individual vehic
 |  `full_load` | integer | Recommended | The number of passengers that is considered a full load for a vehicle. If passenger occupancy is provided, this should be the number of passengers that is considered Full or 100%. |
 |  `wheelchairs` | integer | Recommended | The number of spots available for passingers with wheelchairs. |
 |  `strollers` | integer | Optional | The number of spots available for strollers. Would include spots used by wheelchairs or strollers. |
-|  `bicycles ` | integer | Recommended | The number of bicycles the vehicle can carry, either on the inside or outside of the vehicle. |
+|  `bicycles` | integer | Recommended | The number of bicycles the vehicle can carry, either on the inside or outside of the vehicle. |
 | `bicycle_notes` | Text | Optional | A decription of the location, procedures and restriction of bringing a bicycle on the vehicle. |
 |  `luggage` | Enum | Optional | The vehicle has space set aside for luggage. Valid options are:<br><br>`0` - No space set aside for luggage.<br>`1` - Space above passenger seating for luggage.<br>`2` - Space set aside in the passenger cabin for luggage.<br>`3` - Space for luggage that can be accessed externally. |
 |  `luggage_notes` | Text | Optional | A description of how luggage is stored and any limitations that may apply. |
-|  `restrooms` | integer | Optional | The number of restrooms in the vehicle, including any accessable restrooms. |
-|  `accessable_restrooms` | integer | Optional | The number of accessable restrooms in the vehicle. |
-|  `air_conditioned` | Enum | Optional | Valid options are:<br><br>`0` - No air conditioning provided.<br>`1` - The vehicle has air conditioning. |
+|  `restrooms` | integer | Optional | The number of restrooms in the vehicle, including any accessible restrooms. |
+|  `accessible_restrooms` | integer | Optional | The number of accessible restrooms in the vehicle. |
+|  `air_conditioning` | Enum | Optional | Valid options are:<br><br>`0` - No air conditioning provided.<br>`1` - The vehicle has air conditioning. |
 |  `ac_plugs` | integer | Optional | AC power plugs that follow the local standard that are available to passengers.<br><br>Empty - No information on availability.<br>`0` - No AC power plugs available.<br>`1` - An unknown number of AC power plugs available.<br>Other number - the number of AC power plugs available to passengers. |
 |  `usba_plugs` | integer | Optional | USB-A ports for charging devices available to passengers.<br><br>Empty - No information on availability.<br>`0` - No USB-A ports available.<br>`1` - An unknown number of USB-A ports available.<br>Other number - the number of USB-A ports available to passengers. |
 |  `usbc_plugs` | integer | Optional | USB-C ports for charging devices available to passengers.<br><br>Empty - No information on availability.<br>`0` - No USB-C ports available.<br>`1` - An unknown number of USB-C ports available.<br>Other number - the number of USB-C ports available to passengers. |
@@ -926,11 +926,11 @@ This file describes the capacity, accessibility and features of individual vehic
 |  `doors` | integer | Optional | The number of doors on each side. If there are doors on both sides of the vehicle, provide the number of doors per side. |
 |  `boarding_type` | Enum | Recommended | Valid options are:<br><br>`1` - High platform level boarding<br>`2` - Low platform level boarding<br>`3` - One or more steps are required to board.<br>`4` - Level boarding at some stations |
 |  `boarding_steps` | integer | Optional | Number of steps require to board where there is no level boarding. |
-|  `accessable_boarding` | Enum | Recommended | The accommodation to allow boarding with a mobility device. Valid options are:<br><br>`0` - Not accessable.<br>`1` - Level boarding.<br>`2` - Ramp can be deployed.<br>`3` - Lift can be deployed. |
-|  `accessability_notes` | Text | Optional | Information about how to board with a mobility device and any limitations. |
-|  `next_stop_announcement` | Enum | Recommended | Audible next stop announcemnts. Valid options are:<br><br>`0` - No next stop announcement available.<br>`1` - Automatic audio next stop annoucements.<br>`2` - Next stop annoucements by on board staff.<br>`3` - Next stop annoucements on request of on board staff. |
-|  `route_announcement` | Enum | Recommended | Audible route and destination announcements heard by passenger waiting at the stop. Valid options are:<br><br>`0` - No route announcement available.<br>`1` - Automatic audio route annoucements from the vehicle.<br>`2` - Automatic audio route annoucements in stations when before or when vehicles arrive.<br>`3` - Route annoucements by station staff. |
-|  `next_stop_display` | Enum | Recommended | Visual next stop displays. Valid options are:<br><br>`0` - No next stop display.<br>`1` - Interior displays showing the next stop.<br>`2` - Interior displays showing multiple upcoming stops.<br>`3` - The name of the station can be seen from inside the vehicle. |
+|  `accessible_boarding` | Enum | Recommended | The accommodation to allow boarding with a mobility device. Valid options are:<br><br>`0` - Not accessible.<br>`1` - Level boarding.<br>`2` - Ramp can be deployed.<br>`3` - Lift can be deployed. |
+|  `accessibility_notes` | Text | Optional | Information about how to board with a mobility device and any limitations. |
+|  `stop_announcements` | Enum | Recommended | Audible next stop announcemnts. Valid options are:<br><br>`0` - No next stop announcement available.<br>`1` - Automatic audio next stop annoucements.<br>`2` - Next stop annoucements by on board staff.<br>`3` - Next stop annoucements on request of on board staff. |
+|  `route_announcements` | Enum | Recommended | Audible route and destination announcements heard by passenger waiting at the stop. Valid options are:<br><br>`0` - No route announcement available.<br>`1` - Automatic audio route annoucements from the vehicle.<br>`2` - Automatic audio route annoucements in stations when before or when vehicles arrive.<br>`3` - Route annoucements by station staff. |
+|  `stop_displays` | Enum | Recommended | Visual next stop displays. Valid options are:<br><br>`0` - No next stop display.<br>`1` - Interior displays showing the next stop.<br>`2` - Interior displays showing multiple upcoming stops.<br>`3` - The name of the station can be seen from inside the vehicle. |
 |  `livery_color` | Color | Optional | Hex code of the most noticeable color of the livery. |
 |  `livery` | Text | Optional | The name of the livery. |
 |  `decoration` | Text | Optional | A brief description of a special wrap or modification of the vehicle that is either seasonal or long term. |
