@@ -1,5 +1,10 @@
 ### Revision History
 
+#### May 2025
+
+* Deprecates schedule_relationship `ADDED` in favour of `NEW` and adds `REPLACEMENT`. See [discussion](https://github.com/google/transit/pull/504).
+* Further clarifications to trip modifications. See [discussion](https://github.com/google/transit/pull/542).
+
 #### December 2024
 
 * Added new string field that matches feed_info.feed_version from the GTFS Schedule feed that the realtime data is based on. See [discussion](https://github.com/google/transit/pull/434).
