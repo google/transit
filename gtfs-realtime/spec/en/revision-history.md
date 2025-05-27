@@ -2,7 +2,7 @@
 
 #### May 2025
 
-* Added schedule_relationship `ADDED` and `REPLACEMENT` to be used instead of `NEW`. See [discussion](https://github.com/google/transit/pull/504).
+* Deprecates schedule_relationship `ADDED` in favour of `NEW` and adds `REPLACEMENT`. See [discussion](https://github.com/google/transit/pull/504).
 * Further clarifications to trip modifications. See [discussion](https://github.com/google/transit/pull/542).
 
 #### December 2024
