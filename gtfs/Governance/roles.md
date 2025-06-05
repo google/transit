@@ -19,21 +19,21 @@ Anyone can become a Contributor by participating in discussions within the offic
 
 A GTFS Producer is an individual or organization responsible for generating GTFS data. This may include transit agencies, data vendors, aggregators, or planners.
 
-* If an individual or organization assigns GTFS feed production to another party, only one of them can be recognized as the Producer.  
-* To vote, Producers must reference the GTFS feed they represent to confirm their role as Producer.  
-* In the case where a contributor is both a Consumer and Producer, they can only count as one, thus they must select a single role to represent during testing and voting.
+* If GTFS feed production is assigned to another party, only one of the two may be recognized as the Producer for voting purposes.  
+* To vote, Producers must reference a single GTFS feed they are responsible for. This follows the "One Organization, One Feed, One Vote" principle, which ensures each feed is represented only once in the process.
+* Contributors who qualify as both a Producer and a Consumer may only vote in one role and must select which role to represent during testing and voting.
 
 #### Consumers
 
 A GTFS Consumer is an individual or organization that ingests GTFS data, typically to provide and distribute rider-facing transit information through platforms such as software applications.
 
-* In some cases, contributors may consume GTFS data for research, data analysis, operations, planning, etc. However, they are considered Consumers only if their work is publicly accessible or shared in a public-facing context.  
-* To vote, consumers must reference the GTFS consuming application they represent to confirm their role as Consumer.  
-* In the case where a contributor is both a Consumer and Producer, they can only count as one, thus they must select a single role to represent during testing and voting.
+* Some contributors may use GTFS data for research, analysis, planning, or operations. These contributors are considered Consumers only if their work is publicly accessible or shared in a public-facing context.  
+* To vote, Consumers must reference the GTFS-consuming application they represent.
+* Contributors who qualify as both a Consumer and a Producer may only vote in one role and must select which role to represent during testing and voting.
 
 #### General Contributors
 
-Individuals or organizations that do not qualify as either Producers or Consumers are considered as General Contributors or simply referred to as Contributors. General Contributors can vote in proposals.
+Individuals or organizations that do not qualify as either Producers or Consumers are considered General Contributors. These may include researchers, advocates, software developers, or other interested community members. General Contributors may also vote in proposals.
 
 ## Maintainer
 

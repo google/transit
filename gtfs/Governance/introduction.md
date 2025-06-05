@@ -21,6 +21,20 @@ A change refers to any proposed modification to the GTFS documentation hosted in
 
 ## How can I start participating?
 
-Anyone can contribute to the development of GTFS. Typically, anyone with a suggestion or idea for improving the specification follows the steps outlined in the GTFS Change Process to refine and advance their proposal.
+Anyone can contribute to the development of GTFS. Typically, anyone with a suggestion or idea for improving the specification follows the steps outlined in the [Change process](change-process.md) to refine and advance their proposal.
 
 To navigate the process effectively, it's important to understand the different [types of changes](change-types.md) which determine the specific steps that need to be taken. Thus, it’s recommended that contributors familiarize themselves with these change categories, as well as the [roles and responsibilities](roles.md), to better understand their participation and involvement.
+
+### What does a change process typically look like?
+
+As mentioned above, different [types of changes](change-types.md) follow different processes. Below is an overview of the process for [Functional changes](change-types.md/#1-functional-changes), which outlines how the community proposes, reviews, tests, and adopts Functional changes to the GTFS specification.
+
+1. A proposal is submitted by opening a Pull Request in the GTFS Repository.  
+2. The community engages in discussions to refine the proposal.  
+3. Contributors and the Maintainer review the proposed changes.  
+4. The community votes to confirm unanimous consensus before testing.  
+5. First Adopters test the proposed changes.  
+6. The community votes to decide whether the changes should be officially adopted.  
+7. If adopted, the changes are implemented into the specification.
+
+There are similar processes for [Non-Functional changes](change-types.md/#2-non-functional-changes) and [Documentation Maintenance](change-types.md/#3-documentation-maintenance). For more details, see the full [Change Process](change-process.md).

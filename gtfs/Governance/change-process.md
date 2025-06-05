@@ -31,11 +31,11 @@ Depending on the type of the proposed change, different tracks apply to the Chan
 This process guides how the community proposes, reviews, and adopts [Functional changes](change-types.md/#1-functional-changes) to the specification in the [GTFS Repository](https://github.com/google/transit/pulls). 
 
 * A proposal is submitted by opening a Pull Request in the GTFS Repository.   
-* The community engages in discussions to refine the proposal. 
-* The [Contributors](roles.md/#contributors) and the [Maintainer](roles.md/#maintainer) review the proposed changes.   
-* The community votes to confirm consensus before testing.
+* The community engages in discussions to refine the proposal. This period must last at least 7 days.
+* The [Contributors](roles.md/#contributors) and the [Maintainer](roles.md/#maintainer) review the proposed changes. This period must last at least 7 days.  
+* Before testing, the community holds a vote to confirm unanimous consensus on the proposal. This means all participating voters must be in favor. For the vote to be valid, it must include at least five contributors, with a minimum of two Producers and two Consumers. The voting period must last at least 14 days. 
 * [First Adopters](roles.md/#first-adopter) test the proposed changes.   
-* The community votes to decide whether the changes should be officially adopted.  
+* The community holds a vote to determine whether the changes should be officially adopted. This vote follows an 80% majority rule, meaning at least 80% of votes must be in favor for it to pass. To be valid, the vote must include at least five contributors, with a minimum of two Producers and two Consumers. The voting period must last at least 14 days.
 * Finally, changes are implemented into the specification.
 
 ### Track B: Non-Functional Changes
@@ -45,9 +45,9 @@ This process guides how the community proposes, reviews, and adopts [Functional 
 This process guides how the community proposes, reviews, and adopts [Non-Functional changes](change-types.md/#2-non-functional-changes) to the specification in the [GTFS Repository](https://github.com/google/transit/pulls).
 
 * A proposal is submitted by opening a Pull Request in the GTFS Repository.   
-* The community engages in discussions to refine the proposal. 
-* The [Contributors](roles.md/#contributors) and the [Maintainer](roles.md/#maintainer) review the proposed changes.    
-* The community votes to decide whether the changes should be officially adopted.  
+* The community engages in discussions to refine the proposal. This period must last at least 7 days.
+* The [Contributors](roles.md/#contributors) and the [Maintainer](roles.md/#maintainer) review the proposed changes. This period must last at least 7 days.   
+* The community holds a vote to determine whether the changes should be officially adopted. This vote follows an 80% majority rule, meaning at least 80% of votes must be in favor for it to pass. To be valid, the vote must include at least five contributors, with a minimum of two Producers and two Consumers. The voting period must last at least 14 days.
 * Finally, changes are implemented into the specification.
 
 ### Track C: Documentation Maintenance
@@ -57,8 +57,8 @@ This process guides how the community proposes, reviews, and adopts [Non-Functio
 This process guides how the community proposes, reviews, and adopts [changes to maintain the documentation](change-types.md/#3-documentation-maintenance) in the [GTFS Repository](https://github.com/google/transit/pulls).
 
 * A proposal is submitted by opening a Pull Request in the GTFS Repository.   
-* The community engages in discussions to refine the proposal.
-* The [Contributors](roles.md/#contributors) and the [Maintainer](roles.md/#maintainer) review the proposed changes.   
+* The community engages in discussions to refine the proposal. This period must last at least 7 days.
+* The [Contributors](roles.md/#contributors) and the [Maintainer](roles.md/#maintainer) review the proposed changes. This period must last at least 7 days.  
 * Finally, changes are implemented into the specification.
 
 ## Process Steps
@@ -258,13 +258,11 @@ The vote must meet the following conditions:
 
 | Requirement | Details |
 | :---- | :---- |
-| **Consensus Principle** | The vote is based on **unanimous consensus**. |
-| **Vote Passing Criteria** | The vote passes when all contributors vote **\+1**. |
-| **Vote Failing Criteria** | The vote fails when any contributor votes **\-1**. |
+| **Approval Rule** | The vote passes only if all contributors vote +1 (unanimous consensus).|
 | **Voting Format** | Votes must be formatted as follows: <br>- *“+1 or \-1, Organization Name, Contributor Type (Consumer, Producer, or General Contributor), Link to Produced Feed or Consuming Application”* |
 | **Voting Against** | Contributors providing a negative vote (-1) must give actionable feedback. <br>- Actionable feedback is practical and constructive, providing concrete observations or suggestions to help solve the identified issue:  <br> - “*This proposal does not respect the backward compatibility principle of GTFS and we propose to create a separate file instead.*” |
 | **Minimum Votes** | At least 5 votes must be cast. |
-| **Participant Composition** | At least 2 consumers and 2 producers must participate in the vote. <br>- Each of these contributors can only be considered either a Consumer or Producer even if they are able to represent both roles. <br>- First adopters who tested the proposal can vote and count toward this requirement, provided they are not acting as the Advocate for the proposal. |
+| **Participant Composition** | At least 2 GTFS consumers **and** 2 GTFS producers must participate in the vote. <br>- Each of these contributors can only be considered either a Consumer **or** Producer even if they are able to represent both roles. <br>- First Adopters intending to test the proposal* can vote and count toward this requirement, provided they are not acting as the Advocate for the proposal. |
 | **Advocate's Vote** | The Advocate cannot vote for their own proposal. |
 | **Invalid Votes** | Votes are considered invalid if:  <br>- A contributor casts their vote outside (before or after) the official voting period. <br>- An individual or organization votes more than once (Only one vote per individual or organization is permitted.) <br>- A contributor votes Against the proposal without including actionable feedback.  |
 | **Minimum Voting Period**  | The voting period must last at least **14 full calendar days** and end at **23:59:59 UTC**. |
@@ -342,17 +340,15 @@ The community votes to confirm whether or not the proposed changes are to be off
 
 **<ins>Requirements</ins>** 
 
-The vote must meet the following conditions:
+The vote must meet the following conditions based on the:
 
 | Requirement | Details |
 | :---- | :---- |
-| **Consensus Principle** | The vote is based on **a qualified majority** (80% majority) |
-| **Vote Passing Criteria** | The vote passes when 80% or more of contributors vote **\+1**. |
-| **Vote Failing Criteria** | The vote fails when more than 20% of contributors vote **\-1**. |
+| **Approval Rule** | The vote passes if 80% or more of contributors vote +1 (qualified majority). |
 | **Voting Format** | Votes must be formatted as follows: <br>- *“+1 or \-1, Organization Name, Contributor Type (Consumer, Producer, or General Contributor), Link to Produced Feed or Consuming Application”* |
 | **Voting Against** | Contributors providing a negative vote (-1) must give actionable feedback. <br>- Actionable feedback is practical and constructive, providing concrete observations or suggestions to help solve the identified issue:  <br> - “*This proposal does not respect the backward compatibility principle of GTFS and we propose to create a separate file instead.*” |
 | **Minimum Votes** | At least 5 votes must be cast. |
-| **Participant Composition** | At least 2 consumers and 2 producers must participate in the vote. <br>- Each of these contributors can only be considered either a Consumer or Producer even if they are able to represent both roles. <br>- First adopters who tested the proposal can vote and count toward this requirement, provided they are not acting as the Advocate for the proposal. |
+| **Participant Composition** | At least 2 GTFS consumers **and** 2 GTFS producers must participate in the vote. <br>- Each of these contributors can only be considered either a Consumer **or** Producer even if they are able to represent both roles. <br>- First Adopters who tested the proposal can vote and count toward this requirement, provided they are not acting as the Advocate for the proposal. |
 | **Advocate's Vote** | The Advocate cannot vote for their own proposal. |
 | **Invalid Votes** | Votes are considered invalid if:  <br>- A contributor casts their vote outside (before or after) the official voting period. <br>- A contributor votes more than once (Only one vote per contributor is permitted.) <br>- A contributor votes Against the proposal without including actionable feedback. |
 | **Minimum Voting Period**  | The voting period must last at least **14 full calendar days** and end at **23:59:59 UTC**. |
