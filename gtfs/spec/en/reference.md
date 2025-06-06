@@ -26,7 +26,6 @@ This document defines the format and structure of the files that comprise a GTFS
     -   [fare\_products.txt](#fare_productstxt) 
     -   [fare\_leg\_rules.txt](#fare_leg_rulestxt)
     -   [fare_leg_join_rules.txt](#fare_leg_join_rulestxt)
-    -   [fare\_leg\_distance\_rules.txt](#fare_leg_distance_rulestxt)
     -   [fare\_transfer\_rules.txt](#fare_transfer_rulestxt)
     -   [areas.txt](#areastxt)
     -   [stop_areas.txt](#stop_areastxt)
@@ -132,7 +131,6 @@ This specification defines the following files:
 |  [fare_products.txt](#fare_productstxt)  | Optional | To describe the different types of tickets or fares that can be purchased by riders.<br><br>File [fare_products.txt](#fare_productstxt) describes fare products that are not represented in [fare_attributes.txt](#fare_attributestxt) and [fare_rules.txt](#fare_rulestxt). As such, the use of [fare_products.txt](#fare_productstxt) is entirely separate from files [fare_attributes.txt](#fare_attributestxt) and [fare_rules.txt](#fare_rulestxt). |
 |  [fare_leg_rules.txt](#fare_leg_rulestxt)  | Optional | Fare rules for individual legs of travel.<br><br>File [fare_leg_rules.txt](#fare_leg_rulestxt) provides a more detailed method for modeling fare structures. As such, the use of [fare_leg_rules.txt](#fare_leg_rulestxt) is entirely separate from files [fare_attributes.txt](#fare_attributestxt) and [fare_rules.txt](#fare_rulestxt). |
 |  [fare_leg_join_rules.txt](#fare_leg_join_rulestxt)  | Optional | Rules for defining two or more legs should be considered as a single **effective fare leg** for the purposes of matching against rules in [fare_leg_rules.txt](#fare_leg_rulestxt)|
-|  [fare_leg_distance_rules.txt](#fare_leg_distance_rulestxt)  | Conditionally Forbidden | Rules for defining two or more distance-based legs that should be considered as a single effective distance-based fare leg for the purposes of matching against rules in [fare_leg_rules.txt](#fare_leg_rulestxt)<br><br>Conditionally Forbidden:<br>- **Forbidden** if no distance-based leg exists in [fare_leg_rules.txt](#fare_leg_rulestxt).<br>- Optional otherwise. |
 |  [fare_transfer_rules.txt](#fare_transfer_rulestxt)  | Optional | Fare rules for transfers between legs of travel.<br><br>Along with [fare_leg_rules.txt](#fare_leg_rulestxt), file [fare_transfer_rules.txt](#fare_transfer_rulestxt) provides a more detailed method for modeling fare structures. As such, the use of [fare_transfer_rules.txt](#fare_transfer_rulestxt) is entirely separate from files [fare_attributes.txt](#fare_attributestxt) and [fare_rules.txt](#fare_rulestxt). |
 |  [areas.txt](#areastxt) | Optional | Area grouping of locations. |
 |  [stop_areas.txt](#stop_areastxt) | Optional | Rules to assign stops to areas. |
@@ -535,25 +533,9 @@ For a sub-journey of two consecutive legs with a transfer, if the transfer match
 | `to_network_id` | Foreign ID referencing `routes.network_id` or `networks.network_id`| **Required** | Matches a post-transfer leg that uses the specified route network.  If specified, the same `from_network_id` must also be specified. |
 | `from_stop_id` | Foreign ID referencing `stops.stop_id`| **Conditionally Required** | Matches a pre-transfer leg that ends at the specified stop (`location_type=0` or empty) or station (`location_type=1`).<br><br>Conditionally Required:<br> - **Required** if `to_stop_id` is defined.<br> - Optional otherwise. |
 | `to_stop_id` | Foreign ID referencing `stops.stop_id`| **Conditionally Required** | Matches a post-transfer leg that starts at the specified stop (`location_type=0` or empty) or station (`location_type=1`).<br><br>Conditionally Required:<br> - **Required** if `from_stop_id` is defined.<br> - Optional otherwise. |
-
-### fare_leg_distance_rules.txt
-
-File: **Conditionally Forbidden**
-
-Primary Key (`from_network_id, to_network_id`)
-
-For a sub-journey of two consecutive distance-based legs with a transfer, if the transfer matches all matching predicates specified by a particular record in the file, then those two distance-based legs should be considered as a single **effective distance-based fare leg** for the purposes of matching against rules in [`fare_leg_rules.txt`](#fare_leg_rulestxt).
-- If a matching predicate field value is blank or unspecified for a particular record in the file, then that field should be ignored for the purposes of matching.
-- When a sub-journey contains consecutive transfers that each match a join rule, then the entire sub-journey should be considered as a single **effective distance-based fare leg**.
-
-|  Field Name | Type | Presence | Description |
-|  ------ | ------ | ------ | ------ |
-| `from_network_id` | Foreign ID referencing `routes.network_id` or `networks.network_id`| **Required** | Matches a pre-transfer distance-based leg that uses the specified route network. |
-| `to_network_id` | Foreign ID referencing `routes.network_id` or `networks.network_id`| **Required** | Matches a post-transfer distance-based leg that uses the specified route network. |
-| `resulting_network_id` | Foreign ID referencing `routes.network_id` or `networks.network_id`| **Required** | The resulting network of the effective leg. This is used for the purposes of matching against rules in [fare_leg_rules.txt](#fare_leg_rulestxt). |
 | `duration_limit` | Positive integer | **Optional** | Defines the duration limit of the transfer between the distance-based legs.<br><br>Must be expressed in integer increments of seconds.<br><br>If there is no duration limit, `fare_leg_distance_rules.duration_limit` must be empty. |
 | `duration_limit_type` | Enum | **Conditionally Required** | Defines the relative start and end of `fare_leg_distance_rules.duration_limit`.<br><br>Valid options are:<br>`0` - Between the departure fare validation of the current leg and the arrival fare validation of the next leg.<br>`1` - Between the departure fare validation of the current leg and the departure fare validation of the next leg.<br>`2` - Between the arrival fare validation of the current leg and the departure fare validation of the next leg.<br>`3` - Between the arrival fare validation of the current leg and the arrival fare validation of the next leg.<br><br>Conditionally Required:<br>- Required if `fare_leg_distance_rules.duration_limit` is defined.<br>- Forbidden if `fare_leg_distance_rules.duration_limit` is empty. |
-| `distance_leg_join_type` | Enum| **Optional** | Defines the joining process of the distance-based legs. <br><br>Valid options are:<br> `0` - Join distance legs at once. The result of joining two distance legs is one effective distance-based fare leg whose distance is the sum of the distances of the sub-legs.<br><img src="distance_join_type_0.svg" width=400px style="display: block; margin-left: auto; margin-right: auto;"> <br> `1` - Join fare legs cumulatively. The result of joining two distance legs is two consecutive effective distance-based fare legs, the first effective leg is the first leg, the second effective leg is the effective distance-based fare leg whose distance is the sum of the distances of the sub-legs.<br><img src="distance_join_type_1.svg" width=400px style="display: block; margin-left: auto; margin-right: auto;"> <br>|
+
 
 ### fare_transfer_rules.txt
 
