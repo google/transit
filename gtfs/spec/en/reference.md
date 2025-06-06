@@ -64,7 +64,6 @@ This section defines terms that are used throughout this document.
 * **Fare product** - Purchassable fare products that can be used to pay for or validate travel.
 * **Effective Fare Leg** - A sub-journey of two or more legs that should be treated as a single leg for matching rules in [fare_leg_rules.txt](#fare_leg_rulestxt) for the purposes of fare calculation.
 * **Distance-Based Leg** - A leg which is based on the distance (fare units) traveled. In [fare_leg_rules.txt](#fare_leg_rulestxt), a distance-based leg is a leg that has at least fare_leg_rules.min_distance or fare_leg_rules.max_distance assigned (not empty).
-**Effective Distance-Based Fare Leg** - A sub-journey of two or more distance-based legs that should be treated as a single distance-based leg for matching rules in [fare_leg_rules.txt](#fare_leg_rulestxt) for the purposes of fare calculation for distance-based legs only.
 
 
 ### Presence
@@ -526,6 +525,7 @@ For a sub-journey of two consecutive legs with a transfer, if the transfer match
 - Unless overridden explicitly by `from_stop_id` and `to_stop_id`, the last station of the pre-transfer leg and the first station of the post-transfer leg must be the same for the record.
 - If a matching predicate field value is blank or unspecified for a particular record in the file, then that field should be ignored for the purposes of matching.
 - When a sub-journey contains consecutive transfers that each match a join rule, then the entire sub-journey should be considered as a single **effective fare leg**.
+- In the case of distance-based legs, the effective leg's total distance is the sum of the distances of its legs.
 
 |  Field Name | Type | Presence | Description |
 |  ------ | ------ | ------ | ------ |
