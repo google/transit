@@ -4,7 +4,7 @@ Proposed changes to the specification are categorized based on their impact on i
 
 ![](assets/governance-change-types.svg)
 
-## 1. Functional changes
+## Functional changes
 
 Functional changes refers to modifications that significantly affect specification functionalities. These changes typically require testing and include adding new elements (files, fields, enums) or modifying existing ones. Such changes have to follow the complete specification [Change Process](change-process.md) in order to be officially adopted.
 
@@ -13,7 +13,7 @@ Past Examples:
 * [PR #405](https://github.com/google/transit/pull/405) adds two new files networks.txt and route_networks.txt.  
 * [PR #385](https://github.com/google/transit/pull/385) adds a new option for the field fare_media_type in fare_media.txt.
 
-## 2. Non-Functional changes
+## Non-Functional changes
 
 Non-functional changes refer to important updates to the specification that do not significantly affect functionalities. These changes typically do not require testing and they include the update of requirements, the addition or modification of best practices and any non-editorial modification to the governance framework.
 
@@ -40,7 +40,7 @@ Changes enhancing specific parts of the specification by incorporating recommend
     * [PR #485](https://github.com/google/transit/pull/485) creates a new best practice to add that headsigns are recommended.  
     * [PR #406](https://github.com/google/transit/pull/406) introduces the Dataset Publishing guidelines and Practice Recommendations for all files into the specification
 
-## 3. Documentation maintenance
+## Documentation maintenance
 
 Specification changes that focus on maintaining the documentation are made to improve the specification's clarity, accuracy, and presentation without altering its semantics or functionality. These updates may involve expanding existing content to provide clearer descriptions while preserving the specification’s current interpretation. These changes require a review, but they can be adopted without the need of a vote.
 

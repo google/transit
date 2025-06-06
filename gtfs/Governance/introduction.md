@@ -27,7 +27,7 @@ To navigate the process effectively, it's important to understand the different 
 
 ### What does a change process typically look like?
 
-As mentioned above, different [types of changes](change-types.md) follow different processes. Below is an overview of the process for [Functional changes](change-types.md/#1-functional-changes), which outlines how the community proposes, reviews, tests, and adopts Functional changes to the GTFS specification.
+As mentioned above, different [types of changes](change-types.md) follow different processes. Below is an overview of the process for [Functional changes](change-types.md/#functional-changes), which outlines how the community proposes, reviews, tests, and adopts Functional changes to the GTFS specification.
 
 1. A proposal is submitted by opening a Pull Request in the GTFS Repository.  
 2. The community engages in discussions to refine the proposal.  
@@ -37,4 +37,4 @@ As mentioned above, different [types of changes](change-types.md) follow differe
 6. The community votes to decide whether the changes should be officially adopted.  
 7. If adopted, the changes are implemented into the specification.
 
-There are similar processes for [Non-Functional changes](change-types.md/#2-non-functional-changes) and [Documentation Maintenance](change-types.md/#3-documentation-maintenance). For more details, see the full [Change Process](change-process.md).
+There are similar processes for [Non-Functional changes](change-types.md/#non-functional-changes) and [Documentation Maintenance](change-types.md/#documentation-maintenance). For more details, see the full [Change Process](change-process.md).

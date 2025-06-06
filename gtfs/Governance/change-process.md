@@ -4,7 +4,7 @@
 
 The specification Change Process guides how the community proposes, reviews, and adopts changes to the specification in the [GTFS Repository](https://github.com/google/transit/pulls). 
 
-The specification Change Process is divided into **2 main stages** and categorized into **3 tracks** according to the three [change types](change-types.md): [functional changes](change-types.md/#1-functional-changes), [non-functional changes](change-types.md/#2-non-functional-changes), and [documentation maintenance](change-types.md/#3-documentation-maintenance). 
+The specification Change Process is divided into **2 main stages** and categorized into **3 tracks** according to the three [change types](change-types.md): [functional changes](change-types.md/#functional-changes), [non-functional changes](change-types.md/#non-functional-changes), and [documentation maintenance](change-types.md/#documentation-maintenance). 
 
 ![](assets/governance-process-overview.svg)
 
@@ -28,7 +28,7 @@ Depending on the type of the proposed change, different tracks apply to the Chan
 
 ![](assets/governance-process-functional.svg)
 
-This process guides how the community proposes, reviews, and adopts [Functional changes](change-types.md/#1-functional-changes) to the specification in the [GTFS Repository](https://github.com/google/transit/pulls). 
+This process guides how the community proposes, reviews, and adopts [Functional changes](change-types.md/#functional-changes) to the specification in the [GTFS Repository](https://github.com/google/transit/pulls). 
 
 * A proposal is submitted by opening a Pull Request in the GTFS Repository.   
 * The community engages in discussions to refine the proposal. This period must last at least 7 days.
@@ -42,7 +42,7 @@ This process guides how the community proposes, reviews, and adopts [Functional 
 
 ![](assets/governance-process-non-functional.svg)
 
-This process guides how the community proposes, reviews, and adopts [Non-Functional changes](change-types.md/#2-non-functional-changes) to the specification in the [GTFS Repository](https://github.com/google/transit/pulls).
+This process guides how the community proposes, reviews, and adopts [Non-Functional changes](change-types.md/#non-functional-changes) to the specification in the [GTFS Repository](https://github.com/google/transit/pulls).
 
 * A proposal is submitted by opening a Pull Request in the GTFS Repository.   
 * The community engages in discussions to refine the proposal. This period must last at least 7 days.
@@ -54,7 +54,7 @@ This process guides how the community proposes, reviews, and adopts [Non-Functio
 
 ![](assets/governance-process-documentation.svg)
 
-This process guides how the community proposes, reviews, and adopts [changes to maintain the documentation](change-types.md/#3-documentation-maintenance) in the [GTFS Repository](https://github.com/google/transit/pulls).
+This process guides how the community proposes, reviews, and adopts [changes to maintain the documentation](change-types.md/#documentation-maintenance) in the [GTFS Repository](https://github.com/google/transit/pulls).
 
 * A proposal is submitted by opening a Pull Request in the GTFS Repository.   
 * The community engages in discussions to refine the proposal. This period must last at least 7 days.
