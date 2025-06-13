@@ -678,11 +678,14 @@ Files [pathways.txt](#pathwaystxt) and [levels.txt](levelstxt) use a graph repre
 
 To navigate from the station entrance/exit (a node represented as a location with `location_type=2`) to a platform (a node represented as a location with `location_type=0` or empty), the rider will move through walkways, fare gates, stairs, and other edges represented as pathways. Generic nodes (nodes represented with `location_type=3`) can be used to connect pathways throughout a station.
 
-Pathways must be defined exhaustively in a station. If any pathways are defined, it is assumed that all pathways throughout the station are represented. Therefore, the following guidelines apply:
+Pathways are intended to exhaustively define the internal access graph of a station. If any pathways are defined within a station, data consumers should assume that all relevant connections within that station are described. However, the optional `stop_access` field in `stops.txt` may be used to explicitly define whether a stop is accessible directly from the street network or through the station's defined pathways. Therefore, the following guidelines apply:
 
-- No dangling locations: If any location within a station has a pathway, then all locations within that station should have pathways, except for platforms that have boarding areas (`location_type=4`, see guideline below).
+- No dangling locations: If any location within a station has a pathway, then all locations within that station should have pathways, except
+    -  Platforms that have boarding areas (`location_type=4`, see guideline below)
+    -  Stops (`location_type=0` or empty) with `stops.stop_access=1`
 - No pathways for a platform with boarding areas: A platform (`location_type=0` or empty) that has boarding areas (`location_type=4`) is treated as a parent object, not a point. In such cases, the platform must not have pathways assigned. All pathways should be assigned for each of the platform's boarding areas.
-- No locked platforms: Each platform (`location_type=0` or empty) or boarding area (`location_type=4`) must be connected to at least one entrance/exit (`location_type=2`) via some chain of pathways. Stations not allowing a pathway to the outside of the station from a given platform are rare.
+- No locked platforms: If any location within a station has a pathway, each platform (`location_type=0` or empty) or boarding area (`location_type=4`) must be connected to at least one entrance/exit (`location_type=2`) via some chain of pathways — unless:
+    - The stop (`location_type=0` or empty) is explicitly marked with `stops.stop_access=1`, in which case it is assumed to be directly accessible from the street network.
 
 |  Field Name | Type | Presence | Description |
 |  ------ | ------ | ------ | ------ |
