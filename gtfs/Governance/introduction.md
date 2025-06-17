@@ -29,12 +29,15 @@ To navigate the process effectively, it's important to understand the different 
 
 As mentioned above, different [types of changes](change-types.md) follow different processes. Below is an overview of the process for [Functional changes](change-types.md/#functional-changes), which outlines how the community proposes, reviews, tests, and adopts Functional changes to the GTFS specification.
 
-1. A proposal is submitted by opening a Pull Request in the GTFS Repository.  
-2. The community engages in discussions to refine the proposal.  
-3. Contributors and the Maintainer review the proposed changes.  
-4. The community votes to confirm unanimous consensus before testing.  
-5. First Adopters test the proposed changes.  
-6. The community votes to decide whether the changes should be officially adopted.  
-7. If adopted, the changes are implemented into the specification.
+| Action                      | Description                                                                                                  | Time            | Requirements                                                                                       |
+| --------------------------- | ------------------------------------------------------------------------------------------------------------ | --------------- | -------------------------------------------------------------------------------------------------- |
+| Submit Proposal             | A Pull Request (PR) is opened in the GTFS repository to propose the change.                                  | —               | Anyone can submit a proposal.                                                                      |
+| Community Discussion        | Community discusses and refines the proposal.                                                                | Minimum 7 days  | Open participation.                                                                                |
+| Review Period               | Contributors and the Maintainer review the proposal for clarity, feasibility, and alignment with GTFS goals. | Minimum 7 days  | Maintainer and Contributors must review.                                                           |
+| Vote to Approve for Testing | Community votes to determine whether the proposal is ready for testing. Requires unanimous consensus.        | Minimum 14 days | At least 5 contributors, including ≥2 Producers and ≥2 Consumers; all must vote in favor.          |
+| First Adopters Testing      | Selected First Adopters test the proposed changes in real-world or simulated environments.                   | Minimum 7 days  | Volunteer participants; feedback is encouraged.                                                    |
+| Final Vote for Adoption     | Community votes to officially adopt the change. Requires 80%+ approval to pass.                              | Minimum 14 days | At least 5 contributors, including ≥2 Producers and ≥2 Consumers; at least 80% must vote in favor. |
+| Implementation              | The approved change is officially added to the GTFS specification by the Maintainer.                        | —               | The Maintainer updates the official documentation and communicates the change to the community.    |
+
 
 There are similar processes for [Non-Functional changes](change-types.md/#non-functional-changes) and [Documentation Maintenance](change-types.md/#documentation-maintenance). For more details, see the full [Change Process](change-process.md).
