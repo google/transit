@@ -25,7 +25,7 @@ Anyone can contribute to the development of GTFS. Typically, anyone with a sugge
 
 To navigate the process effectively, it's important to understand the different [types of changes](change-types.md) which determine the specific steps that need to be taken. Thus, it’s recommended that contributors familiarize themselves with these change categories, as well as the [roles and responsibilities](roles.md), to better understand their participation and involvement.
 
-### What does a change process typically look like?
+### What does the change process typically look like?
 
 As mentioned above, different [types of changes](change-types.md) follow different processes. Below is an overview of the process for [Functional changes](change-types.md/#functional-changes), which outlines how the community proposes, reviews, tests, and adopts Functional changes to the GTFS specification.
 
