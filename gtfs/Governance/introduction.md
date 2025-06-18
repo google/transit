@@ -29,7 +29,7 @@ To navigate the process effectively, it's important to understand the different 
 
 As mentioned above, different [types of changes](change-types.md) follow different processes. Below is an overview of the process for [Functional changes](change-types.md/#functional-changes), which outlines how the community proposes, reviews, tests, and adopts Functional changes to the GTFS specification.
 
-| Action                      | Description                                                                                                  | Time            | Requirements                                                                                       |
+| Action                      | Description                                                                                                  | Time            | Conditions                                                                                         |
 | --------------------------- | ------------------------------------------------------------------------------------------------------------ | --------------- | -------------------------------------------------------------------------------------------------- |
 | Submit Proposal             | A Pull Request (PR) is opened in the GTFS repository to propose the change.                                  | —               | Anyone can submit a proposal.                                                                      |
 | Community Discussion        | Community discusses and refines the proposal.                                                                | Minimum 7 days  | Open participation.                                                                                |
@@ -40,4 +40,4 @@ As mentioned above, different [types of changes](change-types.md) follow differe
 | Adoption                    | The approved change is officially added to the GTFS specification by the Maintainer.                         | —               | The Maintainer updates the official documentation                                                  |
 
 
-There are similar processes for [Non-Functional changes](change-types.md/#non-functional-changes) and [Documentation Maintenance](change-types.md/#documentation-maintenance). For more details, see the full [Change Process](change-process.md).
+There are shortened processes for [Non-Functional changes](change-types.md/#non-functional-changes) and [Documentation Maintenance](change-types.md/#documentation-maintenance). For more details, see the full [Change Process](change-process.md).
