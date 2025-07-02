@@ -151,7 +151,7 @@ A proposal to change the specification is published by opening a Pull Request in
 | Requirement | Details |
 | :---- | :---- |
 | **Single Change** | The Pull Request should focus on a single change at a time. A "single change" is a self-contained modification with a focused scope, addressing one concept, feature, or rule without bundling unrelated updates. |
-| **Extended Description**  | The Pull Request must contain an extended description of the proposed change. It is recommended to follow the provided Pull Request templates. |
+| **Extended Description**  | The Pull Request must contain an extended description of the proposed change. It is recommended to follow the provided [Pull Request template](../../.github/PULL_REQUEST_TEMPLATE.md). |
 | **Change type** | The Advocate must specify the type of change (Functional, Non-Functional, or Documentation Maintenance) in the opening post of the Pull Request.  <br>- Any contributor can flag a misclassified change at any time to ensure it follows the correct adoption track. <br>- If no consensus is reached, the Maintainer can provide clarification and recommend the appropriate track. |
 | **Proposed Discussion Period** | The Advocate should specify a minimum estimated discussion period length based on the scope of the proposed change.  <br>- Example: “I recommend reserving at least one month for discussion to ensure everyone has sufficient time to discuss the proposal.” |
 | **Mailing List Announcement** | The Advocate must announce the creation of the Pull Request in the [GTFS Changes mailing list](https://groups.google.com/g/gtfs-changes), including: A brief description of the change and a link to the Pull Request. |
