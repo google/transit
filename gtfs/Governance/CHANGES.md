@@ -1,3 +1,9 @@
+>**Governance Framework Transition**
+>- **As of `[adoption_date]`**, all new Pull Requests are subject to the **[new GTFS Schedule Governance Framework](introduction.md)**.
+>- Pull Requests opened **before `[adoption_date]`** will continue to follow the **Former Governance** outlined in this section.
+>   - This includes the following PRs: `[#PR]`, `[#PR]`, …
+>- Once all PRs opened prior to `[adoption_date]` are resolved, this page and the process outlined in it will be fully deprecated.
+
 The GTFS Specification is not set in stone. Instead, it is an open specification developed and maintained by the community of transit agencies, developers, and other stakeholders who use GTFS. It is expected that this community of producers and consumers of GTFS data will have proposals for extending the spec to enable new capabilities. To help manage that process, the following procedures and guidelines have been established.
 
 ### Specification amendment process
