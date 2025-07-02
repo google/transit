@@ -11,9 +11,9 @@ The GTFS Specification is not set in stone. Instead, it is an open specification
 
 To formalize this process, we've established the following GTFS Governance frameworks:
 
--   [GTFS Schedule - Governance Framework](https://github.com/google/transit/blob/master/gtfs/Governance/introduction.md)
+-   [GTFS Schedule - Governance Framework](/gtfs/Governance/introduction.md)
 
--   [GTFS Realtime - Governance Framework](https://github.com/google/transit/blob/master/gtfs-realtime/CHANGES.md)
+-   [GTFS Realtime - Governance Framework](gtfs-realtime/CHANGES.md)
 
 ## Before you contribute
 Before we can use your code, you must sign the
