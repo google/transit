@@ -9,11 +9,11 @@
 
 The GTFS Specification is not set in stone. Instead, it is an open specification developed and maintained by the community of transit agencies, developers, and other stakeholders who use GTFS. It is expected that this community of producers and consumers of GTFS data will have proposals for extending the spec to enable new capabilities.
 
-To formalize this process, we've established the GTFS Governance framework, which includes the Specification Amendment Process.
+To formalize this process, we've established the following GTFS Governance frameworks:
 
--   [GTFS Schedule - Specification Amendment Process](https://github.com/google/transit/blob/master/gtfs/CHANGES.md)
+-   [GTFS Schedule - Governance Framework](https://github.com/google/transit/blob/master/gtfs/Governance/introduction.md)
 
--   [GTFS Realtime - Specification Amendment Process](https://github.com/google/transit/blob/master/gtfs-realtime/CHANGES.md)
+-   [GTFS Realtime - Governance Framework](https://github.com/google/transit/blob/master/gtfs-realtime/CHANGES.md)
 
 ## Before you contribute
 Before we can use your code, you must sign the
