@@ -1,8 +1,8 @@
 >**Governance Framework Transition**
->- **As of `[adoption_date]`**, all new Pull Requests are subject to the **new GTFS Schedule Governance Framework** outlined in this section.
->- Pull Requests opened **before `[adoption_date]`** will continue to follow the **[Former Governance](CHANGES.md)**.
->   - This includes the following PRs: `[#PR]`, `[#PR]`, …
->- Once all PRs opened prior to `[adoption_date]` are resolved, the **[Former Governance](CHANGES.md)** will be fully deprecated.
+>- **As of July 7, 2025**, all new Pull Requests are subject to the **new GTFS Schedule Governance Framework** outlined in this section.
+>- Pull Requests opened **before July 7, 2025** will continue to follow the **[Former Governance](CHANGES.md)**.
+>   - This includes the following PRs: [567](https://github.com/google/transit/pull/567), [561](https://github.com/google/transit/pull/561), [556](https://github.com/google/transit/pull/556), [546](https://github.com/google/transit/pull/546), [545](https://github.com/google/transit/pull/545), [533](https://github.com/google/transit/pull/533), [515](https://github.com/google/transit/pull/515), [502](https://github.com/google/transit/pull/502), [498](https://github.com/google/transit/pull/598), [483](https://github.com/google/transit/pull/483), [423](https://github.com/google/transit/pull/423).
+>- Once all PRs opened prior to July 7, 2025 are resolved, the **[Former Governance](CHANGES.md)** will be fully deprecated.
 
 # Introduction to GTFS Governance
 
