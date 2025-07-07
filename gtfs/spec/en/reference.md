@@ -263,6 +263,7 @@ Primary key (`trip_id`)
 |  `shape_id` | Foreign ID referencing `shapes.shape_id` | **Conditionally Required** | Identifies a geospatial shape describing the vehicle travel path for a trip. <br><br>Conditionally Required: <br>- **Required** if the trip has a continuous pickup or drop-off behavior defined either in [routes.txt](#routestxt) or in [stop_times.txt](#stop_timestxt). <br>- Optional otherwise. |
 |  `wheelchair_accessible` | Enum | Optional | Indicates wheelchair accessibility. Valid options are:<br><br>`0` or empty - No accessibility information for the trip.<br>`1` - Vehicle being used on this particular trip can accommodate at least one rider in a wheelchair.<br>`2` - No riders in wheelchairs can be accommodated on this trip. |
 |  `bikes_allowed` | Enum | Optional | Indicates whether bikes are allowed. Valid options are:<br><br>`0` or empty - No bike information for the trip.<br>`1` - Vehicle being used on this particular trip can accommodate at least one bicycle.<br>`2` - No bicycles are allowed on this trip. |
+|  `cars_allowed` | Enum | Optional | Indicates whether cars are allowed. Valid options are:<br><br>`0` or empty - No car information for the trip.<br>`1` - Vehicle being used on this particular trip can accommodate at least one car.<br>`2` - No cars are allowed on this trip. |
 
 #### Example: Blocks and service day
 
