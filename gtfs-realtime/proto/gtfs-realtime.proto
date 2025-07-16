@@ -424,10 +424,6 @@ message TripUpdate {
     // NOTE: This field is still experimental, and subject to change. It may be formally adopted in the future.
     optional string trip_short_name = 6;
 
-    // Specifies the type of transportation for this trip when it differs from the original.
-    // NOTE: This field is still experimental, and subject to change. It may be formally adopted in the future.
-    optional RouteType trip_route_type = 7;
-
     // The extensions namespace allows 3rd-party developers to extend the
     // GTFS Realtime Specification in order to add and evaluate new features
     // and modifications to the spec.
@@ -445,19 +441,6 @@ message TripUpdate {
 
   // The following extension IDs are reserved for private use by any organization.
   extensions 9000 to 9999;
-}
-
-enum RouteType {
-  TRAM = 0;
-  METRO = 1;
-  RAIL = 2;
-  BUS = 3;
-  FERRY = 4;
-  CABLE_TRAM = 5;
-  AERIAL_LIFT = 6;
-  FUNICULAR = 7;
-  TROLLEYBUS = 11;
-  MONORAIL = 12;
 }
 
 // Realtime positioning information for a given vehicle.

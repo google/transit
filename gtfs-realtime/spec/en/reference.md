@@ -267,24 +267,6 @@ Defines updated properties of the trip
 | **shape_id** | [string](https://protobuf.dev/programming-guides/proto2/#scalar) | Optional | One | Specifies the identifier of the shape of the vehicle travel path when the trip shape differs from the shape specified in (CSV) GTFS or to specify it in real-time when it's not provided by (CSV) GTFS, such as a vehicle that takes differing paths based on rider demand. See definition of `trips.shape_id` in (CSV) GTFS. <br>If a shape is neither defined in (CSV) GTFS nor in real-time, the shape is considered unknown. This field can refer to a shape defined in the (CSV) GTFS in shapes.txt or a `Shape` in the same (protobuf) real-time feed. The order of stops (stop sequences) for this trip must remain the same as (CSV) GTFS. If it refers to a `Shape` entity in the same real-time feed, the value of this field should be the one of the `shape_id` inside the entity, and _not_ the `id` of `FeedEntity`.<br>Stops that are a part of the original trip but will no longer be made, such as when a detour occurs, should be marked as schedule_relationship=SKIPPED or more details can be provided via a `TripModifications` message.<br><br>**Caution:** this field is still **experimental**, and subject to change. It may be formally adopted in the future. |
 | **trip_headsign** | [string](https://protobuf.dev/programming-guides/proto2/#scalar) | Optional | One | Specifies the headsign for this trip when it differs from the original. <br><br>**Caution:** this field is still **experimental**, and subject to change. It may be formally adopted in the future. |
 | **trip_short_name** | [string](https://protobuf.dev/programming-guides/proto2/#scalar) | Optional | One | Specifies the name for this trip when it differs from the original. <br><br>**Caution:** this field is still **experimental**, and subject to change. It may be formally adopted in the future. |
-| **trip_route_type** | [RouteType](#enum-RouteType) | Optional | One | Specifies the type of transportation of this trip when it differs from the original. <br><br>**Caution:** this field is still **experimental**, and subject to change. It may be formally adopted in the future. |
-
-## _enum_ RouteType
-
-**Values**
-
-| _**Value**_ | _**Comment**_ |
-|-------------|---------------|
-| **TRAM** | Tram, Streetcar, Light Rail. See definition of routes.route_type=0 in (CSV) GTFS. |
-| **METRO** | Subway, Metro. See definition of routes.route_type=1 in (CSV) GTFS. |
-| **RAIL** | Rail. See definition of routes.route_type=2 in (CSV) GTFS. |
-| **BUS** | Bus. See definition of routes.route_type=3 in (CSV) GTFS. |
-| **FERRY** | Ferry. See definition of routes.route_type=4 in (CSV) GTFS. |
-| **CABLE_TRAM** | Cable tram. See definition of routes.route_type=5 in (CSV) GTFS. |
-| **AERIAL_LIFT** | Aerial lift. See definition of routes.route_type=6 in (CSV) GTFS. |
-| **FUNICULAR** | Funicular. See definition of routes.route_type=7 in (CSV) GTFS. |
-| **TROLLEYBUS** | Trolleybus. See definition of routes.route_type=11 in (CSV) GTFS. |
-| **MONORAIL** | Monorail. See definition of routes.route_type=12 in (CSV) GTFS. |
 
 ## _message_ VehiclePosition
 
