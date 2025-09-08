@@ -31,6 +31,8 @@ This document defines the format and structure of the files that comprise a GTFS
     -   [stop_areas.txt](#stop_areastxt)
     -   [networks.txt](#networkstxt)
     -   [route_networks.txt](#route_networkstxt)
+    -   [network_sets.txt](#network_setstxt)
+    -   [network_set_elements.txt](#network_set_elementstxt)
     -   [shapes.txt](#shapestxt)
     -   [frequencies.txt](#frequenciestxt)
     -   [transfers.txt](#transferstxt)
@@ -134,6 +136,8 @@ This specification defines the following files:
 |  [stop_areas.txt](#stop_areastxt) | Optional | Rules to assign stops to areas. |
 |  [networks.txt](#networkstxt) | **Conditionally Forbidden** | Network grouping of routes.<br><br>Conditionally Forbidden:<br>- **Forbidden** if `network_id` exists in [routes.txt](#routestxt).<br>- Optional otherwise. |
 |  [route_networks.txt](#route_networkstxt) | **Conditionally Forbidden** | Rules to assign routes to networks.<br><br>Conditionally Forbidden:<br>- **Forbidden** if `network_id` exists in [routes.txt](#routestxt).<br>- Optional otherwise. |
+|  [network_sets.txt](#network_setstxt) | **Optional** | Collection of networks. |
+|  [network_set_elements.txt](#network_set_elementstxt) | **Optional** | Rules to assign networks to network sets. |
 |  [shapes.txt](#shapestxt)  | Optional | Rules for mapping vehicle travel paths, sometimes referred to as route alignments. |
 |  [frequencies.txt](#frequenciestxt)  | Optional | Headway (time between trips) for headway-based service or a compressed representation of fixed-schedule service. |
 |  [transfers.txt](#transferstxt)  | Optional | Rules for making connections at transfer points between routes. |
@@ -500,10 +504,15 @@ To process the cost of a leg:
 
 <br/>
 
+For network set predicates in `fare_leg_rules.txt` specified below, a leg “travels through a network" if the `route_id` referenced in the trip's `trips.txt` entry belongs to the specified network as defined by [networks.txt](#networkstxt).
+
+
 |  Field Name | Type | Presence | Description |
 |  ------ | ------ | ------ | ------ |
 | `leg_group_id` | ID | Optional | Identifies a group of entries in [fare_leg_rules.txt](#fare_leg_rulestxt).<br><br> Used to describe fare transfer rules between `fare_transfer_rules.from_leg_group_id` and `fare_transfer_rules.to_leg_group_id`.<br><br>Multiple entries in [fare_leg_rules.txt](#fare_leg_rulestxt) may belong to the same `fare_leg_rules.leg_group_id`.<br><br>The same entry in [fare_leg_rules.txt](#fare_leg_rulestxt) (not including `fare_leg_rules.leg_group_id`) must not belong to multiple `fare_leg_rules.leg_group_id`.|
 | `network_id` | Foreign ID referencing `routes.network_id` or `networks.network_id`| Optional | Identifies a route network that applies for the fare leg rule.<br><br>If the `rule_priority` field does not exist AND there are no matching `fare_leg_rules.network_id` values to the `network_id` being filtered, empty `fare_leg_rules.network_id` will be matched by default.<br><br> An empty entry in `fare_leg_rules.network_id` corresponds to all networks defined in [routes.txt](#routestxt) or [networks.txt](#networkstxt) excluding the ones listed under `fare_leg_rules.network_id`<br><br> If the `rule_priority` field exists in the file, an empty `fare_leg_rules.network_id` indicates that the route network of the leg does not affect the matching of this rule.<br><br>When matching against an [effective fare leg of multiple legs](#fare_leg_join_rulestxt), each leg must have the same `network_id` which will be used for matching. |
+| `contains_network_set_id` | Foreign ID referencing network_sets.network_set_id | Optional | Identifies a network set containing a collection of networks.<br><br> For this rule to match, a leg or an effective fare leg must travel through each and every network of the specified network set. The leg may travel through additional networks not contained by the network set or through routes that are not assigned to a network at all. |
+| `contains_exactly_network_set_id` | Foreign ID referencing network_sets.network_set_id | Optional | Identifies a network set containing a collection of networks.<br><br> For this rule to match, a leg or an effective fare leg must travel through each and every network of the specified network set. All routes within the leg or effective fare leg must belong to a network in the network set. If not specified, this predicate does not affect the matching of this rule. |
 | `from_area_id` | Foreign ID referencing `areas.area_id` | Optional | Identifies a departure area.<br><br>If the `rule_priority` field does not exist AND there are no matching `fare_leg_rules.from_area_id` values to the `area_id` being filtered, empty `fare_leg_rules.from_area_id` will be matched by default. <br><br>An empty entry in `fare_leg_rules.from_area_id` corresponds to all areas defined in `areas.area_id` excluding the ones listed under `fare_leg_rules.from_area_id`<br><br> If the `rule_priority` field exists in the file, an empty `fare_leg_rules.from_area_id` indicates that the departure area of the leg does not affect the matching of this rule.<br><br>When matching against an [effective fare leg of multiple legs](#fare_leg_join_rulestxt), the first leg of the effective fare leg is used for determining the departure area. |
 | `to_area_id` | Foreign ID referencing `areas.area_id` | Optional | Identifies an arrival area.<br><br>If the `rule_priority` field does not exist AND there are no matching `fare_leg_rules.to_area_id` values to the `area_id` being filtered, empty `fare_leg_rules.to_area_id` will be matched by default.<br><br> An empty entry in `fare_leg_rules.to_area_id` corresponds to all areas defined in `areas.area_id` excluding the ones listed under `fare_leg_rules.to_area_id`<br><br>If the `rule_priority` field exists in the file, an empty `fare_leg_rules.to_area_id` indicates that the arrival area of the leg does not affect the matching of this rule.<br><br>When matching against an [effective fare leg of multiple legs](#fare_leg_join_rulestxt), the last leg of the effective fare leg is used for determining the arrival area. |
 |  `from_timeframe_group_id` | Foreign ID referencing `timeframes.timeframe_group_id` | Optional |  Defines the timeframe for the fare validation event at the start of the fare leg.<br><br>The “start time” of the fare leg is the time at which the event is scheduled to occur.  For example, the time could be the scheduled departure time of a bus at the start of a fare leg where the rider boards and validates their fare. For the rule matching semantics below, the start time is computed in local time, as determined by [Local Time Semantics](#localtimesemantics) of [timeframes.txt](#timeframestxt).  The stop or station of the fare leg’s departure event should be used for timezone resolution, where appropriate.<br><br>For a fare leg rule that specifies a `from_timeframe_group_id`, that rule will match a particular leg if there exists at least one record in [timeframes.txt](#timeframestxt) where all of the following conditions are true<br>- The value of `timeframe_group_id` is equal to the `from_timeframe_group_id` value.<br>- The set of days identified by the record’s `service_id` contains the “current day” of the fare leg’s start time.<br>- The “time-of-day” of the fare leg's start time is greater than or equal to the record’s `timeframes.start_time` value and less than the `timeframes.end_time` value.<br><br>An empty `fare_leg_rules.from_timeframe_group_id` indicates that the start time of the leg does not affect the matching of this rule.<br><br>When matching against an [effective fare leg of multiple legs](#fare_leg_join_rulestxt), the first leg of the effective fare leg is used for determining the starting fare validation event. |
@@ -524,8 +533,8 @@ For a sub-journey of two consecutive legs with a transfer, if the transfer match
 
 |  Field Name | Type | Presence | Description |
 |  ------ | ------ | ------ | ------ |
-| `from_network_id` | Foreign ID referencing `routes.network_id` or `networks.network_id`| **Required** | Matches a pre-transfer leg that uses the specified route network.  If specified, the same `to_network_id` must also be specified. |
-| `to_network_id` | Foreign ID referencing `routes.network_id` or `networks.network_id`| **Required** | Matches a post-transfer leg that uses the specified route network.  If specified, the same `from_network_id` must also be specified. |
+| `from_network_id` | Foreign ID referencing `routes.network_id` or `networks.network_id`| **Required** | Matches a pre-transfer leg that uses the specified route network.  If specified, `to_network_id` must also be specified. |
+| `to_network_id` | Foreign ID referencing `routes.network_id` or `networks.network_id`| **Required** | Matches a post-transfer leg that uses the specified route network.  If specified, `from_network_id` must also be specified. |
 | `from_stop_id` | Foreign ID referencing `stops.stop_id`| **Conditionally Required** | Matches a pre-transfer leg that ends at the specified stop (`location_type=0` or empty) or station (`location_type=1`).<br><br>Conditionally Required:<br> - **Required** if `to_stop_id` is defined.<br> - Optional otherwise. |
 | `to_stop_id` | Foreign ID referencing `stops.stop_id`| **Conditionally Required** | Matches a post-transfer leg that starts at the specified stop (`location_type=0` or empty) or station (`location_type=1`).<br><br>Conditionally Required:<br> - **Required** if `from_stop_id` is defined.<br> - Optional otherwise. |
 
@@ -616,6 +625,32 @@ Assigns routes from [routes.txt](#routestxt) to networks.
 |  ------ | ------ | ------ | ------ |
 | `network_id` | Foreign ID referencing `networks.network_id` | **Required** | Identifies a network to which one or multiple `route_id`s belong. A `route_id` can only be defined in one `network_id`. |
 | `route_id` | Foreign ID referencing `routes.route_id` | **Required** | Identifies a route. |
+
+### network_sets.txt
+
+File: **Optional**
+
+Primary key (`network_set_id`)
+
+Defines network set identifiers that apply for fare leg rules. 
+
+|  Field Name | Type | Presence | Description |
+|  ------ | ------ | ------ | ------ |
+| `network_set_id` | Unique ID | **Required** | Identifies a network set to which multiple `networks.network_id` belong. <br><br>The same `network_id` may be defined in many `network_set_ids`. |
+| `network_set_name` | Text | **Required** | The name of the network set that applies for fare leg rules. |
+
+### network_set_elements.txt
+
+File: **Conditionally Forbidden**
+
+Primary key (`route_id`)
+
+Assigns networks from [networks.txt](#networkstxt) to network sets. 
+
+|  Field Name | Type | Presence | Description |
+|  ------ | ------ | ------ | ------ |
+| `network_set_id` | Foreign ID referencing `network_sets.network_set_id`. | **Required** | Identifies a network set to which multiple `networks.network_id` belong. <br><br>The same `network_id` may be defined in many `network_set_ids`. |
+| `network_id` | Foreign ID referencing `networks.network_id`. | **Required** | Identifies a network. |
 
 ### shapes.txt
 
