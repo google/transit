@@ -641,9 +641,9 @@ Defines network set identifiers that apply for fare leg rules.
 
 ### network_set_elements.txt
 
-File: **Conditionally Forbidden**
+File: **Optional**
 
-Primary key (`route_id`)
+Primary key (`network_set_id, network_id`)
 
 Assigns networks from [networks.txt](#networkstxt) to network sets. 
 
