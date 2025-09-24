@@ -9,7 +9,7 @@ When a producer or consumer is interested in adding a new field to the GTFS Real
 ### *Experimental* fields
 
 1. If the community can come to consensus (a) that the proposed field seems useful and (b) on the type of the field (`optional` vs `repeated`, `string` vs `int` vs `bool`), then a field number will be allocated in the GTFS Realtime message and a note will be made in the [.proto file](/gtfs-realtime/proto/gtfs-realtime.proto) and documentation that this is an *experimental* field that may change in the future.
-      - Consensus is reached via a discussion and voting process that is the same as the below [Specification amendment process](#specification-amendment-process), but instead of unanimous consent only 80% yes votes are required for approval.
+      - Consensus is reached via a discussion and voting process that is the same as the below [Specification amendment process](#specification-amendment-process).
       - GTFS Realtime producers and consumers that wish to use the new *experimental* field will re-generate their library using the .proto file with the new field (e.g., Google will update the [gtfs-realtime-bindings library](https://github.com/google/gtfs-realtime-bindings)), and start populating and parsing the field with live data.
       - Once we are satisfied that the *experimental* field is worthwhile and both producers and consumers are using the field, then we will follow the below [Specification amendment process](#specification-amendment-process) to officially add the field to the spec.
       - If the *experimental* field is not adopted via the [Specification amendment process](#specification-amendment-process) within 2 years of being approved as an *experimental* field, it will be deprecated by adding `[deprecated=true]` next to the field value in the [.proto file](/gtfs-realtime/proto/gtfs-realtime.proto) file.  By using `[deprecated=true]` (instead of `RESERVED`), producers and consumers that have already adopted the field do not have to remove it from use.  Additionally, the field may be "un-deprecated" in the future if it is approved in a subsequent vote following the [Specification amendment process](#specification-amendment-process) (e.g., when additional producers and/or consumers start using the field).
@@ -21,7 +21,7 @@ When a producer or consumer is interested in adding a new field to the GTFS Real
 1. Create pull request on https://github.com/google/transit. Pull request must contain an extended description of the patch. The creator of the pull request becomes the _advocate_.
 1. Once pull request is registered, it must be announced by its advocate in the [GTFS Realtime mailing list](https://groups.google.com/forum/#!forum/gtfs-realtime). Once announced, the pull request is considered a proposal.
   	- Since the advocate is a contributor, they must sign the [Contributor License Agreement](../CONTRIBUTING.md) before pull request can be accepted.
-1. The discussion of the proposal follows. Pull request comments should be used as the sole discussion forum.
+1. The discussion of the proposal follows, with a goal of reaching consensus. Pull request comments should be used as the sole discussion forum.
   	- The discussion lasts for as long as the advocate feels necessary, but must be at least 7 calendar days.
   	- The advocate is responsible for timely update of the proposal (i.e. pull request) based on the comments for which they agree to.
   	- At any point in time the advocate can claim proposal abandoned.
@@ -35,8 +35,10 @@ When a producer or consumer is interested in adding a new field to the GTFS Real
     If a voter changes her vote, it is recommended to do it by updating the original vote comment by striking through the vote and writing the new vote.
   	- Votes before the start of the voting period are not considered.
     - Opening and closing of votes must be announced on the [GTFS Realtime mailing list](https://groups.google.com/forum/#!forum/gtfs-realtime).
-1. The proposal is accepted if there is a unanimous consensus yes with at least 3 votes.
-  	- The proposer's vote does not count towards the 3 vote total. For example, if Proposer X creates a pull request and votes yes, and User Y and Z vote yes, this is counted as 2 total yes votes.
+1. The community holds a vote to determine whether the changes should be officially adopted. This vote follows an 80% majority rule, meaning at least 80% of votes must be in favor for it to pass.
+      - To be valid, the vote must include at least five contributors, with a minimum of two Producers and two Consumers. The voting period must last at least 14 days.
+      - Votes must be formatted as follows: “+1 or -1, Organization Name, Contributor Type (Consumer, Producer, or General Contributor), Link to Produced Feed or Consuming Application”
+  	- The advocate's vote does not count towards the vote total.
   	- Votes against shall be motivated, and ideally provide actionable feedback.
   	- If the vote has failed, then the advocate may choose to continue work on the proposal, or to abandon the proposal.
     Either decision of the advocate must be announced in the [GTFS Realtime mailing list](https://groups.google.com/forum/#!forum/gtfs-realtime).
