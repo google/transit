@@ -33,6 +33,7 @@ This document defines the format and structure of the files that comprise a GTFS
     -   [route_networks.txt](#route_networkstxt)
     -   [shapes.txt](#shapestxt)
     -   [frequencies.txt](#frequenciestxt)
+    -   [event_based_trips.txt](#event_based_tripstxt)
     -   [transfers.txt](#transferstxt)
     -   [pathways.txt](#pathwaystxt)
     -   [levels.txt](#levelstxt)
@@ -655,6 +656,24 @@ Primary key (`trip_id`, `start_time`)
 |  `end_time` | Time | **Required** | Time at which service changes to a different headway (or ceases) at the first stop in the trip. |
 |  `headway_secs` | Positive integer | **Required** | Time, in seconds, between departures from the same stop (headway) for the trip, during the time interval specified by `start_time` and `end_time`. Multiple headways may be defined for the same trip, but must not overlap. New headways may start at the exact time the previous headway ends.  |
 |  `exact_times` | Enum | Optional | Indicates the type of service for a trip. See the file description for more information. Valid options are:<br><br>`0` or empty - Frequency-based trips.<br>`1` - Schedule-based trips with the exact same headway throughout the day. In this case the `end_time` value must be greater than the last desired trip `start_time` but less than the last desired trip start_time + `headway_secs`. |
+
+
+### event_based_trips.txt
+
+File: **Optional**
+
+Primary Key: `trip_id`
+
+[Event_based_trips.txt](#event_based_tripstxt) identifies trips whose times are coupled to an event's happening (e.g. the conclusion of a concert or sporting event), and are thus variable in nature.
+
+| Field Name | Type | Presence | Description |
+|  ------ | ------ | ------ | ------ |
+| `trip_id` | Foreign ID referencing `trips.trip_id` | **Required** | Identifies a trip to be governed by an event's end time. |
+| `event_end_approximate` | Time | **Required** | Expected time at which the event will end, upon which the special event trips would be based. |
+| `event_end_earliest` | Time | Optional | Earliest event end time for which this trip could run. |
+| `event_end_latest` | Time | Optional | Latest event end time for which this trip could run. |
+| `event_fares` | Enum | Optional | Specifies the fare policy in place for the specified trip.<br>`0` or empty - uses default fare rules<br>`1` - uses special fare policy |
+
 
 ### transfers.txt
 
