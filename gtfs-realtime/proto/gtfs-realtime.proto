@@ -644,6 +644,7 @@ message Alert {
     CONSTRUCTION = 10;
     POLICE_ACTIVITY = 11;
     MEDICAL_EMERGENCY = 12;
+    SPECIAL_EVENT = 13;     // A special one-time or recurring event such as a parade, festival, performance, farmers market, or sporting event.
   }
   optional Cause cause = 6 [default = UNKNOWN_CAUSE];
 
