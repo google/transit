@@ -340,7 +340,7 @@ An alert, indicating some sort of incident in the public transit network.
 
 | _**Field Name**_ | _**Type**_ | _**Required**_ | _**Cardinality**_ | _**Description**_ |
 |------------------|------------|----------------|-------------------|-------------------|
-| **active_period** | [TimeRange](#message-timerange) | Conditionally Forbidden | Many | Time when the alert should be shown to the user. If missing, the alert will be shown as long as it appears in the feed. If multiple ranges are given, the alert will be shown during all of them. <br><br> - **Forbidden** if communication_period or impact_period exist. **Optional** Otherwise. |
+| **active_period** | [TimeRange](#message-timerange) | Optional | Many | Time when the alert should be shown to the user. If missing, the alert will be shown as long as it appears in the feed. If multiple ranges are given, the alert will be shown during all of them. |
 | **communication_period** | [TimeRange](#message-timerange) | Optional | Many | Time when the alert should be shown to the user strictly for informative reasons. If missing, the consuming application can decide when it's appropriate to be shown. If multiple ranges are given, the alert will be shown during all of them.|
 | **impact_period** | [TimeRange](#message-timerange) | Optional | Many | Time when the services are affected by the alert. If communication_period is specified, every time interval in impact_period must be fully contained within at least one time interval of communication_period.|
 | **informed_entity** | [EntitySelector](#message-entityselector) | Required | Many | Entities whose users we should notify of this alert.  At least one informed_entity must be provided. |
