@@ -652,7 +652,7 @@ message Alert {
     NO_SERVICE = 1;
     REDUCED_SERVICE = 2;
 
-    // We don't care about INsignificant delays: they are hard to detect, have
+    // We don't care about Insignificant delays: they are hard to detect, have
     // little impact on the user, and would clutter the results as they are too
     // frequent.
     SIGNIFICANT_DELAYS = 3;
@@ -805,7 +805,7 @@ message TripDescriptor {
   // The initially scheduled start time of this trip instance.
   // When the trip_id corresponds to a non-frequency-based trip, this field
   // should either be omitted or be equal to the value in the GTFS feed. When
-  // the trip_id correponds to a frequency-based trip, the start_time must be
+  // the trip_id corresponds to a frequency-based trip, the start_time must be
   // specified for trip updates and vehicle positions. If the trip corresponds
   // to exact_times=1 GTFS record, then start_time must be some multiple
   // (including zero) of headway_secs later than frequencies.txt start_time for
@@ -1149,7 +1149,7 @@ message TripModifications {
   // A `Modification` message replaces a span of n stop times from each affected trip starting at `start_stop_selector`.
   message Modification {
     // The stop selector of the first stop_time of the original trip that is to be affected by this modification.
-    // Used in conjuction with `end_stop_selector`. 
+    // Used in conjunction with `end_stop_selector`. 
     // `start_stop_selector` is required and is used to define the reference stop used with `travel_time_to_stop`.
     optional StopSelector start_stop_selector = 1;
 
