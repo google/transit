@@ -27,7 +27,7 @@ This section shows practices organized by file and field, aligning with the [GTF
 
 __Examples:__
 
-- Bus services are run by several small bus agencies. But there is one big agency that is responsible for scheduling and ticketing and from a user’s perspective responsible for the bus services.The one big agency should be defined as agency within the feed. Even if the data is split internally by different small bus operators there should only be one agency defined in the feed.
+- Bus services are run by several small bus agencies. But there is one big agency that is responsible for scheduling and ticketing and from a user’s perspective responsible for the bus services. The one big agency should be defined as agency within the feed. Even if the data is split internally by different small bus operators there should only be one agency defined in the feed.
   
 - The feed provider runs the ticketing portal, but there are different agencies that actually operate the services and are known by users to be responsible. The agencies actually operating the services should be defined as agencies within the feed.
 
