@@ -612,7 +612,7 @@ message Alert {
     NO_SERVICE = 1;
     REDUCED_SERVICE = 2;
 
-    // We don't care about Insignificant delays: they are hard to detect, have
+    // We don't care about INsignificant delays: they are hard to detect, have
     // little impact on the user, and would clutter the results as they are too
     // frequent.
     SIGNIFICANT_DELAYS = 3;
