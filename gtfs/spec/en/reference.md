@@ -912,6 +912,7 @@ This file describes the capacity, accessibility and features of individual vehic
 |  `strollers` | integer | Optional | The number of spots available for strollers. Would include spots used by wheelchairs or strollers. |
 |  `bicycles` | integer | Recommended | The number of bicycles the vehicle can carry, either on the inside or outside of the vehicle. |
 | `bicycle_notes` | Text | Optional | A decription of the location, procedures and restriction of bringing a bicycle on the vehicle. |
+|  `car_capacity` | integer | Optional | The number of standard size cars the vehicle can carry. Primarily for farries. |
 |  `luggage` | Enum | Optional | The vehicle has space set aside for luggage. Valid options are:<br><br>`0` - No space set aside for luggage.<br>`1` - Space above passenger seating for luggage.<br>`2` - Space set aside in the passenger cabin for luggage.<br>`3` - Space for luggage that can be accessed externally. |
 |  `luggage_notes` | Text | Optional | A description of how luggage is stored and any limitations that may apply. |
 |  `restrooms` | integer | Optional | The number of restrooms in the vehicle, including any accessible restrooms. |
@@ -933,4 +934,5 @@ This file describes the capacity, accessibility and features of individual vehic
 |  `stop_displays` | Enum | Recommended | Visual next stop displays. Valid options are:<br><br>`0` - No next stop display.<br>`1` - Interior displays showing the next stop.<br>`2` - Interior displays showing multiple upcoming stops.<br>`3` - The name of the station can be seen from inside the vehicle. |
 |  `livery_color` | Color | Optional | Hex code of the most noticeable color of the livery. |
 |  `livery` | Text | Optional | The name of the livery. |
+|  `nick_name` | Text | Optional | The name for the specific vehicle, such as the name of a ferry or some passenger rail cars that have names. |
 |  `decoration` | Text | Optional | A brief description of a special wrap or modification of the vehicle that is either seasonal or long term. |
