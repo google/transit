@@ -591,6 +591,29 @@ message VehiclePosition {
     // This message/field is still experimental, and subject to change. It may be formally adopted in the future.
     optional uint32 carriage_sequence = 5;
 
+    // Experimental: The number of cyclist positions currently available on
+    // this specific carriage. Cyclist positions are designated locations
+    // where cyclists can secure their bicycle or similar personal transport
+    // device.
+    // A value of 0 indicates no cyclist positions are currently available
+    // on this carriage.
+    // Absence of this field indicates cyclist position data is not
+    // available for this carriage.
+    // This message/field is still experimental, and subject to change. It
+    // may be formally adopted in the future.
+    optional uint32 cyclist_positions_available = 6;
+
+    // Experimental: The total number of cyclist positions (rack spaces,
+    // interior hooks, or designated storage areas) on this specific
+    // carriage. This represents the maximum capacity for bicycles on this
+    // carriage, regardless of current availability.
+    // A value of 0 indicates this carriage has no cyclist positions.
+    // Absence of this field indicates total cyclist position data is not
+    // available for this carriage.
+    // This message/field is still experimental, and subject to change. It
+    // may be formally adopted in the future.
+    optional uint32 total_cyclist_positions = 7;
+
     // The extensions namespace allows 3rd-party developers to extend the
     // GTFS Realtime Specification in order to add and evaluate new features and
     // modifications to the spec.
@@ -610,6 +633,34 @@ message VehiclePosition {
   // information to passengers about where to stand on a platform.
   // This message/field is still experimental, and subject to change. It may be formally adopted in the future.
   repeated CarriageDetails multi_carriage_details = 11;
+
+  // Experimental: The number of cyclist positions currently available on or
+  // in this vehicle. Cyclist positions are designated locations where
+  // cyclists can secure their bicycle or similar personal transport device,
+  // including exterior-mounted racks and interior storage areas.
+  // A value of 0 indicates no cyclist positions are currently available.
+  // Absence of this field indicates cyclist position data is not available
+  // for this vehicle.
+  // If multi_carriage_details is populated with per-carriage
+  // cyclist_positions_available, then this field should describe the entire
+  // vehicle with all carriages considered.
+  // This field is still experimental, and subject to change. It may be
+  // formally adopted in the future.
+  optional uint32 cyclist_positions_available = 12;
+
+  // Experimental: The total number of cyclist positions (rack spaces,
+  // interior hooks, or designated storage areas) on or in this vehicle.
+  // This represents the maximum capacity for bicycles, regardless of
+  // current availability.
+  // A value of 0 indicates the vehicle has no cyclist positions.
+  // Absence of this field indicates total cyclist position data is not
+  // available for this vehicle.
+  // If multi_carriage_details is populated with per-carriage
+  // total_cyclist_positions, then this field should describe the entire
+  // vehicle with all carriages considered.
+  // This field is still experimental, and subject to change. It may be
+  // formally adopted in the future.
+  optional uint32 total_cyclist_positions = 13;
 
   // The extensions namespace allows 3rd-party developers to extend the
   // GTFS Realtime Specification in order to add and evaluate new features and
