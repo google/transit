@@ -1,5 +1,10 @@
 ### Revision History
 
+#### February 2026
+
+* Corrected trip_ids requirement and cardinality for selectedTrips. See [discussion](https://github.com/google/transit/pull/609).
+* Added missing spaces. See [discussion](https://github.com/google/transit/pull/587).
+
 #### May 2025
 
 * Deprecates schedule_relationship `ADDED` in favour of `NEW` and adds `REPLACEMENT`. See [discussion](https://github.com/google/transit/pull/504).
