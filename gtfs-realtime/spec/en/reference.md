@@ -716,7 +716,7 @@ List of selected trips with an associated shape.
 
 | _**Field Name**_ | _**Type**_ | _**Required**_ | _**Cardinality**_ | _**Description**_ |
 |------------------|------------|----------------|-------------------|-------------------|
-| **trip_ids** | [uint32](https://protobuf.dev/programming-guides/proto2/#scalar) | Many | One | A list of trip_id from the original (CSV) GTFS that are affected by the containing replacement. Need to contain at least one trip_id. A `TripUpdate` with `schedule_relationship=REPLACEMENT` must not already exist for the trip. |
+| **trip_ids** | [uint32](https://protobuf.dev/programming-guides/proto2/#scalar) | Required | Many | A list of trip_id from the original (CSV) GTFS that are affected by the containing replacement. Need to contain at least one trip_id. A `TripUpdate` with `schedule_relationship=REPLACEMENT` must not already exist for the trip. |
 | **shape_id** | [string](https://protobuf.dev/programming-guides/proto2/#scalar) | Required | One | The ID of the new shape for the modified trips in this SelectedTrips. May refer to a new shape added using a `Shape` message in the same GTFS-RT feed, or to an existing shape defined in the GTFS-Static feed’s shapes.txt. If it refers to a `Shape` entity in the real-time feed, the value of this field should be the one of the `shape_id` inside the entity, and _not_ the `id` of `FeedEntity`. |
 
 ## _message_ ReplacementStop
