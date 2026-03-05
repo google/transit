@@ -1,5 +1,12 @@
 ### Revision History
 
+#### February 2026
+* Required `from_stop_id` and `to_stop_id` when transfer_type = 0 or is empty (recommended transfer point). See [discussion](https://github.com/google/transit/pull/591).
+* Improved currency amount description. See [discussion](https://github.com/google/transit/pull/615).
+* Clarified that fare transfer rules are directional. See [discussion](https://github.com/google/transit/pull/602).
+* Added links to references of `fare_leg_rules.txt`. See [discussion](https://github.com/google/transit/pull/601).
+* Added missing spaces. See [discussion](https://github.com/google/transit/pull/587).
+
 #### October 2025
 * Added clarifications for `fare_transfer_rules.txt` and introduced a new `Local Time` field type. See [discussion](https://github.com/google/transit/pull/561).
 
