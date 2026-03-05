@@ -268,6 +268,15 @@ Primary key (`trip_id`)
 |  `wheelchair_accessible` | Enum | Optional | Indicates wheelchair accessibility. Valid options are:<br><br>`0` or empty - No accessibility information for the trip.<br>`1` - Vehicle being used on this particular trip can accommodate at least one rider in a wheelchair.<br>`2` - No riders in wheelchairs can be accommodated on this trip. |
 |  `bikes_allowed` | Enum | Optional | Indicates whether bikes are allowed. Valid options are:<br><br>`0` or empty - No bike information for the trip.<br>`1` - Vehicle being used on this particular trip can accommodate at least one bicycle.<br>`2` - No bicycles are allowed on this trip. |
 |  `cars_allowed` | Enum | Optional | Indicates whether cars are allowed. Valid options are:<br><br>`0` or empty - No car information for the trip.<br>`1` - Vehicle being used on this particular trip can accommodate at least one car.<br>`2` - No cars are allowed on this trip. |
+| `safe_duration_factor` | Float | **Optional** | Multiplier applied to travel time estimates calculated for on-demand trips.<br><br>See "Calculating on-demand trip time estimates with safe duration fields" section below for guidance on how to use this and the `safe_duration_offset` fields. |
+| `safe_duration_offset` | Float | **Optional** | Fixed offset value in seconds applied to travel time estimates calculated for on-demand trips.<br><br>See "Calculating on-demand trip time estimates with safe duration fields" section below for guidance on how to use this and the `safe_duration_factor` fields. |
+
+
+#### Calculating on-demand trip time estimates with safe duration fields
+Together, `safe_duration_factor` and `safe_duration_offset` allow an estimation of the longest amount of time a rider can expect the on-demand trip to take, for 95% of cases. Data consumers are expected to use `safe_duration_factor` and `safe_duration_offset` to make the following calculation:<br>`SafeTravelDuration (seconds) = safe_duration_factor × DrivingDuration (seconds) + safe_duration_offset (seconds)`<br>where `DrivingDuration` is the time it would take a private car to travel the distance being calculated for the on-demand service, and `SafeTravelDuration` is the longest amount of time a rider can expect the on-demand trip to take.<br><br>
+
+This calculation should only apply to the portion of a trip that is on-demand. If a service is a deviated-fixed service, or if a rider trip includes a transfer from an on-demand to a fixed-route service, the duration of the fixed-route portion of the trip should be calculated according to the `departure_time` and `arrival_time` fields.
+
 
 #### Example: Blocks and service day
 
