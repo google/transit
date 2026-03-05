@@ -539,7 +539,7 @@ File: **Optional**
 
 Primary key (`from_leg_group_id, to_leg_group_id, fare_product_id, transfer_count, duration_limit`)
 
-Fare rules for transfers between legs of travel defined in [fare_leg_rules.txt](#fare_leg_rulestxt).
+Fare rules for transfers between legs of travel defined in [`fare_leg_rules.txt`](#fare_leg_rulestxt). A fare transfer rule defined from `from_leg_group_id` to `to_leg_group_id` does not apply in the reverse direction.
 
 To process the cost of a multi-leg journey:
 
