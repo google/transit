@@ -1252,7 +1252,7 @@ message Route {
 
   // See definition of routes.route_type in (CSV) GTFS.
   // Required
-  optional RouteType route_type = 6;
+  optional int32 route_type = 6;
 
   // See definition of routes.route_url in (CSV) GTFS.
   optional TranslatedString route_url = 7;
@@ -1273,22 +1273,6 @@ message Route {
 
   // The following extension IDs are reserved for private use by any organization.
   extensions 9000 to 9999;
-}
-
-// NOTE: This field is still experimental, and subject to change. It may be formally adopted in the future.
-enum RouteType {
-  // route type as defined in the (CSV) GTFS
-
-  LIGHT_RAIL = 0;
-  SUBWAY = 1;
-  RAIL = 2;
-  BUS = 3;
-  FERRY = 4;
-  CABLE_CAR = 5;
-  GONDOLA = 6;
-  FUNICULAR = 7;
-  TROLLEY_BUS = 11;
-  MONORAIL = 12;
 }
 
 // NOTE: This field is still experimental, and subject to change. It may be formally adopted in the future.
