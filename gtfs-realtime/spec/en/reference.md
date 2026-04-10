@@ -138,7 +138,7 @@ A definition (or update) of an entity in the transit feed. If the entity is not 
 | **shape** | [Shape](#message-shape) | Conditionally required | One | Data about the realtime added shapes, such as for a detour. At least one of the fields trip_update, vehicle, alert, or shape must be provided - all these fields cannot be empty. <br><br>**Caution:** this field is still **experimental**, and subject to change. It may be formally adopted in the future. |
 | **stop** | [Stop](#message-stop) | Conditionally required | One | A new stop added to the feed dynamically. <br><br>**Caution:** this field is still **experimental**, and subject to change. It may be formally adopted in the future. |
 | **trip_modifications** | [TripModifications)(#message-tripmodifications) | Conditionally required | One | List of trips affected by a particular modifications, such as a detour. <br><br>**Caution:** this field is still **experimental**, and subject to change. It may be formally adopted in the future. |
-
+| **route** | [Route](#message-route) | Conditionally required | One | Data about a new route added to the feed dynamically, such as a bus bridge. <br><br>**Caution:** this field is still **experimental**, and subject to change. It may be formally adopted in the future. |
 
 ## _message_ TripUpdate
 
@@ -735,3 +735,21 @@ _If a modification affects the first stop of the trip, that stop also serves as 
 |------------------|------------|----------------|-------------------|-------------------|
 | **stop_id** | [string](https://protobuf.dev/programming-guides/proto2/#scalar) | Required | One | The replacement stop ID which will now be visited by the trip. May refer to a new stop added using a GTFS-RT `Stop` message in the same GTFS-RT feed, or to an existing stop defined in the (CSV) GTFS feed’s `stops.txt`. If it refers to a `Shape` entity in the real-time feed, the value of this field should be the one of the `stop_id` inside the entity, and _not_ the `id` of `FeedEntity`. The stop MUST have `location_type=0` (routable stops). |
 | **travel_time_to_stop** | [int32](https://protobuf.dev/programming-guides/proto2/#scalar) | Optional | One | The difference in seconds between the arrival time at this stop and the arrival time at the reference stop. The reference stop is the stop prior to `start_stop_selector`. If the modification begins at the first stop of the trip, then the first stop of the trip is the reference stop. <br/><br/>This value MUST be monotonically increasing and may only be a negative number if the first stop of the original trip is the reference stop. <br/><br/>If the value is not supplied, consumers MAY interpolate or infer the `travel_time_to_stop` based on other data. |
+
+## _message_ Route
+Real-time information about a transit route. This message is used to dynamically define a route that does not exist in the static GTFS.
+
+| _**Field Name**_ | _**Type**_ | _**Required**_ | _**Cardinality**_ | _**Description**_ |
+| :--- | :--- | :--- | :--- | :--- |
+| **route_id** | [string](https://protobuf.dev/programming-guides/proto2/#scalar) | Required | One | Identifier of the route. Must be different than any route_id defined in the static GTFS. |
+| **agency_id** | [string](https://protobuf.dev/programming-guides/proto2/#scalar) | Optional | One | Agency which operates the route. See [routes.agency_id](https://gtfs.org/schedule/reference/#routestxt). |
+| **route_short_name** | [string](https://protobuf.dev/programming-guides/proto2/#scalar) | Optional | One | Short name of the route. See [routes.route_short_name](https://gtfs.org/schedule/reference/#routestxt). |
+| **route_long_name** | [string](https://protobuf.dev/programming-guides/proto2/#scalar) | Optional | One | Long name of the route. See [routes.route_long_name](https://gtfs.org/schedule/reference/#routestxt). |
+| **route_desc** | [string](https://protobuf.dev/programming-guides/proto2/#scalar) | Optional | One | Description of the route. See [routes.route_desc](https://gtfs.org/schedule/reference/#routestxt). |
+| **route_type** | [int32](https://protobuf.dev/programming-guides/proto2/#scalar) | Required | One | Describes the type of transportation used on a route. See [routes.route_type](https://gtfs.org/schedule/reference/#routestxt). |
+| **route_url** | [string](https://protobuf.dev/programming-guides/proto2/#scalar) | Optional | One | URL of a web page about the route. See [routes.route_url](https://gtfs.org/schedule/reference/#routestxt). |
+| **route_color** | [string](https://protobuf.dev/programming-guides/proto2/#scalar) | Optional | One | Route color in RGB hex format. See [routes.route_color](https://gtfs.org/schedule/reference/#routestxt). |
+| **route_text_color** | [string](https://protobuf.dev/programming-guides/proto2/#scalar) | Optional | One | Route text color in RGB hex format. See [routes.route_text_color](https://gtfs.org/schedule/reference/#routestxt). |
+| **route_sort_order** | [uint32](https://protobuf.dev/programming-guides/proto2/#scalar) | Optional | One | A non-negative integer used to specify the order in which the routes should be displayed. |
+| **start_date** | [string](https://protobuf.dev/programming-guides/proto2/#scalar) | Optional | One | The first day that the new route is active, in YYYYMMDD format. |
+| **end_date** | [string](https://protobuf.dev/programming-guides/proto2/#scalar) | Optional | One | The last day that the new route is active, in YYYYMMDD format. |
