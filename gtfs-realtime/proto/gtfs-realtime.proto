@@ -1266,6 +1266,14 @@ message Route {
   // See definition of routes.route_sort_order in (CSV) GTFS.
   optional uint32 route_sort_order = 10;
 
+  // See definition of calendar.start_date in (CSV) GTFS.
+  // The first day that the new route is active, in YYYYMMDD format.
+  optional string start_date = 11;
+
+  // See definition of calendar.end_date in (CSV) GTFS.
+  // The last day that the new route is active, in YYYYMMDD format.
+  optional string end_date = 12;
+
   // The extensions namespace allows 3rd-party developers to extend the
   // GTFS Realtime Specification in order to add and evaluate new features and
   // modifications to the spec.
