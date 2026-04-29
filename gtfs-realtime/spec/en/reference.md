@@ -742,9 +742,9 @@ Real-time information about a transit route. This message is used to dynamically
 | _**Field Name**_ | _**Type**_ | _**Required**_ | _**Cardinality**_ | _**Description**_ |
 | :--- | :--- | :--- | :--- | :--- |
 | **route_id** | [string](https://protobuf.dev/programming-guides/proto2/#scalar) | Required | One | Identifier of the route. Must be different than any route_id defined in the static GTFS. |
-| **agency_id** | [string](https://protobuf.dev/programming-guides/proto2/#scalar) | Optional | One | Agency which operates the route. See [routes.agency_id](https://gtfs.org/schedule/reference/#routestxt). |
-| **route_short_name** | [string](https://protobuf.dev/programming-guides/proto2/#scalar) | Optional | One | Short name of the route. See [routes.route_short_name](https://gtfs.org/schedule/reference/#routestxt). |
-| **route_long_name** | [string](https://protobuf.dev/programming-guides/proto2/#scalar) | Optional | One | Long name of the route. See [routes.route_long_name](https://gtfs.org/schedule/reference/#routestxt). |
+| **agency_id** | [string](https://protobuf.dev/programming-guides/proto2/#scalar) | Conditionally Required | One | Agency which operates the route. See [routes.agency_id](https://gtfs.org/schedule/reference/#routestxt). |
+| **route_short_name** | [string](https://protobuf.dev/programming-guides/proto2/#scalar) | Conditionally Required | One | Short name of the route. See [routes.route_short_name](https://gtfs.org/schedule/reference/#routestxt). |
+| **route_long_name** | [string](https://protobuf.dev/programming-guides/proto2/#scalar) | Conditionally Required | One | Long name of the route. See [routes.route_long_name](https://gtfs.org/schedule/reference/#routestxt). |
 | **route_desc** | [string](https://protobuf.dev/programming-guides/proto2/#scalar) | Optional | One | Description of the route. See [routes.route_desc](https://gtfs.org/schedule/reference/#routestxt). |
 | **route_type** | [int32](https://protobuf.dev/programming-guides/proto2/#scalar) | Required | One | Describes the type of transportation used on a route. See [routes.route_type](https://gtfs.org/schedule/reference/#routestxt). |
 | **route_url** | [string](https://protobuf.dev/programming-guides/proto2/#scalar) | Optional | One | URL of a web page about the route. See [routes.route_url](https://gtfs.org/schedule/reference/#routestxt). |
