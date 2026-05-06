@@ -40,6 +40,8 @@ This document defines the format and structure of the files that comprise a GTFS
     -   [location_group_stops.txt](#location_group_stopstxt)
     -   [locations.geojson](#locationsgeojson)
     -   [booking_rules.txt](#booking_rulestxt)
+    -   [notices.txt](#noticestxt)
+    -   [notice\_assignments.txt](#notice_assignmentstxt)
     -   [translations.txt](#translationstxt)
     -   [feed\_info.txt](#feed_infotxt)
     -   [attributions.txt](#attributionstxt)
@@ -144,6 +146,8 @@ This specification defines the following files:
 |  [location_group_stops.txt](#location_group_stopstxt)  | Optional | Rules to assign stops to location groups. |
 |  [locations.geojson](#locationsgeojson)  | Optional | Zones for rider pickup or drop-off requests by on-demand services, represented as GeoJSON polygons. |
 |  [booking_rules.txt](#booking_rulestxt)  | Optional | Booking information for rider-requested services. |
+|  [notices.txt](#noticestxt)  | Optional | Notices to be displayed to riders for specific routes, trips, or stops. |
+|  [notice_assignments.txt](#notice_assignmentstxt)  | **Conditionally Required** | Assignments of notices or notice groups to routes, trips, or stops.<br><br>Conditionally Required:<br>- **Required** if [notices.txt](#noticestxt) is provided. |
 |  [translations.txt](#translationstxt)  | Optional | Translations of customer-facing dataset values. |
 |  [feed_info.txt](#feed_infotxt)  | **Conditionally Required** | Dataset metadata, including publisher, version, and expiration information.<br><br>Conditionally Required:<br>- **Required** if [translations.txt](#translationstxt) is provided.<br>- Recommended otherwise.|
 |  [attributions.txt](#attributionstxt)  | Optional | Dataset attributions. |
@@ -848,6 +852,44 @@ Defines the booking rules for rider-requested services
 | `phone_number` | Phone number | Optional | Phone number to call to make the booking request. |
 | `info_url` | URL | Optional | URL providing information about the booking rule. |
 | `booking_url` | URL | Optional | URL to an online interface or app where the booking request can be made. |
+
+### notices.txt
+
+File: **Optional**
+
+Primary key (`notice_id`)
+
+Defines notices that can be displayed to riders. These can be attached to one or more entities with `notice_assignments.txt`.
+
+|  Field Name | Type | Presence | Description |
+|  ------ | ------ | ------ | ------ |
+| `notice_id` | Unique ID | **Required** | Identifies a notice. |
+| `notice_group_id` | ID | Optional | Groups notices together. The same `notice_group_id` may be assigned to multiple notices. A `notice_group_id` can be referenced in [notice_assignments.txt](#notice_assignmentstxt) to assign all notices in the group at once. |
+| `display_text` | Text | **Required** | Text of the notice to be displayed to riders. |
+
+### notice_assignments.txt
+
+File: **Conditionally Required**
+
+Primary key (`*`)
+
+Assigns notices or notice groups defined in [notices.txt](#noticestxt) to routes, trips in their entirety, or individual stops.
+
+Specifically, attaching them means the following:
+
+- route: the notice applies to _all_ trips in the route. If you want to assign to a specific trip use a `table_name` with value `trip`
+- trip: the notice applies to a specific trip in its entirety, not to individual hops.
+- stop: the notice applies to a stop but completely decoupled from a specific trip. It is not intended for notices that target stop times.
+  
+Conditionally Required:
+- **Required** if [notices.txt](#noticestxt) is provided.
+
+|  Field Name | Type | Presence | Description |
+|  ------ | ------ | ------ | ------ |
+| `notice_id` | Foreign ID referencing `notices.notice_id` | **Conditionally Required** | Identifies the notice to assign.<br><br>Conditionally Required:<br>- **Required** if `notice_group_id` is not defined.<br>- **Forbidden** if `notice_group_id` is defined. |
+| `notice_group_id` | ID referencing `notices.notice_group_id` | **Conditionally Required** | Identifies the notice group to assign. All notices sharing this `notice_group_id` in [notices.txt](#noticestxt) are assigned.<br><br>Conditionally Required:<br>- **Required** if `notice_id` is not defined.<br>- **Forbidden** if `notice_id` is defined. |
+| `table_name` | Enum | **Required** | Identifies the table containing the record to which the notice is assigned. Valid options are:<br><br>`routes` - Record is in [routes.txt](#routestxt).<br>`trips` - Record is in [trips.txt](#tripstxt).<br>`stops` - Record is in [stops.txt](#stopstxt). |
+| `record_id` | Foreign ID | **Required** | Primary key of the record in the table specified by `table_name` to which the notice is assigned. For `table_name=routes` use `route_id`; for `table_name=trips` use `trip_id`; for `table_name=stops` use `stop_id`. |
 
 ### translations.txt
 
