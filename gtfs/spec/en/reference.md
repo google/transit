@@ -128,6 +128,7 @@ This specification defines the following files:
 |  [areas.txt](#areastxt) | Optional | Area grouping of locations. |
 |  [stop_areas.txt](#stop_areastxt) | Optional | Rules to assign stops to areas. |
 |  [area_sets.txt](#area_setstxt) | Optional | Collections of areas. |
+|  [area_set_elements.txt](#area_set_elementstxt) | Optional | Rules to assign areas to area sets. |
 |  [networks.txt](#networkstxt) | **Conditionally Forbidden** | Network grouping of routes.<br><br>Conditionally Forbidden:<br>- **Forbidden** if `network_id` exists in [routes.txt](#routestxt).<br>- Optional otherwise. |
 |  [route_networks.txt](#route_networkstxt) | **Conditionally Forbidden** | Rules to assign routes to networks.<br><br>Conditionally Forbidden:<br>- **Forbidden** if `network_id` exists in [routes.txt](#routestxt).<br>- Optional otherwise. |
 |  [shapes.txt](#shapestxt)  | Optional | Rules for mapping vehicle travel paths, sometimes referred to as route alignments. |
