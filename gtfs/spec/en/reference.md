@@ -560,7 +560,7 @@ Assigns stops from [stops.txt](#stopstxt) to areas.
 
 File: **Optional**
 
-Primary key (`*`)
+Primary key (`area_set_id`)
 
 Groups collections of areas into sets.
 
