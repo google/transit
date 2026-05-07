@@ -562,7 +562,7 @@ File: **Optional**
 
 Primary key (`area_set_id`)
 
-Groups collections of areas into sets.
+Defines area set identifiers that apply for fare leg rules.
 
 |  Field Name | Type | Presence | Description |
 |  ------ | ------ | ------ | ------ |
