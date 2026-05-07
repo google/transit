@@ -568,7 +568,18 @@ Groups collections of areas into sets.
 |  ------ | ------ | ------ | ------ |
 | `area_set_id` | Unique ID | **Required** | Identifies an area set.  Must be unique in [area_sets.txt](#area_setstxt). |
 | `area_set_name` | Text | **Optional** | The name of the area set. |
+### area_set_elements.txt
 
+File: **Optional**
+
+Primary key (`*`)
+
+Groups collections of areas into sets.
+
+|  Field Name | Type | Presence | Description |
+|  ------ | ------ | ------ | ------ |
+| `area_set_id` | Foreign ID referencing `area_sets.area_set_id` | **Required** | Identifies an area set to which one or multiple `area_id`s belong. |
+| `area_id` | Foreign ID referencing `areas.area_id` | **Required** | Identifies an area to be included in the set. The same `area_id` may be defined in multiple area sets. |
 ### networks.txt
 
 File: **Conditionally Forbidden**
