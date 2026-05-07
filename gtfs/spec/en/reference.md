@@ -445,7 +445,7 @@ Used to describe the range of fares available for purchase by riders or taken in
 
 File: **Optional**
 
-Primary key (`network_id, from_area_id, to_area_id, from_timeframe_group_id, to_timeframe_group_id, fare_product_id`)
+Primary key (`network_id, from_area_id, to_area_id, from_timeframe_group_id, to_timeframe_group_id, contains_exactly_area_set_id, contains_area_set_id, fare_product_id`)
 
 Fare rules for individual legs of travel.
 
