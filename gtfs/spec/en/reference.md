@@ -28,6 +28,7 @@ This document defines the format and structure of the files that comprise a GTFS
     -   [areas.txt](#areastxt)
     -   [stop_areas.txt](#stop_areastxt)
     -   [area_sets.txt](#area_setstxt)
+    -   [area_set_elements.txt](#area_set_elementstxt)
     -   [networks.txt](#networkstxt)
     -   [route_networks.txt](#route_networkstxt)
     -   [shapes.txt](#shapestxt)
