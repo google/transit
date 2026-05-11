@@ -1,5 +1,37 @@
 ### Revision History
 
+#### April 2026
+* Added safe duration fields to `trips.txt` to provide better flexible trip time estimates. See [discussion](https://github.com/google/transit/pull/598).
+
+#### February 2026
+* Required `from_stop_id` and `to_stop_id` when transfer_type = 0 or is empty (recommended transfer point). See [discussion](https://github.com/google/transit/pull/591).
+* Improved currency amount description. See [discussion](https://github.com/google/transit/pull/615).
+* Clarified that fare transfer rules are directional. See [discussion](https://github.com/google/transit/pull/602).
+* Added links to references of `fare_leg_rules.txt`. See [discussion](https://github.com/google/transit/pull/601).
+* Added missing spaces. See [discussion](https://github.com/google/transit/pull/587).
+
+#### October 2025
+* Added clarifications for `fare_transfer_rules.txt` and introduced a new `Local Time` field type. See [discussion](https://github.com/google/transit/pull/561).
+
+#### September 2025
+* Added `cemv_support` field in `agency.txt` and `routes.txt`. See [discussion](https://github.com/google/transit/pull/545).
+* Added `stop_access` field in `stops.txt`. See [discussion](https://github.com/google/transit/pull/515).
+
+#### June 2025
+* Added cars_allowed field to trips.txt. See [discussion](https://github.com/google/transit/pull/547).
+
+#### April 2025
+* Added clarification to allow value 1 for continuous_pickup/continuous_drop_off for DRT services. See [discussion](https://github.com/google/transit/pull/558).
+
+#### February 2025
+* Added rider_categories.txt. See [discussion](https://github.com/google/transit/pull/511).
+
+#### January 2025
+* Update agency_fare_url to expand its description and include fare information only. See [discussion](https://github.com/google/transit/pull/524).
+
+#### December 2024
+* Added `fare_leg_join_rules.txt` and introduced the concept of Effective Fare Leg. See [discussion](https://github.com/google/transit/pull/439).
+
 #### September 2024
 * Clarify presence and use of from/to_stop_id & from/to_trip_id fields in transfers.txt. See [discussion](https://github.com/google/transit/pull/455).
 * Added validity rules for polygons in GeoJSON files. See [discussion](https://github.com/google/transit/pull/476).
