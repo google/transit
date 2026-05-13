@@ -923,8 +923,8 @@ This file describes the capacity, accessibility and features of individual vehic
 
 |  Field Name | Type | Presence | Description |
 |  ------ | ------ | ------ | ------ |
-|  `vehicle_id` | Text | **Required** | A label that is unique to the vehicle and matches the label shown in the GTFS RealTime label value in the VehicleDescriptor or CarriageDetails or the vehicle identifier in other real-time data sources. If `vehicle_id_high` is provided then this value is the low end of the range. |
-|  `vehicle_id_high` | Text | Optional | If a range of vehicles is represented this is the high end of the range. The number of charactors must be the same as `vehicle_id` and range covers values with the same number of charactors and are between `vehicle_id` and `vehicle_id_high` when using a string comparison. |
+|  `vehicle_label` | Text | **Required** | A label that is unique to the vehicle and matches the label shown in the GTFS RealTime label value in the VehicleDescriptor or CarriageDetails or the vehicle identifier in other real-time data sources. If `vehicle_id_high` is provided then this value is the low end of the range. |
+|  `vehicle_label_high` | Text | Optional | If a range of vehicles is represented this is the high end of the range. The number of charactors must be the same as `vehicle_id` and range covers values with the same number of charactors and are between `vehicle_id` and `vehicle_id_high` when using a string comparison. |
 |  `registration_plate` | Text | Optional | The license plate or number plate of the vehicle. |
 |  `vehicle_class` | ID | Recommended | Identifies a class of vehicle that usually runs on certain routes. Ment to link with vehicle_class fields in routes.txt and trips.txt. Can be used to provide vehicle information when label isn't available or highlight when the vehicle doesn't match the expected class and what the major differences are. |
 | `facility_name` | Text | Optional | The name of the facility where the vehicle is normally stored when not in service, such as the bus garage or rail yard. |
@@ -942,11 +942,11 @@ This file describes the capacity, accessibility and features of individual vehic
 |  `image_details` | URL | Optional | Fully qualified URL of an web page with more information on the photo, photographer or organation that produced the photo in the `image_url` |
 |  `vehicle_notes` | Text | Optional | Notable aspects about the vehicles that passengers should know about not covered by other fields. |
 |  `capacity_seated` | integer | Optional | The number of seats available to passengers, including ones that may become unavailable due to making space for wheelchairs or bikes. |
-|  `capacity_standing` | integer | Recommended | The number of passengers that is considered a full load for a vehicle. If passenger occupancy is provided, this should be the number of passengers that is considered Full or 100%. |
-|  `capacity_wheelchair` | integer | Recommended | The number of spots available for passingers with wheelchairs. |
-|  `strollers` | integer | Optional | The number of spots available for strollers. Would include spots used by wheelchairs or strollers. |
-|  `capacity_bike` | integer | Recommended | The number of bicycles the vehicle can carry, either on the inside or outside of the vehicle. |
-| `bicycle_notes` | Text | Optional | A decription of the location, procedures and restriction of bringing a bicycle on the vehicle. |
+|  `capacity_full` | integer | Recommended | The number of passengers that is considered a full load for a vehicle. If passenger occupancy is provided, this should be the number of passengers that is considered Full or 100%. |
+|  `capacity_wheelchairs` | integer | Recommended | The number of spots available for passingers with wheelchairs. |
+|  `capacity_strollers` | integer | Optional | The number of spots available for strollers. Would include spots used by wheelchairs or strollers. |
+|  `capacity_bikes` | integer | Recommended | The number of bicycles the vehicle can carry, either on the inside or outside of the vehicle. |
+|  `bike_notes` | Text | Optional | A decription of the location, procedures and restriction of bringing a bicycle on the vehicle. |
 |  `car_capacity` | integer | Optional | The number of standard size cars the vehicle can carry. Primarily for farries. |
 |  `luggage` | Enum | Optional | The vehicle has space set aside for luggage. Valid options are:<br><br>`0` - No space set aside for luggage.<br>`1` - Space above passenger seating for luggage.<br>`2` - Space set aside in the passenger cabin for luggage.<br>`3` - Space for luggage that can be accessed externally. |
 |  `luggage_notes` | Text | Optional | A description of how luggage is stored and any limitations that may apply. |
