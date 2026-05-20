@@ -917,7 +917,7 @@ The file defines the attributions applied to the dataset.
 
 File: **Optional**
 
-Primary key (`label`)
+Primary key (`vehicle_label`. `agency_id`)
 
 This file describes the capacity, accessibility and features of individual vehicles or vehicle ranges.
 
@@ -925,6 +925,7 @@ This file describes the capacity, accessibility and features of individual vehic
 |  ------ | ------ | ------ | ------ |
 |  `vehicle_label` | Text | **Required** | A label that is unique to the vehicle and matches the label shown in the GTFS RealTime label value in the VehicleDescriptor or CarriageDetails or the vehicle identifier in other real-time data sources. If `vehicle_label_high` is provided then this value is the low end of the range. |
 |  `vehicle_label_high` | Text | Optional | If a range of vehicles is represented this is the high end of the range. The number of charactors must be the same as `vehicle_label` and range covers values with the same number of charactors and are between `vehicle_label` and `vehicle_label_high` when using a string comparison. |
+|  `agency_id` | Foreign ID referencing `agency.agency_id` | Recommended | Agency for the specified vehicles. |
 |  `license_plate` | Text | Optional | The license plate or number plate of the vehicle. Does not apply if a range of vehicles is being used. |
 |  `vehicle_class` | ID | Recommended | Identifies a class of vehicle that usually runs on certain routes. Ment to link with vehicle_class fields in routes.txt and trips.txt. Can be used to provide vehicle information when label isn't available or highlight when the vehicle doesn't match the expected class and what the major differences are. |
 | `facility_name` | Text | Optional | The name of the facility where the vehicle is normally stored when not in service, such as the bus garage or rail yard. |
