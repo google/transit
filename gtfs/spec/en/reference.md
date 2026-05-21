@@ -42,6 +42,7 @@ This document defines the format and structure of the files that comprise a GTFS
     -   [booking_rules.txt](#booking_rulestxt)
     -   [notices.txt](#noticestxt)
     -   [notice\_assignments.txt](#notice_assignmentstxt)
+    -   [trip\_segments.txt](#trip_segmentstxt)
     -   [translations.txt](#translationstxt)
     -   [feed\_info.txt](#feed_infotxt)
     -   [attributions.txt](#attributionstxt)
@@ -148,6 +149,7 @@ This specification defines the following files:
 |  [booking_rules.txt](#booking_rulestxt)  | Optional | Booking information for rider-requested services. |
 |  [notices.txt](#noticestxt)  | Optional | Notices to be displayed to riders for specific routes, trips, or stops. |
 |  [notice_assignments.txt](#notice_assignmentstxt)  | **Conditionally Required** | Assignments of notices or notice groups to routes, trips, or stops.<br><br>Conditionally Required:<br>- **Required** if [notices.txt](#noticestxt) is provided. |
+|  [trip_segments.txt](#trip_segmentstxt)  | Optional | Defines segments of trips by stop sequence range, for use in notice assignments. |
 |  [translations.txt](#translationstxt)  | Optional | Translations of customer-facing dataset values. |
 |  [feed_info.txt](#feed_infotxt)  | **Conditionally Required** | Dataset metadata, including publisher, version, and expiration information.<br><br>Conditionally Required:<br>- **Required** if [translations.txt](#translationstxt) is provided.<br>- Recommended otherwise.|
 |  [attributions.txt](#attributionstxt)  | Optional | Dataset attributions. |
@@ -891,8 +893,23 @@ Conditionally Required:
 |  ------ | ------ | ------ | ------ |
 | `notice_id` | Foreign ID referencing `notices.notice_id` | **Conditionally Required** | Identifies the notice to assign.<br><br>Conditionally Required:<br>- **Required** if `notice_group_id` is not defined.<br>- **Forbidden** if `notice_group_id` is defined. |
 | `notice_group_id` | ID referencing `notices.notice_group_id` | **Conditionally Required** | Identifies the notice group to assign. All notices sharing this `notice_group_id` in [notices.txt](#noticestxt) are assigned.<br><br>Conditionally Required:<br>- **Required** if `notice_id` is not defined.<br>- **Forbidden** if `notice_id` is defined. |
-| `table_name` | Enum | **Required** | Identifies the table containing the record to which the notice is assigned. Valid options are:<br><br>`routes` - Record is in [routes.txt](#routestxt).<br>`trips` - Record is in [trips.txt](#tripstxt).<br>`stops` - Record is in [stops.txt](#stopstxt). |
-| `record_id` | Foreign ID | **Required** | Primary key of the record in the table specified by `table_name` to which the notice is assigned. For `table_name=routes` use `route_id`; for `table_name=trips` use `trip_id`; for `table_name=stops` use `stop_id`. |
+| `table_name` | Enum | **Required** | Identifies the table containing the record to which the notice is assigned. Valid options are:<br><br>`routes` - Record is in [routes.txt](#routestxt).<br>`trips` - Record is in [trips.txt](#tripstxt).<br>`stops` - Record is in [stops.txt](#stopstxt).<br>`trip_segments` - Record is in [trip_segments.txt](#trip_segmentstxt). |
+| `record_id` | Foreign ID | **Required** | Primary key of the record in the table specified by `table_name` to which the notice is assigned. For `table_name=routes` use `route_id`; for `table_name=trips` use `trip_id`; for `table_name=stops` use `stop_id`; for `table_name=trip_segments` use `trip_segment_id`. |
+
+### trip_segments.txt
+
+File: **Optional**
+
+Primary key (`trip_segment_id`)
+
+Defines a contiguous segment of a trip by specifying an inclusive range of stop sequences. Segments defined here can be referenced in [notice_assignments.txt](#notice_assignmentstxt) to apply a notice to a portion of a trip.
+
+|  Field Name | Type | Presence | Description |
+|  ------ | ------ | ------ | ------ |
+| `trip_segment_id` | Unique ID | **Required** | Identifies a trip segment. |
+| `trip_id` | Foreign ID referencing `trips.trip_id` | **Required** | Identifies the trip to which the segment belongs. |
+| `from_stop_sequence` | Non-negative integer | **Required** | The `stop_sequence` value of the first stop of the segment (inclusive). Must refer to a `stop_sequence` value in [stop_times.txt](#stop_timestxt) for the given `trip_id`. |
+| `to_stop_sequence` | Non-negative integer | **Required** | The `stop_sequence` value of the last stop of the segment (inclusive). Must refer to a `stop_sequence` value in [stop_times.txt](#stop_timestxt) for the given `trip_id`. Must be greater than or equal to `from_stop_sequence`. |
 
 ### translations.txt
 
