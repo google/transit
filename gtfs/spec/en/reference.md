@@ -870,7 +870,7 @@ not replace machine-readable information like pick up/drop off types or fare dat
 |  ------ | ------ | ------ | ------ |
 | `notice_id` | Unique ID | **Required** | Identifies a notice. |
 | `notice_group_id` | ID | Optional | Groups notices together. The same `notice_group_id` may be assigned to multiple notices. A `notice_group_id` can be referenced in [notice_assignments.txt](#notice_assignmentstxt) to assign all notices in the group at once. |
-| `display_text` | Text | **Required** | Text of the notice to be displayed to riders. |
+| `display_text` | Text | **Required** | Text of the notice to be displayed to riders. HTML formatting characters are not permitted.          |           
 
 ### notice_assignments.txt
 
@@ -884,6 +884,7 @@ Specifically, attaching them means the following:
 
 - route: the notice applies to _all_ trips in the route. If you want to assign to a specific trip use a `table_name` with value `trip`
 - trip: the notice applies to a specific trip in its entirety, not to individual hops.
+- trip segment: the notice applies to part of a trip.
 - stop: the notice applies to a stop but completely decoupled from a specific trip. It is not intended for notices that target stop times.
   
 Conditionally Required:
