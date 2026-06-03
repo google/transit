@@ -536,7 +536,6 @@ For a sub-journey of two consecutive legs with a transfer, if the transfer match
 | `from_stop_id` | Foreign ID referencing `stops.stop_id`| **Conditionally Required** | Matches a pre-transfer leg that ends at the specified stop (`location_type=0` or empty) or station (`location_type=1`).<br><br>Conditionally Required:<br> - **Required** if `to_stop_id` is defined.<br> - Optional otherwise. |
 | `to_stop_id` | Foreign ID referencing `stops.stop_id`| **Conditionally Required** | Matches a post-transfer leg that starts at the specified stop (`location_type=0` or empty) or station (`location_type=1`).<br><br>Conditionally Required:<br> - **Required** if `from_stop_id` is defined.<br> - Optional otherwise. |
 
-
 ### fare_transfer_rules.txt
 
 File: **Optional**
