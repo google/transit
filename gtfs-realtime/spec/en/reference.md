@@ -398,6 +398,7 @@ Cause of this alert.
 | **CONSTRUCTION** |
 | **POLICE_ACTIVITY** |
 | **MEDICAL_EMERGENCY** |
+| **SPECIAL_EVENT** |
 
 ## _enum_ Effect
 
