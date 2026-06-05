@@ -424,8 +424,6 @@ The effect of this problem on the affected entity.
 
 The severity of the alert.
 
-**Caution:** this field is still **experimental**, and subject to change. It may be formally adopted in the future.
-
 **Values**
 
 | _**Value**_ |
