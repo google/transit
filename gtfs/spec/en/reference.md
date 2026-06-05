@@ -909,13 +909,12 @@ The file defines the attributions applied to the dataset.
 
 File: **Optional**
 
-Primary key (`license_for_whole_feed`, `licensed_table_name`)
+Primary key (`licensed_table_name`)
 
 This file defines the licenses that apply to the feed or to specific files.
 
 | Field Name | Type | Presence | Description |
 | :---- | :---- | :---- | :---- |
-| `license_for_whole_feed` | Enum | Required | Indicates whether the license applies to the entire GTFS feed or only to individual files.<br><br>Valid options are:<br>`0` or empty: The license does not apply to the whole feed. In this case, the license applies to the file specified in `licensed_table_name`. <br>`1`: The license applies to the whole GTFS feed, except for any files explicitly listed in other rows. |
-| `licensed_table_name` | Text | Conditionally Forbidden | Defines the table which the license applies to.<br><br>Allowed values include any file added to GTFS. In that case, it will have a `licensed_table_name` value equivalent to the file name, not including the `.txt` file extension.<br><br>_Example: The value `shapes` stands for `shapes.txt`_<br><br>**Conditionally Forbidden:**<br> - **Required** if `license_for_whole_feed = 0` or empty.<br> - **Forbidden** if `license_for_whole_feed = 1`. |
+| `licensed_table_name` | Text | Optional | Defines the table which the license applies to.<br><br>If empty, the license applies to all tables in the feed not explicitly listed in other records of this file. Otherwise, any GTFS file name may be used as a value, omitting the `.txt` extension.<br><br>_Example: shapes refers to `shapes.txt`_ |
 | `license_spdx_id` | SPDX ID | Conditionally Forbidden | The SPDX identifier of the license. <br><br>**Conditionally Forbidden**: <br>- **Required** if `custom_license_url` is empty.<br> - **Forbidden** otherwise. |
 | `custom_license_url` | URL | Conditionally Forbidden | The URL that contains the terms of the custom license.<br><br>**Conditionally Forbidden:**<br> - **Required** if `license_spdx_id` is empty.<br> - **Forbidden** otherwise. |
