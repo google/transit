@@ -182,6 +182,21 @@ The following example demonstrates how a field value would appear in a comma-del
 
 ## Field Definitions
 
+### images.txt
+
+File: **Conditionally Required**
+
+Primary key (`image_id`)
+
+|  Field Name | Type | Presence | Description |
+|  ------ | ------ | ------ | ------ |
+|  `image_id` | Unique ID | **Required** | Identifies an image referenced in the feed. |
+|  `image_alternative_text` | Text | **Required** | Text describing the appearance of the linked image in the image field (e.g., in case the image can't be displayed or the user can't see the image for accessibility reasons). See the HTML [spec for alt image text](https://html.spec.whatwg.org/#alt).  |
+|  `image_terms_url` |  URL | Optional | A fully qualified URL pointing to the location of a page that defines the license terms of the image.<br><br>It is recommended that the terms permit feed consumers, without taking additional actions, to use the image in reference to services contained in the feed broadly throughout their products, provided an attribution citing these terms is visible to users somewhere in these products. <br><br> Consumers SHOULD respect standard HTTP caching headers when fetching this file. <br><br>Conditionally Forbidden:<br>- **Forbidden** when `image_url` and `image_url_dark` are not set <br>- Optional otherwise |
+|  `image_url` | URL | Required | A fully qualified URL pointing to the location of a graphic file. The file MUST be in SVG v1.1 format and SHOULD have a transparent background. Consumers SHOULD respect standard HTTP caching headers when fetching this file.<br><br>A data consumer MUST store the image on their own servers to avoid direct traffic from end user devices to the agencies' web servers. |
+|  `image_url_dark` | URL  | Optional | A fully qualified URL pointing to the location of a graphic file, for use in dark mode applications. The file MUST be the same size as the one in `image_url` and represent an otherwise identical image, except for any dark mode optimizations. When this value is specified and a consuming application is in dark mode, the application SHOULD use this variant of the image, otherwise they should use the standard image. The file MUST be in SVG v1.1 format and SHOULD have a transparent background. Consumers SHOULD respect standard HTTP caching headers when fetching this file.<br><br>A data consumer MUST store the image on their own servers to avoid direct traffic from end user devices to the agencies' web servers. |
+|  `image_monochrome_url` | URL | Optional | A fully qualified URL pointing to the location of a graphic file. The image cannot use colors. The file MUST be the same size as the one in `image_url` and represent an otherwise identical image, except for any dark mode optimizations. When this value is specified and a consuming application is in dark mode, the application SHOULD use this variant of the image, otherwise they should use the standard image. The file MUST be in SVG v1.1 format and SHOULD have a transparent background. Consumers SHOULD respect standard HTTP caching headers when fetching this file.<br><br>A data consumer MUST store the image on their own servers to avoid direct traffic from end user devices to the agencies' web servers. |
+
 ### agency.txt
 
 File: **Required**
@@ -194,6 +209,7 @@ Primary key (`agency_id`)
 |  `agency_name` | Text | **Required** | Full name of the transit agency. |
 |  `agency_url` | URL | **Required** | URL of the transit agency. |
 |  `agency_timezone` | Timezone | **Required** | Timezone where the transit agency is located. If multiple agencies are specified in the dataset, each must have the same `agency_timezone`. |
+|  `logo_image_id` | Foreign ID referencing `images.image_id` | Optional | Logo for the specified agency. |
 |  `agency_lang` | Language code | Optional | Primary language used by this transit agency. Should be provided to help GTFS consumers choose capitalization rules and other language-specific settings for the dataset. |
 |  `agency_phone` | Phone number | Optional | A voice telephone number for the specified agency. This field is a string value that presents the telephone number as typical for the agency's service area. It may contain punctuation marks to group the digits of the number. Dialable text (for example, TriMet's "503-238-RIDE") is permitted, but the field must not contain any other descriptive text. |
 |  `agency_fare_url` | URL | Optional | URL of a web page where a rider can purchase tickets or other fare instruments for that agency, or a web page containing information about that agency's fares. |
