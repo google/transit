@@ -43,6 +43,7 @@ This document defines the format and structure of the files that comprise a GTFS
     -   [translations.txt](#translationstxt)
     -   [feed\_info.txt](#feed_infotxt)
     -   [attributions.txt](#attributionstxt)
+    -   [licenses.txt](#licensestxt)
 
 ## Document Conventions
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", “SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://tools.ietf.org/html/rfc2119).
@@ -94,6 +95,7 @@ Presence conditions applicable to fields and files:
 - **Text** - A string of UTF-8 characters, which is aimed to be displayed and which must therefore be human readable.
 - **Timezone** - TZ timezone from the [https://www.iana.org/time-zones](https://www.iana.org/time-zones). Timezone names never contain the space character but may contain an underscore. Refer to [http://en.wikipedia.org/wiki/List\_of\_tz\_zones](http://en.wikipedia.org/wiki/List\_of\_tz\_zones) for a list of valid values. <br> *Example: `Asia/Tokyo`, `America/Los_Angeles` or `Africa/Cairo`.*
 - **URL** - A fully qualified URL that includes http:// or https://, and any special characters in the URL must be correctly escaped. See the following [http://www.w3.org/Addressing/URL/4\_URI\_Recommentations.html](http://www.w3.org/Addressing/URL/4\_URI\_Recommentations.html) for a description of how to create fully qualified URL values.
+- **SPDX ID**: [SPDX license identifier](https://spdx.dev/learn/handling-license-info/#:~:text=SEE%20LICENSE%20LIST-,SPDX%20License%20IDs,-//%20SPDX%2DLicense%2DIdentifier) which communicates license information in a simple and machine-readable manner. Valid SPDX ID values can be found in the [SPDX License list](https://spdx.org/licenses/).
 
 ### Field Signs
 Signs applicable to Float or Integer field types:
@@ -147,6 +149,7 @@ This specification defines the following files:
 |  [translations.txt](#translationstxt)  | Optional | Translations of customer-facing dataset values. |
 |  [feed_info.txt](#feed_infotxt)  | **Conditionally Required** | Dataset metadata, including publisher, version, and expiration information.<br><br>Conditionally Required:<br>- **Required** if [translations.txt](#translationstxt) is provided.<br>- Recommended otherwise.|
 |  [attributions.txt](#attributionstxt)  | Optional | Dataset attributions. |
+|  [licenses.txt](#licensestxt)  | Optional | The licenses that apply to the feed or to specific files. |
 
 ## File Requirements
 
@@ -910,3 +913,17 @@ The file defines the attributions applied to the dataset.
 |  `attribution_url` | URL | Optional | URL of the organization. |
 |  `attribution_email` | Email | Optional | Email of the organization. |
 |  `attribution_phone` | Phone number | Optional | Phone number of the organization. |
+
+### licenses.txt
+
+File: **Optional**
+
+Primary key (`licensed_table_name`)
+
+This file defines the licenses that apply to the feed or to specific files.
+
+| Field Name | Type | Presence | Description |
+| :---- | :---- | :---- | :---- |
+| `licensed_table_name` | Text | Optional | Defines the table which the license applies to.<br><br>If empty, the license applies to all tables in the feed not explicitly listed in other records of this file. Otherwise, any GTFS file name may be used as a value, omitting the `.txt` extension.<br><br>_Example: shapes refers to `shapes.txt`_ |
+| `license_spdx_id` | SPDX ID | Conditionally Forbidden | The SPDX identifier of the license. <br><br>**Conditionally Forbidden**: <br>- **Required** if `custom_license_url` is empty.<br> - **Forbidden** otherwise. |
+| `custom_license_url` | URL | Conditionally Forbidden | The URL that contains the terms of the custom license.<br><br>**Conditionally Forbidden:**<br> - **Required** if `license_spdx_id` is empty.<br> - **Forbidden** otherwise. |
