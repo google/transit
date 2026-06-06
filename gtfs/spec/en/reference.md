@@ -43,6 +43,7 @@ This document defines the format and structure of the files that comprise a GTFS
     -   [translations.txt](#translationstxt)
     -   [feed\_info.txt](#feed_infotxt)
     -   [attributions.txt](#attributionstxt)
+    -   [vehicles.txt](#vehiclestxt)
 
 ## Document Conventions
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", “SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://tools.ietf.org/html/rfc2119).
@@ -247,6 +248,7 @@ Primary key (`route_id`)
 |  `continuous_drop_off` | Enum | **Conditionally Forbidden** | Indicates that the rider can alight from the transit vehicle at any point along the vehicle’s travel path as described by [shapes.txt](#shapestxt), on every trip of the route. Valid options are: <br><br>`0` - Continuous stopping drop off. <br>`1` or empty - No continuous stopping drop off. <br>`2` - Must phone agency to arrange continuous stopping drop off. <br>`3` - Must coordinate with driver to arrange continuous stopping drop off. <br><br>Values for `routes.continuous_drop_off` may be overridden by defining values in `stop_times.continuous_drop_off` for specific `stop_time`s along the route. <br><br>**Conditionally Forbidden**:<br>- Any value other than `1` or empty is **Forbidden** if `stop_times.start_pickup_drop_off_window` or `stop_times.end_pickup_drop_off_window` are defined for any trip of this route.<br> - Optional otherwise. |
 | `network_id` | ID | **Conditionally Forbidden** | Identifies a group of routes. Multiple rows in [routes.txt](#routestxt) may have the same `network_id`.<br><br>Conditionally Forbidden:<br>- **Forbidden** if the [route_networks.txt](#route_networkstxt) or [networks.txt](#networkstxt) file exists.<br>- Optional otherwise. 
 |  `cemv_support` | Enum | Optional | Indicates if riders can access a transit service (i.e., trip) associated with this route by using a contactless EMV (Europay, Mastercard, and Visa) card or mobile device as fare media at a fare validator (such as in pay-as-you-go or open-loop systems). This field does not indicate that cEMV can be used to purchase other fare products or to add value to another fare media. <br><br> Support for cEMVs should only be indicated if all services under this route are accessible with the use of cEMV cards or mobile devices as fare media. <br><br> Valid options are: <br><br>`0` or empty - No cEMV information for trips associated with this route. <br>`1` - Riders may use cEMVs as fare media for trips associated with this route. <br>`2` - cEMVs are not supported as fare media for trips associated with this route. <br><br> If both `agency.cemv_support` and `routes.cemv_support` are provided for the same service, the value in `routes.cemv_support` shall take precedence. <br><br> This field is independent of all other fare-related files and may be used separately.  If there is conflicting information between this field and any fare-related file (such as [fare_media.txt](#fare_mediatxt), [fare_products.txt](#fare_productstxt), or [fare_leg_rules.txt](#fare_leg_rulestxt)), the information in those files shall take precedence over `agency.cemv_support`.
+|  `vehicle_class` | ID | Optional | Matches the `vehicle_class` in vehicles.txt to identify the type of vehicle that usually operates on this route. Can be used for information on what type of vehicle to expect when real time data is not available and identify where the vehicle is not the expected type when real time data is available. If trips.txt has a `vehicle_class`, that value overrides the value in routes.txt. |
 |
 
 ### trips.txt
@@ -270,13 +272,13 @@ Primary key (`trip_id`)
 |  `cars_allowed` | Enum | Optional | Indicates whether cars are allowed. Valid options are:<br><br>`0` or empty - No car information for the trip.<br>`1` - Vehicle being used on this particular trip can accommodate at least one car.<br>`2` - No cars are allowed on this trip. |
 | `safe_duration_factor` | Float | **Optional** | Multiplier applied to travel time estimates calculated for on-demand trips.<br><br>See "Calculating on-demand trip time estimates with safe duration fields" section below for guidance on how to use this and the `safe_duration_offset` fields. |
 | `safe_duration_offset` | Float | **Optional** | Fixed offset value in seconds applied to travel time estimates calculated for on-demand trips.<br><br>See "Calculating on-demand trip time estimates with safe duration fields" section below for guidance on how to use this and the `safe_duration_factor` fields. |
+|  `vehicle_class` | ID | Optional | Matches the `vehicle_class` in vehicles.txt to identify the type of vehicle that usually operates on this trip. Can be used for information on what type of vehicle to expect when real time data is not available and identify where the vehicle is not the expected type when real time data is available. This value overrides the value in routes.txt. |
 
 
 #### Calculating on-demand trip time estimates with safe duration fields
 Together, `safe_duration_factor` and `safe_duration_offset` allow an estimation of the longest amount of time a rider can expect the on-demand trip to take, for 95% of cases. Data consumers are expected to use `safe_duration_factor` and `safe_duration_offset` to make the following calculation:<br>`SafeTravelDuration (seconds) = safe_duration_factor × DrivingDuration (seconds) + safe_duration_offset (seconds)`<br>where `DrivingDuration` is the time it would take a private car to travel the distance being calculated for the on-demand service, and `SafeTravelDuration` is the longest amount of time a rider can expect the on-demand trip to take.<br><br>
 
 This calculation should only apply to the portion of a trip that is on-demand. If a service is a deviated-fixed service, or if a rider trip includes a transfer from an on-demand to a fixed-route service, the duration of the fixed-route portion of the trip should be calculated according to the `departure_time` and `arrival_time` fields.
-
 
 #### Example: Blocks and service day
 
@@ -910,3 +912,65 @@ The file defines the attributions applied to the dataset.
 |  `attribution_url` | URL | Optional | URL of the organization. |
 |  `attribution_email` | Email | Optional | Email of the organization. |
 |  `attribution_phone` | Phone number | Optional | Phone number of the organization. |
+
+### vehicles.txt
+
+File: **Optional**
+
+Primary key (`vehicle_id`, `agency_id`)
+
+This file describes the capacity, accessibility and features of individual vehicles or vehicle ranges.
+
+|  Field Name | Type | Presence | Description |
+|  ------ | ------ | ------ | ------ |
+|  `vehicle_id` | Text | **Required** | An id that is unique to the vehicle and corresponds to the value in the GTFS Realtime `id` value in the `VehicleDescriptor` or `CarriageDetails` or the vehicle identifier in other real-time data sources. If `vehicle_id_high` is provided then this value is the low end of the range. |
+|  `vehicle_id_high` | Text | Optional | If a range of vehicles is represented this is the high end of the range. The number of charactors must be the same as `vehicle_id` and the range covers values with the same number of characters and are between `vehicle_id` and `vehicle_id_high` when using an ASCII string comparison. Not all vehicles covered by the range need to actually exist. |
+|  `vehicle_label` | Text | Recommended | A label that identifies the vehicle and is visiable to users. Corresponds to the label shown in the GTFS Realtime `label` value in the `VehicleDescriptor` or `CarriageDetails`. If `vehicle_label_high` is provided then this value is the low end of the range. |
+|  `vehicle_label_high` | Text | Conditionally Required | If a range of vehicles is represented this is the high end of the range for the vehicle label. The number of characters must be the same as `vehicle_label` and the range covers values with the same number of charactors and are between `vehicle_label` and `vehicle_label_high` when using an ASCII string comparison. Required if both `vehicle_label` and `vehicle_id_high` are included. |
+|  `agency_id` | Foreign ID referencing `agency.agency_id` | Recommended | Agency for the specified vehicles. |
+|  `license_plate` | Text | Optional | The license plate or number plate of the vehicle. Does not apply if a range of vehicles is being used. |
+|  `vehicle_class` | ID | Recommended | Identifies a class of vehicle that usually runs on certain routes. Ment to link with vehicle_class fields in routes.txt and trips.txt. Can be used to provide vehicle information when label isn't available or highlight when the vehicle doesn't match the expected class and what the major differences are. |
+| `facility_name` | Text | Optional | The name of the facility where the vehicle is normally stored when not in service, such as the bus garage or rail yard. |
+|  `vehicle_type` | Text | Recommended | Should be one of the two character codes in the Vehicle Type column on the Reference Sheet tab in [A-30 Template](https://www.transit.dot.gov/ntd/30-template) from the US Federal Transit Administration or a one or two word description of the type of vehicle. Examples:<br><br>`BU` - Bus<br>`LR` - Light Rail Vehicle<br>`RP` - Commuter Rail Passenger Coach |
+|  `manufacturer` | Text | Optional | The name of the company that manufactured the vehicle. |
+|  `model_name` | Text | Optional | The name of the vehicle model. |
+|  `year_manufactured` | Year | Optional | The year the vehicle was manufactured. If a range of vehicles is represented, the earliest year should be used. |
+|  `fuel_type` | Text | Optional | The type of fuel used to provide energy for propulsion. It should be from the list of Fuel Types column on the Reference Sheet tab in [A-30 Template](https://www.transit.dot.gov/ntd/30-template) from the US Federal Transit Administration. Examples include `Diesel Fuel`, `Hybrid Diesel`, `Electric Propulsion Power` and `Electric Battery`.|
+|  `length` | Positive float | Optional | The length of the vehicle in meters. |
+|  `articulated_sections` | integer | Optional | The number of articulated sections. If there are no articulations the number should be 1. |
+|  `levels` | integer | Optional | The number of levels available to passengers. Only levels directly above or below other levels count, not where the height of the floor changes within the vehicle. |
+| `cab` | enum | Optional | Options are:<br><br>`0` - No cab in the vehicle.<br>`1` - In addition to a passenger area the car has a cab for controlling the vehicle or train.  |
+|  `image_url` | URL | Optional | Fully qualified URL of an image of the vehicle. The image should have as aspect ratio between 1:1 and 2:1 and a have a vertical resolution of at least 500. The image should show the front of the vehicle (except for train cars) and the side the passengers baord. The rights to the image should also free commerical reproduction of the image, for example licenced under [CC-BY](https://creativecommons.org/licenses/by/4.0/). Consumers should only download this image one time for each GTFS update and always serve it to end users themselves. End users should never be automatically downloading directly from the URL provided. |
+|  `image_photographer` | Text | Conditionally Required | The name of the person or organization that took the photo in the `image_url`. Required if the photo `image_url` wasn't produced by the transit agency that operates it. |
+|  `image_details` | URL | Optional | Fully qualified URL of an web page with more information on the photo, photographer or organation that produced the photo in the `image_url` |
+|  `vehicle_notes` | Text | Optional | Notable aspects about the vehicles that passengers should know about not covered by other fields. |
+|  `capacity_seated` | integer | Optional | The number of seats available to passengers, including ones that may become unavailable due to making space for wheelchairs or bikes. |
+|  `capacity_full` | integer | Recommended | The number of passengers that is considered a full load for a vehicle. If passenger occupancy is provided, this should be the number of passengers that is considered Full or 100%. |
+|  `capacity_wheelchairs` | integer | Recommended | The number of spots available for passingers with wheelchairs. |
+|  `capacity_strollers` | integer | Optional | The number of spots available for strollers. Would include spots used by wheelchairs or strollers. |
+|  `capacity_bikes` | integer | Recommended | The number of bicycles the vehicle can carry, either on the inside or outside of the vehicle. |
+|  `bike_notes` | Text | Optional | A decription of the location, procedures and restriction of bringing a bicycle on the vehicle. |
+|  `capacity_cars` | integer | Optional | The number of standard size cars the vehicle can carry. Primarily for farries. |
+|  `luggage` | Enum | Optional | The vehicle has space set aside for luggage. Valid options are:<br><br>`0` - No space set aside for luggage.<br>`1` - Space above passenger seating for luggage.<br>`2` - Space set aside in the passenger cabin for luggage.<br>`3` - Space for luggage that can be accessed externally. |
+|  `luggage_notes` | Text | Optional | A description of how luggage is stored and any limitations that may apply. |
+|  `restrooms` | integer | Optional | The number of restrooms in the vehicle, including any accessible restrooms. |
+|  `accessible_restrooms` | integer | Optional | The number of accessible restrooms in the vehicle. |
+|  `air_conditioning` | Enum | Optional | Valid options are:<br><br>`0` - No air conditioning provided.<br>`1` - The vehicle has air conditioning. |
+|  `ac_plugs` | integer | Optional | AC power plugs that follow the local standard that are available to passengers.<br><br>Empty - No information on availability.<br>`0` - No AC power plugs available.<br>`-1` - An unknown number of AC power plugs available.<br>Other number - the number of AC power plugs available to passengers. |
+|  `usba_plugs` | integer | Optional | USB-A ports for charging devices available to passengers.<br><br>Empty - No information on availability.<br>`0` - No USB-A ports available.<br>`-1` - An unknown number of USB-A ports available.<br>Other number - the number of USB-A ports available to passengers. |
+|  `usbc_plugs` | integer | Optional | USB-C ports for charging devices available to passengers.<br><br>Empty - No information on availability.<br>`0` - No USB-C ports available.<br>`-1` - An unknown number of USB-C ports available.<br>Other number - the number of USB-C ports available to passengers. |
+|  `wifi` | Enum | Optional | Valid options are:<br><br>`0` - No WiFi available to passengers.<br>`1` - Internet access through WiFi with no requirements beyond agreeing to the terms of service.<br>`2` - Internet access available through WiFi but requires creating a free account.<br>`3` - Internet access available through WiFi for a fee. |
+|  `wifi_notes` | Text | Optional | Description of how the access the Internet through WiFi and any limitations it has. |
+|  `food` | Enum | Optional | The type of food available. Valid options are:<br><br>`0` - No food available.<br>`1` - Unstaffed vending machines with drinks or snacks.<br>`2` - Staffed cafe with snacks and hot and cold drinks.<br>`3` - Staffed cafe with warmed food and hot and cold drinks.<br>`4` - Food trolley with drinks and snakes brought to your seat.<br>`5` - Table service with waiters that bring food to your table. |
+|  `doors` | integer | Optional | The number of doors on each side. If there are doors on both sides of the vehicle, provide the number of doors per side. |
+|  `boarding_type` | Enum | Recommended | Valid options are:<br><br>`1` - High platform level boarding<br>`2` - Low platform level boarding<br>`3` - One or more steps are required to board.<br>`4` - Level boarding at some stations |
+|  `boarding_steps` | integer | Optional | Number of steps require to board where there is no level boarding. |
+|  `accessible_boarding` | Enum | Recommended | The accommodation to allow boarding with a mobility device. Valid options are:<br><br>`0` - Not accessible.<br>`1` - Level boarding.<br>`2` - Ramp can be deployed.<br>`3` - Lift can be deployed. |
+|  `accessibility_notes` | Text | Optional | Information about how to board with a mobility device and any limitations. |
+|  `stop_announcements` | Enum | Recommended | Audible next stop announcemnts. Valid options are:<br><br>`0` - No next stop announcement available.<br>`1` - Automatic audio next stop annoucements.<br>`2` - Next stop annoucements by on board staff.<br>`3` - Next stop annoucements on request of on board staff. |
+|  `route_announcements` | Enum | Recommended | Audible route and destination announcements heard by passenger waiting at the stop. Valid options are:<br><br>`0` - No route announcement available.<br>`1` - Automatic audio route annoucements from the vehicle.<br>`2` - Automatic audio route annoucements in stations when before or when vehicles arrive.<br>`3` - Route annoucements by station staff.<br>`4` - Automatic audio route annoucements from the vehicle when the stop is served by more than one route.|
+|  `stop_displays` | Enum | Recommended | Visual next stop displays. Valid options are:<br><br>`0` - No next stop display.<br>`1` - Interior displays showing the next stop.<br>`2` - Interior displays showing multiple upcoming stops.<br>`3` - The name of the station can be seen from inside the vehicle. |
+|  `livery_color` | Color | Optional | Hex code of the most noticeable color of the livery. |
+|  `livery` | Text | Optional | The name of the livery. |
+|  `nick_name` | Text | Optional | The name for the specific vehicle, such as the name of a ferry or some passenger rail cars that have names. |
+|  `decoration` | Text | Optional | A brief description of a special wrap or modification of the vehicle that is either seasonal or long term. |
