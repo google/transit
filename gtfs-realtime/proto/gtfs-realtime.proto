@@ -113,6 +113,7 @@ message FeedEntity {
   optional Shape shape = 6;
   optional Stop stop = 7;
   optional TripModifications trip_modifications = 8;
+  optional Route route = 9;
 
   // The extensions namespace allows 3rd-party developers to extend the
   // GTFS Realtime Specification in order to add and evaluate new features and
@@ -423,6 +424,10 @@ message TripUpdate {
     // Specifies the name for this trip when it differs from the original.
     // NOTE: This field is still experimental, and subject to change. It may be formally adopted in the future.
     optional string trip_short_name = 6;
+
+    // Specify the route associated with the trip, if the route has been added dynamically. The associated `Route` message should be included in the same feed.
+    // Optional if schedule_relationship is NEW, forbidden otherwise. 
+    optional string route_id = 7;
 
     // The extensions namespace allows 3rd-party developers to extend the
     // GTFS Realtime Specification in order to add and evaluate new features
@@ -797,6 +802,8 @@ message TripDescriptor {
   optional string trip_id = 1;
 
   // The route_id from the GTFS that this selector refers to.
+  // This field is used to identify a trip inside an existing GTFS, not to dynamically create or insert new routes
+  // To assign routes dynamically, use the `trip_properties.route_id` field. 
   optional string route_id = 5;
 
   // The direction_id from the GTFS feed trips.txt file, indicating the
@@ -1213,6 +1220,60 @@ message TripModifications {
 
   // A list of modifications to apply to the affected trips. 
   repeated Modification modifications = 4;
+
+  // The extensions namespace allows 3rd-party developers to extend the
+  // GTFS Realtime Specification in order to add and evaluate new features and
+  // modifications to the spec.
+  extensions 1000 to 1999;
+
+  // The following extension IDs are reserved for private use by any organization.
+  extensions 9000 to 9999;
+}
+
+// NOTE: This field is still experimental, and subject to change. It may be formally adopted in the future.
+message Route {
+  // Identifier of the route. Must be different than any route_id defined in the (CSV) GTFS.
+  // Required
+  optional string route_id = 1;
+
+  // See definition of routes.agency_id in (CSV) GTFS.
+  // Conditionally Required, see reference
+  optional string agency_id = 2;
+
+  // See definition of routes.route_short_name in (CSV) GTFS.
+  // Conditionally Required, see reference
+  optional TranslatedString route_short_name = 3;
+
+  // See definition of routes.route_long_name in (CSV) GTFS.
+  // Conditionally Required, see reference
+  optional TranslatedString route_long_name = 4;
+
+  // See definition of routes.route_desc in (CSV) GTFS.
+  optional TranslatedString route_desc = 5;
+
+  // See definition of routes.route_type in (CSV) GTFS.
+  // Required
+  optional int32 route_type = 6;
+
+  // See definition of routes.route_url in (CSV) GTFS.
+  optional TranslatedString route_url = 7;
+
+  // See definition of routes.route_color in (CSV) GTFS.
+  optional string route_color = 8;
+
+  // See definition of routes.route_text_color in (CSV) GTFS.
+  optional string route_text_color = 9;
+
+  // See definition of routes.route_sort_order in (CSV) GTFS.
+  optional uint32 route_sort_order = 10;
+
+  // See definition of calendar.start_date in (CSV) GTFS.
+  // The first day that the new route is active, in YYYYMMDD format.
+  optional string start_date = 11;
+
+  // See definition of calendar.end_date in (CSV) GTFS.
+  // The last day that the new route is active, in YYYYMMDD format.
+  optional string end_date = 12;
 
   // The extensions namespace allows 3rd-party developers to extend the
   // GTFS Realtime Specification in order to add and evaluate new features and
