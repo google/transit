@@ -32,6 +32,13 @@ A service alert will usually consist of some text which will describe the
 problem, and we also allow for URLs for more information as well as more
 structured information to help us understand who this service alert affects.
 
+#### Interaction between Trip Updates and Service Alerts
+
+If data consumers use Service Alerts to affect routing decisions, and both Trip Updates
+and Service Alerts apply but provide conflicting information, consumers should
+give precedence to Trip Updates for routing decisions, unless there is clear
+evidence that the Trip Updates is incorrect.
+
 [More about Service Alerts...](service-alerts.md)
 
 ## Vehicle Positions
