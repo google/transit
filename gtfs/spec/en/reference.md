@@ -863,8 +863,9 @@ Primary key (`notice_id`)
 
 Defines notices that can be displayed to riders. These can be attached to one or more entities with `notice_assignments.txt`.
 
-These notices are additional textual messages that can improve results with human-readable information. It should
-not replace machine-readable information like pick up/drop off types or fare data.
+These notices are additional textual messages that can improve results with human-readable information. As opposed to GTFS-Alerts, they are already known during conceptual planning and therefore are not "real-time".
+
+It should not replace machine-readable information like pick up/drop off types or fare data.
 
 |  Field Name | Type | Presence | Description |
 |  ------ | ------ | ------ | ------ |
