@@ -135,7 +135,7 @@ This specification defines the following files:
 |  [stop_areas.txt](#stop_areastxt) | Optional | Rules to assign stops to areas. |
 |  [networks.txt](#networkstxt) | **Conditionally Forbidden** | Network grouping of routes.<br><br>Conditionally Forbidden:<br>- **Forbidden** if `network_id` exists in [routes.txt](#routestxt).<br>- Optional otherwise. |
 |  [route_networks.txt](#route_networkstxt) | **Conditionally Forbidden** | Rules to assign routes to networks.<br><br>Conditionally Forbidden:<br>- **Forbidden** if `network_id` exists in [routes.txt](#routestxt).<br>- Optional otherwise. |
-|  [shapes.txt](#shapestxt)  | Optional | Rules for mapping vehicle travel paths, sometimes referred to as route alignments. |
+|  [shapes.txt](#shapestxt)  | **Conditionally Required** | Rules for mapping vehicle travel paths, sometimes referred to as route alignments.<br><br>Conditionally Required: <br>- **Required** if the trip has a continuous pickup or drop-off behavior defined either in [routes.txt](#routestxt) or in [stop_times.txt](#stop_timestxt). <br>- Recommended otherwise. |
 |  [frequencies.txt](#frequenciestxt)  | Optional | Headway (time between trips) for headway-based service or a compressed representation of fixed-schedule service. |
 |  [transfers.txt](#transferstxt)  | Optional | Rules for making connections at transfer points between routes. |
 |  [pathways.txt](#pathwaystxt)  | Optional | Pathways linking together locations within stations. |
