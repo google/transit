@@ -632,7 +632,7 @@ Assigns routes from [routes.txt](#routestxt) to networks.
 
 ### shapes.txt
 
-File: **Optional**
+File: **Conditionally Required**
 
 Primary key (`shape_id`, `shape_pt_sequence`)
 
