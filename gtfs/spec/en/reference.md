@@ -867,11 +867,11 @@ These notices are additional textual messages that can improve results with huma
 
 It should not replace machine-readable information like pick up/drop off types or fare data.
 
-|  Field Name | Type | Presence | Description |
-|  ------ | ------ | ------ | ------ |
-| `notice_id` | Unique ID | **Required** | Identifies a notice. |
-| `notice_group_id` | ID | Optional | Groups notices together. The same `notice_group_id` may be assigned to multiple notices. A `notice_group_id` can be referenced in [notice_assignments.txt](#notice_assignmentstxt) to assign all notices in the group at once. |
-| `display_text` | Text | **Required** | Text of the notice to be displayed to riders. HTML formatting characters are not permitted.          |           
+|  Field Name | Type | Presence | Description                                                                                                                                                                                                                          |
+|  ------ | ------ | ------ |------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `notice_id` | Unique ID | **Required** | Identifies a notice.                                                                                                                                                                                                        |
+| `notice_group_id` | ID | Optional | Groups notices together. The same `notice_group_id` may be assigned to multiple notices. A `notice_group_id` can be referenced in [notice_assignments.txt](#notice_assignmentstxt) to assign all notices in the group at once.   |
+| `display_text` | Text | **Required** | Text of the notice to be displayed to riders. Formatting characters, for example HTML entities, are not permitted.                                                                                                            |           
 
 ### notice_assignments.txt
 
