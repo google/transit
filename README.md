@@ -8,7 +8,7 @@ The GTFS Digest is a monthly newsletter by [MobilityData](https://mobilitydata.o
 
 ### **🔔 [Subscribe to the GTFS Digest](https://groups.google.com/g/gtfs-updates)**
 
-GTFS relies on community contributions. Please help us capture GTFS developments by sharing your updates for our next digest to: [specifications@mobiltydata.org](mailto:specifications@mobiltydata.org)
+GTFS relies on community contributions. Please help us capture GTFS developments by sharing your updates for our next digest to: [specifications@mobilitydata.org](mailto:specifications@mobilitydata.org)
 
 ## Useful Resources
 ### Getting Started with GTFS
