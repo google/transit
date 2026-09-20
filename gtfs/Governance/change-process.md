@@ -33,7 +33,7 @@ This process guides how the community proposes, reviews, and adopts [Functional 
 * A proposal is submitted by opening a Pull Request in the GTFS Repository.   
 * The community engages in discussions to refine the proposal. This period must last at least 7 days.
 * The [Contributors](roles.md/#contributors) and the [Maintainer](roles.md/#maintainer) review the proposed changes. This period must last at least 7 days.  
-* Before testing, the community holds a vote to confirm unanimous consensus on the proposal. This means all participating voters must be in favor. For the vote to be valid, it must include at least five contributors, with a minimum of two Producers and two Consumers. The voting period must last at least 14 days. 
+* Before testing, the community confirms there is consensus on the proposal, as described in Guiding Principles. This does not mean all participating voters must be in favor. For the vote to be valid, it must include at least five contributors, with a minimum of two Producers and two Consumers. The voting period must last at least 14 days. 
 * [First Adopters](roles.md/#first-adopter) test the proposed changes.   
 * The community holds a vote to determine whether the changes should be officially adopted. This vote follows an 80% majority rule, meaning at least 80% of votes must be in favor for it to pass. To be valid, the vote must include at least five contributors, with a minimum of two Producers and two Consumers. The voting period must last at least 14 days.
 * Finally, changes are implemented into the specification.
