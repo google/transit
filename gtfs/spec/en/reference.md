@@ -879,7 +879,7 @@ File: **Conditionally Required**
 
 Primary key (`*`)
 
-Assigns notices or notice groups defined in [notices.txt](#noticestxt) to routes, trips in their entirety, or individual stops.
+Assigns notices or notice groups defined in [notices.txt](#noticestxt) to routes, trips in their entirety, parts of a trip or individual stops.
 
 Specifically, attaching them means the following:
 
@@ -902,6 +902,12 @@ File: **Optional**
 Primary key (`trip_segment_id`)
 
 Defines a contiguous segment of a trip by specifying an inclusive range of stop sequences. Segments defined here can be referenced in [notice_assignments.txt](#notice_assignmentstxt) to apply a notice to a portion of a trip.
+
+If `from_stop_sequence` and `to_stop_sequence` are equal, the segment consists of a single stop time from arrival to departure at the same stop.
+
+If `to_stop_sequence` is greater than `from_stop_sequence` then the segment starts at the departure from `from_stop_sequence` and ends at the arrival at `to_stop_sequence`.
+
+If a notice applies to a number of consecutive stops in a trip but not the hop between them, then multiple segments should be defined where `from_stop_sequence` is equal to `to_stop_sequence`.
 
 |  Field Name | Type | Presence | Description |
 |  ------ | ------ | ------ | ------ |
