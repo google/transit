@@ -147,8 +147,8 @@ This specification defines the following files:
 |  [location_group_stops.txt](#location_group_stopstxt)  | Optional | Rules to assign stops to location groups. |
 |  [locations.geojson](#locationsgeojson)  | Optional | Zones for rider pickup or drop-off requests by on-demand services, represented as GeoJSON polygons. |
 |  [booking_rules.txt](#booking_rulestxt)  | Optional | Booking information for rider-requested services. |
-|  [notices.txt](#noticestxt)  | Optional | Notices to be displayed to riders for specific routes, trips, or stops. |
-|  [notice_assignments.txt](#notice_assignmentstxt)  | **Conditionally Required** | Assignments of notices or notice groups to routes, trips, or stops.<br><br>Conditionally Required:<br>- **Required** if [notices.txt](#noticestxt) is provided. |
+|  [notices.txt](#noticestxt)  | Optional | Notices to be displayed to riders for specific routes, trips, or trip segments. |
+|  [notice_assignments.txt](#notice_assignmentstxt)  | **Conditionally Required** | Assignments of notices to routes, trips, or trip segments.<br><br>Conditionally Required:<br>- **Required** if [notices.txt](#noticestxt) is provided. |
 |  [trip_segments.txt](#trip_segmentstxt)  | Optional | Defines segments of trips by stop sequence range, for use in notice assignments. |
 |  [translations.txt](#translationstxt)  | Optional | Translations of customer-facing dataset values. |
 |  [feed_info.txt](#feed_infotxt)  | **Conditionally Required** | Dataset metadata, including publisher, version, and expiration information.<br><br>Conditionally Required:<br>- **Required** if [translations.txt](#translationstxt) is provided.<br>- Recommended otherwise.|
@@ -870,7 +870,6 @@ Notices must not replace or duplicate machine-readable information that is alrea
 |  Field Name | Type | Presence | Description                                                                                                                                                                                                                          |
 |  ------ | ------ | ------ |------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `notice_id` | Unique ID | **Required** | Identifies a notice.                                                                                                                                                                                                        |
-| `notice_group_id` | ID | Optional | Groups notices together. The same `notice_group_id` may be assigned to multiple notices. A `notice_group_id` can be referenced in [notice_assignments.txt](#notice_assignmentstxt) to assign all notices in the group at once.   |
 | `display_text` | Text | **Required** | Text of the notice to be displayed to riders. Formatting characters, for example HTML entities, are not permitted.                                                                                                            |           
 
 ### notice_assignments.txt
@@ -879,21 +878,19 @@ File: **Conditionally Required**
 
 Primary key (`*`)
 
-Assigns notices or notice groups defined in [notices.txt](#noticestxt) to routes, trips in their entirety, parts of a trip or individual stops.
+Assigns notices defined in [notices.txt](#noticestxt) to routes, trips in their entirety or parts of a trip.
 
 Specifically, attaching them means the following:
 
-- route: the notice applies to _all_ trips in the route. If you want to assign to a specific trip use a `table_name` with value `trip`
+- route: the notice applies to _all_ trips in the route. If you want to assign to a specific trip use a `table_name` with value `trips`
 - trip: the notice applies to a specific trip in its entirety, not to individual hops.
 - trip segment: the notice applies to part of a trip.
-- stop: the notice applies to a stop but completely decoupled from a specific trip. It is not intended for notices that target stop times.
   
 |  Field Name | Type | Presence | Description |
 |  ------ | ------ | ------ | ------ |
-| `notice_id` | Foreign ID referencing `notices.notice_id` | **Conditionally Required** | Identifies the notice to assign.<br><br>Conditionally Required:<br>- **Required** if `notice_group_id` is not defined.<br>- **Forbidden** if `notice_group_id` is defined. |
-| `notice_group_id` | Foreign ID referencing `notices.notice_group_id` | **Conditionally Required** | Identifies the notice group to assign. All notices sharing this `notice_group_id` in [notices.txt](#noticestxt) are assigned.<br><br>Conditionally Required:<br>- **Required** if `notice_id` is not defined.<br>- **Forbidden** if `notice_id` is defined. |
-| `table_name` | Enum | **Required** | Identifies the table containing the record to which the notice is assigned. Valid options are:<br><br>`routes` - Record is in [routes.txt](#routestxt).<br>`trips` - Record is in [trips.txt](#tripstxt).<br>`stops` - Record is in [stops.txt](#stopstxt).<br>`trip_segments` - Record is in [trip_segments.txt](#trip_segmentstxt). |
-| `record_id` | Foreign ID | **Required** | Primary key of the record in the table specified by `table_name` to which the notice is assigned. For `table_name=routes` use `route_id`; for `table_name=trips` use `trip_id`; for `table_name=stops` use `stop_id`; for `table_name=trip_segments` use `trip_segment_id`. |
+| `notice_id` | Foreign ID referencing `notices.notice_id` | **Required** | Identifies the notice to assign. |
+| `table_name` | Enum | **Required** | Identifies the table containing the record to which the notice is assigned. Valid options are:<br><br>`routes` - Record is in [routes.txt](#routestxt).<br>`trips` - Record is in [trips.txt](#tripstxt).<br>`trip_segments` - Record is in [trip_segments.txt](#trip_segmentstxt). |
+| `record_id` | Foreign ID | **Required** | Primary key of the record in the table specified by `table_name` to which the notice is assigned. For `table_name=routes` use `route_id`; for `table_name=trips` use `trip_id`; for `table_name=trip_segments` use `trip_segment_id`. |
 
 ### trip_segments.txt
 
