@@ -44,7 +44,7 @@ Examples of conflicts include:
 
 * A service alert informing of a stop closure while the trip updates for that stop are not set to `SKIPPED`.  
 * A service alert informing of a route closure while the trip updates for the cancelled trips are not set to `CANCELED`.  
-* A route is closed for the whole day. The trip updates feed cancels all trips on this route for the next 90 minutes. However, no alert was set up to inform that the route closure continues beyond those 90 minutes.
+* A route is closed for the whole day. The trip updates feed cancels all trips on this route for the next 90 minutes. However, no alert was set up to inform that the route is still closed beyond those 90 minutes.
 
 Data consumers MUST use both Trip Updates and Service Alerts to make routing decisions, such as cancelling a trip or closing a stop. When using Service Alerts to make routing decisions, Consumers MUST only use alerts whose effect is set to `NO_SERVICE`.
 
