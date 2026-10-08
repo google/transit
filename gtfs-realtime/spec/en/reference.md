@@ -410,10 +410,10 @@ The effect of this problem on the affected entity.
 
 | _**Value**_ | _**Comment**_ |
 |-------------|----------------|
-| **NO_SERVICE** | No transit service to the specified entity(-ies).<br>- For stations or stops, the rider will not be able to board or alight.<br>- For routes, the route will not run.<br>- For trips, those specific trips are cancelled. |
+| **NO_SERVICE** | No transit service to the specified entity(-ies).<br>- For agencies, all the agency's routes are not operating.<br>- For routes, all the trips for the route will not run.<br>- For trips, those specific trips are cancelled.<br>- For stations (<code>location_type</code> = 1) or stops (<code>location_type</code> = 0), the rider will not be able to board or alight. |
 | **REDUCED_SERVICE** | The number or frequency of trips is reduced. |
 | **SIGNIFICANT_DELAYS** | The route will consistently run late (insignificant delays should only be provided through [Trip updates](trip-updates.md)). |
-| **DETOUR** | The route changes its shape, resulting in the route not serving one or multiple stops, or picking up/dropping off at other locations. |
+| **DETOUR** | The route changes its shape, which may affect pickup/drop off at some stops. |
 | **ADDITIONAL_SERVICE** | The number or frequency of trips is increased. For example, more buses are running to cover for a special event. |
 | **MODIFIED_SERVICE** | Operations are different from what the rider would normally expect. An example is an alert that reminds riders of an upcoming holiday schedule that is different from normal service on that day of the week. |
 | **OTHER_EFFECT** | Not represented by any of these options. |

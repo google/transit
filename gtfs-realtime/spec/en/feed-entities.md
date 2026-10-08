@@ -44,10 +44,11 @@ Examples of conflicts include:
 
 * A service alert informing of a stop closure while the trip updates for that stop are not set to `SKIPPED`.  
 * A service alert informing of a route closure while the trip updates for the cancelled trips are not set to `CANCELED`.  
-* A route closure spanning the whole day, for which the trip updates feed cancels trips over the next 90 minutes while no `NO_SERVICE` alert exists beyond those 90 minutes informing of the route closure.
+* A route is closed for the whole day. The trip updates feed cancels all trips on this route for the next 90 minutes. However, no alert was set up to inform that the route closure continues beyond those 90 minutes.
 
+Data consumers MUST use both Trip Updates and Service Alerts to make routing decisions, such as cancelling a trip or closing a stop. When using Service Alerts to make routing decisions, Consumers MUST only use alerts whose effect is set to `NO_SERVICE`.
 
-Data consumers SHOULD use both Trip Updates and Service Alerts to make routing decisions, such as cancelling a trip or closing a stop. In case there is a conflict between Trip Updates and Service Alerts, consumers SHOULD inform the agency/producer of the issue, and SHOULD exercise caution when applying either feed to affect routing decisions.
+Since alerts with `NO_SERVICE` are used to make routing decisions, producers need to make sure to specify the most granular informed entities possible. This is done to avoid closing more transit services than are affected.
 
 [More about Service Alerts...](service-alerts.md)
 

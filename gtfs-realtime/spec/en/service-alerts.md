@@ -51,12 +51,13 @@ What is the cause of this alert? You may specify one of the following:
 What effect does this problem have on the specified entity? You may specify one of the following:
 
 * **No service**: No transit service to the specified entity(-ies).
-  * For stations or stops, the rider will not be able to board or alight.
-  * For routes, the route will not run.
+  * For agencies, all the agency's routes are not operating.
+  * For routes, all the trips for the route will not run.
   * For trips, those specific trips are cancelled.
+  * For stations (`location_type` = 1) or stops (`location_type` = 0), the rider will not be able to board or alight.
 * **Reduced service**: The number or frequency of trips is reduced.
 * **Significant delays**: The route will consistently run late (insignificant delays should only be provided through [Trip updates](trip-updates.md)).
-* **Detour**: The route changes its shape, resulting in the route not serving one or multiple stops, or picking up/dropping off at other locations.
+* **Detour**: The route changes its shape, which may affect pickup/drop off at some stops.
 * **Additional service**: The number or frequency of trips is increased. For example, more buses are running to cover for a special event.
 * **Modified service**: Operations are different from what the rider would normally expect. An example is an alert that reminds riders of an upcoming holiday schedule that is different from normal service on that day of the week.
 * **Stop moved**: A stop location is changed temporarily or permanently (if known to be permanent, ensure the new location is reflected in the schedule data).
