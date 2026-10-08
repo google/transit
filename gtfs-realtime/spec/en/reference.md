@@ -383,21 +383,21 @@ Cause of this alert.
 
 **Values**
 
-| _**Value**_ |
-|-------------|
-| **UNKNOWN_CAUSE** |
-| **OTHER_CAUSE** |
-| **TECHNICAL_PROBLEM** |
-| **STRIKE** |
-| **DEMONSTRATION** |
-| **ACCIDENT** |
-| **HOLIDAY** |
-| **WEATHER** |
-| **MAINTENANCE** |
-| **CONSTRUCTION** |
-| **POLICE_ACTIVITY** |
-| **MEDICAL_EMERGENCY** |
-| **SPECIAL_EVENT** |
+| _**Value**_ | _**Comment**_ |
+|-------------|----------------|
+| **UNKNOWN_CAUSE** | Used when the cause of the disruption is not known or has not been determined. Should be avoided if any more specific cause can be reasonably identified. |
+| **OTHER_CAUSE** | Used for causes that do not represented by any of predefined options. |
+| **TECHNICAL_PROBLEM** | Issues related to vehicles or infrastructure malfunctioning. Examples include mechanical failure and information system bugs. |
+| **STRIKE** | Service disruptions caused by a labor strike involving the transit agency or operator. |
+| **DEMONSTRATION** | Service disruptions caused by public demonstration, protest, or gathering. |
+| **ACCIDENT** | Incidents such as collisions or derailments that disrupt services. |
+| **HOLIDAY** | Any public holiday that might result in a change of service. |
+| **WEATHER** | Disruptions caused by weather conditions such as snow, storms, flooding, etc. |
+| **MAINTENANCE** | Planned maintenance related to the services. Examples include track maintenance, elevator maintenance and vehicle maintenance. |
+| **CONSTRUCTION** | Any construction that affects the service, regardless whether it relates to the services or not. Examples include station construction and roadworks that affect bus routes. |
+| **POLICE_ACTIVITY** | Disruptions due to law enforcement activity or security incidents. Examples include investigations or security threats. |
+| **MEDICAL_EMERGENCY** | Incidents involving passenger or staff medical emergencies. Examples include an on-board medical problem that forces a train to stop. |
+| **SPECIAL_EVENT** | A special one-time or recurring event such as a parade, festival, performance, farmers market, or sporting event. |
 
 ## _enum_ Effect
 
@@ -405,19 +405,19 @@ The effect of this problem on the affected entity.
 
 **Values**
 
-| _**Value**_ |
-|-------------|
-| **NO_SERVICE** |
-| **REDUCED_SERVICE** |
-| **SIGNIFICANT_DELAYS** |
-| **DETOUR** |
-| **ADDITIONAL_SERVICE** |
-| **MODIFIED_SERVICE** |
-| **OTHER_EFFECT** |
-| **UNKNOWN_EFFECT** |
-| **STOP_MOVED** |
-| **NO_EFFECT** |
-| **ACCESSIBILITY_ISSUE** |
+| _**Value**_ | _**Comment**_ |
+|-------------|----------------|
+| **NO_SERVICE** | No transit service to the specified entity(-ies).<br>- For agencies, all the agency's routes are not operating.<br>- For routes, all the trips for the route will not run.<br>- For trips, those specific trips are cancelled.<br>- For stations (<code>location_type</code> = 1) or stops (<code>location_type</code> = 0), the rider will not be able to board or alight. |
+| **REDUCED_SERVICE** | The number or frequency of trips is reduced. |
+| **SIGNIFICANT_DELAYS** | The route will consistently run late (insignificant delays should only be provided through [Trip updates](trip-updates.md)). |
+| **DETOUR** | The route changes its shape, which may affect pickup/drop off at some stops. |
+| **ADDITIONAL_SERVICE** | The number or frequency of trips is increased. For example, more buses are running to cover for a special event. |
+| **MODIFIED_SERVICE** | Operations are different from what the rider would normally expect. An example is an alert that reminds riders of an upcoming holiday schedule that is different from normal service on that day of the week. |
+| **OTHER_EFFECT** | Not represented by any of these options. |
+| **UNKNOWN_EFFECT** | Used for alerts whose effect has not been identified yet. Do not use "Unknown effect" if the effect of the alert is known or can be deduced from the alert header or description. |
+| **STOP_MOVED** | A stop location is changed temporarily or permanently (if known to be permanent, ensure the new location is reflected in the schedule data). |
+| **NO_EFFECT** | The alert provides information to riders but does not affect operations. Examples include advertising public meetings and soliciting feedback via surveys. Unless necessary, it is advised not to use this effect. |
+| **ACCESSIBILITY_ISSUE** | The alert provides information about accessibility issues that affect step-free access. Examples include an out of service elevator or movable ramps, a bus that is unable to kneel, or an exceptional service with trains that have a big platform gap. |
 
 ## _enum_ SeverityLevel
 
