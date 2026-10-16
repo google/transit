@@ -1,5 +1,18 @@
 ### Revision History
 
+#### August 2026
+
+* Adopted images in Service Alerts to the spec and removed the "experimental" tag. See [discussion](https://github.com/google/transit/pull/651).
+
+#### June 2026
+
+* Added two new fields into Service Alerts: communication_period and impact_period to better define active_period. See [discussion](https://github.com/google/transit/pull/546)
+* Added new SPECIAL_EVENT Cause to Cause list in Service Alerts. See [discussion](https://github.com/google/transit/pull/577)
+
+#### April 2026
+
+* Fixed typos in gtfs-realtime.proto. See [discussion](https://github.com/google/transit/pull/541).
+
 #### February 2026
 
 * Corrected trip_ids requirement and cardinality for selectedTrips. See [discussion](https://github.com/google/transit/pull/609).

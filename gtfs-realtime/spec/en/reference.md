@@ -112,15 +112,12 @@ Metadata about a feed, included in feed messages.
 
 Determines whether the current fetch is incremental.
 
-*   **FULL_DATASET**: this feed update will overwrite all preceding realtime information for the feed. Thus this update is expected to provide a full snapshot of all known realtime information.
-*   **DIFFERENTIAL**: currently, this mode is **unsupported** and behavior is **unspecified** for feeds that use this mode. There are discussions on the [GTFS Realtime mailing list](http://groups.google.com/group/gtfs-realtime) around fully specifying the behavior of DIFFERENTIAL mode and the documentation will be updated when those discussions are finalized.
-
 **Values**
 
-| _**Value**_ |
-|-------------|
-| **FULL_DATASET** |
-| **DIFFERENTIAL** |
+| _**Value**_ | _**Comment**_ |
+|-------------|---------------|
+| **FULL_DATASET** | This feed update will overwrite all preceding realtime information for the feed. Thus this update is expected to provide a full snapshot of all known realtime information. |
+| **DIFFERENTIAL** | Currently, this mode is **unsupported** and behavior is **unspecified** for feeds that use this mode. There are discussions on the [GTFS Realtime mailing list](http://groups.google.com/group/gtfs-realtime) around fully specifying the behavior of DIFFERENTIAL mode and the documentation will be updated when those discussions are finalized. |
 
 ## _message_ FeedEntity
 
@@ -253,9 +250,9 @@ Realtime update for certain properties defined within GTFS stop_times.txt.
 
 ## _message_ TripProperties
 
-Defines updated properties of the trip
+Defines updated properties of the trip.
 
-**Caution:** this message is still **experimental**, and subject to change. It may be formally adopted in the future.<br>.
+**Caution:** this message is still **experimental**, and subject to change. It may be formally adopted in the future.<br>
 
 **Fields**
 
@@ -327,15 +324,15 @@ For describing passenger occupancy levels on a linear scale, see `occupancy_perc
 
 | _**Value**_ | _**Comment**_ |
 |-------------|---------------|
-| _**EMPTY**_ | _The vehicle is considered empty by most measures, and has few or no passengers onboard, but is still accepting passengers._ |
-| _**MANY_SEATS_AVAILABLE**_ | _The vehicle or carriage has a large number of seats available. The amount of free seats out of the total seats available to be considered large enough to fall into this category is determined at the discretion of the producer._ |
-| _**FEW_SEATS_AVAILABLE**_ | _The vehicle or carriage has a small number of seats available. The amount of free seats out of the total seats available to be considered small enough to fall into this category is determined at the discretion of the producer._ |
-| _**STANDING_ROOM_ONLY**_ | _The vehicle or carriage can currently accommodate only standing passengers._ |
-| _**CRUSHED_STANDING_ROOM_ONLY**_ | _The vehicle or carriage can currently accommodate only standing passengers and has limited space for them._ |
-| _**FULL**_ | _The vehicle is considered full by most measures, but may still be allowing passengers to board._ |
-| _**NOT_ACCEPTING_PASSENGERS**_ | _The vehicle or carriage is not accepting passengers. The vehicle or carriage usually accepts passengers for boarding._ |
-| _**NO_DATA_AVAILABLE**_ | _The vehicle or carriage doesn't have any occupancy data available at that time._ |
-| _**NOT_BOARDABLE**_ | _The vehicle or carriage is not boardable and never accepts passengers. Useful for special vehicles or carriages (engine, maintenance carriage, etc…)._ |
+| **EMPTY** | The vehicle is considered empty by most measures, and has few or no passengers onboard, but is still accepting passengers. |
+| **MANY_SEATS_AVAILABLE** | The vehicle or carriage has a large number of seats available. The amount of free seats out of the total seats available to be considered large enough to fall into this category is determined at the discretion of the producer. |
+| **FEW_SEATS_AVAILABLE** | The vehicle or carriage has a small number of seats available. The amount of free seats out of the total seats available to be considered small enough to fall into this category is determined at the discretion of the producer. |
+| **STANDING_ROOM_ONLY** | The vehicle or carriage can currently accommodate only standing passengers. |
+| **CRUSHED_STANDING_ROOM_ONLY** | The vehicle or carriage can currently accommodate only standing passengers and has limited space for them. |
+| **FULL** | The vehicle is considered full by most measures, but may still be allowing passengers to board. |
+| **NOT_ACCEPTING_PASSENGERS** | The vehicle or carriage is not accepting passengers. The vehicle or carriage usually accepts passengers for boarding. |
+| **NO_DATA_AVAILABLE** | The vehicle or carriage doesn't have any occupancy data available at that time. |
+| **NOT_BOARDABLE** | The vehicle or carriage is not boardable and never accepts passengers. Useful for special vehicles or carriages (engine, maintenance carriage, etc…). |
 
 
 ## _message_ CarriageDetails
@@ -363,6 +360,8 @@ An alert, indicating some sort of incident in the public transit network.
 | _**Field Name**_ | _**Type**_ | _**Required**_ | _**Cardinality**_ | _**Description**_ |
 |------------------|------------|----------------|-------------------|-------------------|
 | **active_period** | [TimeRange](#message-timerange) | Optional | Many | Time when the alert should be shown to the user. If missing, the alert will be shown as long as it appears in the feed. If multiple ranges are given, the alert will be shown during all of them. |
+| **communication_period** | [TimeRange](#message-timerange) | Optional | Many | Time when the alert should be shown to the user strictly for informative reasons. If missing, the consuming application can decide when it's appropriate to be shown. If multiple ranges are given, the alert will be shown during all of them.|
+| **impact_period** | [TimeRange](#message-timerange) | Optional | Many | Time when the services are affected by the alert. If communication_period is specified, every time interval in impact_period must be fully contained within at least one time interval of communication_period.|
 | **informed_entity** | [EntitySelector](#message-entityselector) | Required | Many | Entities whose users we should notify of this alert.  At least one informed_entity must be provided. |
 | **cause** | [Cause](#enum-cause) | Conditionally Required | One | If cause_detail is included, then Cause must also be included.
 | **cause_detail** | [TranslatedString](#message-translatedstring) | Optional | One | Description of the cause of the alert that allows for agency-specific language; more specific than the Cause. If cause_detail is included, then Cause must also be included. <br><br>**Caution:** this field is still **experimental**, and subject to change. It may be formally adopted in the future.
@@ -374,8 +373,8 @@ An alert, indicating some sort of incident in the public transit network.
 | **tts_header_text** | [TranslatedString](#message-translatedstring) | Optional | One | Text containing the alert's header to be used for text-to-speech implementations. This field is the text-to-speech version of header_text. It should contain the same information as header_text but formatted such that it can read as text-to-speech (for example, abbreviations removed, numbers spelled out, etc.) |
 | **tts_description_text** | [TranslatedString](#message-translatedstring) | Optional | One | Text containing a description for the alert to be used for text-to-speech implementations. This field is the text-to-speech version of description_text. It should contain the same information as description_text but formatted such that it can be read as text-to-speech (for example, abbreviations removed, numbers spelled out, etc.) |
 | **severity_level** | [SeverityLevel](#enum-severitylevel) | Optional | One | Severity of the alert. |
-| **image** | [TranslatedImage](#message-translatedimage) | Optional | One | TranslatedImage to be displayed along the alert text. Used to explain visually the alert effect of a detour, station closure, etc. The image should enhance the understanding of the alert and must not be the only location of essential information. The following types of images are discouraged : image containing mainly text, marketing or branded images that add no additional information. <br><br>**Caution:** this field is still **experimental**, and subject to change. It may be formally adopted in the future. |
-| **image_alternative_text** | [TranslatedString](#message-translatedstring) | Optional | One | Text describing the appearance of the linked image in the `image` field (e.g., in case the image can't be displayed or the user can't see the image for accessibility reasons). See the HTML [spec for alt image text](https://html.spec.whatwg.org/#alt). <br><br>**Caution:** this field is still **experimental**, and subject to change. It may be formally adopted in the future. |
+| **image** | [TranslatedImage](#message-translatedimage) | Optional | One | TranslatedImage to be displayed along the alert text. Used to explain visually the alert effect of a detour, station closure, etc. The image should enhance the understanding of the alert and must not be the only location of essential information. The following types of images are discouraged : image containing mainly text, marketing or branded images that add no additional information. |
+| **image_alternative_text** | [TranslatedString](#message-translatedstring) | Optional | One | Text describing the appearance of the linked image in the `image` field (e.g., in case the image can't be displayed or the user can't see the image for accessibility reasons). See the HTML [spec for alt image text](https://html.spec.whatwg.org/#alt). |
 
 
 ## _enum_ Cause
@@ -398,6 +397,7 @@ Cause of this alert.
 | **CONSTRUCTION** |
 | **POLICE_ACTIVITY** |
 | **MEDICAL_EMERGENCY** |
+| **SPECIAL_EVENT** |
 
 ## _enum_ Effect
 
@@ -515,10 +515,11 @@ When a service is affected by a trip modification, `ModifiedTripSelector` is use
 **Values**
 
 | _**Field Name**_ | _**Type**_ | _**Required**_ | _**Cardinality**_ | _**Description**_ |
-| **modifications_id** | [string](https://protobuf.dev/programming-guides/proto2/#scalar) | Required | One | The `id` of the `FeedEntity` in which the contained `TripModifications` object affects this trip.
-| **affected_trip_id** | [string](https://protobuf.dev/programming-guides/proto2/#scalar) | Required | One | The `trip_id` from the GTFS feed that is modified by the `modifications_id`
-| **start_time** | [string](https://protobuf.dev/programming-guides/proto2/#scalar) | Optional | One | The initially scheduled start time of this trip instance, applied to the frequency based modified trip. Same definition as **start_time** in [TripDescriptor](#message-tripdescriptor).
-| **start_date** | [string](https://protobuf.dev/programming-guides/proto2/#scalar) | Optional | One |  The start date of this trip instance in YYYYMMDD format, applied to the modified trip. Same definition as **start_date** in [TripDescriptor](#message-tripdescriptor).
+|------------------|------------|----------------|-------------------|-------------------|
+| **modifications_id** | [string](https://protobuf.dev/programming-guides/proto2/#scalar) | Required | One | The `id` of the `FeedEntity` in which the contained `TripModifications` object affects this trip. |
+| **affected_trip_id** | [string](https://protobuf.dev/programming-guides/proto2/#scalar) | Required | One | The `trip_id` from the GTFS feed that is modified by the `modifications_id` |
+| **start_time** | [string](https://protobuf.dev/programming-guides/proto2/#scalar) | Optional | One | The initially scheduled start time of this trip instance, applied to the frequency based modified trip. Same definition as **start_time** in [TripDescriptor](#message-tripdescriptor). |
+| **start_date** | [string](https://protobuf.dev/programming-guides/proto2/#scalar) | Optional | One |  The start date of this trip instance in YYYYMMDD format, applied to the modified trip. Same definition as **start_date** in [TripDescriptor](#message-tripdescriptor). |
 
 ## _message_ VehicleDescriptor
 
@@ -585,8 +586,6 @@ A localized string mapped to a language.
 ## _message_ TranslatedImage
 
 An internationalized message containing per-language versions of an image. One of the images from a message will be picked up. The resolution proceeds as follows: If the UI language matches the language code of a translation, the first matching translation is picked. If a default UI language (e.g., English) matches the language code of a translation, the first matching translation is picked. If some translation has an unspecified language code, that translation is picked.
-
-**Caution:** this message is still **experimental**, and subject to change. It may be formally adopted in the future.
 
 **Fields**
 

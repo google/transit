@@ -1,6 +1,6 @@
 ## General Transit Feed Specification Reference
 
-**Revised March 3, 2026. See [Revision History](https://gtfs.org/schedule/process/#revision-history) for more details.**
+**Revised April 27, 2026. See [Revision History](https://gtfs.org/schedule/process/#revision-history) for more details.**
 
 This document defines the format and structure of the files that comprise a GTFS dataset.
 
@@ -83,7 +83,7 @@ Presence conditions applicable to fields and files:
 - **Email** - An email address. <br> *Example: `example@example.com`*
 - **Enum** - An option from a set of predefined constants defined in the "Description" column. <br> *Example: The `route_type` field contains a `0` for tram, a `1` for subway...*
 - **ID** - An ID field value is an internal ID, not intended to be shown to riders, and is a sequence of any UTF-8 characters. Using only printable ASCII characters is recommended. An ID is labeled "unique ID" when it must be unique within a file. IDs defined in one .txt file are often referenced in another .txt file. IDs that reference an ID in another table are labeled "foreign ID".<br> *Example: The `stop_id` field in [stops.txt](#stopstxt) is a "unique ID". The `parent_station` field in [stops.txt](#stopstxt) is a "foreign ID referencing `stops.stop_id`".*
-- **Language code** - An IETF BCP 47 language code. For an introduction to IETF BCP 47, refer to [http://www.rfc-editor.org/rfc/bcp/bcp47.txt](http://www.rfc-editor.org/rfc/bcp/bcp47.txt) and [http://www.w3.org/International/articles/language-tags/](http://www.w3.org/International/articles/language-tags/). <br> *Example: `en` for English, `en-US` for American English or `de` for German.*
+- **Language code** - An IETF BCP 47 language code. For an introduction to IETF BCP 47, refer to [https://www.rfc-editor.org/info/rfc5646/](https://www.rfc-editor.org/info/rfc5646/) and [http://www.w3.org/International/articles/language-tags/](http://www.w3.org/International/articles/language-tags/). <br> *Example: `en` for English, `en-US` for American English or `de` for German.*
 - **Latitude** - WGS84 latitude in decimal degrees. The value must be greater than or equal to -90.0 and less than or equal to 90.0. *<br> Example: `41.890169` for the Colosseum in Rome.*
 - **Longitude** - WGS84 longitude in decimal degrees. The value must be greater than or equal to -180.0 and less than or equal to 180.0. <br> *Example: `12.492269` for the Colosseum in Rome.*
 - **Float** - A floating point number.
@@ -135,7 +135,7 @@ This specification defines the following files:
 |  [stop_areas.txt](#stop_areastxt) | Optional | Rules to assign stops to areas. |
 |  [networks.txt](#networkstxt) | **Conditionally Forbidden** | Network grouping of routes.<br><br>Conditionally Forbidden:<br>- **Forbidden** if `network_id` exists in [routes.txt](#routestxt).<br>- Optional otherwise. |
 |  [route_networks.txt](#route_networkstxt) | **Conditionally Forbidden** | Rules to assign routes to networks.<br><br>Conditionally Forbidden:<br>- **Forbidden** if `network_id` exists in [routes.txt](#routestxt).<br>- Optional otherwise. |
-|  [shapes.txt](#shapestxt)  | Optional | Rules for mapping vehicle travel paths, sometimes referred to as route alignments. |
+|  [shapes.txt](#shapestxt)  | **Conditionally Required** | Rules for mapping vehicle travel paths, sometimes referred to as route alignments.<br><br>Conditionally Required: <br>- **Required** if the trip has a continuous pickup or drop-off behavior defined either in [routes.txt](#routestxt) or in [stop_times.txt](#stop_timestxt). <br>- Recommended otherwise. |
 |  [frequencies.txt](#frequenciestxt)  | Optional | Headway (time between trips) for headway-based service or a compressed representation of fixed-schedule service. |
 |  [transfers.txt](#transferstxt)  | Optional | Rules for making connections at transfer points between routes. |
 |  [pathways.txt](#pathwaystxt)  | Optional | Pathways linking together locations within stations. |
@@ -268,6 +268,15 @@ Primary key (`trip_id`)
 |  `wheelchair_accessible` | Enum | Optional | Indicates wheelchair accessibility. Valid options are:<br><br>`0` or empty - No accessibility information for the trip.<br>`1` - Vehicle being used on this particular trip can accommodate at least one rider in a wheelchair.<br>`2` - No riders in wheelchairs can be accommodated on this trip. |
 |  `bikes_allowed` | Enum | Optional | Indicates whether bikes are allowed. Valid options are:<br><br>`0` or empty - No bike information for the trip.<br>`1` - Vehicle being used on this particular trip can accommodate at least one bicycle.<br>`2` - No bicycles are allowed on this trip. |
 |  `cars_allowed` | Enum | Optional | Indicates whether cars are allowed. Valid options are:<br><br>`0` or empty - No car information for the trip.<br>`1` - Vehicle being used on this particular trip can accommodate at least one car.<br>`2` - No cars are allowed on this trip. |
+| `safe_duration_factor` | Float | **Optional** | Multiplier applied to travel time estimates calculated for on-demand trips.<br><br>See "Calculating on-demand trip time estimates with safe duration fields" section below for guidance on how to use this and the `safe_duration_offset` fields. |
+| `safe_duration_offset` | Float | **Optional** | Fixed offset value in seconds applied to travel time estimates calculated for on-demand trips.<br><br>See "Calculating on-demand trip time estimates with safe duration fields" section below for guidance on how to use this and the `safe_duration_factor` fields. |
+
+
+#### Calculating on-demand trip time estimates with safe duration fields
+Together, `safe_duration_factor` and `safe_duration_offset` allow an estimation of the longest amount of time a rider can expect the on-demand trip to take, for 95% of cases. Data consumers are expected to use `safe_duration_factor` and `safe_duration_offset` to make the following calculation:<br>`SafeTravelDuration (seconds) = safe_duration_factor × DrivingDuration (seconds) + safe_duration_offset (seconds)`<br>where `DrivingDuration` is the time it would take a private car to travel the distance being calculated for the on-demand service, and `SafeTravelDuration` is the longest amount of time a rider can expect the on-demand trip to take.<br><br>
+
+This calculation should only apply to the portion of a trip that is on-demand. If a service is a deviated-fixed service, or if a rider trip includes a transfer from an on-demand to a fixed-route service, the duration of the fixed-route portion of the trip should be calculated according to the `departure_time` and `arrival_time` fields.
+
 
 #### Example: Blocks and service day
 
@@ -623,7 +632,7 @@ Assigns routes from [routes.txt](#routestxt) to networks.
 
 ### shapes.txt
 
-File: **Optional**
+File: **Conditionally Required**
 
 Primary key (`shape_id`, `shape_pt_sequence`)
 
@@ -685,7 +694,7 @@ For a given ordered pair of arriving trip and departing trip, the transfer with 
 | `from_trip_id`  | Foreign ID referencing `trips.trip_id` | **Conditionally Required** | Identifies a trip where a connection between routes begins.<br><br>If `from_trip_id` is defined, the transfer will apply to the arriving trip for the given `from_stop_id`.<br><br>If both `from_trip_id` and `from_route_id` are defined, the `trip_id` must belong to the `route_id`, and `from_trip_id` will take precedence.<br><br>Conditionally Required:<br>- **Required** if `transfer_type` is `4` or `5`. <br>- Optional otherwise. |
 | `to_trip_id`  | Foreign ID referencing `trips.trip_id` | **Conditionally Required** | Identifies a trip where a connection between routes ends.<br><br>If `to_trip_id` is defined, the transfer will apply to the departing trip for the given `to_stop_id`.<br><br>If both `to_trip_id` and `to_route_id` are defined, the `trip_id` must belong to the `route_id`, and `to_trip_id` will take precedence. <br><br>Conditionally Required:<br>- **Required** if `transfer_type` is `4` or `5`. <br>- Optional otherwise. |
 |  `transfer_type` | Enum | **Required** | Indicates the type of connection for the specified (`from_stop_id`, `to_stop_id`) pair. Valid options are:<br><br> `0` or empty - Recommended transfer point between routes.<br>`1` - Timed transfer point between two routes. The departing vehicle is expected to wait for the arriving one and leave sufficient time for a rider to transfer between routes.<br>`2` - Transfer requires a minimum amount of time between arrival and departure to ensure a connection. The time required to transfer is specified by `min_transfer_time`.<br>`3` - Transfers are not possible between routes at the location.<br>`4` - Passengers can transfer from one trip to another by staying onboard the same vehicle (an "in-seat transfer"). More details about this type of transfer [below](#linked-trips).  <br>`5` - In-seat transfers are not allowed between sequential trips. The passenger must alight from the vehicle and re-board. More details about this type of transfer [below](#linked-trips). |
-|  `min_transfer_time` | Non-negative integer | Optional | Amount of time, in seconds, that must be available to permit a transfer between routes at the specified stops. The `min_transfer_time` should be sufficient to permit a typical rider to move between the two stops, including buffer time to allow for schedule variance on each route. |
+|  `min_transfer_time` | Non-negative integer | **Conditionally Required** | Amount of time, in seconds, that must be available to permit a transfer between routes at the specified stops. The `min_transfer_time` should be sufficient to permit a typical rider to move between the two stops, including buffer time to allow for schedule variance on each route. <br><br>Conditionally Required:<br>- **Required** if `transfer_type` is `2`. <br>- Optional otherwise. |
 
 #### Linked trips
 
