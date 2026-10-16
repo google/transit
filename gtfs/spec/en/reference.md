@@ -870,7 +870,7 @@ Notices must not replace or duplicate machine-readable information that is alrea
 |  Field Name | Type | Presence | Description                                                                                                                                                                                                                          |
 |  ------ | ------ | ------ |------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `notice_id` | Unique ID | **Required** | Identifies a notice.                                                                                                                                                                                                        |
-| `display_text` | Text | **Required** | Text of the notice to be displayed to riders. Formatting characters, for example HTML entities, are not permitted.                                                                                                            |           
+| `display_text` | Text | **Required** | Text of the notice to be displayed to riders. Formatting characters, for example HTML entities, are not permitted. The text should be shorter than 250 characters.                                                                                                            |           
 
 ### notice_assignments.txt
 
