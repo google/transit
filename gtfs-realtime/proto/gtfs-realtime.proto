@@ -811,7 +811,7 @@ message TripDescriptor {
   optional string trip_id = 1;
 
   // The route_id from the GTFS that this selector refers to.
-  // This field is used to identify a trip inside an existing GTFS, not to dynamically create or insert new routes
+  // This field is used to identify a trip inside an existing static GTFS, not to dynamically create or insert new routes
   // To assign routes dynamically, use the `trip_properties.route_id` field. 
   optional string route_id = 5;
 
