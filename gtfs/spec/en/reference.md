@@ -35,6 +35,8 @@ This document defines the format and structure of the files that comprise a GTFS
     -   [frequencies.txt](#frequenciestxt)
     -   [transfers.txt](#transferstxt)
     -   [pathways.txt](#pathwaystxt)
+    -   [platform_directions.txt](#platform_directionstxt)
+    -   [carriage_positions.txt](#carriage_positionstxt)
     -   [levels.txt](#levelstxt)
     -   [location_groups.txt](#location_groupstxt)
     -   [location_group_stops.txt](#location_group_stopstxt)
@@ -139,6 +141,8 @@ This specification defines the following files:
 |  [frequencies.txt](#frequenciestxt)  | Optional | Headway (time between trips) for headway-based service or a compressed representation of fixed-schedule service. |
 |  [transfers.txt](#transferstxt)  | Optional | Rules for making connections at transfer points between routes. |
 |  [pathways.txt](#pathwaystxt)  | Optional | Pathways linking together locations within stations. |
+|  [platform_directions.txt](#platform_directionstxt)  | **Conditionally Required** | Platform direction of the front carriage at each stop.<br><br>Conditionally Required:<br>- **Required** when [carriage_positions.txt](#carriage_positionstxt) is provided.<br>- Optional otherwise. |
+|  [carriage_positions.txt](#carriage_positionstxt)  | Optional | Optimal carriage positioning for transfers and platform exits. |
 |  [levels.txt](#levelstxt)  | **Conditionally Required** | Levels within stations.<br><br>Conditionally Required:<br>- **Required** when describing pathways with elevators (`pathway_mode=5`).<br>- Optional otherwise. |
 |  [location_groups.txt](#location_groupstxt)  | Optional | A group of stops that together indicate locations where a rider may request pickup or drop off. |
 |  [location_group_stops.txt](#location_group_stopstxt)  | Optional | Rules to assign stops to location groups. |
@@ -755,6 +759,49 @@ Pathways are intended to exhaustively define the internal access graph of a stat
 | `min_width` | Positive float | Optional | Minimum width of the pathway in meters.<br><br>This field is recommended if the minimum width is less than 1 meter.|
 | `signposted_as` | Text | Optional | Public facing text from physical signage that is visible to riders.<br><br> May be used to provide text directions to riders, such as 'follow signs to '. The text in `singposted_as` should appear exactly how it is printed on the signs.<br><br>When the physical signage is multilingual, this field may be populated and translated following the example of `stops.stop_name` in the field definition of `feed_info.feed_lang`.|
 | `reversed_signposted_as` | Text | Optional | Same as `signposted_as`, but when the pathway is used from the `to_stop_id` to the `from_stop_id`.|
+
+### platform_directions.txt
+
+File: **Conditionally Required**
+
+Primary key (`stop_id`, `route_id`, `direction_id`)
+
+Defines which side of the platform the front carriage stops at. This information is used alongside [carriage_positions.txt](#carriage_positionstxt) to determine boarding recommendations.
+
+A record with empty `route_id` and `direction_id` defines the platform side for all trips serving the platform. Records that specify `route_id` and/or `direction_id` take priority over that default for the trips they match, which allows modeling special configurations, e.g. a platform located on a bidirectional single-track section. When several records match a trip, the most specific one applies, in the following order: (`route_id`, `direction_id`), then `route_id`, then `direction_id`, then the default record.
+
+[carriage_positions.txt](#carriage_positionstxt) `recommended_carriage` counts carriages from the front of the train, so on its own it does not tell a rider where to stand. Consumers pair it with `front_carriage_position` for the platform the rider boards at, from the perspective of a rider facing the track: `recommended_carriage=1` is the carriage stopping at the right end of the platform when `front_carriage_position=1`, and at the left end when `front_carriage_position=0`. Recommendations should only be applied when `front_carriage_position` is known for the boarding platform.
+
+|  Field Name | Type | Presence | Description |
+|  ------ | ------ | ------ | ------ |
+|  `stop_id` | Foreign ID referencing `stops.stop_id` | **Required** | Identifies the platform.<br><br>Must contain a `stop_id` that identifies a platform (`location_type=0` or empty).<br><br>Values for `stop_id` that identify stations (`location_type=1`), entrances/exits (`location_type=2`), generic nodes (`location_type=3`) or boarding areas (`location_type=4`) are forbidden. |
+|  `front_carriage_position` | Enum | **Required** | Platform side where the front carriage stops at, from the perspective of a passenger facing the track. Valid options are:<br><br>`0` - Front carriage stops on the left side of the platform.<br>`1` - Front carriage stops on the right side of the platform. |
+|  `route_id` | Foreign ID referencing `routes.route_id` | Optional | Specifies per route which side of the platform the front carriage stops at. Can be defined in combination with `direction_id`. |
+|  `direction_id` | Enum | Optional | Specifies per trip direction which side of the platform the front carriage stops at. Can be defined in combination with `route_id`.<br><br>Values are the same as [trips.txt](#tripstxt) `direction_id`. |
+
+### carriage_positions.txt
+
+File: **Optional**
+
+Primary key (`*`)
+
+Defines optimal carriage positioning for transfers and platform exit access. Enables trip planners to recommend which carriage passengers should board to minimize walking time at their destination.
+
+A record describes the moment a rider steps off a train: `stop_id` is the platform where the rider alights, and `to_stop_id` is where the rider continues to, either another platform when transferring or an entrance/exit when leaving the station. The recommendation itself is applied earlier, when the rider boards.
+
+While [pathways.txt](#pathwaystxt) handles navigation within stations, it does not address where to stand on the platform before boarding. This file complements pathways by providing carriage-level boarding recommendations.
+
+More than one carriage may be equally good for the same destination, so several records may share the same `stop_id`, `to_stop_id`, `via_pathway_mode` and `carriage_count` and differ only by `recommended_carriage`. For example, a platform with stairs at both ends leading to the same transfer platform is served equally well by carriage 1 and carriage 8 of an 8-carriage train, published as two records.
+
+Producers MAY use logical carriage divisions when exact carriage positions are unavailable. For example, `carriage_count=3` with `recommended_carriage=1` indicates "board near the front" regardless of actual vehicle length.
+
+|  Field Name | Type | Presence | Description |
+|  ------ | ------ | ------ | ------ |
+|  `stop_id` | Foreign ID referencing `stops.stop_id` | **Required** | Identifies the arrival platform.<br><br>Must contain a `stop_id` that identifies a platform (`location_type=0` or empty).<br><br>Values for `stop_id` that identify stations (`location_type=1`), entrances/exits (`location_type=2`), generic nodes (`location_type=3`) or boarding areas (`location_type=4`) are forbidden. |
+|  `to_stop_id` | Foreign ID referencing `stops.stop_id` | Optional | Identifies a specific destination: a transfer platform or one of its boarding areas, a station entrance/exit, or a generic node such as a junction riders continue through.<br><br>Must contain a `stop_id` that identifies a platform (`location_type=0` or empty), an entrance/exit (`location_type=2`), a generic node (`location_type=3`) or a boarding area (`location_type=4`). Values for `stop_id` that identify stations (`location_type=1`) are forbidden.<br><br>Should belong to the same station as `stop_id`, as the recommendation describes walking within a station, but may reference a location in another station when physically connected platforms are modeled separately.<br><br>When empty, the recommendation applies as a general default for the station. When provided, it gives a destination-specific recommendation that takes priority over the general default. |
+|  `recommended_carriage` | Positive integer | **Required** | The recommended carriage to board, numbered from the first carriage in the direction of travel, which has a value of `1`, as in GTFS-realtime `CarriageDetails.carriage_sequence`. May represent a logical position rather than an exact carriage number. Must be less than or equal to `carriage_count`. |
+|  `carriage_count` | Positive integer | **Required** | Number of carriage positions in this configuration. May represent logical divisions (e.g., 3 for front/middle/back) rather than actual carriage count. |
+|  `via_pathway_mode` | Enum | Optional | Mode of the pathway the rider takes to reach `to_stop_id`, for which `recommended_carriage` is the closest carriage. Valid options are a subset of [pathways.txt](#pathwaystxt) `pathway_mode`:<br><br>`2` - Stairs.<br>`4` - Escalator.<br>`5` - Elevator.<br><br>Riders with different accessibility needs take different pathways out of the same platform, so a producer may publish one record per mode. When empty, the recommendation applies regardless of how the rider continues. |
 
 ### levels.txt
 
