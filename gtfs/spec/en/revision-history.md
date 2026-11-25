@@ -1,5 +1,8 @@
 ### Revision History
 
+#### November 2026
+* Added one new field to reference SPDX Identifiers for standard licenses and new `licenses.txt` file to describe the license information. See [discussion](https://github.com/google/transit/pull/607).
+
 #### August 2026
 * Required `min_transfer_time` for timed transfers (transfer_type = 2). See [discussion](https://github.com/google/transit/pull/640).
 
